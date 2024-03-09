@@ -3642,5 +3642,10 @@ pre .coffeescript .title {
   --primary-weak-50: rgba(168, 105, 226, 0.5);
 }
 :root.dark {
-  background-color: #2f0281 --primary: #6760ce; --primary-70: rgba(103, 96, 206, 0.7); --primary-50: rgba(103, 96, 206, 0.5); --primary-30: rgba(103, 96, 206, 0.3); --primary-weak: #7abddf; --primary-weak-50: rgba(122, 189, 223, 0.5); --primary: #6760ce; --primary-70: rgba(103, 96, 206, 0.7); --primary-50: rgba(103, 96, 206, 0.5); --primary-30: rgba(103, 96, 206, 0.3); --primary-weak: #7abddf; --primary-weak-50: rgba(122, 189, 223, 0.5);;
+  --primary: #6760ce;
+  --primary-70: rgba(103, 96, 206, 0.7);
+  --primary-50: rgba(103, 96, 206, 0.5);
+  --primary-30: rgba(103, 96, 206, 0.3);
+  --primary-weak: #7abddf;
+  --primary-weak-50: rgba(122, 189, 223, 0.5);
 }
