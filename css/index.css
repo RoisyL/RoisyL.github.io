@@ -14,10 +14,10 @@
   --primary-30: rgba(175, 180, 43, 0.3);
   --primary-weak: #c0ca33;
   --primary-weak-50: rgba(192, 202, 51, 0.5);
-  --primary: #662bb4;
-  --primary-70: rgba(102, 43, 180, 0.7);
-  --primary-50: rgba(102, 43, 180, 0.5);
-  --primary-30: rgba(102, 43, 180, 0.3);
+  --primary: #c79efd;
+  --primary-70: rgba(199, 158, 253, 0.7);
+  --primary-50: rgba(199, 158, 253, 0.5);
+  --primary-30: rgba(199, 158, 253, 0.3);
   --primary-weak: #6833ca;
   --primary-weak-50: rgba(104, 51, 202, 0.5);
   --body-color: #5d5d5e;
@@ -67,10 +67,10 @@
   --primary-30: rgba(175, 180, 43, 0.3);
   --primary-weak: #c0ca33;
   --primary-weak-50: rgba(192, 202, 51, 0.5);
-  --primary: #662bb4;
-  --primary-70: rgba(102, 43, 180, 0.7);
-  --primary-50: rgba(102, 43, 180, 0.5);
-  --primary-30: rgba(102, 43, 180, 0.3);
+  --primary: #c79efd;
+  --primary-70: rgba(199, 158, 253, 0.7);
+  --primary-50: rgba(199, 158, 253, 0.5);
+  --primary-30: rgba(199, 158, 253, 0.3);
   --primary-weak: #6833ca;
   --primary-weak-50: rgba(104, 51, 202, 0.5);
   --body-color: #d1d9e9b3;
@@ -3642,10 +3642,5 @@ pre .coffeescript .title {
   --primary-weak-50: rgba(168, 105, 226, 0.5);
 }
 :root.dark {
-  --primary: #6760ce;
-  --primary-70: rgba(103, 96, 206, 0.7);
-  --primary-50: rgba(103, 96, 206, 0.5);
-  --primary-30: rgba(103, 96, 206, 0.3);
-  --primary-weak: #7abddf;
-  --primary-weak-50: rgba(122, 189, 223, 0.5);
+  background-color: #2f0281 --primary: #6760ce; --primary-70: rgba(103, 96, 206, 0.7); --primary-50: rgba(103, 96, 206, 0.5); --primary-30: rgba(103, 96, 206, 0.3); --primary-weak: #7abddf; --primary-weak-50: rgba(122, 189, 223, 0.5); --primary: #6760ce; --primary-70: rgba(103, 96, 206, 0.7); --primary-50: rgba(103, 96, 206, 0.5); --primary-30: rgba(103, 96, 206, 0.3); --primary-weak: #7abddf; --primary-weak-50: rgba(122, 189, 223, 0.5);;
 }
