@@ -14,6 +14,12 @@
   --primary-30: rgba(175, 180, 43, 0.3);
   --primary-weak: #c0ca33;
   --primary-weak-50: rgba(192, 202, 51, 0.5);
+  --primary: #662bb4;
+  --primary-70: rgba(102, 43, 180, 0.7);
+  --primary-50: rgba(102, 43, 180, 0.5);
+  --primary-30: rgba(102, 43, 180, 0.3);
+  --primary-weak: #6833ca;
+  --primary-weak-50: rgba(104, 51, 202, 0.5);
   --body-color: #5d5d5e;
   --body-color-5: rgba(93, 93, 94, 0.05);
   --body-bg-color: #00151f;
@@ -61,6 +67,12 @@
   --primary-30: rgba(175, 180, 43, 0.3);
   --primary-weak: #c0ca33;
   --primary-weak-50: rgba(192, 202, 51, 0.5);
+  --primary: #662bb4;
+  --primary-70: rgba(102, 43, 180, 0.7);
+  --primary-50: rgba(102, 43, 180, 0.5);
+  --primary-30: rgba(102, 43, 180, 0.3);
+  --primary-weak: #6833ca;
+  --primary-weak-50: rgba(104, 51, 202, 0.5);
   --body-color: #d1d9e9b3;
   --body-color-5: rgba(209, 217, 233, 0.05);
   --body-bg-color: #00151f;
@@ -3620,4 +3632,20 @@ pre .coffeescript .title {
 .trm-fixed-container.offset #trm-back-top {
   opacity: 1;
   transform: translateY(0) scale(1);
+}
+:root {
+  --primary: #9d5af0;
+  --primary-70: rgba(157, 90, 240, 0.7);
+  --primary-50: rgba(157, 90, 240, 0.5);
+  --primary-30: rgba(157, 90, 240, 0.3);
+  --primary-weak: #a869e2;
+  --primary-weak-50: rgba(168, 105, 226, 0.5);
+}
+:root.dark {
+  --primary: #6760ce;
+  --primary-70: rgba(103, 96, 206, 0.7);
+  --primary-50: rgba(103, 96, 206, 0.5);
+  --primary-30: rgba(103, 96, 206, 0.3);
+  --primary-weak: #7abddf;
+  --primary-weak-50: rgba(122, 189, 223, 0.5);
 }
