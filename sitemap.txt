@@ -4,6 +4,4 @@ https://roisyl.github.io.git/tags/index.html
 https://roisyl.github.io.git/2024/03/09/hello-world/
 https://roisyl.github.io.git/
 https://roisyl.github.io.git/tags/HTML/
-https://roisyl.github.io.git/categories/OS/
-https://roisyl.github.io.git/categories/W/
 https://roisyl.github.io.git/categories/Web/
