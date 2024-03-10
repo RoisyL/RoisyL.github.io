@@ -63,7 +63,7 @@
 
 
 <!-- Variable -->
-<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Yuxi Luo","root":"/","typed_text":["A traveler on the road"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit.jpg","icon16":"rabbit.jpg","icon32":"rabbit.jpg","appleTouchIcon":"rabbit.jpg","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":true},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"}};</script>
+<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Yuxi Luo","root":"/","typed_text":["A traveler on the road"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit.jpg","icon16":"rabbit.jpg","icon32":"rabbit.jpg","appleTouchIcon":"rabbit.jpg","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"}};</script>
 <script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-03-10 04:27:30"};</script>
 
 <!-- Theme mode css -->
@@ -490,31 +490,20 @@
     
     
         <div class="col-lg-6">
-    <div class="trm-blog-card trm-scroll-animation">
-        <a href="/2024/03/09/hello-world/" class="trm-cover-frame trm-anima-link">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
             
-            
-                <img alt="cover" class="no-fancybox" src="/img/block.jpg">
-            
-        </a>
-        
-        <div class="trm-card-descr">
-            <div class="trm-label trm-category trm-mb-20">
-                <a href=" #.">
-                    Unclassified
-                </a>
-            </div>
-            <h5>
-                <a href="/2024/03/09/hello-world/" class="trm-anima-link">
-                    Hello World
-                </a>
-            </h5>
-            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <a class="trm-op-top trm-anima-link" href="/2024/03/09/hello-world/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">Hello World</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">
                 <li>24/03/09</li>
                 <li>22:53</li>
-                
-                
+                <li>Unclassified</li>
             </ul>
         </div>
     </div>
@@ -572,8 +561,24 @@
 
             
 
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        Article table of contents
+				<span id="post-toc-top">
+					TOP
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="核心概念"><a rel="nofollow" class="trm-toc-link" href="#核心概念"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">核心概念</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="基本结构"><a rel="nofollow" class="trm-toc-link" href="#基本结构"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">基本结构</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="常用标签及属性"><a rel="nofollow" class="trm-toc-link" href="#常用标签及属性"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">常用标签及属性</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="“规范性“标签"><a rel="nofollow" class="trm-toc-link" href="#“规范性“标签"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">“规范性“标签</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="&lt;!DOCTYPE html&gt;"><a class="trm-toc-link"><span class="trm-toc-number">2.1.1.</span> <span class="trm-toc-text">&lt;!DOCTYPE html&gt;</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="“功能性”标签"><a rel="nofollow" class="trm-toc-link" href="#“功能性”标签"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">“功能性”标签</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="img"><a rel="nofollow" class="trm-toc-link" href="#img"><span class="trm-toc-number">2.2.1.</span> <span class="trm-toc-text">img</span></a></li><li class="trm-toc-item trm-toc-level-3" title="a"><a rel="nofollow" class="trm-toc-link" href="#a"><span class="trm-toc-number">2.2.2.</span> <span class="trm-toc-text">a</span></a></li><li class="trm-toc-item trm-toc-level-3" title="ul &amp; ol"><a rel="nofollow" class="trm-toc-link" href="#ul-ol"><span class="trm-toc-number">2.2.3.</span> <span class="trm-toc-text">ul &amp; ol</span></a></li><li class="trm-toc-item trm-toc-level-3" title="li"><a rel="nofollow" class="trm-toc-link" href="#li"><span class="trm-toc-number">2.2.4.</span> <span class="trm-toc-text">li</span></a></li><li class="trm-toc-item trm-toc-level-3" title="form"><a rel="nofollow" class="trm-toc-link" href="#form"><span class="trm-toc-number">2.2.5.</span> <span class="trm-toc-text">form</span></a></li><li class="trm-toc-item trm-toc-level-3" title="input"><a rel="nofollow" class="trm-toc-link" href="#input"><span class="trm-toc-number">2.2.6.</span> <span class="trm-toc-text">input</span></a></li><li class="trm-toc-item trm-toc-level-3" title="label"><a rel="nofollow" class="trm-toc-link" href="#label"><span class="trm-toc-number">2.2.7.</span> <span class="trm-toc-text">label</span></a></li><li class="trm-toc-item trm-toc-level-3" title="button"><a rel="nofollow" class="trm-toc-link" href="#button"><span class="trm-toc-number">2.2.8.</span> <span class="trm-toc-text">button</span></a></li><li class="trm-toc-item trm-toc-level-3" title="select"><a rel="nofollow" class="trm-toc-link" href="#select"><span class="trm-toc-number">2.2.9.</span> <span class="trm-toc-text">select</span></a></li><li class="trm-toc-item trm-toc-level-3" title="option"><a rel="nofollow" class="trm-toc-link" href="#option"><span class="trm-toc-number">2.2.10.</span> <span class="trm-toc-text">option</span></a></li><li class="trm-toc-item trm-toc-level-3" title="textarea"><a rel="nofollow" class="trm-toc-link" href="#textarea"><span class="trm-toc-number">2.2.11.</span> <span class="trm-toc-text">textarea</span></a></li><li class="trm-toc-item trm-toc-level-3" title="&lt;span&gt;  与 &lt;div&gt;"><a rel="nofollow" class="trm-toc-link" href="#与"><span class="trm-toc-number">2.2.12.</span> <span class="trm-toc-text">&lt;span&gt;  与 &lt;div&gt;</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="“美化性”标签"><a rel="nofollow" class="trm-toc-link" href="#“美化性”标签"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text">“美化性”标签</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
             
 <div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="Open toc">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
     
     
         <div class="trm-fixed-btn" data-title="Read Mode" onclick="asyncFun.switchReadMode()">
