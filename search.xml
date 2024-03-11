@@ -123,7 +123,7 @@
 <li>1983 年图灵奖 Dennis Ritchie 和 Ken Thompson：Unix 操作系统的开发与实现、C 语言的发明人</li>
 <li>嵌入式系统：一个功能完备、几乎不依赖其他外部装置即可独立运行的软硬件集成的系统，有自己独立的 OS</li>
 </ul>
-<h1 id="什么是操作系统"><a href="#什么是操作系统" class="headerlink" title="什么是操作系统"></a>什么是操作系统</h1><h2 id="操作系统在计算机系统中的层次"><a href="#操作系统在计算机系统中的层次" class="headerlink" title="操作系统在计算机系统中的层次"></a><strong>操作系统在计算机系统中的层次</strong></h2><p><img src="https://sm.ms/image/Sx6RCUaQsFy7izB" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h1 id="什么是操作系统"><a href="#什么是操作系统" class="headerlink" title="什么是操作系统"></a>什么是操作系统</h1><h2 id="操作系统在计算机系统中的层次"><a href="#操作系统在计算机系统中的层次" class="headerlink" title="操作系统在计算机系统中的层次"></a><strong>操作系统在计算机系统中的层次</strong></h2><p><img src="https://s2.loli.net/2024/03/12/Sx6RCUaQsFy7izB.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p><img src="https://sm.ms/image/2r1oyCUpljnEhqW" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <ul>
 <li>自顶向下看——管理硬件：<strong>屏蔽复杂性-抽象</strong></li>
