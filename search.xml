@@ -123,8 +123,8 @@
 <li>1983 年图灵奖 Dennis Ritchie 和 Ken Thompson：Unix 操作系统的开发与实现、C 语言的发明人</li>
 <li>嵌入式系统：一个功能完备、几乎不依赖其他外部装置即可独立运行的软硬件集成的系统，有自己独立的 OS</li>
 </ul>
-<h1 id="什么是操作系统"><a href="#什么是操作系统" class="headerlink" title="什么是操作系统"></a>什么是操作系统</h1><h2 id="操作系统在计算机系统中的层次"><a href="#操作系统在计算机系统中的层次" class="headerlink" title="操作系统在计算机系统中的层次"></a><strong>操作系统在计算机系统中的层次</strong></h2><p><img src="03/11/OS-C1/1.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p><img src="03/11/OS-C1/2.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h1 id="什么是操作系统"><a href="#什么是操作系统" class="headerlink" title="什么是操作系统"></a>什么是操作系统</h1><h2 id="操作系统在计算机系统中的层次"><a href="#操作系统在计算机系统中的层次" class="headerlink" title="操作系统在计算机系统中的层次"></a><strong>操作系统在计算机系统中的层次</strong></h2><p><img src="https://sm.ms/image/Sx6RCUaQsFy7izB" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="https://sm.ms/image/2r1oyCUpljnEhqW" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <ul>
 <li>自顶向下看——管理硬件：<strong>屏蔽复杂性-抽象</strong></li>
 <li>自底向上看——<strong>提供服务（构筑生态）：资源的复用-共享</strong></li>
@@ -148,7 +148,7 @@
 <li>作用的层面不同。<strong>API</strong>描述<strong>代码级层面</strong>的接口，<strong>ABI</strong>描述<strong>二进制层面</strong>的接口</li>
 <li>兼容的难度不同。<strong>ABI 的兼容程度比 API 更为严格</strong></li>
 </ul>
-<h1 id="操作系统简史"><a href="#操作系统简史" class="headerlink" title="操作系统简史"></a>操作系统简史</h1><p><img src="03/11/OS-C1/3.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h1 id="操作系统简史"><a href="#操作系统简史" class="headerlink" title="操作系统简史"></a>操作系统简史</h1><p><img src="https://sm.ms/image/MIarNyD9icUJpGq" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <h2 id="spectre（幽灵）-meltdown-（熔断）CPU-漏洞"><a href="#spectre（幽灵）-meltdown-（熔断）CPU-漏洞" class="headerlink" title="spectre（幽灵） &amp; meltdown （熔断）CPU 漏洞"></a>spectre（幽灵） &amp; meltdown （熔断）<strong>CPU 漏洞</strong></h2><p>利用分支预测错误的 speculative execution（CPU 的缓存机制和乱序执行），访问到不该访问的信息，并且同样是通过 cache 这个 side channel 传递出去</p>
 <h2 id="批处理系统"><a href="#批处理系统" class="headerlink" title="批处理系统"></a>批处理系统</h2><p>加载在计算机上的一个系统软件，使得计算机能自动地、成批地处理一个或多个用户的作业</p>
 <p>▪ 两个发展阶段：联机和脱机</p>
@@ -170,17 +170,17 @@
 </ul>
 </li>
 </ul>
-<p><img src="03/11/OS-C1/4.png" alt="联机批处理系统" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="https://sm.ms/image/p1scX9Vl4mvKxFW" alt="联机批处理系统" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>联机批处理系统</p>
-<p><img src="03/11/OS-C1/5.png" alt="脱机批处理系统" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="https://sm.ms/image/7DgNmzUcGCiM9W6" alt="脱机批处理系统" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>脱机批处理系统</p>
-<p><img src="03/11/OS-C1/6.png" alt="分时系统" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="https://sm.ms/image/6HKD7FWRBImZNds" alt="分时系统" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>分时系统</p>
 <h2 id="分时系统"><a href="#分时系统" class="headerlink" title="分时系统"></a>分时系统</h2><p>把处理机的运行时间分成很短的时间片，<strong>按时间片轮流把处理机分配</strong>给各联机作业使用</p>
 <ul>
 <li>特点：<ul>
 <li>改变了程序访问硬件的方式<ul>
-<li>应用软件不能直接访问物理内存，因为物理内存是所有软件共享的 → <strong>页式内存管理(Paging)、虚拟内存</strong><br><img src="03/11/OS-C1/7.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></li>
+<li>应用软件不能直接访问物理内存，因为物理内存是所有软件共享的 → <strong>页式内存管理(Paging)、虚拟内存</strong><br><img src="https://sm.ms/image/7DBIq4j1EpU3Nnv" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></li>
 </ul>
 </li>
 <li>交互性：用户可根据系统对请求的响应结果，进一步向系统提出新的请求</li>
@@ -203,7 +203,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="03/11/OS-C1/8.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="https://sm.ms/image/BPCMUZbHi4SJ6k7" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <ul>
 <li>异步异常是由<strong>外部因素</strong>触发（计算机系统或操作系统自动引发），且<strong>无法通过常规的异常处理</strong>机制捕获</li>
 <li>同步异常是由<strong>程序内部的错误</strong>引发（通常由程序员在代码中显式地引发），并且通过<strong>异常处理机制</strong>进行捕获和处理</li>
