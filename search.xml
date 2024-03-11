@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2024/03/09/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>HTML-入门</title>
+    <url>/2024/03/10/Test/</url>
+    <content><![CDATA[<p><a href="https://www.notion.so/f45a8e89e915423187aa9677db065989?pvs=21">学习体会</a></p>
+<p><a href="https://www.notion.so/e3ec7a9f32f1489d97c4dd75068706d8?pvs=21">关于表单</a></p>
+<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><ul>
+<li>**<em>元素</em>**：开始标签、内容、结束标签三部分组成的整体</li>
+<li>**<em>属性</em>**：是写在一个元素的开始标签中的特殊词汇，它们用于控制这个元素的行为</li>
+</ul>
+<h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;styles.css&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span> <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">section</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="常用标签及属性"><a href="#常用标签及属性" class="headerlink" title="常用标签及属性"></a>常用标签及属性</h1><h2 id="“规范性“标签"><a href="#“规范性“标签" class="headerlink" title="“规范性“标签"></a>“规范性“标签</h2><h3 id=""><a href="#" class="headerlink" title="&lt;!DOCTYPE html&gt;"></a><code>&lt;!DOCTYPE html&gt;</code></h3><p>所有页面都应以其开头，被称为<em>声明</em>，确保浏览器尝试满足行业范围的规范</p>
+<h2 id="“功能性”标签"><a href="#“功能性”标签" class="headerlink" title="“功能性”标签"></a>“功能性”标签</h2><h3 id="img"><a href="#img" class="headerlink" title="img"></a><em><code>img</code></em></h3><ul>
+<li>注意它是<strong>自闭合</strong>标签（无结束标签）</li>
+<li>常用属性：<code>alt</code>（替代文本）、<code>src</code></li>
+</ul>
+<h3 id="a"><a href="#a" class="headerlink" title="a"></a><em><code>a</code></em></h3><p>**<em>锚点元素（超链接）</em>**，链接到另一个页面</p>
+<ul>
+<li>常用属性：<code>href</code> 、<ul>
+<li><code>target</code>  规定在何处打开链接<ul>
+<li><code>_blank</code>  在新窗口中打开</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="ul-ol"><a href="#ul-ol" class="headerlink" title="ul &amp; ol"></a><em><code>ul</code> &amp; <code>ol</code></em></h3><p><strong><em>无序&amp;有序列表</em></strong></p>
+<h3 id="li"><a href="#li" class="headerlink" title="li"></a><em><code>li</code></em></h3><p><strong><em>列表项</em></strong></p>
+<h3 id="form"><a href="#form" class="headerlink" title="form"></a><em><code>form</code></em></h3><p><em>表单</em></p>
+<ul>
+<li>常用属性：<code>action</code> （指示应将表单数据发送到哪里）<ul>
+<li><code>method</code>  规定如何发送表单数据<ul>
+<li>常用参数：<ul>
+<li>get：<strong>将表单数据以名称&#x2F;值对的形式附加到 URL 中</strong>，对于用户希望将结果加为书签的表单提交很有用，<strong>更适合非安全数据</strong></li>
+<li>post：<strong>在 HTTP 请求的正文中附加表单数据</strong>（数据不会显示在 URL 中）<strong>，适合敏感数据</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="input"><a href="#input" class="headerlink" title="input"></a><em><code>input</code></em></h3><ul>
+<li>注意它是<strong>自闭合的、内联的</strong></li>
+<li>常用属性：<code>placeholder</code> ，<code>required</code> （注意该属性无属性值，代表“必填”），<code>checked</code>（注意该属性无属性值，代表“使该复选框或单选按钮默认被选中”）<ul>
+<li><code>type</code>  创建多种输入<ul>
+<li>text：文本，表单数据将为输入的内容</li>
+<li>radio：单选，表单数据将为<code>name</code> &#x2F; <code>value</code> 属性对</li>
+<li>checkbox：复选框，表单数据将为<code>name</code> &#x2F; <code>value</code> 属性对</li>
+</ul>
+</li>
+<li><code>name</code>  指定输入数据的存放位置，或者说指明数据”属性“<ul>
+<li>可以用于限制单选，通过<strong>给每一个单选按钮添加相同的  <code>name</code>  属性以关联单选按钮</strong></li>
+</ul>
+</li>
+<li><code>value</code>  设置 input 的数据值<ul>
+<li>常在<code>type=radio</code>时使用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>距离父级  <code>form</code>  元素最近的第一个  <code>type</code>  为  <code>submit</code>  的  <code>input</code>  元素会被当作提交按钮<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Submit&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="label"><a href="#label" class="headerlink" title="label"></a><em><code>label</code></em></h3><p>帮助将  <code>input</code>  、<code>select</code>等元素的文本与元素本身关联起来，<strong>默认是行内元素</strong></p>
+<ul>
+<li>用法<ol>
+<li>套在<code>input</code>外面</li>
+<li>套在<code>input</code>的文本外面，并添加与  <code>input</code> 的  <code>id</code> 具有相同值的  <code>for</code> 属性</li>
+</ol>
+</li>
+</ul>
+<h3 id="button"><a href="#button" class="headerlink" title="button"></a><em><code>button</code></em></h3><p>单击没有任何属性的表单按钮的默认行为会将数据提交到表单的  <code>action</code>  属性中指定的位置</p>
+<ul>
+<li>注意它是<strong>内联的</strong></li>
+<li>常用属性：<code>type</code></li>
+</ul>
+<h3 id="select"><a href="#select" class="headerlink" title="select"></a><em><code>select</code></em></h3><p>给表单添加一个下拉列表</p>
+<p><code>select</code>  是包含一组  <code>option</code>  元素的容器，<code>option</code>  元素就是下拉列表的内容</p>
+<h3 id="option"><a href="#option" class="headerlink" title="option"></a><em><code>option</code></em></h3><ul>
+<li>每一个  <code>option</code>  需要指定一个  <code>value</code>  属性。 如果没有指定，向服务器默认提交的是  <code>option</code>  内的文本</li>
+</ul>
+<h3 id="textarea"><a href="#textarea" class="headerlink" title="textarea"></a><em><code>textarea</code></em></h3><ul>
+<li>和  <code>text</code>  类型的  <code>input</code>  类似，区别是 <code>textarea</code> 有一些额外的好处，比如可以方便地添加更多的文本以及设置默认显示的行数和列宽。</li>
+</ul>
+<h3 id="与"><a href="#与" class="headerlink" title="&lt;span&gt;  与 &lt;div&gt;"></a><code>&lt;span&gt;</code>  与 <code>&lt;div&gt;</code></h3><ul>
+<li><code>&lt;div&gt;</code>是块级元素，而  <code>&lt;span&gt;</code>  是行内元素</li>
+</ul>
+<h2 id="“美化性”标签"><a href="#“美化性”标签" class="headerlink" title="“美化性”标签"></a>“美化性”标签</h2><ul>
+<li><em><code>main</code>  正文</em></li>
+<li><em><code>footer</code>  页脚</em></li>
+<li><em><code>article</code> 信息内容</em></li>
+<li><em><code>div</code>  用于设计布局</em><ul>
+<li>常用属性：<code>class</code></li>
+</ul>
+</li>
+<li><em><code>em</code>斜体</em></li>
+<li><em><code>strong</code>  加粗</em></li>
+<li><em><code>figure</code>独立引用内容</em><ul>
+<li><em><code>figcaption</code>： 说明</em></li>
+</ul>
+</li>
+<li>_<code>fieldset</code>  块级元素_（划分内容）<ul>
+<li><em><code>legend</code> ：<code>fieldset</code></em> 元素中内容的<em>标题</em></li>
+</ul>
+</li>
+<li><em><code>hr</code>  分隔符</em><ul>
+<li>注意是<strong>自闭合标签</strong></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>HTML</tag>
+      </tags>
+  </entry>
+</search>
