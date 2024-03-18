@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="逻辑模型概述  是对现实世界的第二层抽象。负责将概念数据模式映射为数据库的逻辑结构 直接与 DBMS 有关,有严格的形式化定义 通常有一组严格定义的无二义性语法和语义的 DB 语言 逻辑数据模型的三要素：数据结构、数据操作和数据约束  逻辑数据模型的发展 文件模型 → 层次模型 → 网状模型 → 关系模型    关系模型适用于结构清晰的数据的管理，根据数据特点还可以采用 XML 模型、面向对象模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUAA DB-C2-2 逻辑模型">
+<meta property="og:url" content="https://roisyl.github.io.git/2024/03/18/BUAA-DB-C2-2/index.html">
+<meta property="og:site_name" content="Roisy&#39;s blog">
+<meta property="og:description" content="逻辑模型概述  是对现实世界的第二层抽象。负责将概念数据模式映射为数据库的逻辑结构 直接与 DBMS 有关,有严格的形式化定义 通常有一组严格定义的无二义性语法和语义的 DB 语言 逻辑数据模型的三要素：数据结构、数据操作和数据约束  逻辑数据模型的发展 文件模型 → 层次模型 → 网状模型 → 关系模型    关系模型适用于结构清晰的数据的管理，根据数据特点还可以采用 XML 模型、面向对象模型">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="article:published_time" content="2024-03-18T14:09:34.000Z">
+<meta property="article:modified_time" content="2024-03-18T14:09:34.000Z">
+<meta property="article:author" content="Roisy Luo">
+<meta property="article:tag" content="Notes">
+<meta property="article:tag" content="BUAA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
+
+
+<title >BUAA DB-C2-2 逻辑模型</title>
+
+<!-- Favicon -->
+
+    <link href='/imgs/rabbit.jpg?v=2.1.10' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.1.10' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.1.10' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+<link rel="stylesheet" href="https://unpkg.com/katex@latest/dist/katex.min.css">
+
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["A traveler on the road"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-03-18 22:09:34"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="Roisy's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/imgs/rabbit.jpg">
+    
+    
+        <div class="trm-logo-text">
+            Ro<span>isy</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    index
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    archives
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    categories
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Web/" target="">
+                            Web
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags/" target="">
+                    tags
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    about
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/03/18/DOE1dTbBG7ZIPKy.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            BUAA DB-C2-2 逻辑模型
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/imgs/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Roisy&#39;s Blog
+    </h5>
+    
+        <div class="trm-label">
+            
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/RoisyL/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                MAJOR:
+            </div>
+            <div class="trm-label trm-label-light">
+                SE
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                SCHOLL:
+            </div>
+            <div class="trm-label trm-label-light">
+                BUAA
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/18
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            22:09
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Roisy Luo
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1>逻辑模型概述</h1>
+<ul>
+<li>是对现实世界的第二层抽象。负责将概念数据模式<strong>映射为数据库的逻辑结构</strong></li>
+<li><strong>直接与 DBMS 有关</strong>,有严格的形式化定义</li>
+<li>通常有一组<strong>严格定义的无二义性语法和语义的 DB 语言</strong></li>
+<li>逻辑数据模型的三要素：<strong>数据结构、数据操作和数据约束</strong></li>
+</ul>
+<h2 id="逻辑数据模型的发展"><strong>逻辑数据模型的发展</strong></h2>
+<p>文件模型 → 层次模型 → 网状模型 → 关系模型</p>
+<p><img src="https://s2.loli.net/2024/03/18/t9GIlBHiRfseU4A.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p><img src="https://s2.loli.net/2024/03/18/cYNfhKqvpuT7bC9.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ul>
+<li>关系模型适用于结构清晰的数据的管理，根据数据特点还可以采用 XML 模型、面向对象模型等</li>
+</ul>
+<h1>关系模型</h1>
+<h2 id="关系数据结构">关系数据结构</h2>
+<ul>
+<li>关系模型是用<strong>二维表格结构</strong>来表示实体及实体之间联系的模型，是<strong>各个关系的框架的集合</strong></li>
+<li><strong><em>域</em></strong>：<font color="red">是一组具有相同数据类型的值的集合</font><font color="purple">（注意表达，最好不要直接说为“取值范围”）</font>，通常用 D 表示，域中所包含的值的个数称为域的<em>基数</em>（用 m 表示）</li>
+<li><strong><em>笛卡尔积</em></strong>：
+<ul>
+<li>笛卡尔积每一个元素（d1，d2，d3，…，dn）叫做一个<em>n 元组</em>，简称<em>元组</em>（Tuple）</li>
+</ul>
+</li>
+<li>数学上关系是笛卡尔积的任意子集，但在实际应用中关系是笛卡尔积中所取的<strong>有意义的子集</strong></li>
+</ul>
+<h3 id="关系模式">关系模式</h3>
+<ul>
+<li>关系模式：关系的描述称为关系模式。它可以形式化地表示为 R(U,D,DOM,F)
+<ul>
+<li>其中 R 为关系名,U 为组成该关系的属性名集合,D 为属性组 U 中属性所来自的域,DOM 为属性向域的映像集合,F 为属性间数据的依赖关系集合。</li>
+</ul>
+</li>
+<li>关系：是<strong>关系模式在某一时刻的状态或内容</strong>。</li>
+<li>关系模式是静态的、稳定的而关系是动态的、随时间不断变化的；<font color="purple"><strong>关系模式是型，关系是值</strong></font></li>
+</ul>
+<h3 id="重要性质">重要性质</h3>
+<ul>
+<li>关系中每一分量必须是<strong>不可分的</strong>数据项。所有属性值都是原子的，是一个确定的值，而不是值的集合</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/03/18/mj1WFkcs9afZl4h.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h2 id="ER-模型向关系模型转化"><strong>ER 模型向关系模型转化</strong></h2>
+<h3 id="基本规则">基本规则</h3>
+<ul>
+<li>
+<p><strong>实体类型</strong>：关系模式的属性为<strong>实体的属性</strong></p>
+</li>
+<li>
+<p><strong>二元联系</strong></p>
+<ul>
+<li>
+<p><strong>m:n 联系</strong>：将联系类型也单独转换成关系模式，关系模式属性为<strong>联系的属性和两联系实体的主键</strong><br>
+<img src="https://s2.loli.net/2024/03/18/6ruF9IVjoHBg1sz.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+<li>
+<p><strong>1：n 联系</strong>：合并到 n 端对应的实体关系模式中</p>
+<ul>
+<li>注意合并时不要漏掉<strong>另一个实体的主键</strong>！<br>
+<img src="https://s2.loli.net/2024/03/18/fGz9tORQ8oqFBHT.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></li>
+</ul>
+</li>
+<li>
+<p><strong>1：1 联系</strong>：可以合并到任意端对应的实体关系模式中，最好选择<strong>常用</strong>的一个<br>
+<img src="https://s2.loli.net/2024/03/18/UDCboBWcRkdu2v1.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>三元联系</strong></p>
+<ul>
+<li><strong>1:1:1 联系</strong>与 1:1 联系同理</li>
+<li><strong>1:1:n 联系</strong>与 1:n 联系同理</li>
+<li><strong>m:n:p 联系与 1:m:n 联系</strong>：将联系类型也单独转换成关系模式，其属性为多端实体类型的键（作为外键）加上联系的属性</li>
+</ul>
+</li>
+</ul>
+<h2 id="关系的完整性约束">关系的完整性约束</h2>
+<h3 id="域完整性">域完整性</h3>
+<ul>
+<li>对属性值 <strong>能否为空(NULL)</strong> 的检查也是域完整性约束的一部分</li>
+</ul>
+<h3 id="实体完整性">实体完整性</h3>
+<ul>
+<li>实体完整性<strong>用主键来约束</strong>
+<ul>
+<li>主属性不能为空，且取值唯一</li>
+</ul>
+</li>
+</ul>
+<h3 id="参照完整性">参照完整性</h3>
+<ul>
+<li><strong><em>外键</em></strong>
+<ul>
+<li>设 F 是关系 R 的一个或一组属性，但<strong>不是关系 R 的键</strong>，且 F<strong>与关系 S 的主键 K 相对应</strong>（相对应的意思就是符合参照完整性规则），则称 F 是关系 R 的外键
+<ul>
+<li>关系 R 称为<em>参照关系</em></li>
+<li>关系 S 称为<em>被参照关系</em>或<em>目标关系</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>参照完整性规则</strong>：外键上的取值只能是空值，或等于被参照关系中某个元组的主键值<font color="purple">（可以没分配，不能分到不存在的地方）</font><br>
+<img src="https://s2.loli.net/2024/03/18/lvZTRWVc9JK2IEo.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+<ul>
+<li><font color="blue">如果外码属性<strong>相对应的主码属性存在</strong>，而外码本身不存在，则外码属性的值可以为空值</font></li>
+<li><font color="red">关系 R 和 S 不一定是不同的关系
+<ul>
+<li>eg 在学生（学号，姓名，年龄，专业号，班长）关系中，“学号”属性是主键，“班长”属性表示该学生所在班级的班长的学号，可以作为关系的外键</font></li>
+</ul>
+</li>
+<li>目标关系 S 的主键 K 和参照关系的外键 F 必须定义在同一个（或一组）域上</li>
+<li>外键并不一定要与相应的主键同名
+<ul>
+<li>当外键与相应的主键属于不同关系时，往往取相同的名字，以便于识别</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="用户定义的完整性">用户定义的完整性</h3>
+<ul>
+<li>是针对某一具体关系数据库的约束条件，反映某一<strong>具体应用所涉及的数据必须满足的语义要求</strong></li>
+</ul>
+<h2 id="关系代数（关系操作集合）">关系代数（关系操作集合）</h2>
+<h3 id="什么是代数">什么是代数</h3>
+<p>运算对象+运算符</p>
+<h3 id="什么是关系代数">什么是关系代数</h3>
+<ul>
+<li>关系代数是对关系的查询语言：<strong>以对关系的运算表达查询</strong></li>
+<li>关系代数运算的三个要素
+<ul>
+<li>运算对象：关系</li>
+<li>运算结果：关系</li>
+<li>运算符<font color="purple">（操作）</font>：四类<br>
+<img src="https://s2.loli.net/2024/03/18/weaSoNv1hKmFLDz.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+<ul>
+<li>右列起辅助作用</li>
+<li>标黄的五种运算符构成基本运算，可以推导出其它所有运算</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>关系代数具有能力限制，比如不能实现传递闭包</li>
+</ul>
+<h3 id="运算规则">运算规则</h3>
+<ul>
+<li>
+<p>并、交、差</p>
+<ul>
+<li>前提条件：<strong><em>相容</em></strong>（同元、对应属性域相同）</li>
+</ul>
+</li>
+<li>
+<p><font color="red">广义</font>笛卡尔积（R x S）</p>
+</li>
+<li>
+<p><strong><em>选择（selection）</em></strong> <font color="purple">条件筛选</font><br>
+$$<br>
+\sigma_F®= {t | t \in R \wedge F(t) = true}</p>
+<p>$$<br>
+<img src="https://s2.loli.net/2024/03/18/B6mps8Nd7uxSfZM.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ul>
+<li><font color="blue">多个条件用逻辑与$\wedge$或者逻辑或$\vee$表述</font></li>
+</ul>
+</li>
+<li>
+<p><strong><em>投影（projection）</em></strong> <font color="purple">保留关注的属性</font><br>
+$$<br>
+\Pi_A ® = {r.A | r \in R}<br>
+$$<br>
+<img src="https://s2.loli.net/2024/03/18/dsptTjyNvkGqSwu.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ul>
+<li>两步：选择属性，<font color="red"><strong>删除重复行（去重）</strong></font></li>
+</ul>
+</li>
+<li>
+<p><strong><em>连接（join）</em></strong> <font color="purple">把不同表里的信息汇总</font><br>
+$$<br>
+R \mathop\bowtie\limits_{A\theta B} S = { t | t = &lt; r, s &gt; \wedge r\in R \wedge s\in S \wedge r[A] \theta s[B]}</p>
+<p>$$<br>
+<img src="https://s2.loli.net/2024/03/18/yhBlomJgjciV7Zv.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ul>
+<li><strong><em>自然连接（natural join）</em></strong>
+<ul>
+<li><strong><em>等值连接</em></strong>（从两个关系的笛卡尔积中选取相同属性值相等的元组）<font color="red">+ 去掉重复属性</font></li>
+<li>不用写 $\theta$ 操作</li>
+</ul>
+</li>
+<li><strong><em>外连接（outer join）</em></strong><br>
+为避免自然连接时因<strong>失配</strong>而发生的信息丢失，可以假定往参与连接的一方表中<strong>附加一个取值全为空值的行</strong>
+<ul>
+<li><font color="blue">外连接 = 自然连接 + 失配的元组</font></li>
+<li>左外连接 ⟕（自然连接+左侧表失配），右外连接 ⟖，全外连接 ⟗</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><em>除法</em></strong><br>
+设 R(X,Y)和 S(Y)是两个关系，则<br>
+$$<br>
+R÷S = \Pi_X® －\Pi_X(( \Pi_X® \times \Pi_Y(S)) － R )= {r.X | r \in R\wedge Y_x \subseteq S}</p>
+<p>$$</p>
+<ul>
+<li>第二个等号的理解
+<ul>
+<li><font color="purple">元组在 $X$ 上的分量值 $x$ 的象集 $Y_x$ 包含关系 $S$ 在属性组 $Y$ 上投影的集合</font></li>
+<li><strong><em>象集</em></strong> :本质是一次选择运算和一次投影运算</li>
+</ul>
+</li>
+<li>书写时注意 $\Pi$ 的正确应用
+<ul>
+<li><font color="blue">eg.求至少用了供应商 S1 所供应的全部零件的工程号 JNO</font><br>
+$$<br>
+\Pi_{JNO,PNO}(SPJ)÷\Pi_{PNO}(\sigma_{SID=S1}(SPJ))<br>
+$$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>“最多”问题——创建副本</p>
+<ul>
+<li>eg.查询最多选修了一门其直接先行课为 6 号课程的学生姓名<br>
+<img src="https://s2.loli.net/2024/03/18/tev2LOwSCuDhfdE.png" alt="Untitled" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'><br>
+步骤：
+<ol>
+<li>将 SC 与 COURSE 做自然连接为表 A</li>
+<li>投影留下属性sno、cno、cpno为表 B</li>
+<li>创建 B 的副本 B1，属性分别为sno1、cno1、cpno1</li>
+<li>将 B 与 B1 做连接，连接条件为 sno1=sno,cno1≠cno,cpno1=cpno=6，形成表 C</li>
+<li>做投影（自动去重了）留下属性sno形成表 D</li>
+<li>将表 D 与STUDENT作自然连接形成表 E</li>
+<li>做投影留下属性sname形成表 F ，即为答案</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+
+</article>
+    
+    
+
+<ul class="trm-post-copyright">
+    <li class="trm-post-copyright-author">
+        <strong>Post author: </strong>
+        Roisy Luo
+    </li>
+    <li class="trm-post-copyright-link">
+        <strong>Post link: </strong>
+        <a id="original-link" href="https://roisyl.github.io.git/2024/03/18/BUAA-DB-C2-2/" title="BUAA DB-C2-2 逻辑模型">https://roisyl.github.io.git/2024/03/18/BUAA-DB-C2-2/</a>
+    </li>
+    <li class="trm-post-copyright-license">
+        <strong>Copyright Notice: </strong>
+        All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 ">CC BY-NC-SA 4.0</a> unless otherwise stated.
+    </li>
+</ul>
+
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            Other Articles
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/03/18/BUAA-DB-C2-1/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/03/18/OiE4nAm5LzPq7xH.jpg">
+                </span>
+                <h6 class="trm-op-title">BUAA DB-C2-1 数据模型概述&amp;概念模型</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/18</li>
+                <li>21:57</li>
+                <li>DB</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+    <div id="giscus-wrap" class="trm-card trm-scroll-animation comment-container"></div>
+<script data-swup-reload-script>
+    function loadGiscus() {
+        let nowTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        const config = {
+            src: 'https://giscus.app/client.js',
+            "data-repo": 'RoisyL/RoisyL.github.io',
+            "data-repo-id": 'R_kgDOLd8WqQ',
+            "data-category": 'General',
+            "data-category-id": 'DIC_kwDOLd8Wqc4Cd4lq',
+            "data-mapping": 'pathname',
+            "data-reactions-enabled": '1',
+            "data-emit-metadata": '0',
+            "data-theme": nowTheme,
+            "data-lang": 'en',
+            crossorigin: "anonymous",
+            async: true
+        }
+        let ele = document.createElement('script')
+        for (let key in config) {
+            ele.setAttribute(key, config[key])
+        }
+        document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin', ele)
+    }
+
+    function changeGiscusTheme() {
+        let theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+        function sendMessage(message) {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (!iframe) return;
+            iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+
+        sendMessage({
+            setConfig: {
+                theme: theme
+            }
+        });
+    }
+
+    loadGiscus();
+</script>
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2024</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Roisy's Blog</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> v7.1.1
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                Theme - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.1.10
+            </span>
+        </div>
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        Article table of contents
+				<span id="post-toc-top">
+					TOP
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="逻辑模型概述"><a class="trm-toc-link"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">逻辑模型概述</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="逻辑数据模型的发展"><a rel="nofollow" class="trm-toc-link" href="#逻辑数据模型的发展"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">逻辑数据模型的发展</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title="关系模型"><a class="trm-toc-link"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">关系模型</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="关系数据结构"><a rel="nofollow" class="trm-toc-link" href="#关系数据结构"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">关系数据结构</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="关系模式"><a rel="nofollow" class="trm-toc-link" href="#关系模式"><span class="trm-toc-number">2.1.1.</span> <span class="trm-toc-text">关系模式</span></a></li><li class="trm-toc-item trm-toc-level-3" title="重要性质"><a rel="nofollow" class="trm-toc-link" href="#重要性质"><span class="trm-toc-number">2.1.2.</span> <span class="trm-toc-text">重要性质</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="ER 模型向关系模型转化"><a rel="nofollow" class="trm-toc-link" href="#ER-模型向关系模型转化"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">ER 模型向关系模型转化</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="基本规则"><a rel="nofollow" class="trm-toc-link" href="#基本规则"><span class="trm-toc-number">2.2.1.</span> <span class="trm-toc-text">基本规则</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="关系的完整性约束"><a rel="nofollow" class="trm-toc-link" href="#关系的完整性约束"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text">关系的完整性约束</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="域完整性"><a rel="nofollow" class="trm-toc-link" href="#域完整性"><span class="trm-toc-number">2.3.1.</span> <span class="trm-toc-text">域完整性</span></a></li><li class="trm-toc-item trm-toc-level-3" title="实体完整性"><a rel="nofollow" class="trm-toc-link" href="#实体完整性"><span class="trm-toc-number">2.3.2.</span> <span class="trm-toc-text">实体完整性</span></a></li><li class="trm-toc-item trm-toc-level-3" title="参照完整性"><a rel="nofollow" class="trm-toc-link" href="#参照完整性"><span class="trm-toc-number">2.3.3.</span> <span class="trm-toc-text">参照完整性</span></a></li><li class="trm-toc-item trm-toc-level-3" title="用户定义的完整性"><a rel="nofollow" class="trm-toc-link" href="#用户定义的完整性"><span class="trm-toc-number">2.3.4.</span> <span class="trm-toc-text">用户定义的完整性</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title="关系代数（关系操作集合）"><a rel="nofollow" class="trm-toc-link" href="#关系代数（关系操作集合）"><span class="trm-toc-number">2.4.</span> <span class="trm-toc-text">关系代数（关系操作集合）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="什么是代数"><a rel="nofollow" class="trm-toc-link" href="#什么是代数"><span class="trm-toc-number">2.4.1.</span> <span class="trm-toc-text">什么是代数</span></a></li><li class="trm-toc-item trm-toc-level-3" title="什么是关系代数"><a rel="nofollow" class="trm-toc-link" href="#什么是关系代数"><span class="trm-toc-number">2.4.2.</span> <span class="trm-toc-text">什么是关系代数</span></a></li><li class="trm-toc-item trm-toc-level-3" title="运算规则"><a rel="nofollow" class="trm-toc-link" href="#运算规则"><span class="trm-toc-number">2.4.3.</span> <span class="trm-toc-text">运算规则</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="Open toc">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="Read Mode" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn hidden-md" data-title="Toggle between single-column and double-column" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="Back To Top">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="Searching...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    Please enter keywords to search
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.1.10"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.1.10"></script>
+    
+
+    <!-- 数学公式 -->
+    
+        
+<script src="https://unpkg.com/katex@latest/dist/katex.min.js" data-swup-reload-script></script>
+
+        
+            
+<script src="https://unpkg.com/katex@latest/dist/contrib/copy-tex.min.js" data-swup-reload-script></script>
+
+        
+        
+<script src="https://unpkg.com/katex@latest/dist/contrib/auto-render.min.js" data-swup-reload-script></script>
+
+        <script data-swup-reload-script>
+              window.renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true },
+                ],
+                ...{},
+            })
+        </script>
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+    <script data-swup-reload-script>
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+
+
+<script id="async-script" src="/js/main.js?v=2.1.10"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
+<script type="text/javascript" src="/js/love.js"></script>

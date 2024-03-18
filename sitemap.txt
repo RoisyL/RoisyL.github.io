@@ -1,3 +1,6 @@
+https://roisyl.github.io.git/2024/03/18/BUAA-DB-C2-2/
+https://roisyl.github.io.git/2024/03/18/BUAA-DB-C2-1/
+https://roisyl.github.io.git/2024/03/18/BUAA-DB-C1/
 https://roisyl.github.io.git/2024/03/18/BUAA%20OS-Lab0/
 https://roisyl.github.io.git/2024/03/10/HTML-C1/
 https://roisyl.github.io.git/2024/03/11/BUAA%20OS-C1/
@@ -12,3 +15,4 @@ https://roisyl.github.io.git/tags/Lab/
 https://roisyl.github.io.git/tags/BUAA/
 https://roisyl.github.io.git/categories/Web/
 https://roisyl.github.io.git/categories/OS/
+https://roisyl.github.io.git/categories/DB/
