@@ -950,7 +950,7 @@
 <ul>
 <li><strong>1:1:1 联系</strong>与 1:1 联系同理</li>
 <li><strong>1:1:n 联系</strong>与 1:n 联系同理</li>
-<li><strong>m:n:p 联系与 1Ⓜ️n 联系</strong>：将联系类型也单独转换成关系模式，其属性为多端实体类型的键（作为外键）加上联系的属性</li>
+<li><strong>m:n:p 联系与 1 : m : n 联系</strong>：将联系类型也单独转换成关系模式，其属性为多端实体类型的键（作为外键）加上联系的属性</li>
 </ul>
 </li>
 </ul>
@@ -1101,12 +1101,12 @@
 步骤：
 <ol>
 <li>将 SC 与 COURSE 做自然连接为表 A</li>
-<li>投影留下属性sno、cno、cpno为表 B</li>
-<li>创建 B 的副本 B1，属性分别为sno1、cno1、cpno1</li>
+<li>投影留下属性 sno、cno、cpno 为表 B</li>
+<li>创建 B 的副本 B1，属性分别为 sno1、cno1、cpno1</li>
 <li>将 B 与 B1 做连接，连接条件为 sno1=sno,cno1≠cno,cpno1=cpno=6，形成表 C</li>
-<li>做投影（自动去重了）留下属性sno形成表 D</li>
-<li>将表 D 与STUDENT作自然连接形成表 E</li>
-<li>做投影留下属性sname形成表 F ，即为答案</li>
+<li>做投影（自动去重了）留下属性 sno 形成表 D</li>
+<li>将表 D 与 STUDENT 作自然连接形成表 E</li>
+<li>做投影留下属性 sname 形成表 F ，即为答案</li>
 </ol>
 </li>
 </ul>
