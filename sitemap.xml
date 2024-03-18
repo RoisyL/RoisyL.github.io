@@ -67,7 +67,7 @@
 
   <url>
     <loc>https://roisyl.github.io.git/</loc>
-    <lastmod>2024-03-12</lastmod>
+    <lastmod>2024-03-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -75,21 +75,21 @@
   
   <url>
     <loc>https://roisyl.github.io.git/tags/HTML/</loc>
-    <lastmod>2024-03-12</lastmod>
+    <lastmod>2024-03-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/tags/Notes/</loc>
-    <lastmod>2024-03-12</lastmod>
+    <lastmod>2024-03-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/tags/Lab/</loc>
-    <lastmod>2024-03-12</lastmod>
+    <lastmod>2024-03-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -98,14 +98,14 @@
   
   <url>
     <loc>https://roisyl.github.io.git/categories/Web/</loc>
-    <lastmod>2024-03-12</lastmod>
+    <lastmod>2024-03-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/categories/OS/</loc>
-    <lastmod>2024-03-12</lastmod>
+    <lastmod>2024-03-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
