@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roisyl.github.io.git/2024/03/27/BUAA-OS-Lab-General/</loc>
+    
+    <lastmod>2024-03-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/2024/03/27/BUAA-OS-Lab1/</loc>
+    
+    <lastmod>2024-03-27</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roisyl.github.io.git/2024/03/18/BUAA-DB-C2-2/</loc>
     
     <lastmod>2024-03-18</lastmod>
@@ -94,7 +112,7 @@
 
   <url>
     <loc>https://roisyl.github.io.git/</loc>
-    <lastmod>2024-03-18</lastmod>
+    <lastmod>2024-03-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -102,28 +120,28 @@
   
   <url>
     <loc>https://roisyl.github.io.git/tags/Notes/</loc>
-    <lastmod>2024-03-18</lastmod>
+    <lastmod>2024-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/tags/BUAA/</loc>
-    <lastmod>2024-03-18</lastmod>
+    <lastmod>2024-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/tags/Lab/</loc>
-    <lastmod>2024-03-18</lastmod>
+    <lastmod>2024-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/tags/HTML/</loc>
-    <lastmod>2024-03-18</lastmod>
+    <lastmod>2024-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -132,21 +150,21 @@
   
   <url>
     <loc>https://roisyl.github.io.git/categories/OS/</loc>
-    <lastmod>2024-03-18</lastmod>
+    <lastmod>2024-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/categories/DB/</loc>
-    <lastmod>2024-03-18</lastmod>
+    <lastmod>2024-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/categories/Web/</loc>
-    <lastmod>2024-03-18</lastmod>
+    <lastmod>2024-03-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

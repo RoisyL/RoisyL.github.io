@@ -9,7 +9,7 @@
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
 <meta name="description" content="讲解部分梳理  Linux 基本操作  head 输出文件首部内容  -n &lt;n&gt; 显示前  行内容 -c &lt;n&gt; 显示前  个字节内容   tail 输出文件尾部内容  -n &lt;n&gt; 显示末尾  行内容 -c &lt;n&gt; 显示末尾  个字节内容 -f 当文件增长时，输出后续添加的数据（适用于文件不断变化的情况，如日志文件）   ps 显示当前进程状态">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BUAA OS-Lab0">
+<meta property="og:title" content="BUAA OS-Lab0 Linux基础操作">
 <meta property="og:url" content="https://roisyl.github.io.git/2024/03/18/BUAA%20OS-Lab0/index.html">
 <meta property="og:site_name" content="Roisy&#39;s blog">
 <meta property="og:description" content="讲解部分梳理  Linux 基本操作  head 输出文件首部内容  -n &lt;n&gt; 显示前  行内容 -c &lt;n&gt; 显示前  个字节内容   tail 输出文件尾部内容  -n &lt;n&gt; 显示末尾  行内容 -c &lt;n&gt; 显示末尾  个字节内容 -f 当文件增长时，输出后续添加的数据（适用于文件不断变化的情况，如日志文件）   ps 显示当前进程状态">
@@ -22,7 +22,7 @@
 <meta name="twitter:card" content="summary">
 
 
-<title >BUAA OS-Lab0</title>
+<title >BUAA OS-Lab0 Linux基础操作</title>
 
 <!-- Favicon -->
 
@@ -261,7 +261,7 @@
                             NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            BUAA OS-Lab0
+                            BUAA OS-Lab0 Linux基础操作
                         </h1>
 
                         
@@ -518,6 +518,10 @@
 </li>
 <li>
 <p>等号与运算符两边不允许有空格，<code>-op</code>的两边与<code>[]</code>内部两边必须有空格</p>
+<ul>
+<li><code>[</code> 实际是一个可执行程序</li>
+<li>双中括号同样用于判断条件，比单中括号更高级。例如在双中括号中可以直接使用逻辑运算：<code>[[ $a -gt 1 &amp;&amp; $a -lt 100 ]]</code>，而使用单中括号只能写为<code>[ $a -gt 1 ] &amp;&amp; [ $a -lt 100 ]</code></li>
+</ul>
 </li>
 <li>
 <p>获取变量值建议使用 <code>$&#123;var&#125;</code>，花括号避免歧义</p>
@@ -685,7 +689,7 @@
     </li>
     <li class="trm-post-copyright-link">
         <strong>Post link: </strong>
-        <a id="original-link" href="https://roisyl.github.io.git/2024/03/18/BUAA OS-Lab0/" title="BUAA OS-Lab0">https://roisyl.github.io.git/2024/03/18/BUAA OS-Lab0/</a>
+        <a id="original-link" href="https://roisyl.github.io.git/2024/03/18/BUAA OS-Lab0/" title="BUAA OS-Lab0 Linux基础操作">https://roisyl.github.io.git/2024/03/18/BUAA OS-Lab0/</a>
     </li>
     <li class="trm-post-copyright-license">
         <strong>Copyright Notice: </strong>

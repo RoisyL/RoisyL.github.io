@@ -7,16 +7,22 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Roisy&#39;s blog">
-<meta property="og:url" content="https://roisyl.github.io.git/categories/OS/index.html">
+<meta name="description" content="实验代码阅读与把握   整体结构把握   把握好顶层架构 为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编码   用好外部变量 很多时候要用的量和想实现的功能在相应的文件中都有宏定义或者函数定义。所以先阅读文件，找不到再自己写     具体参数意义理解   通过检索的方式在指导书、讲解PPT等多处资源中广泛找思路   比如vprintfmt参数列表中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUAA-OS-Lab General">
+<meta property="og:url" content="https://roisyl.github.io.git/2024/03/27/BUAA-OS-Lab-General/index.html">
 <meta property="og:site_name" content="Roisy&#39;s blog">
+<meta property="og:description" content="实验代码阅读与把握   整体结构把握   把握好顶层架构 为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编码   用好外部变量 很多时候要用的量和想实现的功能在相应的文件中都有宏定义或者函数定义。所以先阅读文件，找不到再自己写     具体参数意义理解   通过检索的方式在指导书、讲解PPT等多处资源中广泛找思路   比如vprintfmt参数列表中">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-03-27T10:20:17.000Z">
+<meta property="article:modified_time" content="2024-03-27T10:20:17.000Z">
 <meta property="article:author" content="Roisy Luo">
+<meta property="article:tag" content="BUAA">
+<meta property="article:tag" content="Lab">
 <meta name="twitter:card" content="summary">
 
 
-<title >Roisy's blog</title>
+<title >BUAA-OS-Lab General</title>
 
 <!-- Favicon -->
 
@@ -59,7 +65,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["A traveler on the road"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！","safari_pinned_tab":"imgs/rabbit.jpg"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":false,"isHome":false,"postUpdate":"2024-03-27 18:32:01"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-03-27 18:20:17"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
@@ -236,7 +242,7 @@
     <div class="trm-banner">
     
     <!-- banner cover -->
-    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/imgs/banner1.jpg">
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/03/18/g7yvT9c3ASJwEqf.jpg">
     <!-- banner cover end -->
     
 
@@ -252,10 +258,10 @@
                     <!-- banner title -->
                     <div class="trm-banner-text ">
                         <div class="trm-label trm-mb-20">
-                            The article archive
+                            NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            Many a little makes a mickle
+                            BUAA-OS-Lab General
                         </h1>
 
                         
@@ -265,7 +271,7 @@
                                 </li>
                                 <li>
                                     <span>
-                                        categories
+                                        2024
                                     </span>
                                 </li>
                             </ul>
@@ -357,159 +363,314 @@
             
             <div class="trm-page-content col-lg-8">
                 <div id="trm-content" class="trm-content">
-                    <div class="row">
-    <div class="col-lg-12">
-        <div class="trm-card">
-            <div style="padding: 0 20px;">
-                
-                    <ul class="row trm-list"><li class="col-lg-4 trm-list-item " style="margin: 6px 0;"><a class="category-list-link" href="/categories/DB/">DB</a><span class="category-list-count">（3）</span></li><li class="col-lg-4 trm-list-item " style="margin: 6px 0;"><a class="category-list-link" href="/categories/OS/">OS</a><span class="category-list-count">（4）</span></li><li class="col-lg-4 trm-list-item " style="margin: 6px 0;"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">（1）</span></li></ul>
-                
-            </div>
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/27
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            18:20
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Roisy Luo
         </div>
     </div>
 </div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="实验代码阅读与把握"><a class="markdownIt-Anchor" href="#实验代码阅读与把握"></a> 实验代码阅读与把握</h1>
+<ul>
+<li>
+<p>整体结构把握</p>
+<ul>
+<li>
+<p><font color="blue">把握好顶层架构</font></p>
+<p>为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编码</p>
+</li>
+<li>
+<p><font color="blue">用好外部变量</font></p>
+<p>很多时候<font color="green">要用的量和想实现的功能</font>在相应的文件中都有宏定义或者函数定义。所以先阅读文件，找不到再自己写</p>
+</li>
+</ul>
+</li>
+<li>
+<p>具体参数意义理解</p>
+<ul>
+<li>
+<p><font color="blue">通过检索的方式在指导书、讲解PPT等多处资源中广泛找思路</font></p>
+<ul>
+<li>
+<p>比如<code>vprintfmt</code>参数列表中的<code>data</code>是什么？</p>
+<p>指导书中没有说明，但讲解PPT中讲的很清楚。不要纠结与单一资料，学会广泛检索。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><font color="blue"><strong>通过阅读并理解更大范围（比如完整函数、上层调用函数）代码段，明白本质，进而把握单个参数意义</strong></font></p>
+<ul>
+<li>
+<p>比如<code>vprintfmt</code>参数列表中<code>ap</code>这一可变参数指的是哪些参数？</p>
+<p><code>vprintfmt</code>函数实现的是格式化输出的主体逻辑，被<code>printk</code>调用，参数列表中的ap参数也是从上层函数中得来。结合<code>printk</code>的用法，比如<code>printk(&quot;%d%c%ld&quot;, a, b, c)</code>，很容易明白可变参数就是需要输出的一系列变量，而<code>fmt</code>就是引号中的字符串。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="编写"><a class="markdownIt-Anchor" href="#编写"></a> 编写</h1>
+<ul>
+<li>很多时候<font color="green">要用的量和想实现的功能</font>在相应的文件中都有宏定义或者函数定义。所以先阅读文件，找不到再自己写</li>
+<li><font color="green">用gitlab IDE编辑提交之后，切回跳板机运行前</font>记得<code>git pull</code>！！</li>
+</ul>
+<h1 id="调试debug"><a class="markdownIt-Anchor" href="#调试debug"></a> 调试/debug</h1>
+<ul>
+<li>debug时优先检查<font color="red"><strong>条件判断</strong></font>是否出错！
+<ul>
+<li>less than，应该是<code>-lt</code> 不是 <code>-le</code> 🥲</li>
+</ul>
+</li>
+</ul>
+<h2 id="make的使用"><a class="markdownIt-Anchor" href="#make的使用"></a> make的使用</h2>
+<h3 id="编译"><a class="markdownIt-Anchor" href="#编译"></a> 编译</h3>
+<ul>
+<li>
+<p><code>make</code> 编译完整内核</p>
+<ul>
+<li>需要在init/init.c的mips_init里添加自己的测试代码</li>
+</ul>
+</li>
+<li>
+<p><code>make test lab=&lt;x&gt;_&lt;y&gt;</code>编译指定测试点， lab<x> 的第 y 个测试用例</p>
+<p>eg make test lab=1_2</p>
+</li>
+</ul>
+<h3 id="运行与调试"><a class="markdownIt-Anchor" href="#运行与调试"></a> 运行与调试</h3>
+<ul>
+<li><code>make run</code> 运行</li>
+<li><code>make dbg</code> 使用 QEMU 模拟器以调试模式运行内核，并进入 GDB 调试界面。</li>
+<li><code>make objdump</code> 将项目中的目标文件反汇编</li>
+<li><code>Ctrl+A+X</code> 退出 QEMU</li>
+</ul>
+<h1 id="实验代码结构"><a class="markdownIt-Anchor" href="#实验代码结构"></a> 实验代码结构</h1>
+<ul>
+<li>
+<p>include目录——存放系统头文件和一些常用函数定义</p>
+<ul>
+<li>
+<p>mmu.h</p>
+<p>有一张内存布局图，在<font color="green">填写 linker script </font>的时候需要<strong>根据这个图设置相应节的加载地址</strong></p>
+</li>
+<li>
+<p>print.h</p>
+<ul>
+<li>声明了<em>vprintfmt</em>函数，解释了相关参数</li>
+</ul>
+</li>
+<li>
+<p>string.h——定义了一些常用的<font color="green">字符串函数，忘记了具体参数含义</font>可以来这里找</p>
+</li>
+<li>
+<p>printk.h——定义了<strong>内核崩溃宏</strong></p>
+</li>
+<li>
+<p>elf.h</p>
+<ul>
+<li>ELF_FOREACH_PHDR_OFF——<em>for循环迭代遍历所有段头</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="http://include.mk">include.mk</a></p>
+</li>
+<li>
+<p>init目录——初始化内核相关代码</p>
+<ul>
+<li>
+<p>start.S</p>
+<ul>
+<li>
+<p>_start 函数</p>
+<p>是 CPU 控制权被转交给内核后执行的<strong>第一个函数</strong>，主要工作是初始化 CPU 和栈指针，然后跳转至 MOS 的初始化函数（ mips_init ）</p>
+<p>内核栈空间的地址可以在 include/mmu.h 中看到，<font color="red">注意栈的增长方向</font></p>
+</li>
+</ul>
+</li>
+<li>
+<p>init.c</p>
+<ul>
+<li>
+<p>mips_init 函数</p>
+<p>内核中<strong>各模块的初始化函数</strong>都会在这里被调用</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>kern目录——存放内核的主体代码</p>
+<ul>
+<li>
+<p>machine.c——往 QEMU 的控制台输出、读入字符，重置系统</p>
+<p>原理为读写某一个特殊的内存地址</p>
+</li>
+<li>
+<p>printk.c——实现了 printk</p>
+<p>实际上是把输出字符的函数，接受的输出参数给传递给了 vprintfmt 这个函数</p>
+</li>
+<li>
+<p>console.c——实现printcharc（向某内存地址写入）</p>
+</li>
+</ul>
+</li>
+<li>
+<p>kernel.lds</p>
+</li>
+<li>
+<p>lib目录——存放一些常用库函数的实现</p>
+<ul>
+<li>print.c——实现了 <strong>vprintfmt 函数(实现了格式化输出的主体逻辑)、打印字符、字符串和数字的函数</strong></li>
+<li>string——实现了一些常用的字符串函数</li>
+</ul>
+</li>
+<li>
+<p>Makefile</p>
+</li>
+<li>
+<p>mk目录</p>
+</li>
+<li>
+<p>tests目录——存放公开的测试用例</p>
+</li>
+<li>
+<p>tools目录</p>
+<ul>
+<li>readelf目录
+<ul>
+<li>
+<p>elf.h ——存放解析ELF文件要用的三个关键数据结构</p>
+<ul>
+<li>包括三个结构体，第一个对应ELF 的文件头，第二个对应节（section）头表，第三个对应段（segment）头表</li>
+</ul>
+</li>
+<li>
+<p>readelf.c ——用于解析ELF文件</p>
+<ul>
+<li>is_elf_format函数——判断输入是否为ELF文件</li>
+<li>readelf 函数——输出 ELF 文件中所有节头中的地址信息</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
-<!-- history -->
+</article>
+    
+    
 
-<div class="row">
+<ul class="trm-post-copyright">
+    <li class="trm-post-copyright-author">
+        <strong>Post author: </strong>
+        Roisy Luo
+    </li>
+    <li class="trm-post-copyright-link">
+        <strong>Post link: </strong>
+        <a id="original-link" href="https://roisyl.github.io.git/2024/03/27/BUAA-OS-Lab-General/" title="BUAA-OS-Lab General">https://roisyl.github.io.git/2024/03/27/BUAA-OS-Lab-General/</a>
+    </li>
+    <li class="trm-post-copyright-license">
+        <strong>Copyright Notice: </strong>
+        All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 ">CC BY-NC-SA 4.0</a> unless otherwise stated.
+    </li>
+</ul>
+
+
+</div>
+<div class="trm-post-next-prev row">
     <div class="col-lg-12">
         <!-- title -->
         <h5 class="trm-title-with-divider">
-            
-                OS
-            
-            <span data-number="01"></span>
+            Other Articles
+            <span data-number="02"></span>
         </h5>
     </div>
-    <div class="col-lg-12">
-        <!-- timeline -->
-        <div class="trm-timeline">
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
             
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-a trm-timeline-content more">
-                    
-                        <div class="trm-card-header">
-                            <div class="trm-left-side">
-                                <h6>
-                                    <a href="/2024/03/27/BUAA-OS-Lab-General/" class="trm-anima-link">
-                                        BUAA-OS-Lab General
-                                    </a>
-                                </h6>
-                                <div class="trm-text-sm trm-accent-color trm-mt-15">
-                                    <ul class="trm-card-data trm-label ">
-                                        <li class="trm-accent-color">03/27</li>
-                                        <li class="trm-accent-color">18:20</li>
-                                        
-                                        <li>1.1k</li>
-                                        
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-a trm-timeline-content more">
-                    
-                        <div class="trm-card-header">
-                            <div class="trm-left-side">
-                                <h6>
-                                    <a href="/2024/03/27/BUAA-OS-Lab1/" class="trm-anima-link">
-                                        BUAA OS-Lab1
-                                    </a>
-                                </h6>
-                                <div class="trm-text-sm trm-accent-color trm-mt-15">
-                                    <ul class="trm-card-data trm-label ">
-                                        <li class="trm-accent-color">03/27</li>
-                                        <li class="trm-accent-color">18:13</li>
-                                        
-                                        <li>2.7k</li>
-                                        
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-a trm-timeline-content more">
-                    
-                        <div class="trm-card-header">
-                            <div class="trm-left-side">
-                                <h6>
-                                    <a href="/2024/03/18/BUAA%20OS-Lab0/" class="trm-anima-link">
-                                        BUAA OS-Lab0 Linux基础操作
-                                    </a>
-                                </h6>
-                                <div class="trm-text-sm trm-accent-color trm-mt-15">
-                                    <ul class="trm-card-data trm-label ">
-                                        <li class="trm-accent-color">03/18</li>
-                                        <li class="trm-accent-color">21:24</li>
-                                        
-                                        <li>3.5k</li>
-                                        
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-a trm-timeline-content more">
-                    
-                        <div class="trm-card-header">
-                            <div class="trm-left-side">
-                                <h6>
-                                    <a href="/2024/03/11/BUAA%20OS-C1/" class="trm-anima-link">
-                                        BUAA OS-C1
-                                    </a>
-                                </h6>
-                                <div class="trm-text-sm trm-accent-color trm-mt-15">
-                                    <ul class="trm-card-data trm-label ">
-                                        <li class="trm-accent-color">03/11</li>
-                                        <li class="trm-accent-color">23:29</li>
-                                        
-                                        <li>1.7k</li>
-                                        
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    
-                </div>
-            </div>
-            
+            <a class="trm-op-top trm-anima-link" href="/2024/03/27/BUAA-OS-Lab1/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/03/18/MP5CSthRIB4HZAJ.jpg">
+                </span>
+                <h6 class="trm-op-title">BUAA OS-Lab1</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/27</li>
+                <li>18:13</li>
+                <li>OS</li>
+            </ul>
         </div>
-        <!-- timeline end -->
     </div>
 </div>
+    
+</div>
 
-<!-- history end -->
+    
 
+    <div id="giscus-wrap" class="trm-card trm-scroll-animation comment-container"></div>
+<script data-swup-reload-script>
+    function loadGiscus() {
+        let nowTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        const config = {
+            src: 'https://giscus.app/client.js',
+            "data-repo": 'RoisyL/RoisyL.github.io',
+            "data-repo-id": 'R_kgDOLd8WqQ',
+            "data-category": 'General',
+            "data-category-id": 'DIC_kwDOLd8Wqc4Cd4lq',
+            "data-mapping": 'pathname',
+            "data-reactions-enabled": '1',
+            "data-emit-metadata": '0',
+            "data-theme": nowTheme,
+            "data-lang": 'en',
+            crossorigin: "anonymous",
+            async: true
+        }
+        let ele = document.createElement('script')
+        for (let key in config) {
+            ele.setAttribute(key, config[key])
+        }
+        document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin', ele)
+    }
 
-    <div class="trm-pagination">
-        <span class="page-number current">1</span>
-    </div>
+    function changeGiscusTheme() {
+        let theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
 
+        function sendMessage(message) {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (!iframe) return;
+            iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
 
+        sendMessage({
+            setConfig: {
+                theme: theme
+            }
+        });
+    }
+
+    loadGiscus();
+</script>
 
 
 
@@ -559,9 +720,29 @@
 
             
 
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        Article table of contents
+				<span id="post-toc-top">
+					TOP
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title=" 实验代码阅读与把握"><a rel="nofollow" class="trm-toc-link" href="#实验代码阅读与把握"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> 实验代码阅读与把握</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" 编写"><a rel="nofollow" class="trm-toc-link" href="#编写"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> 编写</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" 调试&#x2F;debug"><a rel="nofollow" class="trm-toc-link" href="#调试debug"><span class="trm-toc-number">3.</span> <span class="trm-toc-text"> 调试&#x2F;debug</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" make的使用"><a rel="nofollow" class="trm-toc-link" href="#make的使用"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text"> make的使用</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 编译"><a rel="nofollow" class="trm-toc-link" href="#编译"><span class="trm-toc-number">3.1.1.</span> <span class="trm-toc-text"> 编译</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 运行与调试"><a rel="nofollow" class="trm-toc-link" href="#运行与调试"><span class="trm-toc-number">3.1.2.</span> <span class="trm-toc-text"> 运行与调试</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 实验代码结构"><a rel="nofollow" class="trm-toc-link" href="#实验代码结构"><span class="trm-toc-number">4.</span> <span class="trm-toc-text"> 实验代码结构</span></a></li></ol>
+      </div>
+    </div>
+
             
 <div class="trm-fixed-container">
     
+        <div class="trm-fixed-btn post-toc-btn" data-title="Open toc">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="Read Mode" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
     
     
         <div class="trm-fixed-btn hidden-md" data-title="Toggle between single-column and double-column" onclick="asyncFun.switchSingleColumn()">
@@ -642,6 +823,10 @@
     
 
     <!-- 评论插件 -->
+    
+        
+
+        
     
 
 
