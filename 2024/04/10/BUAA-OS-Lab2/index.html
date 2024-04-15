@@ -7,18 +7,18 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="指导书梳理  内核程序启动  mips_init(u_int argc, char **argv, char **penv, u_int ram_low_size)  参数是由 bootloader 传递给内核的，其中的 ram_low_size 参数指定了硬件可用内存大小     物理内存管理  链表宏   LIST_ENTRY(type)，作为一个特殊的类型出现，例如可以进行如下的定义：">
+<meta name="description" content="BUAA北京航空航天大学22级操作系统课程OSLab1：内存管理笔记与复盘（指导书整理、实验代码梳理、实验报告）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BUAA-OS-Lab2 内存管理">
+<meta property="og:title" content="BUAA-OS-Lab2">
 <meta property="og:url" content="https://roisyl.github.io.git/2024/04/10/BUAA-OS-Lab2/index.html">
 <meta property="og:site_name" content="Roisy&#39;s blog">
-<meta property="og:description" content="指导书梳理  内核程序启动  mips_init(u_int argc, char **argv, char **penv, u_int ram_low_size)  参数是由 bootloader 传递给内核的，其中的 ram_low_size 参数指定了硬件可用内存大小     物理内存管理  链表宏   LIST_ENTRY(type)，作为一个特殊的类型出现，例如可以进行如下的定义：">
+<meta property="og:description" content="BUAA北京航空航天大学22级操作系统课程OSLab1：内存管理笔记与复盘（指导书整理、实验代码梳理、实验报告）">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="article:published_time" content="2024-04-10T10:30:07.000Z">
-<meta property="article:modified_time" content="2024-04-15T06:43:34.055Z">
+<meta property="article:modified_time" content="2024-04-15T06:17:37.282Z">
 <meta property="article:author" content="Roisy Luo">
 <meta property="article:tag" content="BUAA">
 <meta property="article:tag" content="Lab">
@@ -26,7 +26,7 @@
 <meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
 
 
-<title >BUAA-OS-Lab2 内存管理</title>
+<title >BUAA-OS-Lab2</title>
 
 <!-- Favicon -->
 
@@ -69,7 +69,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["A traveler on the road"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！","safari_pinned_tab":"imgs/rabbit.jpg"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-04-15 14:43:34"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-04-15 14:17:37"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
@@ -265,7 +265,7 @@
                             NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            BUAA-OS-Lab2 内存管理
+                            BUAA-OS-Lab2
                         </h1>
 
                         
@@ -568,7 +568,7 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
     </li>
     <li class="trm-post-copyright-link">
         <strong>Post link: </strong>
-        <a id="original-link" href="https://roisyl.github.io.git/2024/04/10/BUAA-OS-Lab2/" title="BUAA-OS-Lab2 内存管理">https://roisyl.github.io.git/2024/04/10/BUAA-OS-Lab2/</a>
+        <a id="original-link" href="https://roisyl.github.io.git/2024/04/10/BUAA-OS-Lab2/" title="BUAA-OS-Lab2">https://roisyl.github.io.git/2024/04/10/BUAA-OS-Lab2/</a>
     </li>
     <li class="trm-post-copyright-license">
         <strong>Copyright Notice: </strong>
@@ -595,7 +595,7 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
                 <span class="trm-op-cover">
                     <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/04/15/IRDhi51mz7c624Q.jpg">
                 </span>
-                <h6 class="trm-op-title">Vue-开始一个新项目</h6>
+                <h6 class="trm-op-title">Vue-Start a new project</h6>
             </a>
             <div class="trm-divider trm-mb-15 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">
