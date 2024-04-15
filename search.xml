@@ -1686,7 +1686,7 @@ eg make test lab=1_2</li>
       </tags>
   </entry>
   <entry>
-    <title>BUAA-OS-Lab2</title>
+    <title>BUAA-OS-Lab2 内存管理</title>
     <url>/2024/04/10/BUAA-OS-Lab2/</url>
     <content><![CDATA[<h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
 <h2 id="内核程序启动"><a class="markdownIt-Anchor" href="#内核程序启动"></a> 内核程序启动</h2>
@@ -1865,7 +1865,7 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
       </tags>
   </entry>
   <entry>
-    <title>Vue-Basics</title>
+    <title>Vue-基本语法</title>
     <url>/2024/04/15/Vue-Basics/</url>
     <content><![CDATA[<h1 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h1>
 <h2 id="核心功能与特点"><a class="markdownIt-Anchor" href="#核心功能与特点"></a> 核心功能与特点</h2>
@@ -2073,7 +2073,7 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
       </tags>
   </entry>
   <entry>
-    <title>Vue-Components</title>
+    <title>Vue-组件基础</title>
     <url>/2024/04/15/Vue-Components/</url>
     <content><![CDATA[<p><font color="grey">注意：每个代码片段只举例部分和当前解释的用法有关的代码，其他部分选择性省略</font></p>
 <h2 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h2>
@@ -2182,7 +2182,7 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
       </tags>
   </entry>
   <entry>
-    <title>Vue-Start a new project</title>
+    <title>Vue-开始一个新项目</title>
     <url>/2024/04/15/Vue-Start-a-new-project/</url>
     <content><![CDATA[<h2 id="初始化"><a class="markdownIt-Anchor" href="#初始化"></a> 初始化</h2>
 <p>默认node.js等等已经下载好，并使用vscode进行开发</p>
