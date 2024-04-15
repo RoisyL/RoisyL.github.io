@@ -1,10 +1,14 @@
+https://roisyl.github.io.git/2024/04/15/Vue-Start-a-new-project/
+https://roisyl.github.io.git/2024/04/15/Vue-Basics/
+https://roisyl.github.io.git/2024/04/15/Vue-Components/
+https://roisyl.github.io.git/2024/04/10/BUAA-OS-Lab2/
+https://roisyl.github.io.git/2024/03/10/HTML-C1/
 https://roisyl.github.io.git/2024/03/27/BUAA-OS-Lab-General/
 https://roisyl.github.io.git/2024/03/27/BUAA-OS-Lab1/
 https://roisyl.github.io.git/2024/03/18/BUAA-DB-C2-2/
 https://roisyl.github.io.git/2024/03/18/BUAA-DB-C2-1/
 https://roisyl.github.io.git/2024/03/18/BUAA-DB-C1/
 https://roisyl.github.io.git/2024/03/18/BUAA%20OS-Lab0/
-https://roisyl.github.io.git/2024/03/10/HTML-C1/
 https://roisyl.github.io.git/2024/03/11/BUAA%20OS-C1/
 https://roisyl.github.io.git/tags/index.html
 https://roisyl.github.io.git/about/index.html
@@ -15,6 +19,7 @@ https://roisyl.github.io.git/tags/Notes/
 https://roisyl.github.io.git/tags/BUAA/
 https://roisyl.github.io.git/tags/Lab/
 https://roisyl.github.io.git/tags/HTML/
+https://roisyl.github.io.git/tags/Vue/
 https://roisyl.github.io.git/categories/OS/
 https://roisyl.github.io.git/categories/DB/
 https://roisyl.github.io.git/categories/Web/
