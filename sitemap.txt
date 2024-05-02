@@ -1,3 +1,4 @@
+https://roisyl.github.io.git/2024/05/02/Django-Basics/
 https://roisyl.github.io.git/2024/05/02/BUAA-DB-SQLAlchemy/
 https://roisyl.github.io.git/2024/03/10/HTML-Basics/
 https://roisyl.github.io.git/2024/04/15/Vue-Basics/
@@ -22,6 +23,8 @@ https://roisyl.github.io.git/tags/BUAA/
 https://roisyl.github.io.git/tags/Lab/
 https://roisyl.github.io.git/tags/HTML/
 https://roisyl.github.io.git/tags/Vue/
+https://roisyl.github.io.git/tags/Django/
 https://roisyl.github.io.git/categories/OS/
 https://roisyl.github.io.git/categories/DB/
 https://roisyl.github.io.git/categories/Web/
+https://roisyl.github.io.git/categories/Back-end/

@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roisyl.github.io.git/2024/05/02/Django-Basics/</loc>
+    
+    <lastmod>2024-05-02</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roisyl.github.io.git/2024/05/02/BUAA-DB-SQLAlchemy/</loc>
     
     <lastmod>2024-05-02</lastmod>
@@ -207,6 +216,13 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://roisyl.github.io.git/tags/Django/</loc>
+    <lastmod>2024-05-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -225,6 +241,13 @@
   
   <url>
     <loc>https://roisyl.github.io.git/categories/Web/</loc>
+    <lastmod>2024-05-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/categories/Back-end/</loc>
     <lastmod>2024-05-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
