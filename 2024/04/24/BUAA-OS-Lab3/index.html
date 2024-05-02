@@ -7,33 +7,30 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="1983 年图灵奖 Dennis Ritchie 和 Ken Thompson：Unix 操作系统的开发与实现、C 语言的发明人 嵌入式系统：一个功能完备、几乎不依赖其他外部装置即可独立运行的软硬件集成的系统，有自己独立的 OS   什么是操作系统  操作系统在计算机系统中的层次    自顶向下看——管理硬件：屏蔽复杂性-抽象 自底向上看——提供服务（构筑生态）：资源的复用-共享   操作系统的">
+<meta name="description" content="指导书梳理 相关文件：&#x2F;include&#x2F;env.h &#x2F;include&#x2F;trap.h &#x2F;kern&#x2F;env.c  lib&#x2F;elfloader.c pmap.h  pmap.c  kern&#x2F;traps.c kern&#x2F;genex.S  kern&#x2F;sched.c  进程  模板页表（MOS专有概念） 在用户空间中读取内核信息    原理 MOS 被设计成对于其中运行的每一个用户进程，都可以通过用户地址空间">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BUAA OS-C1">
-<meta property="og:url" content="https://roisyl.github.io.git/2024/03/11/BUAA%20OS-C1/index.html">
+<meta property="og:title" content="BUAA-OS-Lab3">
+<meta property="og:url" content="https://roisyl.github.io.git/2024/04/24/BUAA-OS-Lab3/index.html">
 <meta property="og:site_name" content="Roisy&#39;s blog">
-<meta property="og:description" content="1983 年图灵奖 Dennis Ritchie 和 Ken Thompson：Unix 操作系统的开发与实现、C 语言的发明人 嵌入式系统：一个功能完备、几乎不依赖其他外部装置即可独立运行的软硬件集成的系统，有自己独立的 OS   什么是操作系统  操作系统在计算机系统中的层次    自顶向下看——管理硬件：屏蔽复杂性-抽象 自底向上看——提供服务（构筑生态）：资源的复用-共享   操作系统的">
+<meta property="og:description" content="指导书梳理 相关文件：&#x2F;include&#x2F;env.h &#x2F;include&#x2F;trap.h &#x2F;kern&#x2F;env.c  lib&#x2F;elfloader.c pmap.h  pmap.c  kern&#x2F;traps.c kern&#x2F;genex.S  kern&#x2F;sched.c  进程  模板页表（MOS专有概念） 在用户空间中读取内核信息    原理 MOS 被设计成对于其中运行的每一个用户进程，都可以通过用户地址空间">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
-<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
-<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
-<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
-<meta property="article:published_time" content="2024-03-11T15:29:22.000Z">
-<meta property="article:modified_time" content="2024-03-11T16:36:00.000Z">
+<meta property="article:published_time" content="2024-04-24T10:22:39.000Z">
+<meta property="article:modified_time" content="2024-05-02T01:50:39.000Z">
 <meta property="article:author" content="Roisy Luo">
-<meta property="article:tag" content="Notes">
 <meta property="article:tag" content="BUAA">
+<meta property="article:tag" content="Lab">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
 
     <meta name="keywords" content="BUAA SE SoftwareEngineering">
 
 
-<title >BUAA OS-C1</title>
+<title >BUAA-OS-Lab3</title>
 
 <!-- Favicon -->
 
@@ -76,7 +73,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["A traveler on the road"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！","safari_pinned_tab":"imgs/rabbit.jpg"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-03-12 00:36:00"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-05-02 09:50:39"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
@@ -253,7 +250,7 @@
     <div class="trm-banner">
     
     <!-- banner cover -->
-    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/03/12/JCcR5v3fHzTIkGX.jpg">
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/05/02/rQ8oZiR7gecH9UT.jpg">
     <!-- banner cover end -->
     
 
@@ -272,7 +269,7 @@
                             NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            BUAA OS-C1
+                            BUAA-OS-Lab3
                         </h1>
 
                         
@@ -378,13 +375,13 @@
     <div class="col-sm-4">
         <div class="trm-card trm-label trm-label-light text-center">
             <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
-            03/11
+            04/24
         </div>
     </div>
     <div class="col-sm-4">
         <div class="trm-card trm-label trm-label-light text-center">
             <i class="iconfont far fa-clock trm-icon"></i><br>
-            23:29
+            18:22
         </div>
     </div>
     <div class="col-sm-4">
@@ -396,151 +393,218 @@
 </div>
 <div class="trm-card ">
     <article id="article-container" class="trm-publication">
-    <ul>
-<li>1983 年图灵奖 Dennis Ritchie 和 Ken Thompson：Unix 操作系统的开发与实现、C 语言的发明人</li>
-<li>嵌入式系统：一个功能完备、几乎不依赖其他外部装置即可独立运行的软硬件集成的系统，有自己独立的 OS</li>
+    <h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
+<p>相关文件：<code>/include/env.h</code> <code>/include/trap.h</code> <code>/kern/env.c</code>  <code>lib/elfloader.c</code> <code>pmap.h</code>  <code>pmap.c</code>  <code>kern/traps.c</code> <code>kern/genex.S</code>  <code>kern/sched.c</code></p>
+<h2 id="进程"><a class="markdownIt-Anchor" href="#进程"></a> 进程</h2>
+<h3 id="模板页表mos专有概念"><a class="markdownIt-Anchor" href="#模板页表mos专有概念"></a> 模板页表（MOS专有概念）</h3>
+<p>在用户空间中读取内核信息</p>
+<p><img src="https://s2.loli.net/2024/04/24/yIaPkFxYbjRBgW1.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>
+<p><strong>原理</strong></p>
+<p>MOS 被设计成对于其中运行的每一个用户进程，都可以<strong>通过用户地址空间（kuseg）读取 pages 数组和 envs 数组的信息</strong>。为实现该功能，在创建用户进程时我们需要将 pages 数组和 envs 数组映射到用户地址空间中的 <code>UPAGES</code> 与 <code>UENVS</code> 处。</p>
+<p><code>base_pgdir</code> 指向模板页表页目录的<strong>内核虚拟基地址</strong>，以便创建进程时能够根据 “模板页表” 的内容创建自己的页表。每创建一个进程，都将这个模板页表页目录中用来映射 envs 与 pages 的表项复制到新创建的进程的页目录中</p>
+</li>
+<li>
+<p><strong>设置目的</strong></p>
+<p>使用户进程<strong>共享一部分二级页表</strong>，从而节省物理页面</p>
+</li>
 </ul>
-<h1 id="什么是操作系统"><a class="markdownIt-Anchor" href="#什么是操作系统"></a> 什么是操作系统</h1>
-<h2 id="操作系统在计算机系统中的层次"><a class="markdownIt-Anchor" href="#操作系统在计算机系统中的层次"></a> <strong>操作系统在计算机系统中的层次</strong></h2>
-<p><img src="https://s2.loli.net/2024/03/12/Sx6RCUaQsFy7izB.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p><img src="https://s2.loli.net/2024/03/12/2r1oyCUpljnEhqW.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="进程的标识"><a class="markdownIt-Anchor" href="#进程的标识"></a> 进程的标识</h3>
+<p><code>struct Env</code> 进程控制块中</p>
 <ul>
-<li>自顶向下看——管理硬件：<strong>屏蔽复杂性-抽象</strong></li>
-<li>自底向上看——<strong>提供服务（构筑生态）：资源的复用-共享</strong></li>
-</ul>
-<h2 id="操作系统的定义与作用"><a class="markdownIt-Anchor" href="#操作系统的定义与作用"></a> 操作系统的定义与作用</h2>
-<p>是一组<strong>管理计算机硬件资源</strong>的软件集合</p>
+<li><code>env_id</code> 是每个<strong>进程</strong>独一无二的标识符，进程创建的时候就使用<code>mkenvid</code>赋予。</li>
+<li><code>env_asid</code> 记录进程的 ASID，这是<strong>进程虚拟地址</strong>空间的标识
 <ul>
-<li>用户与计算机硬件系统之间的接口（API/GUI）</li>
-<li>系统资源的管理者（处理机、存储器、I/O 设备等）</li>
-<li>实现对计算机资源的抽象（OS 是扩充机/虚拟机）</li>
-</ul>
-<h2 id="计算机体系结构中的接口"><a class="markdownIt-Anchor" href="#计算机体系结构中的接口"></a> <strong>计算机体系结构中的“接口”</strong></h2>
-<h3 id="api"><a class="markdownIt-Anchor" href="#api"></a> API</h3>
-<p>Application <strong>Programming</strong> Interface，是应用程序编程接口，目的是提供应用程序与开发人员基于某软件或硬件得以访问一组例程的能力</p>
-<ul>
-<li>在不同平台的具体实现方式可能不同，但是<strong>接口的形式和功能必须一致</strong>，才能实现跨平台开发</li>
-</ul>
-<h3 id="abi"><a class="markdownIt-Anchor" href="#abi"></a> ABI</h3>
-<p>Application <strong>Binary</strong> Interface，应用程序和操作系统之间，一个应用和它的库之间，或者应用的组成部分之间的二进制层面的底层接口</p>
-<ul>
-<li>反映<strong>二进制可执行代码兼容性</strong></li>
-</ul>
-<h3 id="api-vs-abi"><a class="markdownIt-Anchor" href="#api-vs-abi"></a> API VS ABI</h3>
-<ul>
-<li>描述的内容不同</li>
-<li>作用的层面不同。<strong>API</strong>描述<strong>代码级层面</strong>的接口，<strong>ABI</strong>描述<strong>二进制层面</strong>的接口</li>
-<li>兼容的难度不同。<strong>ABI 的兼容程度比 API 更为严格</strong></li>
-</ul>
-<h1 id="操作系统简史"><a class="markdownIt-Anchor" href="#操作系统简史"></a> 操作系统简史</h1>
-<p><img src="https://s2.loli.net/2024/03/12/MIarNyD9icUJpGq.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<h2 id="spectre幽灵-meltdown-熔断cpu-漏洞"><a class="markdownIt-Anchor" href="#spectre幽灵-meltdown-熔断cpu-漏洞"></a> spectre（幽灵） &amp; meltdown （熔断）<strong>CPU 漏洞</strong></h2>
-<p>利用分支预测错误的 speculative execution（CPU 的缓存机制和乱序执行），访问到不该访问的信息，并且同样是通过 cache 这个 side channel 传递出去</p>
-<h2 id="批处理系统"><a class="markdownIt-Anchor" href="#批处理系统"></a> 批处理系统</h2>
-<p>加载在计算机上的一个系统软件，使得计算机能自动地、成批地处理一个或多个用户的作业</p>
-<p>▪ 两个发展阶段：联机和脱机</p>
-<p>▪ 联机：作业的输入/输出由 CPU 处理</p>
-<ul>
-<li>关键部分：监督程序、磁带</li>
-<li>缺点：CPU”忙等“时间长（等待慢速的输入/输出设备完成工作），利用率低</li>
-</ul>
-<p>▪ <strong>脱机</strong>：输入/输出<strong>脱离主机控制</strong>，<strong>缓解高速主机与慢速外设的矛盾</strong>，提高 CPU 利用率</p>
-<ul>
-<li>缺点：若每次主机内存中仅存放一道作业（单道程序系统），CPU 空闲时间长（单道运行期间发出输入/输出（I/O）请求后）
-<ul>
-<li>解决方案：<strong>多道程序系统</strong>（允许多个程序同时进入内存并运行）
-<ul>
-<li>缺点：平均周转时间长，<strong>不能提供交互作用能力</strong>
-<ul>
-<li>解决方案：分时系统</li>
+<li>ASID在TLB映射机制中使用——TLB 事实上构建了一个映射 &lt; VPN, ASID &gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover><mo><mo>⟶</mo></mo><mrow><mi>T</mi><mi>L</mi><mi>B</mi></mrow></mover></mrow><annotation encoding="application/x-tex">\stackrel{TLB}{\longrightarrow}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3003310000000001em;vertical-align:-0.011em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893310000000002em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.7110000000000003em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mord mathdefault mtight">L</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span></span></span></span>&lt; PFN, N, D, V, G &gt;</li>
+<li>ASID 部分只占据了 0-7 共 8 个 bit，即ASID资源是有限的，需要使用一定的资源管理方法来<strong>分配、回收</strong> ASID。MOS 实验采用了位图法管理 256 个可用的 ASID，<strong>如果 ASID 耗尽时仍要创建进程，内核会发生崩溃（panic）</strong></li>
 </ul>
 </li>
 </ul>
+<h3 id="设置进程控制块"><a class="markdownIt-Anchor" href="#设置进程控制块"></a> 设置进程控制块</h3>
+<ul>
+<li>
+<p>在 MOS 操作系统<strong>特意将一些内核的数据暴露到用户空间</strong>，使得进程不需要切换到内核态就能访问，这是 MOS 特有的设计</p>
+<p>在这里暴露 UTOP 往上到 UVPT 之间所有进程共享的<strong>只读</strong>空间，也就是把这部分内存对应的<strong>内核<br />
+页表 base_pgdir 拷贝到进程页表中</strong>。从 <strong>UVPT 往上到 ULIM 之间则是进程自己的页表</strong></p>
+<p><img src="https://s2.loli.net/2024/04/24/etFI7plnikVqRT6.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+<h3 id="加载二进制镜像"><a class="markdownIt-Anchor" href="#加载二进制镜像"></a> 加载二进制镜像</h3>
+<p>要想正确加载一个 ELF 文件到内存，只需将 ELF 文件中所有<strong>需要加载的程序段加载到对应的<font color="red">虚拟地址</font>上</strong>即可</p>
+<p><img src="https://s2.loli.net/2024/04/24/BlTYwCyVzxOSjkP.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li><code>elf_load_seg</code> 只关心ELF 段的结构，由回调函数处理具体的页面加载过程</li>
+</ul>
+<h3 id="进程运行与切换"><a class="markdownIt-Anchor" href="#进程运行与切换"></a> 进程运行与切换</h3>
+<p>在 Lab3 中，进程切换只需要保存进程的上下文信息。而MOS中的寄存器状态保存的地方是 <code>KSTACKTOP</code> 以下的一个 <code>sizeof(TrapFrame)</code>大小的区域中，而<code>curenv-&gt;env_tf</code>是存放当前进程的上下文的区域</p>
+<p>故保存进程上下文使用语句<code>curenv-&gt;env_tf = *((struct Trapframe *)KSTACKTOP - 1)</code></p>
+<h2 id="中断与异常"><a class="markdownIt-Anchor" href="#中断与异常"></a> 中断与异常</h2>
+<p>CPU 不仅仅有常见的 32 个通用寄存器，还有功能广泛的***协处理器***，而中断/异常部分就用到了其中的协处理器 CP0</p>
+<table>
+<thead>
+<tr>
+<th>寄存器助记符</th>
+<th>CP0 寄存器编号</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Status</td>
+<td>12</td>
+<td>状态寄存器，包括中断引脚使能，其他 CPU 模式等位域</td>
+</tr>
+<tr>
+<td>Cause</td>
+<td>13</td>
+<td>记录导致异常的原因</td>
+</tr>
+<tr>
+<td>EPC</td>
+<td>14</td>
+<td>异常结束后程序恢复执行的位置</td>
+</tr>
+</tbody>
+</table>
+<h3 id="status-寄存器"><a class="markdownIt-Anchor" href="#status-寄存器"></a> <strong>Status 寄存器</strong></h3>
+<p><img src="https://s2.loli.net/2024/04/24/OKAFgDfkURJj2S6.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>
+<p><code>IE</code> 位表示中断是否开启，为 1 表示开启，否则不开启</p>
+</li>
+<li>
+<p>当且仅当 <code>EXL</code> 被设置为 0 且 <code>UM</code> 被设置为 1 时，处理器处于<strong>用户模式</strong>，其它所有情况下，处理器均处于内核模式下</p>
+<ul>
+<li>
+<p>每当异常发生的时候，EXL 会被自动设置为 1（使处于内核态，能使用特权指令）</p>
+</li>
+<li>
+<p>每个进程在每一次被调度时都会执行</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RESTORE_ALL <span class="comment">//恢复处理器寄存器状态</span></span><br><span class="line">eret <span class="comment">// EXL被自动设置为 0</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-</ul>
-<p><img src="https://s2.loli.net/2024/03/12/p1scX9Vl4mvKxFW.png" alt="联机批处理系统"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p>联机批处理系统</p>
-<p><img src="https://s2.loli.net/2024/03/12/7DgNmzUcGCiM9W6.png" alt="脱机批处理系统"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p>脱机批处理系统</p>
-<p><img src="https://s2.loli.net/2024/03/12/6HKD7FWRBImZNds.png" alt="分时系统"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p>分时系统</p>
-<h2 id="分时系统"><a class="markdownIt-Anchor" href="#分时系统"></a> 分时系统</h2>
-<p>把处理机的运行时间分成很短的时间片，<strong>按时间片轮流把处理机分配</strong>给各联机作业使用</p>
-<ul>
-<li>特点：
-<ul>
-<li>改变了程序访问硬件的方式
-<ul>
-<li>应用软件不能直接访问物理内存，因为物理内存是所有软件共享的 → <strong>页式内存管理(Paging)、虚拟内存</strong><br />
-<img src="https://s2.loli.net/2024/03/12/7DBIq4j1EpU3Nnv.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></li>
-</ul>
-</li>
-<li>交互性：用户可根据系统对请求的响应结果，进一步向系统提出新的请求</li>
-</ul>
-</li>
-<li>相关概念：<strong>可重入</strong>——程序或子程序可以<strong>安全的被并行执行</strong></li>
-<li>提高响应速度的方法：采用可重入代码、引入虚存减少对换</li>
-<li>和多道程序系统的区别：分时操作系统是给<strong>不同用户</strong>提供程序的使用，而多道程序系统是<strong>不同程序</strong>间的穿插运行</li>
-</ul>
-<h2 id="system360"><a class="markdownIt-Anchor" href="#system360"></a> <strong>System/360</strong></h2>
-<ul>
-<li>背景：厂家和用户需要软件在不同型号的计算机之间兼容</li>
-<li>**特点：**不同型号的计算机将能享用同样的设备，但更大的困难却是在软件方面，存在很多缺陷</li>
-</ul>
-<h2 id="操作系统的网络化"><a class="markdownIt-Anchor" href="#操作系统的网络化"></a> <strong>操作系统的网络化</strong></h2>
-<h3 id="network-operating-system-网络操作系统"><a class="markdownIt-Anchor" href="#network-operating-system-网络操作系统"></a> Network Operating System 网络操作系统</h3>
-<p>在传统单机 OS 上加单独软件层，主要提供联网功能和资源的远程访问，实现多机互联</p>
-<h3 id="distributed-operating-system-分布式操作系统"><a class="markdownIt-Anchor" href="#distributed-operating-system-分布式操作系统"></a> Distributed Operating System 分布式操作系统</h3>
-<p>多台机器<strong>统一管理</strong>形成<strong>单一系统</strong>，相比网络操作系统，<strong>对用户和应用高度透明</strong></p>
-<h1 id="操作系统的基本实现机制"><a class="markdownIt-Anchor" href="#操作系统的基本实现机制"></a> <strong>操作系统的基本实现机制</strong></h1>
-<h2 id="异常trap-interrupt"><a class="markdownIt-Anchor" href="#异常trap-interrupt"></a> 异常：trap &amp; interrupt</h2>
-<ul>
-<li>系统调用
-<ul>
-<li>视作同步异常中的陷阱 trap</li>
-<li><strong>window</strong>自陷指令： <strong>int 0x2e</strong></li>
-</ul>
+<li>
+<p>15-8 位为<em><strong>中断屏蔽位***，每一位代表一个不同的中断活动，其中 15-10 位</strong>使能</em>*硬件中断源<font color="purple">（该中断能否被响应）</font>，9-8位是 Cause 寄存器软件可写的中断位</p>
 </li>
 </ul>
-<p><img src="https://s2.loli.net/2024/03/12/BPCMUZbHi4SJ6k7.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="cause-寄存器"><a class="markdownIt-Anchor" href="#cause-寄存器"></a> Cause 寄存器</h3>
+<p><img src="https://s2.loli.net/2024/04/24/zi1IqLRVo5welC7.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
 <ul>
-<li>异步异常是由<strong>外部因素</strong>触发（计算机系统或操作系统自动引发），且<strong>无法通过常规的异常处理</strong>机制捕获</li>
-<li>同步异常是由<strong>程序内部的错误</strong>引发（通常由程序员在代码中显式地引发），并且通过<strong>异常处理机制</strong>进行捕获和处理</li>
-<li>陷阱是程序有意，可以使执行流程从用户态陷入内核，进而<strong>满足软件访问硬件或者调用内核中函数的需求</strong></li>
+<li><code>IP</code> (15-8 位)保存着哪一些中断发生了，其中 15-10 位来自硬件，9-8 位可以由软件写入，<font color="green">当 Status 寄存器中相同位允许中断（为 1）时</font>，Cause 寄存器这一位也为1就会导致中断</li>
+<li><code>ExcCode</code> (6-2位)，记录发生了什么异常。在 MOS 中，中断是 0 号异常。</li>
 </ul>
-<h1 id="操作系统的基本类型"><a class="markdownIt-Anchor" href="#操作系统的基本类型"></a> <strong>操作系统的基本类型</strong></h1>
-<p>批处理系统、分时系统、实时系统、混合型</p>
-<h1 id="操作系统的特征与功能"><a class="markdownIt-Anchor" href="#操作系统的特征与功能"></a> <strong>操作系统的特征与功能</strong></h1>
-<h3 id="特征"><a class="markdownIt-Anchor" href="#特征"></a> <strong>特征</strong></h3>
-<p>并发、共享、虚拟、异步</p>
-<h3 id="功能"><a class="markdownIt-Anchor" href="#功能"></a> <strong>功能</strong></h3>
-<p>处理机管理（进程）、存储器管理（内存）、设备管理（外设，虚拟设备，IO）、文件管理、作业控制</p>
-<h3 id="要解决的基本问题"><a class="markdownIt-Anchor" href="#要解决的基本问题"></a> 要解决的基本问题</h3>
-<p>解决冲突、协调并发、保证数据一致、实现数据控制</p>
-<h1 id="操作系统结构"><a class="markdownIt-Anchor" href="#操作系统结构"></a> <strong>操作系统结构</strong></h1>
-<h3 id="模块接口"><a class="markdownIt-Anchor" href="#模块接口"></a> <strong>模块接口</strong></h3>
+<h3 id="cpu异常处理流程"><a class="markdownIt-Anchor" href="#cpu异常处理流程"></a> CPU异常处理流程</h3>
+<p>CPU 如何处理异常？</p>
+<ol>
+<li>设置 EPC 寄存器的值为从异常返回的地址。</li>
+<li>设置 Status 寄存器（<strong>设置 EXL 位，强制 CPU 进入内核态并禁止中断</strong>）</li>
+<li>设置 Cause 寄存器（记录异常原因）</li>
+<li>设置 PC 为<strong>异常入口地址</strong>，随后交给软件处理</li>
+</ol>
+<p>至此，我们成功地切换到内核程序，将异常处理的任务转交给操作系统。</p>
 <ul>
-<li>优点：加速了操作系统的研制过程、增加了操作系统的灵活性、便于修改和维护</li>
-<li>缺点：接口定义困难、无序性</li>
-</ul>
-<h3 id="有序分层法"><a class="markdownIt-Anchor" href="#有序分层法"></a> <strong>有序分层法</strong></h3>
-<p>层次结构设计，规定严格的调用关系等</p>
-<h3 id="虚拟机"><a class="markdownIt-Anchor" href="#虚拟机"></a> <strong>虚拟机</strong></h3>
+<li>
+<p>相关指令</p>
 <ul>
-<li>本质：把<strong>多道程序</strong>和**扩充机器（更方便的拓展界面）**的功能完全分开</li>
-<li>优势：使每一部分都简单、灵活，更易于维护</li>
-<li>缺陷：性能开销比较大</li>
+<li>
+<p><code>mfc0</code> Move From Coprocessor 0</p>
+<p>用于从协处理器的某个寄存器中读取值到一个通用寄存器中</p>
+</li>
+<li>
+<p><code>mtc0</code> Move To Coprocessor 0</p>
+<p>用于将一个通用寄存器的值写入协处理器的某个寄存器中</p>
+</li>
 </ul>
-<h3 id="微内核结构"><a class="markdownIt-Anchor" href="#微内核结构"></a> <strong>微内核结构</strong></h3>
-<p>内核中只包括中断处理、进程通信、基本调度等（进程相关操作），文件系统、网络功能、内存管理、设备管理等作为服务在微内核上运行。</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mfc0    t0, CP0_STATUS</span><br><span class="line">and     t0, t0, ~(STATUS_UM | STATUS_EXL | STATUS_IE)</span><br><span class="line">mtc0    t0, CP0_STATUS</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<font color="grey">
+### SAVE_ALL 与异常重入
+<p>在 SAVE_ALL 中进行判断，若 Status 寄存器的 UM 位为 0，说明此次异常在内核态触发， sp 寄存器已经在内核异常栈中。不再将 sp 设置为 KSTACKTOP ，而是使其继续增长。</p>
+<p>这样便能够在异常中处理新的异常，而不会破坏原本的异常处理流程。这一机制被称作异常重入</font></p>
+<h3 id="异常的分发"><a class="markdownIt-Anchor" href="#异常的分发"></a> 异常的分发</h3>
+<p>当发生异常时，处理器会进入一个用于分发异常的程序，这个程序的作用就是检测发生了哪种异常，并调用相应的异常处理程序</p>
+<p>一般来说，异常分发程序会被要求放在固定的某个物理地址上</p>
+<p>在MOS中的实现为：将.text.exc_gen_entry 段和 .text.tlb_miss_entry 段用链接器放到特定的位置—— 0x80000180 和 0x80000000 处，它们是异常处理程序的入口地址。在我们的系统中，CPU 发生异常（除了用户态地址的 TLB Miss 异常）后，就会自动跳转到地址 0x80000180 处；发生用户态地址的 TLB Miss 异常时，会自动跳转到地址 0x80000000处</p>
+<h3 id="时钟中断"><a class="markdownIt-Anchor" href="#时钟中断"></a> 时钟中断</h3>
 <ul>
-<li>优点：内核易于实现、可移植性好、配置灵活、适应分布式环境（本地内核与远程内核对服务同样的支持）</li>
-<li>缺点：速度较慢（扩大内核—减少切换；减少内核—提高其他优点）</li>
+<li>
+<p>中断处理的流程</p>
+<ol>
+<li>
+<p>通过异常分发，<strong>判断出当前异常为中断异常</strong>，随后进入相应的<strong>中断处理程序</strong>。在 MOS 中即对应 handle_int 函数。</p>
+<p>此前以异常的角度对时钟中断进行处理；现在以中断的角度对时钟中断进行处理</p>
+</li>
+<li>
+<p>在中断处理程序中<strong>进一步判断 Cause 寄存器中是由几号中断位引发的中断</strong>，然后进入不同中断对应的<strong>中断服务函数</strong>。</p>
+</li>
+<li>
+<p>中断处理完成，通过 ret_from_exception 函数<strong>恢复现场</strong>，继续执行。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>在MOS 中，<strong>时间片的长度是用时钟中断衡量</strong>的。4KC 中的 CP0 内置了一个可产生中断的 Timer，MOS 即使用这个内置的 Timer 产生时钟中断</p>
+<p>（具体细节实现见指导书）</p>
+</li>
+<li>
+<p>内核初始化完毕后陷入死循环，等待第一次时钟中断来临，通过异常处理来调度已经创建好的用户进程运行</p>
+</li>
 </ul>
-<h3 id="机制与策略分开"><a class="markdownIt-Anchor" href="#机制与策略分开"></a> <strong>机制与策略分开</strong></h3>
-<p>灵活、可扩展</p>
+<h3 id="进程调度器"><a class="markdownIt-Anchor" href="#进程调度器"></a> 进程调度器</h3>
+<p><strong>什么时候需要切换进程？</strong></p>
+<ol>
+<li>参数 yield 为真时：此时当前进程必须让出。</li>
+<li>count 减为 0 时：此时分给进程的时间片被用完，将执行权让给其他进程。</li>
+<li>无当前进程：内核必然刚刚完成初始化，需要分配一个进程执行。</li>
+<li>进程状态不是可运行：当前进程不能再继续执行，让给其他进程。</li>
+</ol>
+<p><strong>如何切换进程？</strong></p>
+<ol>
+<li>当前进程仍为就绪状态时，需要将其移到 env_sched_list 队列的尾部。</li>
+<li>选中 env_sched_list 队列头部的进程。如果没有可用的进程，内核 panic。</li>
+<li>设置 count 为当前进程的优先级（分配的时间片的数量）。</li>
+</ol>
+<p>（不管是否切换，都）最后将 count 自减 1，调用 env_run 函数。</p>
+<h1 id="时纪"><a class="markdownIt-Anchor" href="#时纪"></a> 时纪</h1>
+<p>E 3.1</p>
+<ul>
+<li>
+<p>注意链表顺序！！初始化是倒序插入</p>
+</li>
+<li>
+<p><font color="red">LIST、TAIL相关宏操作的（参数）一般都是指针！！</font></p>
+</li>
+<li>
+<p>如下定义</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static Pde *base_pgdir;</span><br></pre></td></tr></table></figure>
+<p><code>base_pgdir</code> 是一个Pde类型的指针，即为目录项的虚拟地址；</p>
+<p><code>*base_pgdir</code> 是Pde类型的指针的解引用，即Pde，为目录项的物理地址</p>
+</li>
+</ul>
+<p>E 3.4</p>
+<ul>
+<li><code>NENV</code> 什么时候要用来作为限制条件吗？这里好像不用</li>
+</ul>
+<p>E 3.5</p>
+<ul>
+<li>分配页面后记得加<code>p→pp_ref</code>！！</li>
+</ul>
+<p>E 3.12</p>
+<ul>
+<li>schedule里的count是静态变量，存放在.data区，只初始化一次，不同进程不共享！！所以虽然可能会调度多次schedule函数，但每个进程只执行一次 <code>static int count = 0;</code> 初始化语句！！</li>
+<li>注意，不管要不要插到尾部，都要先移除当前进程！！</li>
+</ul>
+<h1 id="exam前准备"><a class="markdownIt-Anchor" href="#exam前准备"></a> exam前准备</h1>
+<h3 id="有可能出问题"><a class="markdownIt-Anchor" href="#有可能出问题"></a> 有可能出问题</h3>
+<ul>
+<li>scheduled函数，要不要把不是就绪状态的移除</li>
+<li>获取队列的第一个进程时，记得LIST_REMOVE</li>
+</ul>
+<h3 id="extra"><a class="markdownIt-Anchor" href="#extra"></a> extra</h3>
+<p>近年都是处理新的异常</p>
 
 </article>
     
@@ -553,7 +617,7 @@
     </li>
     <li class="trm-post-copyright-link">
         <strong>Post link: </strong>
-        <a id="original-link" href="https://roisyl.github.io.git/2024/03/11/BUAA OS-C1/" title="BUAA OS-C1">https://roisyl.github.io.git/2024/03/11/BUAA OS-C1/</a>
+        <a id="original-link" href="https://roisyl.github.io.git/2024/04/24/BUAA-OS-Lab3/" title="BUAA-OS-Lab3">https://roisyl.github.io.git/2024/04/24/BUAA-OS-Lab3/</a>
     </li>
     <li class="trm-post-copyright-license">
         <strong>Copyright Notice: </strong>
@@ -576,17 +640,17 @@
     <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
         <div class="trm-older-publication">
             
-            <a class="trm-op-top trm-anima-link" href="/2024/03/18/BUAA%20OS-Lab0/">
+            <a class="trm-op-top trm-anima-link" href="/2024/05/02/BUAA-DB-SQLAlchemy/">
                 <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/03/12/kuBQIHsrwqdtE8R.jpg">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/05/02/Ca8JWz3exTtdYiP.png">
                 </span>
-                <h6 class="trm-op-title">BUAA OS-Lab0 Linux基础操作</h6>
+                <h6 class="trm-op-title">BUAA-DB-期中大作业(SQLAlchemy)</h6>
             </a>
             <div class="trm-divider trm-mb-15 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">
-                <li>24/03/18</li>
-                <li>21:24</li>
-                <li>OS</li>
+                <li>24/05/02</li>
+                <li>10:01</li>
+                <li>DB</li>
             </ul>
         </div>
     </div>
@@ -597,16 +661,16 @@
     <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
         <div class="trm-older-publication">
             
-            <a class="trm-op-top trm-anima-link" href="/2024/03/10/HTML-Basics/">
+            <a class="trm-op-top trm-anima-link" href="/2024/04/15/Vue-Components/">
                 <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="/imgs/img240311_1.jpg">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/04/15/2x9fIFb5hYMUp7r.jpg">
                 </span>
-                <h6 class="trm-op-title">HTML-Basics</h6>
+                <h6 class="trm-op-title">Vue-组件基础</h6>
             </a>
             <div class="trm-divider trm-mb-15 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">
-                <li>24/03/10</li>
-                <li>04:16</li>
+                <li>24/04/15</li>
+                <li>14:23</li>
                 <li>Web</li>
             </ul>
         </div>
@@ -717,7 +781,7 @@
 				</span>
       </div>
       <div class="trm-post-toc-content">
-        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title=" 什么是操作系统"><a rel="nofollow" class="trm-toc-link" href="#什么是操作系统"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> 什么是操作系统</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 操作系统在计算机系统中的层次"><a rel="nofollow" class="trm-toc-link" href="#操作系统在计算机系统中的层次"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text"> 操作系统在计算机系统中的层次</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" 操作系统的定义与作用"><a rel="nofollow" class="trm-toc-link" href="#操作系统的定义与作用"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text"> 操作系统的定义与作用</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" 计算机体系结构中的“接口”"><a rel="nofollow" class="trm-toc-link" href="#计算机体系结构中的接口"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text"> 计算机体系结构中的“接口”</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" API"><a rel="nofollow" class="trm-toc-link" href="#api"><span class="trm-toc-number">1.3.1.</span> <span class="trm-toc-text"> API</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" ABI"><a rel="nofollow" class="trm-toc-link" href="#abi"><span class="trm-toc-number">1.3.2.</span> <span class="trm-toc-text"> ABI</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" API VS ABI"><a rel="nofollow" class="trm-toc-link" href="#api-vs-abi"><span class="trm-toc-number">1.3.3.</span> <span class="trm-toc-text"> API VS ABI</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 操作系统简史"><a rel="nofollow" class="trm-toc-link" href="#操作系统简史"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> 操作系统简史</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" spectre（幽灵） &amp; meltdown （熔断）CPU 漏洞"><a rel="nofollow" class="trm-toc-link" href="#spectre幽灵-meltdown-熔断cpu-漏洞"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text"> spectre（幽灵） &amp; meltdown （熔断）CPU 漏洞</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" 批处理系统"><a rel="nofollow" class="trm-toc-link" href="#批处理系统"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text"> 批处理系统</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" 分时系统"><a rel="nofollow" class="trm-toc-link" href="#分时系统"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text"> 分时系统</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" System&#x2F;360"><a rel="nofollow" class="trm-toc-link" href="#system360"><span class="trm-toc-number">2.4.</span> <span class="trm-toc-text"> System&#x2F;360</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" 操作系统的网络化"><a rel="nofollow" class="trm-toc-link" href="#操作系统的网络化"><span class="trm-toc-number">2.5.</span> <span class="trm-toc-text"> 操作系统的网络化</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" Network Operating System 网络操作系统"><a rel="nofollow" class="trm-toc-link" href="#network-operating-system-网络操作系统"><span class="trm-toc-number">2.5.1.</span> <span class="trm-toc-text"> Network Operating System 网络操作系统</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" Distributed Operating System 分布式操作系统"><a rel="nofollow" class="trm-toc-link" href="#distributed-operating-system-分布式操作系统"><span class="trm-toc-number">2.5.2.</span> <span class="trm-toc-text"> Distributed Operating System 分布式操作系统</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 操作系统的基本实现机制"><a rel="nofollow" class="trm-toc-link" href="#操作系统的基本实现机制"><span class="trm-toc-number">3.</span> <span class="trm-toc-text"> 操作系统的基本实现机制</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 异常：trap &amp; interrupt"><a rel="nofollow" class="trm-toc-link" href="#异常trap-interrupt"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text"> 异常：trap &amp; interrupt</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 操作系统的基本类型"><a rel="nofollow" class="trm-toc-link" href="#操作系统的基本类型"><span class="trm-toc-number">4.</span> <span class="trm-toc-text"> 操作系统的基本类型</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" 操作系统的特征与功能"><a rel="nofollow" class="trm-toc-link" href="#操作系统的特征与功能"><span class="trm-toc-number">5.</span> <span class="trm-toc-text"> 操作系统的特征与功能</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 特征"><a rel="nofollow" class="trm-toc-link" href="#特征"><span class="trm-toc-number">5.0.1.</span> <span class="trm-toc-text"> 特征</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 功能"><a rel="nofollow" class="trm-toc-link" href="#功能"><span class="trm-toc-number">5.0.2.</span> <span class="trm-toc-text"> 功能</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 要解决的基本问题"><a rel="nofollow" class="trm-toc-link" href="#要解决的基本问题"><span class="trm-toc-number">5.0.3.</span> <span class="trm-toc-text"> 要解决的基本问题</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 操作系统结构"><a rel="nofollow" class="trm-toc-link" href="#操作系统结构"><span class="trm-toc-number">6.</span> <span class="trm-toc-text"> 操作系统结构</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 模块接口"><a rel="nofollow" class="trm-toc-link" href="#模块接口"><span class="trm-toc-number">6.0.1.</span> <span class="trm-toc-text"> 模块接口</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 有序分层法"><a rel="nofollow" class="trm-toc-link" href="#有序分层法"><span class="trm-toc-number">6.0.2.</span> <span class="trm-toc-text"> 有序分层法</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 虚拟机"><a rel="nofollow" class="trm-toc-link" href="#虚拟机"><span class="trm-toc-number">6.0.3.</span> <span class="trm-toc-text"> 虚拟机</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 微内核结构"><a rel="nofollow" class="trm-toc-link" href="#微内核结构"><span class="trm-toc-number">6.0.4.</span> <span class="trm-toc-text"> 微内核结构</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 机制与策略分开"><a rel="nofollow" class="trm-toc-link" href="#机制与策略分开"><span class="trm-toc-number">6.0.5.</span> <span class="trm-toc-text"> 机制与策略分开</span></a></li></ol></li></ol></li></ol>
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title=" 指导书梳理"><a rel="nofollow" class="trm-toc-link" href="#指导书梳理"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> 指导书梳理</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 进程"><a rel="nofollow" class="trm-toc-link" href="#进程"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text"> 进程</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 模板页表（MOS专有概念）"><a rel="nofollow" class="trm-toc-link" href="#模板页表mos专有概念"><span class="trm-toc-number">1.1.1.</span> <span class="trm-toc-text"> 模板页表（MOS专有概念）</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 进程的标识"><a rel="nofollow" class="trm-toc-link" href="#进程的标识"><span class="trm-toc-number">1.1.2.</span> <span class="trm-toc-text"> 进程的标识</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 设置进程控制块"><a rel="nofollow" class="trm-toc-link" href="#设置进程控制块"><span class="trm-toc-number">1.1.3.</span> <span class="trm-toc-text"> 设置进程控制块</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 加载二进制镜像"><a rel="nofollow" class="trm-toc-link" href="#加载二进制镜像"><span class="trm-toc-number">1.1.4.</span> <span class="trm-toc-text"> 加载二进制镜像</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 进程运行与切换"><a rel="nofollow" class="trm-toc-link" href="#进程运行与切换"><span class="trm-toc-number">1.1.5.</span> <span class="trm-toc-text"> 进程运行与切换</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" 中断与异常"><a rel="nofollow" class="trm-toc-link" href="#中断与异常"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text"> 中断与异常</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" Status 寄存器"><a rel="nofollow" class="trm-toc-link" href="#status-寄存器"><span class="trm-toc-number">1.2.1.</span> <span class="trm-toc-text"> Status 寄存器</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" Cause 寄存器"><a rel="nofollow" class="trm-toc-link" href="#cause-寄存器"><span class="trm-toc-number">1.2.2.</span> <span class="trm-toc-text"> Cause 寄存器</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" CPU异常处理流程"><a rel="nofollow" class="trm-toc-link" href="#cpu异常处理流程"><span class="trm-toc-number">1.2.3.</span> <span class="trm-toc-text"> CPU异常处理流程</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 异常的分发"><a rel="nofollow" class="trm-toc-link" href="#异常的分发"><span class="trm-toc-number">1.2.4.</span> <span class="trm-toc-text"> 异常的分发</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 时钟中断"><a rel="nofollow" class="trm-toc-link" href="#时钟中断"><span class="trm-toc-number">1.2.5.</span> <span class="trm-toc-text"> 时钟中断</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 进程调度器"><a rel="nofollow" class="trm-toc-link" href="#进程调度器"><span class="trm-toc-number">1.2.6.</span> <span class="trm-toc-text"> 进程调度器</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 时纪"><a rel="nofollow" class="trm-toc-link" href="#时纪"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> 时纪</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" exam前准备"><a rel="nofollow" class="trm-toc-link" href="#exam前准备"><span class="trm-toc-number">3.</span> <span class="trm-toc-text"> exam前准备</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 有可能出问题"><a rel="nofollow" class="trm-toc-link" href="#有可能出问题"><span class="trm-toc-number">3.0.1.</span> <span class="trm-toc-text"> 有可能出问题</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" extra"><a rel="nofollow" class="trm-toc-link" href="#extra"><span class="trm-toc-number">3.0.2.</span> <span class="trm-toc-text"> extra</span></a></li></ol></li></ol></li></ol>
       </div>
     </div>
 

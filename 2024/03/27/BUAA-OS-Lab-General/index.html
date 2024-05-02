@@ -7,12 +7,12 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="官方提醒  在之后的 Lab 中，运行 MOS 时容易出现的 too low 等错误信息就是访问了一个过低的地址导致的。此时应该检查代码中是否存在访问非法内存（如空指针、野指针）的操作，或者忘记将物理地址转化为 kseg0 内核虚拟地址的问题。   实验代码阅读与把握  整体结构把握  把握好顶层架构 为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编">
+<meta name="description" content="官方提醒  在之后的 Lab 中，运行 MOS 时容易出现的 too low 等错误信息就是访问了一个过低的地址导致的。此时应该检查代码中是否存在访问非法内存（如空指针、野指针）的操作，或者忘记将物理地址转化为 kseg0 内核虚拟地址的问题。   实验代码阅读与把握  整体结构把握  完整的函数调用关系可以查看指导书每个Lab后面的调用顺序图（利用好指导书） 把握好顶层架构 为什么这样划分文件">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BUAA-OS-Lab General">
 <meta property="og:url" content="https://roisyl.github.io.git/2024/03/27/BUAA-OS-Lab-General/index.html">
 <meta property="og:site_name" content="Roisy&#39;s blog">
-<meta property="og:description" content="官方提醒  在之后的 Lab 中，运行 MOS 时容易出现的 too low 等错误信息就是访问了一个过低的地址导致的。此时应该检查代码中是否存在访问非法内存（如空指针、野指针）的操作，或者忘记将物理地址转化为 kseg0 内核虚拟地址的问题。   实验代码阅读与把握  整体结构把握  把握好顶层架构 为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编">
+<meta property="og:description" content="官方提醒  在之后的 Lab 中，运行 MOS 时容易出现的 too low 等错误信息就是访问了一个过低的地址导致的。此时应该检查代码中是否存在访问非法内存（如空指针、野指针）的操作，或者忘记将物理地址转化为 kseg0 内核虚拟地址的问题。   实验代码阅读与把握  整体结构把握  完整的函数调用关系可以查看指导书每个Lab后面的调用顺序图（利用好指导书） 把握好顶层架构 为什么这样划分文件">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="article:published_time" content="2024-03-27T10:20:17.000Z">
@@ -391,12 +391,13 @@
     <article id="article-container" class="trm-publication">
     <h1 id="官方提醒"><a class="markdownIt-Anchor" href="#官方提醒"></a> 官方提醒</h1>
 <ul>
-<li>在之后的 Lab 中，运行 MOS 时容易出现的 <strong>too low</strong> 等错误信息就是访问了一个过低的地址导致的。此时应该检查代码中<strong>是否存在访问非法内存（如空指针、野指针）的操作，或者忘记将物理地址转化为 kseg0 内核虚拟地址的问题</strong>。</li>
+<li>在之后的 Lab 中，运行 MOS 时容易出现的 <font color="green"><strong>too low</strong> </font>等错误信息就是访问了一个过低的地址导致的。此时应该检查代码中<strong>是否存在访问非法内存（如空指针、野指针）的操作，或者忘记将物理地址转化为 kseg0 内核虚拟地址的问题</strong>。</li>
 </ul>
 <h1 id="实验代码阅读与把握"><a class="markdownIt-Anchor" href="#实验代码阅读与把握"></a> 实验代码阅读与把握</h1>
 <ul>
 <li>整体结构把握
 <ul>
+<li>完整的函数调用关系可以<font color="blue">查看指导书每个Lab后面的调用顺序图（<strong>利用好指导书</strong>）</font></li>
 <li><font color="blue">把握好顶层架构</font><br />
 为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编码</li>
 <li><font color="blue">用好外部变量</font><br />
@@ -422,14 +423,23 @@
 </ul>
 <h1 id="编写"><a class="markdownIt-Anchor" href="#编写"></a> 编写</h1>
 <ul>
-<li><strong>不是只填空就可以了</strong>，初始代码也有可能修改！注意初始代码的改动（<strong>已经定义好的参数的初始化</strong>）</li>
-<li><strong>代码本身的行为一定要明确</strong>！比如处理好各变量初值（0、NULL），空指针使用。不要过渡依赖编译器</li>
-<li>很多时候<font color="green">要用的量和想实现的功能</font>在相应的文件中都有宏定义或者函数定义。所以先阅读文件，找不到再自己写</li>
-<li><font color="green">用 gitlab IDE 编辑提交之后，切回跳板机运行前</font>记得<code>git pull</code>！！</li>
-<li>写<strong>循环</strong>时一定注意
+<li><strong>不是只填空就可以了</strong>，注意初始代码的改动。<font color="red">（<strong>已经定义好的参数的初始化</strong>）代码本身的行为一定要明确！</font> <font color="blue">比如处理好各变量初值（0、NULL），空指针使用</font>。不要过渡依赖编译器</li>
+<li><font color="blue"><strong>解引用指针之前必须判断是否为空/试错（见后”常用函数“）</strong>！！！</font>野指针会导致死循环或超时无法结束
 <ul>
-<li><strong>i++</strong></li>
-<li>数据更新（比如每次开始前<strong>读入下一部分数据</strong>）</li>
+<li><font color="color">注意不同函数的错误值不一样</font>，<font color="blue"><strong>不要混用</strong></font>！！</li>
+</ul>
+</li>
+<li><font color="green">用 gitlab IDE 编辑提交之后，切回跳板机运行前</font>记得<code>git pull</code>！！</li>
+<li>写<font color="green"><strong>循环</strong></font>时一定注意
+<ul>
+<li><font color="red"><strong>i++</strong></li>
+<li>数据更新（比如每次开始前<strong>读入下一部分数据</strong>）</font></li>
+</ul>
+</li>
+<li>注意<strong>运算符优先级</strong>
+<ul>
+<li><strong>移位运算符的优先级低于加号</strong>，需要加括号</li>
+<li><code>*</code> 优先级低于 <code>.</code> <code>→</code> ，故不需要加括号</li>
 </ul>
 </li>
 </ul>
@@ -440,7 +450,7 @@
 <li>less than，应该是<code>-lt</code> 不是 <code>-le</code> 🥲</li>
 </ul>
 </li>
-<li>先本地<strong>开优化</strong>编译运行！<strong>根据报错或者运行异常去找原因</strong>，实在不行加<strong>printf</strong></li>
+<li>先本地<strong>开优化</strong>编译运行！<strong>根据报错或者运行异常去找原因</strong>，实在不行加<font color="blue"><strong>printf</strong></font></li>
 </ul>
 <h2 id="make-的使用"><a class="markdownIt-Anchor" href="#make-的使用"></a> make 的使用</h2>
 <h3 id="编译"><a class="markdownIt-Anchor" href="#编译"></a> 编译</h3>
@@ -462,10 +472,14 @@ eg make test lab=1_2</li>
 </ul>
 <h1 id="实验代码结构"><a class="markdownIt-Anchor" href="#实验代码结构"></a> 实验代码结构</h1>
 <ul>
-<li>kern 里的.c 文件和 include 里面的.h 文件很多是一一对应的，分别为某部分功能的实现以及相关函数、宏定义</li>
-<li>include 目录——存放系统头文件和一些常用函数定义
+<li>
+<p>kern里的.c文件和include里面的.h文件很多是一一对应的，分别为某部分功能的实现以及相关函数、宏定义</p>
+</li>
+<li>
+<p>include目录——存放系统头文件和一些常用函数定义</p>
 <ul>
-<li>mmu.h——存储内存布局、<strong>与地址转换、虚拟地址管理</strong>相关的宏
+<li>
+<p>mmu.h——存储内存布局、<strong>与地址转换、虚拟地址管理</strong>相关的宏</p>
 <ul>
 <li>有一张内存布局图，在填写 linker script 的时候需要<strong>根据这个图设置相应节的加载地址</strong></li>
 <li><code>PDX(va)</code> ：页目录偏移量（查找遍历页表时常用）</li>
@@ -475,93 +489,166 @@ eg make test lab=1_2</li>
 <li><code>KADDR(pa)</code> ：物理地址 kseg0 处虚地址（读取 pte 后可进行转换）</li>
 </ul>
 </li>
-<li>pmap.h ——存储与<strong>地址</strong>相关的宏
+<li>
+<p>pmap.h ——存储与<strong>地址</strong>相关的宏</p>
 <ul>
 <li><code>va2pa(Pde *pgdir, u_long va)</code> ：查页表，虚地址 物理地址（测试时常用</li>
 <li><code>pa2page(u_long pa)</code> ：物理地址 页控制块（读取 pte 后可进行转换）</li>
 <li><code>page2pa(struct Page *pp)</code> ：页控制块 物理地址（填充 pte 时常用）</li>
 </ul>
 </li>
-<li>print.h
+<li>
+<p>print.h</p>
 <ul>
 <li>声明了<em>vprintfmt</em>函数，解释了相关参数</li>
 </ul>
 </li>
-<li>string.h——定义了一些常用的字符串函数，忘记了具体参数含义可以来这里找</li>
-<li>printk.h——定义了<strong>内核崩溃宏</strong></li>
-<li>elf.h
+<li>
+<p>string.h——定义了一些常用的字符串函数，忘记了具体参数含义可以来这里找</p>
+</li>
+<li>
+<p>printk.h——定义了<strong>内核崩溃宏</strong></p>
+</li>
+<li>
+<p>elf.h</p>
 <ul>
-<li>ELF_FOREACH_PHDR_OFF——<em>for 循环迭代遍历所有段头</em></li>
+<li>ELF_FOREACH_PHDR_OFF——<em>for循环迭代遍历所有段头</em></li>
 </ul>
 </li>
-<li>type.h——定义和 align 有关的宏
+<li>
+<p>type.h——定义和align有关的宏</p>
 <ul>
 <li><code>ROUNDDOWN(a, n)</code> 返回 ⌊<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>a</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>⌋n（将 a 按 n 向下对齐）,要求 n 必须是 2 的非负整数次幂</li>
-<li><code>ROUND(a, n)</code> 返回 ⌈<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>a</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>⌉n（将 a 按 n 向上对齐）,要求 n 必须是 2 的非负整数次幂</li>
+<li><code>ROUND(a, n)</code>  返回 ⌈<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>a</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>⌉n（将 a 按 n 向上对齐）,要求 n 必须是 2 的非负整数次幂</li>
 </ul>
 </li>
-<li>queue.h——链表宏的定义<br />
-太多了…具体功能见文件注释</li>
+<li>
+<p>queue.h——<strong>链表、双向队列宏</strong>的定义</p>
+<p>太多了…具体功能见文件注释</p>
+</li>
+<li>
+<p>trap.h——定义Trapframe结构体</p>
+</li>
+<li>
+<p>env.h——和进程调度有关的结构体定义</p>
+</li>
+<li>
+<p>stackframe.h——定义宏 SAVE_ALL</p>
+<ul>
+<li><code>SAVE_ALL</code>——将当前的 CPU 现场（上下文）保存到内核的异常栈中</li>
 </ul>
 </li>
-<li><a target="_blank" rel="noopener" href="http://include.mk">include.mk</a></li>
-<li>init 目录——初始化内核相关代码
-<ul>
-<li>start.S
-<ul>
-<li>_start 函数<br />
-是 CPU 控制权被转交给内核后执行的<strong>第一个函数</strong>，主要工作是初始化 CPU 和栈指针，然后跳转至 MOS 的初始化函数（ mips_init ）<br />
-内核栈空间的地址可以在 include/mmu.h 中看到，注意栈的增长方向</li>
-</ul>
-</li>
-<li>init.c
-<ul>
-<li>mips_init 函数<br />
-内核中<strong>各模块的初始化函数</strong>都会在这里被调用</li>
-</ul>
+<li>
+<p>kclock.h——定义RESET_KCLOCK 宏，完成了对 CP0 中 Timer 的配置</p>
 </li>
 </ul>
 </li>
-<li>kern 目录——存放内核的主体代码
+<li>
+<p><a target="_blank" rel="noopener" href="http://include.mk">include.mk</a></p>
+</li>
+<li>
+<p>init目录——初始化内核相关代码</p>
 <ul>
-<li>machine.c——往 QEMU 的控制台输出、读入字符，重置系统<br />
-原理为读写某一个特殊的内存地址</li>
-<li>printk.c——实现了 printk<br />
-实际上是把输出字符的函数，接受的输出参数给传递给了 vprintfmt 这个函数</li>
-<li>console.c——实现 printcharc（向某内存地址写入）</li>
-<li>pmap.c——实现内存管理
+<li>
+<p>start.S</p>
 <ul>
-<li>page_init() 初始化 pages 数组中的 Page 结构体以及空闲链表</li>
-<li>mips_detect_memory() 探测硬件可用内存，并对一些和内存管理相关的变量进行初始化</li>
+<li>
+<p>_start 函数</p>
+<p>是 CPU 控制权被转交给内核后执行的<strong>第一个函数</strong>，主要工作是初始化 CPU 和栈指针，然后跳转至 MOS 的初始化函数（ mips_init ）</p>
+<p>内核栈空间的地址可以在 include/mmu.h 中看到，注意栈的增长方向</p>
+</li>
+</ul>
+</li>
+<li>
+<p>init.c</p>
+<ul>
+<li>
+<p>mips_init 函数</p>
+<p>内核中<strong>各模块的初始化函数</strong>都会在这里被调用</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>kern目录——存放内核的主体代码</p>
+<ul>
+<li>
+<p>machine.c——往 QEMU 的控制台输出、读入字符，重置系统</p>
+<p>原理为读写某一个特殊的内存地址</p>
+</li>
+<li>
+<p>printk.c——实现了 printk</p>
+<p>实际上是把输出字符的函数，接受的输出参数给传递给了 vprintfmt 这个函数</p>
+</li>
+<li>
+<p>console.c——实现printcharc（向某内存地址写入）</p>
+</li>
+<li>
+<p>pmap.c——实现内存管理</p>
+<ul>
+<li>page_init()  初始化 pages 数组中的 Page 结构体以及空闲链表</li>
+<li>mips_detect_memory()  探测硬件可用内存，并对一些和内存管理相关的变量进行初始化</li>
 <li>mips_vm_init 建立内存管理机制</li>
 <li>alloc（） 注意！只在建立页式内存管理机制之前使用</li>
 </ul>
 </li>
+<li>
+<p>env.c——实现进程调度</p>
+</li>
+<li>
+<p>traps.c——定义异常向量组，用于定位中断处理程序</p>
+</li>
+<li>
+<p>genex.S —— 异常处理函数的声明</p>
+</li>
+<li>
+<p>env_asm.S</p>
+<ul>
+<li>env_pop_tf ——用于设置 ASID 和重置时钟，以及最后从异常处理中返回</li>
 </ul>
 </li>
-<li>kernel.lds</li>
-<li>lib 目录——存放一些常用库函数的实现
+<li>
+<p>sched.c——实现时间片调度</p>
+</li>
+</ul>
+</li>
+<li>
+<p>kernel.lds</p>
+</li>
+<li>
+<p>lib目录——存放一些常用库函数的实现</p>
 <ul>
 <li>print.c——实现了 <strong>vprintfmt 函数(实现了格式化输出的主体逻辑)、打印字符、字符串和数字的函数</strong></li>
 <li>string——实现了一些常用的字符串函数</li>
+<li>elfloader.c——解析 ELF 文件的相关函数和宏</li>
 </ul>
 </li>
-<li>Makefile</li>
-<li>mk 目录</li>
-<li>tests 目录——存放公开的测试用例</li>
-<li>tools 目录
-<ul>
-<li>readelf 目录
-<ul>
-<li>elf.h ——存放解析 ELF 文件要用的三个关键数据结构
-<ul>
-<li>包括三个结构体，第一个对应 ELF 的文件头，第二个对应节（section）头表，第三个对应段（segment）头表<br />
-<img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/b40ddca8-1c99-440a-b5eb-1d9a452cb058/1e41522f-9f88-4f8b-b65d-71b2a37ce4d8/Untitled.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></li>
-</ul>
+<li>
+<p>Makefile</p>
 </li>
-<li>readelf.c ——用于解析 ELF 文件
+<li>
+<p>mk目录</p>
+</li>
+<li>
+<p>tests目录——存放公开的测试用例</p>
+</li>
+<li>
+<p>tools目录</p>
 <ul>
-<li>is_elf_format 函数——判断输入是否为 ELF 文件</li>
+<li>readelf目录
+<ul>
+<li>
+<p>elf.h ——存放解析ELF文件要用的三个关键数据结构</p>
+<ul>
+<li>包括三个结构体，第一个对应ELF 的文件头，第二个对应节（section）头表，第三个对应段（segment）头表</li>
+</ul>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/b40ddca8-1c99-440a-b5eb-1d9a452cb058/1e41522f-9f88-4f8b-b65d-71b2a37ce4d8/Untitled.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+<li>
+<p>readelf.c ——用于解析ELF文件</p>
+<ul>
+<li>is_elf_format函数——判断输入是否为ELF文件</li>
 <li>readelf 函数——输出 ELF 文件中所有节头中的地址信息</li>
 </ul>
 </li>
@@ -572,8 +659,22 @@ eg make test lab=1_2</li>
 </ul>
 <h2 id="常用函数"><a class="markdownIt-Anchor" href="#常用函数"></a> 常用函数</h2>
 <ul>
-<li>清空内存 <code>memset</code> 实现于 lib/string.c</li>
+<li>错误处理相关
+<ul>
+<li><code>panic_on</code> 直接崩溃</li>
+<li><code>try / if(某操作返回值==错误值)</code> 抛出去给上层函数处理</li>
 </ul>
+</li>
+<li>清空内存 <code>memset</code>  实现于lib/string.c</li>
+<li><code>ROUND(a, n)</code>  返回 ⌈<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>a</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>⌉n（将 a 按 n 向上对齐）,要求 n 必须是 2 的非负整数次幂</li>
+</ul>
+<h1 id="一些疑问"><a class="markdownIt-Anchor" href="#一些疑问"></a> 一些疑问</h1>
+<blockquote>
+<p>在编写操作系统的c代码时，变量分别存放在哪部分物理内存？page_alloc() 申请的物理页面用来存什么？</p>
+</blockquote>
+<p>代码段、全局变量和静态变量在编译阶段被确定，链接时被链入0x8002 0000向上这部分物理内存</p>
+<p>临时变量在内核栈区，被存放在0x8040 0000向下<em>KSTKSIZE</em>部分内存。</p>
+<p>申请物理页面的用途：lab3用于给新进程申请页目录、给内核进程加载外部二进制elf文件并执行；lab4用于为用户进程申请用户栈、duppage()时为COW复制的页表申请物理空间；lab5在进程内存放文件内容、lab6用于给用户进程加载外部二进制elf文件来执行命令。申请的页面存放在0x8040 0000向上这部分物理内存</p>
 
 </article>
     
@@ -750,7 +851,7 @@ eg make test lab=1_2</li>
 				</span>
       </div>
       <div class="trm-post-toc-content">
-        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title=" 官方提醒"><a rel="nofollow" class="trm-toc-link" href="#官方提醒"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> 官方提醒</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" 实验代码阅读与把握"><a rel="nofollow" class="trm-toc-link" href="#实验代码阅读与把握"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> 实验代码阅读与把握</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" 编写"><a rel="nofollow" class="trm-toc-link" href="#编写"><span class="trm-toc-number">3.</span> <span class="trm-toc-text"> 编写</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" 调试&#x2F;debug"><a rel="nofollow" class="trm-toc-link" href="#调试debug"><span class="trm-toc-number">4.</span> <span class="trm-toc-text"> 调试&#x2F;debug</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" make 的使用"><a rel="nofollow" class="trm-toc-link" href="#make-的使用"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text"> make 的使用</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 编译"><a rel="nofollow" class="trm-toc-link" href="#编译"><span class="trm-toc-number">4.1.1.</span> <span class="trm-toc-text"> 编译</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 运行与调试"><a rel="nofollow" class="trm-toc-link" href="#运行与调试"><span class="trm-toc-number">4.1.2.</span> <span class="trm-toc-text"> 运行与调试</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 实验代码结构"><a rel="nofollow" class="trm-toc-link" href="#实验代码结构"><span class="trm-toc-number">5.</span> <span class="trm-toc-text"> 实验代码结构</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 常用函数"><a rel="nofollow" class="trm-toc-link" href="#常用函数"><span class="trm-toc-number">5.1.</span> <span class="trm-toc-text"> 常用函数</span></a></li></ol></li></ol>
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title=" 官方提醒"><a rel="nofollow" class="trm-toc-link" href="#官方提醒"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> 官方提醒</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" 实验代码阅读与把握"><a rel="nofollow" class="trm-toc-link" href="#实验代码阅读与把握"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> 实验代码阅读与把握</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" 编写"><a rel="nofollow" class="trm-toc-link" href="#编写"><span class="trm-toc-number">3.</span> <span class="trm-toc-text"> 编写</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" 调试&#x2F;debug"><a rel="nofollow" class="trm-toc-link" href="#调试debug"><span class="trm-toc-number">4.</span> <span class="trm-toc-text"> 调试&#x2F;debug</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" make 的使用"><a rel="nofollow" class="trm-toc-link" href="#make-的使用"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text"> make 的使用</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 编译"><a rel="nofollow" class="trm-toc-link" href="#编译"><span class="trm-toc-number">4.1.1.</span> <span class="trm-toc-text"> 编译</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 运行与调试"><a rel="nofollow" class="trm-toc-link" href="#运行与调试"><span class="trm-toc-number">4.1.2.</span> <span class="trm-toc-text"> 运行与调试</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 实验代码结构"><a rel="nofollow" class="trm-toc-link" href="#实验代码结构"><span class="trm-toc-number">5.</span> <span class="trm-toc-text"> 实验代码结构</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 常用函数"><a rel="nofollow" class="trm-toc-link" href="#常用函数"><span class="trm-toc-number">5.1.</span> <span class="trm-toc-text"> 常用函数</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 一些疑问"><a rel="nofollow" class="trm-toc-link" href="#一些疑问"><span class="trm-toc-number">6.</span> <span class="trm-toc-text"> 一些疑问</span></a></li></ol>
       </div>
     </div>
 
