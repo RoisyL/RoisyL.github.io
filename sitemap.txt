@@ -21,9 +21,9 @@ https://roisyl.github.io.git/about/
 https://roisyl.github.io.git/googlea68f389f21ea577d
 https://roisyl.github.io.git/categories/
 https://roisyl.github.io.git/
-https://roisyl.github.io.git/tags/Notes/
-https://roisyl.github.io.git/tags/BUAA/
 https://roisyl.github.io.git/tags/Lab/
+https://roisyl.github.io.git/tags/BUAA/
+https://roisyl.github.io.git/tags/Notes/
 https://roisyl.github.io.git/tags/Django/
 https://roisyl.github.io.git/tags/HTML/
 https://roisyl.github.io.git/tags/Vue/
