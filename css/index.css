@@ -14,12 +14,12 @@
   --primary-30: rgba(175, 180, 43, 0.3);
   --primary-weak: #c0ca33;
   --primary-weak-50: rgba(192, 202, 51, 0.5);
-  --primary: #a058ff;
-  --primary-70: rgba(160, 88, 255, 0.7);
-  --primary-50: rgba(160, 88, 255, 0.5);
-  --primary-30: rgba(160, 88, 255, 0.3);
-  --primary-weak: #260365;
-  --primary-weak-50: rgba(38, 3, 101, 0.5);
+  --primary: #ccc5ea;
+  --primary-70: rgba(204, 197, 234, 0.7);
+  --primary-50: rgba(204, 197, 234, 0.5);
+  --primary-30: rgba(204, 197, 234, 0.3);
+  --primary-weak: #d0cdfc;
+  --primary-weak-50: rgba(208, 205, 252, 0.5);
   --body-color: #5d5d5e;
   --body-color-5: rgba(93, 93, 94, 0.05);
   --body-bg-color: #00151f;
@@ -67,12 +67,12 @@
   --primary-30: rgba(175, 180, 43, 0.3);
   --primary-weak: #c0ca33;
   --primary-weak-50: rgba(192, 202, 51, 0.5);
-  --primary: #a058ff;
-  --primary-70: rgba(160, 88, 255, 0.7);
-  --primary-50: rgba(160, 88, 255, 0.5);
-  --primary-30: rgba(160, 88, 255, 0.3);
-  --primary-weak: #260365;
-  --primary-weak-50: rgba(38, 3, 101, 0.5);
+  --primary: #ccc5ea;
+  --primary-70: rgba(204, 197, 234, 0.7);
+  --primary-50: rgba(204, 197, 234, 0.5);
+  --primary-30: rgba(204, 197, 234, 0.3);
+  --primary-weak: #d0cdfc;
+  --primary-weak-50: rgba(208, 205, 252, 0.5);
   --body-color: #d1d9e9b3;
   --body-color-5: rgba(209, 217, 233, 0.05);
   --body-bg-color: #00151f;
@@ -3810,21 +3810,29 @@ pre .coffeescript .title {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
+*,
+::after,
+::before {
+  box-sizing: border-box;
+  scrollbar-width: auto;
+  scrollbar-color: #b8b0d8 transparent;
+}
+body {
+  background-color: var(--body-bg-color);
+}
 :root {
-  --primary: #9d5af0;
-  --primary-70: rgba(157, 90, 240, 0.7);
-  --primary-50: rgba(157, 90, 240, 0.5);
-  --primary-30: rgba(157, 90, 240, 0.3);
-  --primary-weak: #260147;
-  --primary-weak-50: rgba(38, 1, 71, 0.5);
+  --body-bg-color: white;
+  --primary: #ccc5ea;
+  --theme-bg-color: white;
+  --theme-bg2-color: #ebe7fa;
 }
 :root.dark {
-  --primary: #6760ce;
-  --primary-70: rgba(103, 96, 206, 0.7);
-  --primary-50: rgba(103, 96, 206, 0.5);
-  --primary-30: rgba(103, 96, 206, 0.3);
-  --primary-weak: #7abddf;
-  --primary-weak-50: rgba(122, 189, 223, 0.5);
+  --primary: #8b83ff;
+  --body-bg-color: black;
+  --theme-bg-color: #011431;
+  --theme-bg2-color: black;
+  --fixed-button-bg-color: #043680;
+  --fixed-button-color: white;
 }
 .trm-top-bar,
 .trm-main-card,
@@ -3833,15 +3841,4 @@ pre .coffeescript .title {
 .trm-blog-categories,
 footer {
   background-image: url(https://www.imalun.com/images/foggy-birds.png);
-}
-body {
-  background-image: url('https://s2.loli.net/2024/08/28/lXZJTrCBtzMAcpe.jpg');
-  background-size: cover;
-  /* 使背景图片覆盖整个页面 */
-  background-repeat: no-repeat;
-  /* 防止背景图片重复 */
-  background-attachment: fixed;
-  /* 背景图片固定，不随滚动条滚动 */
-  background-position: center center;
-  /* 背景图片居中显示 */
 }
