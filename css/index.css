@@ -109,6 +109,17 @@
         .dark()
     }
 } */
+
+/* 自己加的 */
+.trm-top-bar,
+.trm-main-card,
+.trm-blog-card,
+.trm-timeline-content,
+.trm-blog-categories,
+footer {
+  background-image: url(https://www.imalun.com/images/foggy-birds.png); 
+}
+
 @media (max-width: 768px) {
   :root {
     --card-padding: 20px;
@@ -129,7 +140,8 @@
 body {
   font-weight: 500;
   color: var(--body-color, #7b7b7d);
-  background-color: var(--body-bg-color);
+  /* background-color: var(--body-bg-color); */
+  background-image: url('https://s2.loli.net/2024/08/28/lXZJTrCBtzMAcpe.jpg');
   letter-spacing: 0.05em;
   overflow-x: hidden;
   margin: 0;
