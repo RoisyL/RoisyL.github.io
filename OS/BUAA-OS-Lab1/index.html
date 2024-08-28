@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="指导书梳理&amp;讲解 注：此处只梳理实验中可能用到的内容，指导书中理论性强的部分补充在相应的Notes当中  内核  Makefile   阅读意义：对整个操作系统的布局产生初步了解   多种赋值语句   &#x3D; 赋予整个makefile中最后被指定的值   1234VIR_A &#x3D; AVIR_B &#x3D; $(VIR_A) BVIR_A &#x3D; AA# 最后VIR_B的值是AA B   :&#x3D; 赋予当前位置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUAA OS-Lab1">
+<meta property="og:url" content="https://roisyl.github.io.git/OS/BUAA-OS-Lab1/">
+<meta property="og:site_name" content="Roisy&#39;s blog">
+<meta property="og:description" content="指导书梳理&amp;讲解 注：此处只梳理实验中可能用到的内容，指导书中理论性强的部分补充在相应的Notes当中  内核  Makefile   阅读意义：对整个操作系统的布局产生初步了解   多种赋值语句   &#x3D; 赋予整个makefile中最后被指定的值   1234VIR_A &#x3D; AVIR_B &#x3D; $(VIR_A) BVIR_A &#x3D; AA# 最后VIR_B的值是AA B   :&#x3D; 赋予当前位置">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="article:published_time" content="2024-03-27T10:13:19.000Z">
+<meta property="article:modified_time" content="2024-03-27T10:13:19.000Z">
+<meta property="article:author" content="Roisy Luo">
+<meta property="article:tag" content="BUAA">
+<meta property="article:tag" content="Lab">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
+
+    <meta name="keywords" content="BUAA SE SoftwareEngineering">
+
+
+<title >BUAA OS-Lab1</title>
+
+<!-- Favicon -->
+
+    <link href='/imgs/rabbit.jpg?v=2.1.10' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.1.10' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.1.10' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["A traveler on the road"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！","safari_pinned_tab":"imgs/rabbit.jpg"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-03-27 18:13:19"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="Roisy's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/imgs/rabbit.jpg">
+    
+    
+        <div class="trm-logo-text">
+            Ro<span>isy</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    index
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    archives
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    categories
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Web/" target="">
+                            Web
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags/" target="">
+                    tags
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    about
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/03/18/MP5CSthRIB4HZAJ.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            BUAA OS-Lab1
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        OS
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/imgs/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Roisy&#39;s Blog
+    </h5>
+    
+        <div class="trm-label">
+            
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/RoisyL/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://blog.csdn.net/lyxjtsdmfz?type=blog" title="CSDN" rel="nofollow" target="_blank">
+            <i class="iconfont imgs/csdn.svg"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                MAJOR:
+            </div>
+            <div class="trm-label trm-label-light">
+                SE
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                SCHOOL:
+            </div>
+            <div class="trm-label trm-label-light">
+                BUAA
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/27
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            18:13
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Roisy Luo
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="指导书梳理讲解"><a class="markdownIt-Anchor" href="#指导书梳理讲解"></a> 指导书梳理&amp;讲解</h1>
+<p>注：此处只梳理实验中可能用到的内容，指导书中理论性强的部分补充在相应的Notes当中</p>
+<h2 id="内核"><a class="markdownIt-Anchor" href="#内核"></a> 内核</h2>
+<h3 id="makefile"><a class="markdownIt-Anchor" href="#makefile"></a> Makefile</h3>
+<ul>
+<li>
+<p>阅读意义：对整个操作系统的布局产生初步了解</p>
+</li>
+<li>
+<p>多种赋值语句</p>
+<ul>
+<li>
+<p><code>=</code> 赋予<strong>整个</strong>makefile中<strong>最后被指定</strong>的值</p>
+  <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VIR_A = A</span><br><span class="line">VIR_B = <span class="variable">$(VIR_A)</span> B</span><br><span class="line">VIR_A = AA</span><br><span class="line"><span class="comment"># 最后VIR_B的值是AA B</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>:=</code> 赋予<strong>当前位置</strong>的值</p>
+  <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VIR_A := A</span><br><span class="line">VIR_B := <span class="variable">$(VIR_A)</span> B</span><br><span class="line">VIR_A := AA</span><br><span class="line"><span class="comment"># 最后VIR_B的值是A B</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>?=</code> 如果该变量没有被赋值，则赋予等号后的值</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>.PHONY</code> 表明列在其后的目标不受修改时间的约束，无视 make 时有关时间戳的性质</p>
+<ul>
+<li>时间戳检查是指在进行编译时，通过比较文件的时间戳来确定是否需要重新生成目标文件。时间戳检查是实现<strong>增量编译</strong>的核心原理，它能够有效地避免不必要的重复编译，提高编译效率</li>
+</ul>
+</li>
+<li>
+<p>构建整个项目依赖于构建好<strong>内核可执行文件</strong> $(mos_elf)，后者的构建依赖于<strong>所有的模块</strong></p>
+<p><img src="https://s2.loli.net/2024/03/27/wexCUBDZ3SkMJVI.png" alt="顶层Makefile片段"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p>顶层Makefile片段</p>
+<ul>
+<li>内核可执行文件构建：调用<strong>链接器</strong>将之前构建各模块产生的所有 .o文件在 <strong>linker script</strong> 的指导下链接到一起</li>
+<li>每个模块的构建：调用对应模块目录下的 Makefile</li>
+</ul>
+</li>
+</ul>
+<h3 id="elf-executable-and-linkable-format文件"><a class="markdownIt-Anchor" href="#elf-executable-and-linkable-format文件"></a> ELF (Executable and Linkable Format)文件</h3>
+<ul>
+<li>
+<p>反汇编并将结果导出至文本文件的命令如下</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -DS 要反汇编的目标文件名 &gt; 导出文本文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>ELF 的文件头，就是一个存了关于 ELF 文件信息的结构体。</p>
+<ul>
+<li>存储ELF 的<strong>魔数</strong>，以验这是一个有效的 ELF
+<ul>
+<li><font color="blue">是判断ELF文件的条件，不应该通过扩展名判断</font></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>有一个随编译工具链提供的工具也名为 readelf</p>
+<ul>
+<li><code>readelf -S</code> 以列表的形式输出文件中各个节的详细信息</li>
+<li><code>readelf -l</code> 查看各个段的信息</li>
+</ul>
+</li>
+</ul>
+<h3 id="mips-内存布局寻找内核的正确位置"><a class="markdownIt-Anchor" href="#mips-内存布局寻找内核的正确位置"></a> <strong>MIPS</strong> 内存布局——寻找内核的正确位置</h3>
+<ul>
+<li>
+<p>MIPS 内存布局见<a target="_blank" rel="noopener" href="https://www.notion.so/e7b93d6565484418ac890f70428f06ea?pvs=21">理论部分</a></p>
+</li>
+<li>
+<p>内存布局图内存部分</p>
+<p><img src="https://s2.loli.net/2024/03/27/mM3uwj6BtQZRipP.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>为<strong>异常处理</strong>预留一块空间</li>
+<li>将<strong>内核镜像</strong>的 .text 、 .data 、 .bss 这些节安置在 0x80020000</li>
+<li>为<strong>栈</strong>预留一块空间，将基地址设置为 0x80400000（栈是从高地址向低地址生长的）</li>
+</ul>
+</li>
+</ul>
+<h3 id="linker-script-控制加载地址"><a class="markdownIt-Anchor" href="#linker-script-控制加载地址"></a> Linker Script —— 控制加载地址</h3>
+<p>链接器控制了输出文件的内存布局</p>
+<ul>
+<li>
+<p><font color="blue">语法</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SECTIONS</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment"># . 表示定位计数器，规定当前的位置</span></span><br><span class="line"> . = 0x10000;</span><br><span class="line"> .text : &#123; *(.text) &#125;</span><br><span class="line"> . = 0x8000000;</span><br><span class="line"> .data : &#123; *(.data) &#125;</span><br><span class="line"> .bss : &#123; *(.bss) &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在 Linker Script 中可以通过 ENTRY(symbol) 来设置程序入口（程序执行的第一条指令）</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意这里 = 两边有空格</font></li>
+</ul>
+</li>
+</ul>
+<h2 id="从零开始搭建-mos"><a class="markdownIt-Anchor" href="#从零开始搭建-mos"></a> 从零开始搭建 <strong>MOS</strong></h2>
+<h3 id="make"><a class="markdownIt-Anchor" href="#make"></a> make</h3>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">targets := <span class="variable">$(mos_elf)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: <span class="variable">$(targets)</span></span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(modules)</span>:</span><br><span class="line">			<span class="variable">$(MAKE)</span> --directory=<span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(mos_elf)</span>: <span class="variable">$(modules)</span></span><br><span class="line">			<span class="variable">$(LD)</span> <span class="variable">$(LDFLAGS)</span> -o <span class="variable">$(mos_elf)</span> -N -T <span class="variable">$(link_script)</span> <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>链接命令参数
+<ul>
+<li><code>-T</code> 指定链接脚本</li>
+</ul>
+</li>
+</ul>
+<h3 id="_start-函数"><a class="markdownIt-Anchor" href="#_start-函数"></a> <strong>_start</strong> 函数</h3>
+<ul>
+<li>EXPORT 宏：<code>EXPORT(_start)</code>将 _start 函数导出为一个符号，使得链接器可以找到它。可以简单的理解为，它实现了一种在汇编语言中的函数定义</li>
+</ul>
+<h2 id="实战-printk"><a class="markdownIt-Anchor" href="#实战-printk"></a> 实战 <strong>printk</strong></h2>
+<h3 id="处理变长参数表"><a class="markdownIt-Anchor" href="#处理变长参数表"></a> 处理变长参数表</h3>
+<ul>
+<li>
+<p>常用宏和变量类型</p>
+<ul>
+<li><code>va_list</code>变长参数表的变量类型</li>
+<li><code>va_start(va_list ap, lastarg)</code>初始化变长参数表，lastarg为该函数最后一个命名的形式参数</li>
+<li><code>va_arg(va_list ap, 类型)</code>取变长参数表下一个参数
+<ul>
+<li>由于<strong>类型提升</strong>的存在，C 语言中的数值类型在作为右值使用（如参与算术运算、作为实参传递等）时往往都会发生提升(表达式中的字符和短整型操作数在使用之前被转换为普通整型)</li>
+<li>变长参数是通过<strong>栈空间</strong>实现的。由于需要确定后续参数的地址，所以每次取参数都需要<strong>标明类型</strong></li>
+</ul>
+</li>
+<li><code>va_end(va_list ap)</code>结束使用变长参数表</li>
+</ul>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">printk</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *fmt, ...)</span> &#123;</span><br><span class="line">	 <span class="comment">// 声明一个类型为 va_list 的变量 ap</span></span><br><span class="line">	 va_list ap;</span><br><span class="line">	 <span class="comment">// 用 va_start 宏进行一次初始化</span></span><br><span class="line">	 va_start(ap, fmt);</span><br><span class="line">	 vprintfmt(outputk, <span class="literal">NULL</span>, fmt, ap);</span><br><span class="line">	 va_end(ap);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>void vprintfmt(fmt_callback_t out, void *data, const char *fmt, va_list ap)</code></p>
+<ul>
+<li>
+<p>out</p>
+<p>回调函数,完成输出。实现解析逻辑和输出逻辑的解耦，同时 printk 等上层函数可传入不同的回调函数实现不同的输出行为（比如输出到文件）</p>
+</li>
+<li>
+<p>data</p>
+<p>是回调函数 out 需要的额外上下文信息</p>
+</li>
+<li>
+<p>可以类比面向对象语言中的设计，将 out 视为“继承自接口的方法实现”， data 则类似方法中的 this 指针</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="实验代码阅读常用操作"><a class="markdownIt-Anchor" href="#实验代码阅读常用操作"></a> 实验代码阅读&amp;常用操作</h1>
+<h2 id="结构"><a class="markdownIt-Anchor" href="#结构"></a> 结构</h2>
+<p>本章主要使用</p>
+<ul>
+<li>
+<p>include目录——存放系统头文件</p>
+<ul>
+<li>
+<p>mmu.h</p>
+<p>有一张内存布局图，在<font color="green">填写 linker script</font> 的时候需要<strong>根据这个图设置相应节的加载地址</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p><a target="_blank" rel="noopener" href="http://include.mk">include.mk</a></p>
+</li>
+<li>
+<p>init目录——初始化内核相关代码</p>
+<ul>
+<li>
+<p>start.S</p>
+<ul>
+<li>
+<p>_start 函数</p>
+<p>是 CPU 控制权被转交给内核后执行的<strong>第一个函数</strong>，主要工作是初始化 CPU 和栈指针，然后跳转至 MOS 的初始化函数（ mips_init ）</p>
+<p>内核栈空间的地址可以在 include/mmu.h 中看到，<font color="red">注意栈的增长方向</font></p>
+</li>
+</ul>
+</li>
+<li>
+<p>init.c</p>
+<ul>
+<li>
+<p>mips_init 函数</p>
+<p>内核中<strong>各模块的初始化函数</strong>都会在这里被调用</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>kern目录——存放内核的主体代码</p>
+<p>本章中主要存放的是终端输出相关的函数</p>
+<ul>
+<li>
+<p>machine.c——往 QEMU 的控制台输出字符</p>
+<p>原理为读写某一个特殊的内存地址</p>
+</li>
+<li>
+<p>printk.c——实现了 printk</p>
+<p>实际上是把输出字符的函数，接受的输出参数给传递给了 vprintfmt 这个函数</p>
+</li>
+</ul>
+</li>
+<li>
+<p>kernel.lds</p>
+</li>
+<li>
+<p>lib目录——存放一些常用库函数</p>
+<p>本章中主要存放用于格式化输出的函数</p>
+<ul>
+<li>print.c——实现了 vprintfmt 函数(实现了格式化输出的主体逻辑)</li>
+</ul>
+</li>
+<li>
+<p>Makefile</p>
+</li>
+<li>
+<p>mk目录</p>
+</li>
+<li>
+<p>tests目录——存放公开的测试用例</p>
+</li>
+<li>
+<p>tools目录</p>
+<ul>
+<li>readelf目录
+<ul>
+<li>
+<p>elf.h ——存放解析ELF文件要用的三个关键数据结构</p>
+<ul>
+<li>包括三个结构体，第一个对应ELF 的文件头，第二个对应节（section）头表，第三个对应段（segment）头表</li>
+</ul>
+</li>
+<li>
+<p>readelf.c ——用于解析ELF文件</p>
+<ul>
+<li>is_elf_format函数——判断输入是否为ELF文件</li>
+<li>readelf 函数——输出 ELF 文件中所有节头中的地址信息</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="make的使用"><a class="markdownIt-Anchor" href="#make的使用"></a> make的使用</h2>
+<h3 id="编译"><a class="markdownIt-Anchor" href="#编译"></a> 编译</h3>
+<ul>
+<li>
+<p><code>make</code> 编译完整内核</p>
+<ul>
+<li>需要在init/init.c的mips_init里添加自己的测试代码</li>
+</ul>
+</li>
+<li>
+<p><code>make test lab=&lt;x&gt;_&lt;y&gt;</code>编译指定测试点， lab<x> 的第 y 个测试用例</p>
+<p>eg make test lab=1_2</p>
+</li>
+</ul>
+<h3 id="运行与调试"><a class="markdownIt-Anchor" href="#运行与调试"></a> 运行与调试</h3>
+<ul>
+<li><code>make run</code> 运行</li>
+<li><code>make dbg</code> 使用 QEMU 模拟器以调试模式运行内核，并进入 GDB 调试界面。</li>
+<li><code>make objdump</code> 将项目中的目标文件反汇编</li>
+<li><code>Ctrl+A+X</code> 退出 QEMU</li>
+</ul>
+<h1 id="lab0实时记录"><a class="markdownIt-Anchor" href="#lab0实时记录"></a> Lab0实时记录</h1>
+<ul>
+<li>设置32位地址要使用<code>ori</code>+<code>lui</code>指令</li>
+<li>用gitlab IDE编辑提交之后，切回跳板机运行前记得<code>git pull</code>！！</li>
+</ul>
+<h1 id="实验报告"><a class="markdownIt-Anchor" href="#实验报告"></a> 实验报告</h1>
+<h2 id="难点分析"><a class="markdownIt-Anchor" href="#难点分析"></a> 难点分析</h2>
+<h3 id="对数据类型的理解"><a class="markdownIt-Anchor" href="#对数据类型的理解"></a> 对“数据类型”的理解</h3>
+<p>在ELF文件的解析过程中，用到了3个重要的结构体，相当于定义了3种新的数据类型（实际不止3种，其他部分代码里也有定义）。</p>
+<p>而在实际编写中，就涉及到数据类型的转换。比如在做Exercise 1.1的时候*，*把 void *类型的 binary  强制转换为了 ELF32_Ehdr * 。</p>
+<p>因为此前对于数据类型的理解不够灵活，导致我理解这一部分花了好些时间。我认为这里的理解关键在于，**数据类型并不是某段内存数据的固有属性，而是对它的解释方式。**只要符合类型的大小和对齐要求，就可以把这段数据看做某种类型。</p>
+<p>需要注意的是，<strong>指针的相关操作</strong>与数据类型是密切相关的，比如指针的++操作，增加的是<code>sizeof（数据类型）</code></p>
+<h3 id="较复杂函数的参数表示-实现逻辑与调用关系梳理"><a class="markdownIt-Anchor" href="#较复杂函数的参数表示-实现逻辑与调用关系梳理"></a> 较复杂函数的参数表示、实现逻辑与调用关系梳理</h3>
+<p>在这次lab中指的就是vprintfmt相关函数</p>
+<ul>
+<li>
+<p>首先要搞明白每个参数的意义</p>
+<p>完成Exercise 1.4花费了我不少时间，因为一开始我对各函数参数的意义完全是一头雾水，就比如vprintfmt参数列表中的data是什么？ap这一可变参数又是哪些参数？</p>
+<p>指导书上没有直接的答案，我想课程组正是在锻炼我们在现有资料基础上自主理解代码的能力。</p>
+<p>（后续经验总结见“实验体会”部分）</p>
+</li>
+<li>
+<p>然后要明确特定函数的实现逻辑</p>
+<p>其实在本次实验中，我认为这不是一个难点，因为指导书中将vprintfmt相关函数的具体实现逻辑（流程）解释得很清楚了，而且代码填空部分的实现步骤也划分得很细，每一步还有详细的注释。</p>
+<p>但以后的实验，或者未来我们自己实际开发项目时，很难再有这种“手把手”的指导。<font color="blue">我们需要自己学着像指导书一样梳理清楚实现逻辑，像代码填空一样把逻辑拆解为一步步可实现的步骤。</font></p>
+</li>
+<li>
+<p>还需要搞清楚多模块/函数之间的调用关系</p>
+<p><img src="https://s2.loli.net/2024/03/27/51cexIQNsh9omXD.png" alt="Exercise 1.4 相关函数调用关系"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p>Exercise 1.4 相关函数调用关系</p>
+</li>
+</ul>
+<h2 id="实验体会"><a class="markdownIt-Anchor" href="#实验体会"></a> 实验体会</h2>
+<h3 id="实验代码阅读与把握"><a class="markdownIt-Anchor" href="#实验代码阅读与把握"></a> 实验代码阅读与把握</h3>
+<ul>
+<li>
+<p>整体结构把握</p>
+<ul>
+<li>
+<p><font color="blue">把握好顶层架构</font></p>
+<p>为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编码</p>
+<p><img src="https://s2.loli.net/2024/03/27/ayHJbiKSYlG7w1C.png" alt="截止lab1的文件架构梳理"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p>截止lab1的文件架构梳理</p>
+</li>
+<li>
+<p><font color="blue">用好外部变量</font></p>
+<p>很多时候<font color="green">要用的量和想实现的功能</font>在相应的文件中都有宏定义或者函数定义。所以先阅读文件，找不到再自己写</p>
+</li>
+</ul>
+</li>
+<li>
+<p>具体参数意义理解</p>
+<ul>
+<li>
+<p><font color="blue">通过检索的方式在指导书、讲解PPT等多处资源中广泛找思路</font></p>
+<ul>
+<li>
+<p>比如<code>vprintfmt</code>参数列表中的<code>data</code>是什么？</p>
+<p>指导书中没有说明，但讲解PPT中讲的很清楚。不要纠结与单一资料，学会广泛检索。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><font color="blue">通过阅读并理解更大范围（比如完整函数、上层调用函数）代码段，明白本质，进而把握单个参数意义</font></p>
+<ul>
+<li>
+<p>比如<code>vprintfmt</code>参数列表中<code>ap</code>这一可变参数指的是哪些参数？</p>
+<p><code>vprintfmt</code>函数实现的是格式化输出的主体逻辑，被<code>printk</code>调用，参数列表中的ap参数也是从上层函数中得来。结合<code>printk</code>的用法，比如<code>printk(&quot;%d%c%ld&quot;, a, b, c)</code>，很容易明白可变参数就是需要输出的一系列变量，而<code>fmt</code>就是引号中的字符串。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</article>
+    
+    
+
+<ul class="trm-post-copyright">
+    <li class="trm-post-copyright-author">
+        <strong>Post author: </strong>
+        Roisy Luo
+    </li>
+    <li class="trm-post-copyright-link">
+        <strong>Post link: </strong>
+        <a id="original-link" href="https://roisyl.github.io.git/OS/BUAA-OS-Lab1/" title="BUAA OS-Lab1">https://roisyl.github.io.git/OS/BUAA-OS-Lab1/</a>
+    </li>
+    <li class="trm-post-copyright-license">
+        <strong>Copyright Notice: </strong>
+        All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 ">CC BY-NC-SA 4.0</a> unless otherwise stated.
+    </li>
+</ul>
+
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            Other Articles
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/OS/BUAA-OS-Lab-General/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/03/18/g7yvT9c3ASJwEqf.jpg">
+                </span>
+                <h6 class="trm-op-title">BUAA-OS-Lab General</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/27</li>
+                <li>18:20</li>
+                <li>OS</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/DB/BUAA-DB-C2-2/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/03/18/DOE1dTbBG7ZIPKy.jpg">
+                </span>
+                <h6 class="trm-op-title">BUAA DB-C2-2 逻辑模型</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/18</li>
+                <li>22:09</li>
+                <li>DB</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+    <div id="giscus-wrap" class="trm-card trm-scroll-animation comment-container"></div>
+<script data-swup-reload-script>
+    function loadGiscus() {
+        let nowTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        const config = {
+            src: 'https://giscus.app/client.js',
+            "data-repo": 'RoisyL/RoisyL.github.io',
+            "data-repo-id": 'R_kgDOLd8WqQ',
+            "data-category": 'General',
+            "data-category-id": 'DIC_kwDOLd8Wqc4Cd4lq',
+            "data-mapping": 'pathname',
+            "data-reactions-enabled": '1',
+            "data-emit-metadata": '0',
+            "data-theme": nowTheme,
+            "data-lang": 'en',
+            crossorigin: "anonymous",
+            async: true
+        }
+        let ele = document.createElement('script')
+        for (let key in config) {
+            ele.setAttribute(key, config[key])
+        }
+        document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin', ele)
+    }
+
+    function changeGiscusTheme() {
+        let theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+        function sendMessage(message) {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (!iframe) return;
+            iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+
+        sendMessage({
+            setConfig: {
+                theme: theme
+            }
+        });
+    }
+
+    loadGiscus();
+</script>
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2024</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Roisy's Blog</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> v7.1.1
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                Theme - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.1.10
+            </span>
+        </div>
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        Article table of contents
+				<span id="post-toc-top">
+					TOP
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title=" 指导书梳理&amp;讲解"><a rel="nofollow" class="trm-toc-link" href="#指导书梳理讲解"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> 指导书梳理&amp;讲解</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 内核"><a rel="nofollow" class="trm-toc-link" href="#内核"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text"> 内核</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" Makefile"><a rel="nofollow" class="trm-toc-link" href="#makefile"><span class="trm-toc-number">1.1.1.</span> <span class="trm-toc-text"> Makefile</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" ELF (Executable and Linkable Format)文件"><a rel="nofollow" class="trm-toc-link" href="#elf-executable-and-linkable-format文件"><span class="trm-toc-number">1.1.2.</span> <span class="trm-toc-text"> ELF (Executable and Linkable Format)文件</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" MIPS 内存布局——寻找内核的正确位置"><a rel="nofollow" class="trm-toc-link" href="#mips-内存布局寻找内核的正确位置"><span class="trm-toc-number">1.1.3.</span> <span class="trm-toc-text"> MIPS 内存布局——寻找内核的正确位置</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" Linker Script —— 控制加载地址"><a rel="nofollow" class="trm-toc-link" href="#linker-script-控制加载地址"><span class="trm-toc-number">1.1.4.</span> <span class="trm-toc-text"> Linker Script —— 控制加载地址</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" 从零开始搭建 MOS"><a rel="nofollow" class="trm-toc-link" href="#从零开始搭建-mos"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text"> 从零开始搭建 MOS</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" make"><a rel="nofollow" class="trm-toc-link" href="#make"><span class="trm-toc-number">1.2.1.</span> <span class="trm-toc-text"> make</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" _start 函数"><a rel="nofollow" class="trm-toc-link" href="#_start-函数"><span class="trm-toc-number">1.2.2.</span> <span class="trm-toc-text"> _start 函数</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" 实战 printk"><a rel="nofollow" class="trm-toc-link" href="#实战-printk"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text"> 实战 printk</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 处理变长参数表"><a rel="nofollow" class="trm-toc-link" href="#处理变长参数表"><span class="trm-toc-number">1.3.1.</span> <span class="trm-toc-text"> 处理变长参数表</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 实验代码阅读&amp;常用操作"><a rel="nofollow" class="trm-toc-link" href="#实验代码阅读常用操作"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> 实验代码阅读&amp;常用操作</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 结构"><a rel="nofollow" class="trm-toc-link" href="#结构"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text"> 结构</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" make的使用"><a rel="nofollow" class="trm-toc-link" href="#make的使用"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text"> make的使用</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 编译"><a rel="nofollow" class="trm-toc-link" href="#编译"><span class="trm-toc-number">2.2.1.</span> <span class="trm-toc-text"> 编译</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 运行与调试"><a rel="nofollow" class="trm-toc-link" href="#运行与调试"><span class="trm-toc-number">2.2.2.</span> <span class="trm-toc-text"> 运行与调试</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" Lab0实时记录"><a rel="nofollow" class="trm-toc-link" href="#lab0实时记录"><span class="trm-toc-number">3.</span> <span class="trm-toc-text"> Lab0实时记录</span></a></li><li class="trm-toc-item trm-toc-level-1" title=" 实验报告"><a rel="nofollow" class="trm-toc-link" href="#实验报告"><span class="trm-toc-number">4.</span> <span class="trm-toc-text"> 实验报告</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 难点分析"><a rel="nofollow" class="trm-toc-link" href="#难点分析"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text"> 难点分析</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 对“数据类型”的理解"><a rel="nofollow" class="trm-toc-link" href="#对数据类型的理解"><span class="trm-toc-number">4.1.1.</span> <span class="trm-toc-text"> 对“数据类型”的理解</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 较复杂函数的参数表示、实现逻辑与调用关系梳理"><a rel="nofollow" class="trm-toc-link" href="#较复杂函数的参数表示-实现逻辑与调用关系梳理"><span class="trm-toc-number">4.1.2.</span> <span class="trm-toc-text"> 较复杂函数的参数表示、实现逻辑与调用关系梳理</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" 实验体会"><a rel="nofollow" class="trm-toc-link" href="#实验体会"><span class="trm-toc-number">4.2.</span> <span class="trm-toc-text"> 实验体会</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 实验代码阅读与把握"><a rel="nofollow" class="trm-toc-link" href="#实验代码阅读与把握"><span class="trm-toc-number">4.2.1.</span> <span class="trm-toc-text"> 实验代码阅读与把握</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="Open toc">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="Read Mode" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn hidden-md" data-title="Toggle between single-column and double-column" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="Back To Top">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="Searching...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    Please enter keywords to search
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.1.10"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.1.10"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+    <script data-swup-reload-script>
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+
+
+<script id="async-script" src="/js/main.js?v=2.1.10"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
+<script type="text/javascript" src="/js/love.js"></script>

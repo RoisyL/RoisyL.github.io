@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="什么是数据模型  数据在计算机中的组织结构，和施加在这个结构上的处理方法，即是数据模型  不同的数据模型代表着不同的抽象方法，根本性的决定了数据库的功能&#x2F;性能特点   数据模型分类 信息世界的数据抽象过程可细分为几个阶段，每个阶段用不同的模型去描述抽象结果：   概念数据模型（计算机不能接受，用户需求→结构） 只用来描述某个特定组织所关心的信息结构，强调其语义表达能力，是设计人员和用户之间进行交">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUAA DB-C2-1 数据模型概述&amp;概念模型">
+<meta property="og:url" content="https://roisyl.github.io.git/DB/BUAA-DB-C2-1/">
+<meta property="og:site_name" content="Roisy&#39;s blog">
+<meta property="og:description" content="什么是数据模型  数据在计算机中的组织结构，和施加在这个结构上的处理方法，即是数据模型  不同的数据模型代表着不同的抽象方法，根本性的决定了数据库的功能&#x2F;性能特点   数据模型分类 信息世界的数据抽象过程可细分为几个阶段，每个阶段用不同的模型去描述抽象结果：   概念数据模型（计算机不能接受，用户需求→结构） 只用来描述某个特定组织所关心的信息结构，强调其语义表达能力，是设计人员和用户之间进行交">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="article:published_time" content="2024-03-18T13:57:47.000Z">
+<meta property="article:modified_time" content="2024-03-18T13:57:47.000Z">
+<meta property="article:author" content="Roisy Luo">
+<meta property="article:tag" content="Notes">
+<meta property="article:tag" content="BUAA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
+
+    <meta name="keywords" content="BUAA SE SoftwareEngineering">
+
+
+<title >BUAA DB-C2-1 数据模型概述&概念模型</title>
+
+<!-- Favicon -->
+
+    <link href='/imgs/rabbit.jpg?v=2.1.10' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.1.10' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.1.10' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["A traveler on the road"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！","safari_pinned_tab":"imgs/rabbit.jpg"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-03-18 21:57:47"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="Roisy's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/imgs/rabbit.jpg">
+    
+    
+        <div class="trm-logo-text">
+            Ro<span>isy</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    index
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    archives
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    categories
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Web/" target="">
+                            Web
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags/" target="">
+                    tags
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    about
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/03/18/OiE4nAm5LzPq7xH.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            BUAA DB-C2-1 数据模型概述&概念模型
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        DB
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/imgs/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Roisy&#39;s Blog
+    </h5>
+    
+        <div class="trm-label">
+            
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/RoisyL/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://blog.csdn.net/lyxjtsdmfz?type=blog" title="CSDN" rel="nofollow" target="_blank">
+            <i class="iconfont imgs/csdn.svg"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                MAJOR:
+            </div>
+            <div class="trm-label trm-label-light">
+                SE
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                SCHOOL:
+            </div>
+            <div class="trm-label trm-label-light">
+                BUAA
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/18
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            21:57
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Roisy Luo
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="什么是数据模型"><a class="markdownIt-Anchor" href="#什么是数据模型"></a> 什么是<em>数据模型</em></h1>
+<p><img src="https://s2.loli.net/2024/03/18/4PW2tMYyeVNLCqm.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p>数据在计算机中的<strong>组织结构</strong>，和施加在这个结构上的<strong>处理方法</strong>，即是数据模型</p>
+<ul>
+<li>不同的数据模型代表着不同的<strong>抽象方法</strong>，根本性的决定了数据库的<strong>功能/性能特点</strong></li>
+</ul>
+<h2 id="数据模型分类"><a class="markdownIt-Anchor" href="#数据模型分类"></a> 数据模型分类</h2>
+<p>信息世界的数据抽象过程可细分为几个阶段，每个阶段用不同的模型去描述抽象结果：</p>
+<ul>
+<li>
+<p><strong>概念数据模型</strong>（计算机不能接受，<font color="purple"><strong>用户需求→结构</strong></font>）</p>
+<p>只用来描述某个特定组织所关心的信息结构，强调其<strong>语义表达</strong>能力，是设计人员<strong>和用户之间进行交流</strong>的语言</p>
+</li>
+<li>
+<p><strong>逻辑数据模型</strong>（直接面向数据库的逻辑结构，<font color="purple"><strong>“翻译”过程</strong></font>）</p>
+<p>直接与DBMS有关，有<strong>严格的形式化定义</strong>，通常有一组严格定义的无二义性语法和语义的<strong>DB语言</strong>，用于定义、操纵DB中的数据</p>
+<ul>
+<li>通常所说的数据模型即指逻辑数据模型，是区分不同类型数据库的依据，并在很大程度上决定了数据库的性能和应用范围</li>
+<li>该类数据模型有层次模型、网状模型、<strong>关系模型</strong>等</li>
+</ul>
+</li>
+<li>
+<p><font color="grey"><strong>物理数据模型</strong>（一般在前两步基础上自动进行转换，本课程不用深究原理）</p>
+<p>反映了数据在<strong>存储介质上的组成结构</strong>，并描述了访问机制</font></p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/03/18/ugNHFCEoYDVsIG4.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><img src="https://s2.loli.net/2024/03/18/toWfvZxpiyKEbVe.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="两种常用抽象手段"><a class="markdownIt-Anchor" href="#两种常用抽象手段"></a> <strong>两种常用抽象手段</strong></h3>
+<ol>
+<li><strong>分类</strong>（Classification）:定义<strong>某一类概念</strong>作为现实世界中一组对象的类型<font color="purple">（要哪些类的对象）</font>
+<ul>
+<li>eg 大学里的学生，奥运会的赛事，公交公司的司机…</li>
+</ul>
+</li>
+<li><strong>聚集</strong>（Aggregation）:定义<strong>某一类型的组成成分</strong><font color="purple">（特定对象关心哪些属性）</font>
+<ul>
+<li>eg 学生：学号、姓名、年龄等特征组成</li>
+</ul>
+</li>
+</ol>
+<h1 id="概念模型"><a class="markdownIt-Anchor" href="#概念模型"></a> <em>概念模型</em></h1>
+<h2 id="er数据模型实体-关系模型"><a class="markdownIt-Anchor" href="#er数据模型实体-关系模型"></a> <em><strong>ER数据模型（实体-关系模型）</strong></em></h2>
+<p>世界是由一组称作<strong>实体</strong>的基本对象和这些对象之间的<strong>联系</strong>构成的</p>
+<h3 id="三个基本元素"><a class="markdownIt-Anchor" href="#三个基本元素"></a> 三个基本元素</h3>
+<ul>
+<li>
+<p><strong>实体 (Entity)</strong></p>
+<p><strong>客观存在</strong>并<strong>可以相互区分</strong>的客观事物或抽象事件</p>
+</li>
+<li>
+<p><strong>属性 (Attribute)</strong></p>
+<ul>
+<li><em><strong>域</strong></em>：属性的取值范围</li>
+<li><em>简单属性与复合属性</em>区分标准：是否可再分。eg 年龄-简单，地址-复合</li>
+<li><em><strong>键</strong></em>：实体集中能<strong>唯一标识</strong>实体的<strong>属性或属性组</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>联系 (Relation)</strong> <font color="purple">笛卡尔积的子集</font></p>
+<ul>
+<li>
+<p>联系的键必然是复合键</p>
+</li>
+<li>
+<p><em><strong>元</strong></em>：参与联系的实体的个数称为联系的元</p>
+</li>
+<li>
+<p><em>基数比约束</em>：一个实体可以通过联系关联到的另一个实体集中实体的数量</p>
+</li>
+<li>
+<p><strong>一元联系相关</strong></p>
+<ul>
+<li>
+<p>有时二元联系关联的两个实体集实际上属于<strong>同一个实体集的两个副本</strong>，可以将这二个实体集合并，形成一元联系</p>
+<p><img src="https://s2.loli.net/2024/03/18/3G1F4kW2TDhC6ZN.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+<li>
+<p><em><strong>角色</strong></em>：在联系中关联的每个实体集应是相互区别的。在一元联系中，需要用角色来<strong>区分同一实体集的不同副本</strong></p>
+<p><img src="https://s2.loli.net/2024/03/18/vfehqrnt6A3bdci.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+</li>
+<li>
+<p>多元联系比两两联系更便于数据的查询<font color="purple">（可实现操作更多）</font>，两者在语义上并不等价</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="约束"><a class="markdownIt-Anchor" href="#约束"></a> 约束</h3>
+<p>约束是一种对数据库的断言（assertion），数据库应保证该断言成立</p>
+<p>将在后续讲数据完整性的时候深入讨论</p>
+<ul>
+<li><strong>键约束</strong>
+<ul>
+<li>用于引用实体</li>
+<li><em>超键：</em> 是实体集中的一个或一组属性</li>
+<li><em>候选键</em>:某个超键的<strong>最小集</strong></li>
+<li><em>主键</em>：若存在多个候选键，则可以任选一个作为该实体集的主键。主键会被数据库登记和使用。</li>
+</ul>
+</li>
+</ul>
+<h3 id="er图"><a class="markdownIt-Anchor" href="#er图"></a> ER图</h3>
+<ul>
+<li>矩形框——实体</li>
+<li>实体的属性——椭圆框
+<ul>
+<li>用连线连到相应实体</li>
+<li>多值属性——双层椭圆框</li>
+</ul>
+</li>
+<li>实体之间的联系——菱形框表示
+<ul>
+<li>用连线与有关的实体相连</li>
+</ul>
+</li>
+<li>在作为主键的属性下加下划线</li>
+<li><font color="blue"><strong>联系</strong>也可以有属性！！</font></li>
+</ul>
+<p><img src="https://s2.loli.net/2024/03/18/72kw1xlUnt6edLG.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><img src="https://s2.loli.net/2024/03/18/iMEDYdkLz9PJrxm.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><img src="https://s2.loli.net/2024/03/18/TH1mypMIE4hNwoC.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="er模型建模"><a class="markdownIt-Anchor" href="#er模型建模"></a> ER模型建模</h3>
+<ul>
+<li>
+<p>一些建模准则</p>
+<ul>
+<li><strong>忠实于用户需求</strong></li>
+<li>KISS准则 (keep it simple and stupid)</li>
+<li><strong>避免冗余</strong>
+<ul>
+<li>冗余会导致<strong>空间浪费</strong>，更会带来<strong>数据不一致</strong></li>
+<li><font color="blue">在设计时注意，设计完成后检查是否能简化合并</font></li>
+</ul>
+</li>
+<li><strong>能抽象为属性的，就不要抽象为实体</strong>
+<ul>
+<li><font color="blue">符合下面两个情况之一的时候才需要把事物抽象为实体</font>
+<ol>
+<li>事物有至少一个非键属性（不属于键的属性）</li>
+<li>事物处于“一对多”或“多对多”联系中“多”那一端</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>建模过程</p>
+<p>实体类型（找出<font color="blue"><strong>逻辑独立的事物</strong></font>，即管理对象）→联系类型（确定实体之间相互影响的关系）→为实体和联系确定属性</p>
+</li>
+<li>
+<p><font color="blue">三元联系转换为二元联系——把<strong>联系点本身转化为一个实体</strong></font></p>
+<p><img src="https://s2.loli.net/2024/03/18/SqWjR9HnJG517Yw.jpg" alt="2.jpg"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+
+</article>
+    
+    
+
+<ul class="trm-post-copyright">
+    <li class="trm-post-copyright-author">
+        <strong>Post author: </strong>
+        Roisy Luo
+    </li>
+    <li class="trm-post-copyright-link">
+        <strong>Post link: </strong>
+        <a id="original-link" href="https://roisyl.github.io.git/DB/BUAA-DB-C2-1/" title="BUAA DB-C2-1 数据模型概述&概念模型">https://roisyl.github.io.git/DB/BUAA-DB-C2-1/</a>
+    </li>
+    <li class="trm-post-copyright-license">
+        <strong>Copyright Notice: </strong>
+        All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 ">CC BY-NC-SA 4.0</a> unless otherwise stated.
+    </li>
+</ul>
+
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            Other Articles
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/DB/BUAA-DB-C2-2/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/03/18/DOE1dTbBG7ZIPKy.jpg">
+                </span>
+                <h6 class="trm-op-title">BUAA DB-C2-2 逻辑模型</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/18</li>
+                <li>22:09</li>
+                <li>DB</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/DB/BUAA-DB-C1/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/03/18/6wcKRhsqZMmD3F5.jpg">
+                </span>
+                <h6 class="trm-op-title">BUAA DB-C1 概论</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/18</li>
+                <li>21:44</li>
+                <li>DB</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+    <div id="giscus-wrap" class="trm-card trm-scroll-animation comment-container"></div>
+<script data-swup-reload-script>
+    function loadGiscus() {
+        let nowTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        const config = {
+            src: 'https://giscus.app/client.js',
+            "data-repo": 'RoisyL/RoisyL.github.io',
+            "data-repo-id": 'R_kgDOLd8WqQ',
+            "data-category": 'General',
+            "data-category-id": 'DIC_kwDOLd8Wqc4Cd4lq',
+            "data-mapping": 'pathname',
+            "data-reactions-enabled": '1',
+            "data-emit-metadata": '0',
+            "data-theme": nowTheme,
+            "data-lang": 'en',
+            crossorigin: "anonymous",
+            async: true
+        }
+        let ele = document.createElement('script')
+        for (let key in config) {
+            ele.setAttribute(key, config[key])
+        }
+        document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin', ele)
+    }
+
+    function changeGiscusTheme() {
+        let theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+        function sendMessage(message) {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (!iframe) return;
+            iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+
+        sendMessage({
+            setConfig: {
+                theme: theme
+            }
+        });
+    }
+
+    loadGiscus();
+</script>
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2024</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Roisy's Blog</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> v7.1.1
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                Theme - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.1.10
+            </span>
+        </div>
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        Article table of contents
+				<span id="post-toc-top">
+					TOP
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title=" 什么是数据模型"><a rel="nofollow" class="trm-toc-link" href="#什么是数据模型"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> 什么是数据模型</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 数据模型分类"><a rel="nofollow" class="trm-toc-link" href="#数据模型分类"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text"> 数据模型分类</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 两种常用抽象手段"><a rel="nofollow" class="trm-toc-link" href="#两种常用抽象手段"><span class="trm-toc-number">1.1.1.</span> <span class="trm-toc-text"> 两种常用抽象手段</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 概念模型"><a rel="nofollow" class="trm-toc-link" href="#概念模型"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> 概念模型</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" ER数据模型（实体-关系模型）"><a rel="nofollow" class="trm-toc-link" href="#er数据模型实体-关系模型"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text"> ER数据模型（实体-关系模型）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 三个基本元素"><a rel="nofollow" class="trm-toc-link" href="#三个基本元素"><span class="trm-toc-number">2.1.1.</span> <span class="trm-toc-text"> 三个基本元素</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 约束"><a rel="nofollow" class="trm-toc-link" href="#约束"><span class="trm-toc-number">2.1.2.</span> <span class="trm-toc-text"> 约束</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" ER图"><a rel="nofollow" class="trm-toc-link" href="#er图"><span class="trm-toc-number">2.1.3.</span> <span class="trm-toc-text"> ER图</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" ER模型建模"><a rel="nofollow" class="trm-toc-link" href="#er模型建模"><span class="trm-toc-number">2.1.4.</span> <span class="trm-toc-text"> ER模型建模</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="Open toc">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="Read Mode" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn hidden-md" data-title="Toggle between single-column and double-column" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="Back To Top">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="Searching...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    Please enter keywords to search
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.1.10"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.1.10"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+    <script data-swup-reload-script>
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+
+
+<script id="async-script" src="/js/main.js?v=2.1.10"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
+<script type="text/javascript" src="/js/love.js"></script>

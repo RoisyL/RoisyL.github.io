@@ -2,7 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/05/02/Django-Basics/</loc>
+    <loc>https://roisyl.github.io.git/uncategorized/Docker-Basics/</loc>
+    
+    <lastmod>2024-08-28</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/uncategorized/BUAA-OS-Lab5/</loc>
+    
+    <lastmod>2024-05-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/uncategorized/BUAA-OS-Lab4/</loc>
+    
+    <lastmod>2024-05-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/Back-end/Django-Basics/</loc>
     
     <lastmod>2024-05-02</lastmod>
     
@@ -11,7 +38,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/05/02/BUAA-DB-SQLAlchemy/</loc>
+    <loc>https://roisyl.github.io.git/DB/BUAA-DB-SQLAlchemy/</loc>
     
     <lastmod>2024-05-02</lastmod>
     
@@ -20,7 +47,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/03/10/HTML-Basics/</loc>
+    <loc>https://roisyl.github.io.git/Web/HTML-Basics/</loc>
     
     <lastmod>2024-05-02</lastmod>
     
@@ -29,7 +56,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/04/15/Vue-Basics/</loc>
+    <loc>https://roisyl.github.io.git/Web/Vue-Basics/</loc>
     
     <lastmod>2024-05-02</lastmod>
     
@@ -38,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/04/24/BUAA-OS-Lab3/</loc>
+    <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab3/</loc>
     
     <lastmod>2024-05-02</lastmod>
     
@@ -47,7 +74,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/04/10/BUAA-OS-Lab2/</loc>
+    <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab2/</loc>
     
     <lastmod>2024-04-15</lastmod>
     
@@ -56,7 +83,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/04/15/Vue-Components/</loc>
+    <loc>https://roisyl.github.io.git/Web/Vue-Components/</loc>
     
     <lastmod>2024-04-15</lastmod>
     
@@ -65,7 +92,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/04/15/Vue-Start-a-new-project/</loc>
+    <loc>https://roisyl.github.io.git/Web/Vue-Start-a-new-project/</loc>
     
     <lastmod>2024-04-15</lastmod>
     
@@ -74,7 +101,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/03/27/BUAA-OS-Lab-General/</loc>
+    <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab-General/</loc>
     
     <lastmod>2024-03-27</lastmod>
     
@@ -83,7 +110,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/03/27/BUAA-OS-Lab1/</loc>
+    <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab1/</loc>
     
     <lastmod>2024-03-27</lastmod>
     
@@ -92,7 +119,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/03/18/BUAA-DB-C2-2/</loc>
+    <loc>https://roisyl.github.io.git/DB/BUAA-DB-C2-2/</loc>
     
     <lastmod>2024-03-18</lastmod>
     
@@ -101,7 +128,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/03/18/BUAA-DB-C2-1/</loc>
+    <loc>https://roisyl.github.io.git/DB/BUAA-DB-C2-1/</loc>
     
     <lastmod>2024-03-18</lastmod>
     
@@ -110,7 +137,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/03/18/BUAA-DB-C1/</loc>
+    <loc>https://roisyl.github.io.git/DB/BUAA-DB-C1/</loc>
     
     <lastmod>2024-03-18</lastmod>
     
@@ -119,7 +146,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/03/18/BUAA%20OS-Lab0/</loc>
+    <loc>https://roisyl.github.io.git/OS/BUAA%20OS-Lab0/</loc>
     
     <lastmod>2024-03-18</lastmod>
     
@@ -128,7 +155,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/2024/03/11/BUAA%20OS-C1/</loc>
+    <loc>https://roisyl.github.io.git/OS/BUAA%20OS-C1/</loc>
     
     <lastmod>2024-03-11</lastmod>
     
@@ -137,7 +164,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/tags/index.html</loc>
+    <loc>https://roisyl.github.io.git/tags/</loc>
     
     <lastmod>2024-03-11</lastmod>
     
@@ -146,7 +173,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/about/index.html</loc>
+    <loc>https://roisyl.github.io.git/about/</loc>
     
     <lastmod>2024-03-11</lastmod>
     
@@ -155,7 +182,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/googlea68f389f21ea577d.html</loc>
+    <loc>https://roisyl.github.io.git/googlea68f389f21ea577d</loc>
     
     <lastmod>2024-03-10</lastmod>
     
@@ -164,7 +191,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/categories/index.html</loc>
+    <loc>https://roisyl.github.io.git/categories/</loc>
     
     <lastmod>2024-03-09</lastmod>
     
@@ -175,7 +202,7 @@
 
   <url>
     <loc>https://roisyl.github.io.git/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -183,42 +210,42 @@
   
   <url>
     <loc>https://roisyl.github.io.git/tags/Notes/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/tags/BUAA/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/tags/Lab/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/tags/HTML/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/tags/Vue/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/tags/Django/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -227,28 +254,28 @@
   
   <url>
     <loc>https://roisyl.github.io.git/categories/OS/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/categories/DB/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/categories/Web/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://roisyl.github.io.git/categories/Back-end/</loc>
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
