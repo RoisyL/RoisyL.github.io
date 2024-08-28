@@ -230,13 +230,6 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/tags/HTML/</loc>
-    <lastmod>2024-08-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://roisyl.github.io.git/tags/Django/</loc>
     <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -250,14 +243,14 @@
     <priority>0.2</priority>
   </url>
   
-
-  
   <url>
-    <loc>https://roisyl.github.io.git/categories/DB/</loc>
+    <loc>https://roisyl.github.io.git/tags/HTML/</loc>
     <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
+  
+
   
   <url>
     <loc>https://roisyl.github.io.git/categories/OS/</loc>
@@ -267,7 +260,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/categories/Web/</loc>
+    <loc>https://roisyl.github.io.git/categories/DB/</loc>
     <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -275,6 +268,13 @@
   
   <url>
     <loc>https://roisyl.github.io.git/categories/Back-end/</loc>
+    <lastmod>2024-08-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/categories/Web/</loc>
     <lastmod>2024-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

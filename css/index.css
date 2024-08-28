@@ -109,17 +109,6 @@
         .dark()
     }
 } */
-
-/* 自己加的 */
-.trm-top-bar,
-.trm-main-card,
-.trm-blog-card,
-.trm-timeline-content,
-.trm-blog-categories,
-footer {
-  background-image: url(https://www.imalun.com/images/foggy-birds.png); 
-}
-
 @media (max-width: 768px) {
   :root {
     --card-padding: 20px;
@@ -703,8 +692,7 @@ html.is-animating .trm-swup-animation {
   border-radius: 10px;
   width: 100%;
   overflow: hidden;
-  /* background-color: var(--theme-bg2-color, #f4f5f7); */
-  background-image: url('https://s2.loli.net/2024/08/28/lXZJTrCBtzMAcpe.jpg');
+  background-color: var(--theme-bg2-color, #f4f5f7);
   box-shadow: var(--box-shadow2, 0 2px 4px -2px rgba(0, 0, 0, 0.15));
   transition: all 0.4s ease-in-out;
   /* .trm-hidden-switcher {
@@ -3837,4 +3825,23 @@ pre .coffeescript .title {
   --primary-30: rgba(103, 96, 206, 0.3);
   --primary-weak: #7abddf;
   --primary-weak-50: rgba(122, 189, 223, 0.5);
+}
+.trm-top-bar,
+.trm-main-card,
+.trm-blog-card,
+.trm-timeline-content,
+.trm-blog-categories,
+footer {
+  background-image: url(https://www.imalun.com/images/foggy-birds.png);
+}
+body {
+  background-image: url('https://s2.loli.net/2024/08/28/lXZJTrCBtzMAcpe.jpg');
+  background-size: cover;
+  /* 使背景图片覆盖整个页面 */
+  background-repeat: no-repeat;
+  /* 防止背景图片重复 */
+  background-attachment: fixed;
+  /* 背景图片固定，不随滚动条滚动 */
+  background-position: center center;
+  /* 背景图片居中显示 */
 }
