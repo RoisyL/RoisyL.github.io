@@ -158,6 +158,107 @@
       </tags>
   </entry>
   <entry>
+    <title>BUAA DB-C1 概论</title>
+    <url>/DB/BUAA-DB-C1/</url>
+    <content><![CDATA[<h1 id="数据库系统"><a class="markdownIt-Anchor" href="#数据库系统"></a> 数据库系统</h1>
+<ul>
+<li>通常由应用程序、数据库（DB）、数据库管理系统（DBMS）和用户组成</li>
+<li>相对于文件系统
+<ul>
+<li>冗余度更低</li>
+<li>数据独立性更好</li>
+<li>一致性更好</li>
+</ul>
+</li>
+<li>特点有：
+<ul>
+<li>数据结构化</li>
+<li>数据共享</li>
+<li>数据独立性</li>
+<li>方便的用户接口</li>
+<li>统一的数据管理与控制功能</li>
+</ul>
+</li>
+</ul>
+<h2 id="数据共享"><a class="markdownIt-Anchor" href="#数据共享"></a> 数据共享</h2>
+<h3 id="逻辑文件"><a class="markdownIt-Anchor" href="#逻辑文件"></a> 逻辑文件</h3>
+<p>DBMS 从数据库中<strong>按需</strong>映射出来的<strong>子集</strong></p>
+<p><img src="https://s2.loli.net/2024/03/18/HA6Xx9SWbe71iwl.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h2 id="数据独立性"><a class="markdownIt-Anchor" href="#数据独立性"></a> 数据独立性</h2>
+<h3 id="物理独立性"><a class="markdownIt-Anchor" href="#物理独立性"></a> 物理独立性</h3>
+<p>修改数据库的物理存储模式而不必重写应用程序的能力</p>
+<h3 id="逻辑独立性"><a class="markdownIt-Anchor" href="#逻辑独立性"></a> 逻辑独立性</h3>
+<p>修改数据库的逻辑模式而不必重写应用程序的能力</p>
+<h2 id="统一的数据管理与控制功能"><a class="markdownIt-Anchor" href="#统一的数据管理与控制功能"></a> 统一的数据管理与控制功能</h2>
+<h3 id="数据的完整性"><a class="markdownIt-Anchor" href="#数据的完整性"></a> 数据的完整性</h3>
+<p>数据的<strong>正确性、有效性和相容性</strong></p>
+<h3 id="数据的安全性"><a class="markdownIt-Anchor" href="#数据的安全性"></a> 数据的安全性</h3>
+<ul>
+<li>主动安全——安全机制</li>
+<li>被动安全——备份恢复</li>
+</ul>
+<h3 id="并发控制"><a class="markdownIt-Anchor" href="#并发控制"></a> 并发控制</h3>
+<h1 id="数据库结构"><a class="markdownIt-Anchor" href="#数据库结构"></a> 数据库结构</h1>
+<h2 id="模式结构用户角度"><a class="markdownIt-Anchor" href="#模式结构用户角度"></a> 模式结构——用户角度</h2>
+<h3 id="模式"><a class="markdownIt-Anchor" href="#模式"></a> 模式</h3>
+<p>数据库逻辑结构及其联系</p>
+<h3 id="三级模式与二级映象"><a class="markdownIt-Anchor" href="#三级模式与二级映象"></a> 三级模式与二级映象</h3>
+<ul>
+<li><strong>三级模式：数据的三个抽象级别</strong>
+<ul>
+<li><strong><em>模式（概念模式）</em></strong><br />
+数据的逻辑结构和特征的描述</li>
+<li><strong><em>外模式（用户模式）</em></strong><br />
+基于<strong>数据视图（View）<strong>实现，是</strong>与某一应用有关的</strong>数据的逻辑表示</li>
+<li><strong><em>内模式（存储模式）</em></strong><br />
+是数据物理结构和<strong>存储方式</strong>的描述</li>
+</ul>
+</li>
+<li><strong>二级映象：三个抽象级别的联系和转换</strong></li>
+<li><strong>优势</strong>：保证了较高的逻辑独立性和物理独立性</li>
+</ul>
+<h2 id="功能结构系统角度"><a class="markdownIt-Anchor" href="#功能结构系统角度"></a> 功能结构——系统角度</h2>
+<ul>
+<li>查询处理器</li>
+<li>存储管理器</li>
+<li>安全管理器</li>
+</ul>
+<h2 id="体系结构组件构成及其交互作用的角度"><a class="markdownIt-Anchor" href="#体系结构组件构成及其交互作用的角度"></a> 体系结构——组件构成及其交互作用的角度</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>中心服务器</th>
+<th>客户端</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>集中式</td>
+<td>既负责数据管理又负责业务处理</td>
+<td>不运行程序</td>
+</tr>
+<tr>
+<td>客户-服务器式</td>
+<td>数据管理</td>
+<td>运行程序</td>
+</tr>
+</tbody>
+</table>
+<p>此外还有分布式 (Distributed)、并行式 (Parallel)、云数据库……</p>
+<ul>
+<li>当数据规模巨大，单体数据库无法处理时，可以使用并行、分布式架构</li>
+</ul>
+]]></content>
+      <categories>
+        <category>DB</category>
+      </categories>
+      <tags>
+        <tag>Notes</tag>
+        <tag>BUAA</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BUAA DB-C2-1 数据模型概述&amp;概念模型</title>
     <url>/DB/BUAA-DB-C2-1/</url>
     <content><![CDATA[<h1 id="什么是数据模型"><a class="markdownIt-Anchor" href="#什么是数据模型"></a> 什么是<em>数据模型</em></h1>
@@ -627,353 +728,6 @@
       <tags>
         <tag>BUAA</tag>
         <tag>Lab</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUAA DB-C1 概论</title>
-    <url>/DB/BUAA-DB-C1/</url>
-    <content><![CDATA[<h1 id="数据库系统"><a class="markdownIt-Anchor" href="#数据库系统"></a> 数据库系统</h1>
-<ul>
-<li>通常由应用程序、数据库（DB）、数据库管理系统（DBMS）和用户组成</li>
-<li>相对于文件系统
-<ul>
-<li>冗余度更低</li>
-<li>数据独立性更好</li>
-<li>一致性更好</li>
-</ul>
-</li>
-<li>特点有：
-<ul>
-<li>数据结构化</li>
-<li>数据共享</li>
-<li>数据独立性</li>
-<li>方便的用户接口</li>
-<li>统一的数据管理与控制功能</li>
-</ul>
-</li>
-</ul>
-<h2 id="数据共享"><a class="markdownIt-Anchor" href="#数据共享"></a> 数据共享</h2>
-<h3 id="逻辑文件"><a class="markdownIt-Anchor" href="#逻辑文件"></a> 逻辑文件</h3>
-<p>DBMS 从数据库中<strong>按需</strong>映射出来的<strong>子集</strong></p>
-<p><img src="https://s2.loli.net/2024/03/18/HA6Xx9SWbe71iwl.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<h2 id="数据独立性"><a class="markdownIt-Anchor" href="#数据独立性"></a> 数据独立性</h2>
-<h3 id="物理独立性"><a class="markdownIt-Anchor" href="#物理独立性"></a> 物理独立性</h3>
-<p>修改数据库的物理存储模式而不必重写应用程序的能力</p>
-<h3 id="逻辑独立性"><a class="markdownIt-Anchor" href="#逻辑独立性"></a> 逻辑独立性</h3>
-<p>修改数据库的逻辑模式而不必重写应用程序的能力</p>
-<h2 id="统一的数据管理与控制功能"><a class="markdownIt-Anchor" href="#统一的数据管理与控制功能"></a> 统一的数据管理与控制功能</h2>
-<h3 id="数据的完整性"><a class="markdownIt-Anchor" href="#数据的完整性"></a> 数据的完整性</h3>
-<p>数据的<strong>正确性、有效性和相容性</strong></p>
-<h3 id="数据的安全性"><a class="markdownIt-Anchor" href="#数据的安全性"></a> 数据的安全性</h3>
-<ul>
-<li>主动安全——安全机制</li>
-<li>被动安全——备份恢复</li>
-</ul>
-<h3 id="并发控制"><a class="markdownIt-Anchor" href="#并发控制"></a> 并发控制</h3>
-<h1 id="数据库结构"><a class="markdownIt-Anchor" href="#数据库结构"></a> 数据库结构</h1>
-<h2 id="模式结构用户角度"><a class="markdownIt-Anchor" href="#模式结构用户角度"></a> 模式结构——用户角度</h2>
-<h3 id="模式"><a class="markdownIt-Anchor" href="#模式"></a> 模式</h3>
-<p>数据库逻辑结构及其联系</p>
-<h3 id="三级模式与二级映象"><a class="markdownIt-Anchor" href="#三级模式与二级映象"></a> 三级模式与二级映象</h3>
-<ul>
-<li><strong>三级模式：数据的三个抽象级别</strong>
-<ul>
-<li><strong><em>模式（概念模式）</em></strong><br />
-数据的逻辑结构和特征的描述</li>
-<li><strong><em>外模式（用户模式）</em></strong><br />
-基于<strong>数据视图（View）<strong>实现，是</strong>与某一应用有关的</strong>数据的逻辑表示</li>
-<li><strong><em>内模式（存储模式）</em></strong><br />
-是数据物理结构和<strong>存储方式</strong>的描述</li>
-</ul>
-</li>
-<li><strong>二级映象：三个抽象级别的联系和转换</strong></li>
-<li><strong>优势</strong>：保证了较高的逻辑独立性和物理独立性</li>
-</ul>
-<h2 id="功能结构系统角度"><a class="markdownIt-Anchor" href="#功能结构系统角度"></a> 功能结构——系统角度</h2>
-<ul>
-<li>查询处理器</li>
-<li>存储管理器</li>
-<li>安全管理器</li>
-</ul>
-<h2 id="体系结构组件构成及其交互作用的角度"><a class="markdownIt-Anchor" href="#体系结构组件构成及其交互作用的角度"></a> 体系结构——组件构成及其交互作用的角度</h2>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>中心服务器</th>
-<th>客户端</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>集中式</td>
-<td>既负责数据管理又负责业务处理</td>
-<td>不运行程序</td>
-</tr>
-<tr>
-<td>客户-服务器式</td>
-<td>数据管理</td>
-<td>运行程序</td>
-</tr>
-</tbody>
-</table>
-<p>此外还有分布式 (Distributed)、并行式 (Parallel)、云数据库……</p>
-<ul>
-<li>当数据规模巨大，单体数据库无法处理时，可以使用并行、分布式架构</li>
-</ul>
-]]></content>
-      <categories>
-        <category>DB</category>
-      </categories>
-      <tags>
-        <tag>Notes</tag>
-        <tag>BUAA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUAA DB-C2-2 逻辑模型</title>
-    <url>/DB/BUAA-DB-C2-2/</url>
-    <content><![CDATA[<h1 id="逻辑模型概述"><a class="markdownIt-Anchor" href="#逻辑模型概述"></a> 逻辑模型概述</h1>
-<ul>
-<li>是对现实世界的第二层抽象。负责将概念数据模式<strong>映射为数据库的逻辑结构</strong></li>
-<li><strong>直接与 DBMS 有关</strong>,有严格的形式化定义</li>
-<li>通常有一组<strong>严格定义的无二义性语法和语义的 DB 语言</strong></li>
-<li>逻辑数据模型的三要素：<strong>数据结构、数据操作和数据约束</strong></li>
-</ul>
-<h2 id="逻辑数据模型的发展"><a class="markdownIt-Anchor" href="#逻辑数据模型的发展"></a> <strong>逻辑数据模型的发展</strong></h2>
-<p>文件模型 → 层次模型 → 网状模型 → 关系模型</p>
-<p><img src="https://s2.loli.net/2024/03/18/t9GIlBHiRfseU4A.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p><img src="https://s2.loli.net/2024/03/18/cYNfhKqvpuT7bC9.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li>关系模型适用于结构清晰的数据的管理，根据数据特点还可以采用 XML 模型、面向对象模型等</li>
-</ul>
-<h1 id="关系模型"><a class="markdownIt-Anchor" href="#关系模型"></a> 关系模型</h1>
-<h2 id="关系数据结构"><a class="markdownIt-Anchor" href="#关系数据结构"></a> 关系数据结构</h2>
-<ul>
-<li>关系模型是用<strong>二维表格结构</strong>来表示实体及实体之间联系的模型，是<strong>各个关系的框架的集合</strong></li>
-<li><strong><em>域</em></strong>：<font color="red">是一组具有相同数据类型的值的集合</font><font color="purple">（注意表达，最好不要直接说为“取值范围”）</font>，通常用 D 表示，域中所包含的值的个数称为域的<em>基数</em>（用 m 表示）</li>
-<li><strong><em>笛卡尔积</em></strong>：
-<ul>
-<li>笛卡尔积每一个元素（d1，d2，d3，…，dn）叫做一个<em>n 元组</em>，简称<em>元组</em>（Tuple）</li>
-</ul>
-</li>
-<li>数学上关系是笛卡尔积的任意子集，但在实际应用中关系是笛卡尔积中所取的<strong>有意义的子集</strong></li>
-</ul>
-<h3 id="关系模式"><a class="markdownIt-Anchor" href="#关系模式"></a> 关系模式</h3>
-<ul>
-<li>关系模式：关系的描述称为关系模式。它可以形式化地表示为 R(U,D,DOM,F)
-<ul>
-<li>其中 R 为关系名,U 为组成该关系的属性名集合,D 为属性组 U 中属性所来自的域,DOM 为属性向域的映像集合,F 为属性间数据的依赖关系集合。</li>
-</ul>
-</li>
-<li>关系：是<strong>关系模式在某一时刻的状态或内容</strong>。</li>
-<li>关系模式是静态的、稳定的而关系是动态的、随时间不断变化的；<font color="purple"><strong>关系模式是型，关系是值</strong></font></li>
-</ul>
-<h3 id="重要性质"><a class="markdownIt-Anchor" href="#重要性质"></a> 重要性质</h3>
-<ul>
-<li>关系中每一分量必须是<strong>不可分的</strong>数据项。所有属性值都是原子的，是一个确定的值，而不是值的集合</li>
-</ul>
-<p><img src="https://s2.loli.net/2024/03/18/mj1WFkcs9afZl4h.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<h2 id="er-模型向关系模型转化"><a class="markdownIt-Anchor" href="#er-模型向关系模型转化"></a> <strong>ER 模型向关系模型转化</strong></h2>
-<h3 id="基本规则"><a class="markdownIt-Anchor" href="#基本规则"></a> 基本规则</h3>
-<ul>
-<li>
-<p><strong>实体类型</strong>：关系模式的属性为<strong>实体的属性</strong></p>
-</li>
-<li>
-<p><strong>二元联系</strong></p>
-<ul>
-<li>
-<p><strong>m:n 联系</strong>：将联系类型也单独转换成关系模式，关系模式属性为<strong>联系的属性和两联系实体的主键</strong><br />
-<img src="https://s2.loli.net/2024/03/18/6ruF9IVjoHBg1sz.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-</li>
-<li>
-<p><strong>1：n 联系</strong>：合并到 n 端对应的实体关系模式中</p>
-<ul>
-<li>注意合并时不要漏掉<strong>另一个实体的主键</strong>！<br />
-<img src="https://s2.loli.net/2024/03/18/fGz9tORQ8oqFBHT.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></li>
-</ul>
-</li>
-<li>
-<p><strong>1：1 联系</strong>：可以合并到任意端对应的实体关系模式中，最好选择<strong>常用</strong>的一个<br />
-<img src="https://s2.loli.net/2024/03/18/UDCboBWcRkdu2v1.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>三元联系</strong></p>
-<ul>
-<li><strong>1:1:1 联系</strong>与 1:1 联系同理</li>
-<li><strong>1:1:n 联系</strong>与 1:n 联系同理</li>
-<li><strong>m:n:p 联系与 1 : m : n 联系</strong>：将联系类型也单独转换成关系模式，其属性为多端实体类型的键（作为外键）加上联系的属性</li>
-</ul>
-</li>
-</ul>
-<h2 id="关系的完整性约束"><a class="markdownIt-Anchor" href="#关系的完整性约束"></a> 关系的完整性约束</h2>
-<h3 id="域完整性"><a class="markdownIt-Anchor" href="#域完整性"></a> 域完整性</h3>
-<ul>
-<li>对属性值 <strong>能否为空(NULL)</strong> 的检查也是域完整性约束的一部分</li>
-</ul>
-<h3 id="实体完整性"><a class="markdownIt-Anchor" href="#实体完整性"></a> 实体完整性</h3>
-<ul>
-<li>实体完整性<strong>用主键来约束</strong>
-<ul>
-<li>主属性不能为空，且取值唯一</li>
-</ul>
-</li>
-</ul>
-<h3 id="参照完整性"><a class="markdownIt-Anchor" href="#参照完整性"></a> 参照完整性</h3>
-<ul>
-<li><strong><em>外键</em></strong>
-<ul>
-<li>设 F 是关系 R 的一个或一组属性，但<strong>不是关系 R 的键</strong>，且 F<strong>与关系 S 的主键 K 相对应</strong>（相对应的意思就是符合参照完整性规则），则称 F 是关系 R 的外键
-<ul>
-<li>关系 R 称为<em>参照关系</em></li>
-<li>关系 S 称为<em>被参照关系</em>或<em>目标关系</em></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>参照完整性规则</strong>：外键上的取值只能是空值，或等于被参照关系中某个元组的主键值<font color="purple">（可以没分配，不能分到不存在的地方）</font><br />
-<img src="https://s2.loli.net/2024/03/18/lvZTRWVc9JK2IEo.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/>
-<ul>
-<li><font color="blue">如果外码属性<strong>相对应的主码属性存在</strong>，而外码本身不存在，则外码属性的值可以为空值</font></li>
-<li><font color="red">关系 R 和 S 不一定是不同的关系
-<ul>
-<li>eg 在学生（学号，姓名，年龄，专业号，班长）关系中，“学号”属性是主键，“班长”属性表示该学生所在班级的班长的学号，可以作为关系的外键</font></li>
-</ul>
-</li>
-<li>目标关系 S 的主键 K 和参照关系的外键 F 必须定义在同一个（或一组）域上</li>
-<li>外键并不一定要与相应的主键同名
-<ul>
-<li>当外键与相应的主键属于不同关系时，往往取相同的名字，以便于识别</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="用户定义的完整性"><a class="markdownIt-Anchor" href="#用户定义的完整性"></a> 用户定义的完整性</h3>
-<ul>
-<li>是针对某一具体关系数据库的约束条件，反映某一<strong>具体应用所涉及的数据必须满足的语义要求</strong></li>
-</ul>
-<h2 id="关系代数关系操作集合"><a class="markdownIt-Anchor" href="#关系代数关系操作集合"></a> 关系代数（关系操作集合）</h2>
-<h3 id="什么是代数"><a class="markdownIt-Anchor" href="#什么是代数"></a> 什么是代数</h3>
-<p>运算对象+运算符</p>
-<h3 id="什么是关系代数"><a class="markdownIt-Anchor" href="#什么是关系代数"></a> 什么是关系代数</h3>
-<ul>
-<li>关系代数是对关系的查询语言：<strong>以对关系的运算表达查询</strong></li>
-<li>关系代数运算的三个要素
-<ul>
-<li>运算对象：关系</li>
-<li>运算结果：关系</li>
-<li>运算符<font color="purple">（操作）</font>：四类<br />
-<img src="https://s2.loli.net/2024/03/18/weaSoNv1hKmFLDz.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/>
-<ul>
-<li>右列起辅助作用</li>
-<li>标黄的五种运算符构成基本运算，可以推导出其它所有运算</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>关系代数具有能力限制，比如不能实现传递闭包</li>
-</ul>
-<h3 id="运算规则"><a class="markdownIt-Anchor" href="#运算规则"></a> 运算规则</h3>
-<ul>
-<li>
-<p>并、交、差</p>
-<ul>
-<li>前提条件：<strong><em>相容</em></strong>（同元、对应属性域相同）</li>
-</ul>
-</li>
-<li>
-<p><font color="red">广义</font>笛卡尔积（R x S）</p>
-</li>
-<li>
-<p><strong><em>选择（selection）</em></strong> <font color="purple">条件筛选</font></p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>σ</mi><mi>F</mi></msub><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">{</mo><mi>t</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo>∈</mo><mi>R</mi><mo>∧</mo><mi>F</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mi>t</mi><mi>r</mi><mi>u</mi><mi>e</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\sigma_F(R)= \{t | t \in R \wedge F(t) = true\}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault">t</span><span class="mord">∣</span><span class="mord mathdefault">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathdefault">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">u</span><span class="mord mathdefault">e</span><span class="mclose">}</span></span></span></span></span></p>
-<p><img src="https://s2.loli.net/2024/03/18/B6mps8Nd7uxSfZM.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li><font color="blue">多个条件用逻辑与<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∧</mo></mrow><annotation encoding="application/x-tex">\wedge</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.55556em;vertical-align:0em;"></span><span class="mord">∧</span></span></span></span>或者逻辑或<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∨</mo></mrow><annotation encoding="application/x-tex">\vee</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.55556em;vertical-align:0em;"></span><span class="mord">∨</span></span></span></span>表述</font></li>
-</ul>
-</li>
-<li>
-<p><strong><em>投影（projection）</em></strong> <font color="purple">保留关注的属性</font></p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi mathvariant="normal">Π</mi><mi>A</mi></msub><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">{</mo><mi>r</mi><mi mathvariant="normal">.</mi><mi>A</mi><mi mathvariant="normal">∣</mi><mi>r</mi><mo>∈</mo><mi>R</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\Pi_A (R) = \{r.A | r \in R\}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">.</span><span class="mord mathdefault">A</span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">}</span></span></span></span></span></p>
-<p><img src="https://s2.loli.net/2024/03/18/dsptTjyNvkGqSwu.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li>两步：选择属性，<font color="red"><strong>删除重复行（去重）</strong></font></li>
-</ul>
-</li>
-<li>
-<p><strong><em>连接（join）</em></strong> <font color="purple">把不同表里的信息汇总</font></p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><munder><mo><mo>⋈</mo></mo><mrow><mi>A</mi><mi>θ</mi><mi>B</mi></mrow></munder><mi>S</mi><mo>=</mo><mo stretchy="false">{</mo><mi>t</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo>=</mo><mo>&lt;</mo><mi>r</mi><mo separator="true">,</mo><mi>s</mi><mo>&gt;</mo><mo>∧</mo><mi>r</mi><mo>∈</mo><mi>R</mi><mo>∧</mo><mi>s</mi><mo>∈</mo><mi>S</mi><mo>∧</mo><mi>r</mi><mo stretchy="false">[</mo><mi>A</mi><mo stretchy="false">]</mo><mi>θ</mi><mi>s</mi><mo stretchy="false">[</mo><mi>B</mi><mo stretchy="false">]</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">R \mathop\bowtie\limits_{A\theta B} S = \{ t | t = &lt; r, s &gt; \wedge r\in R \wedge s\in S \wedge r[A] \theta s[B]\}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4404379999999999em;vertical-align:-0.7571079999999999em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.505em;"><span style="top:-2.342892em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">A</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">θ</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⋈</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7571079999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault">t</span><span class="mord">∣</span><span class="mord mathdefault">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7335400000000001em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.5946600000000001em;vertical-align:-0.0391em;"></span><span class="mord">∧</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mopen">[</span><span class="mord mathdefault">A</span><span class="mclose">]</span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mord mathdefault">s</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mclose">]</span><span class="mclose">}</span></span></span></span></span></p>
-<p><img src="https://s2.loli.net/2024/03/18/yhBlomJgjciV7Zv.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li><strong><em>自然连接（natural join）</em></strong>
-<ul>
-<li><strong><em>等值连接</em></strong>（从两个关系的笛卡尔积中选取相同属性值相等的元组）<font color="red">+ 去掉重复属性</font></li>
-<li>不用写 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span></span></span></span> 操作</li>
-</ul>
-</li>
-<li><strong><em>外连接（outer join）</em></strong><br />
-为避免自然连接时因<strong>失配</strong>而发生的信息丢失，可以假定往参与连接的一方表中<strong>附加一个取值全为空值的行</strong>
-<ul>
-<li><font color="blue">外连接 = 自然连接 + 失配的元组</font></li>
-<li>左外连接 ⟕（自然连接+左侧表失配），右外连接 ⟖，全外连接 ⟗</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><strong><em>除法</em></strong><br />
-设 R(X,Y)和 S(Y)是两个关系，则</p>
-<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo>÷</mo><mi>S</mi><mo>=</mo><msub><mi mathvariant="normal">Π</mi><mi>X</mi></msub><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mi mathvariant="normal">－</mi><msub><mi mathvariant="normal">Π</mi><mi>X</mi></msub><mo stretchy="false">(</mo><mo stretchy="false">(</mo><msub><mi mathvariant="normal">Π</mi><mi>X</mi></msub><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo>×</mo><msub><mi mathvariant="normal">Π</mi><mi>Y</mi></msub><mo stretchy="false">(</mo><mi>S</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mi mathvariant="normal">－</mi><mi>R</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">{</mo><mi>r</mi><mi mathvariant="normal">.</mi><mi>X</mi><mi mathvariant="normal">∣</mi><mi>r</mi><mo>∈</mo><mi>R</mi><mo>∧</mo><msub><mi>Y</mi><mi>x</mi></msub><mo>⊆</mo><mi>S</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">R÷S = \Pi_X(R) －\Pi_X(( \Pi_X(R) \times \Pi_Y(S)) － R )= \{r.X | r \in R\wedge Y_x \subseteq S\}
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mord cjk_fallback">－</span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mopen">(</span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.22222em;">Y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mclose">)</span><span class="mclose">)</span><span class="mord cjk_fallback">－</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">.</span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">⊆</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mclose">}</span></span></span></span></span></p>
-<ul>
-<li>第二个等号的理解
-<ul>
-<li><font color="purple">元组在 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span></span></span></span> 上的分量值 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span> 的象集 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>Y</mi><mi>x</mi></msub></mrow><annotation encoding="application/x-tex">Y_x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 包含关系 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span> 在属性组 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span></span></span></span> 上投影的集合</font></li>
-<li><strong><em>象集</em></strong> :本质是一次选择运算和一次投影运算</li>
-</ul>
-</li>
-<li>书写时注意 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">Π</mi></mrow><annotation encoding="application/x-tex">\Pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">Π</span></span></span></span> 的正确应用
-<ul>
-<li><font color="blue">eg.求至少用了供应商 S1 所供应的全部零件的工程号 JNO</font><p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi mathvariant="normal">Π</mi><mrow><mi>J</mi><mi>N</mi><mi>O</mi><mo separator="true">,</mo><mi>P</mi><mi>N</mi><mi>O</mi></mrow></msub><mo stretchy="false">(</mo><mi>S</mi><mi>P</mi><mi>J</mi><mo stretchy="false">)</mo><mo>÷</mo><msub><mi mathvariant="normal">Π</mi><mrow><mi>P</mi><mi>N</mi><mi>O</mi></mrow></msub><mo stretchy="false">(</mo><msub><mi>σ</mi><mrow><mi>S</mi><mi>I</mi><mi>D</mi><mo>=</mo><mi>S</mi><mn>1</mn></mrow></msub><mo stretchy="false">(</mo><mi>S</mi><mi>P</mi><mi>J</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Pi_{JNO,PNO}(SPJ)÷\Pi_{PNO}(\sigma_{SID=S1}(SPJ))
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.09618em;">J</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">O</span><span class="mpunct mtight">,</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">O</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">O</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05764em;">S</span><span class="mord mathdefault mtight" style="margin-right:0.07847em;">I</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">D</span><span class="mrel mtight">=</span><span class="mord mathdefault mtight" style="margin-right:0.05764em;">S</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>“最多”问题——创建副本</p>
-<ul>
-<li>eg.查询最多选修了一门其直接先行课为 6 号课程的学生姓名<br />
-<img src="https://s2.loli.net/2024/03/18/tev2LOwSCuDhfdE.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/><br />
-步骤：
-<ol>
-<li>将 SC 与 COURSE 做自然连接为表 A</li>
-<li>投影留下属性 sno、cno、cpno 为表 B</li>
-<li>创建 B 的副本 B1，属性分别为 sno1、cno1、cpno1</li>
-<li>将 B 与 B1 做连接，连接条件为 sno1=sno,cno1≠cno,cpno1=cpno=6，形成表 C</li>
-<li>做投影（自动去重了）留下属性 sno 形成表 D</li>
-<li>将表 D 与 STUDENT 作自然连接形成表 E</li>
-<li>做投影留下属性 sname 形成表 F ，即为答案</li>
-</ol>
-</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>DB</category>
-      </categories>
-      <tags>
-        <tag>Notes</tag>
-        <tag>BUAA</tag>
       </tags>
   </entry>
   <entry>
@@ -1652,6 +1406,252 @@ eg make test lab=1_2</li>
       <tags>
         <tag>BUAA</tag>
         <tag>Lab</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUAA DB-C2-2 逻辑模型</title>
+    <url>/DB/BUAA-DB-C2-2/</url>
+    <content><![CDATA[<h1 id="逻辑模型概述"><a class="markdownIt-Anchor" href="#逻辑模型概述"></a> 逻辑模型概述</h1>
+<ul>
+<li>是对现实世界的第二层抽象。负责将概念数据模式<strong>映射为数据库的逻辑结构</strong></li>
+<li><strong>直接与 DBMS 有关</strong>,有严格的形式化定义</li>
+<li>通常有一组<strong>严格定义的无二义性语法和语义的 DB 语言</strong></li>
+<li>逻辑数据模型的三要素：<strong>数据结构、数据操作和数据约束</strong></li>
+</ul>
+<h2 id="逻辑数据模型的发展"><a class="markdownIt-Anchor" href="#逻辑数据模型的发展"></a> <strong>逻辑数据模型的发展</strong></h2>
+<p>文件模型 → 层次模型 → 网状模型 → 关系模型</p>
+<p><img src="https://s2.loli.net/2024/03/18/t9GIlBHiRfseU4A.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><img src="https://s2.loli.net/2024/03/18/cYNfhKqvpuT7bC9.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>关系模型适用于结构清晰的数据的管理，根据数据特点还可以采用 XML 模型、面向对象模型等</li>
+</ul>
+<h1 id="关系模型"><a class="markdownIt-Anchor" href="#关系模型"></a> 关系模型</h1>
+<h2 id="关系数据结构"><a class="markdownIt-Anchor" href="#关系数据结构"></a> 关系数据结构</h2>
+<ul>
+<li>关系模型是用<strong>二维表格结构</strong>来表示实体及实体之间联系的模型，是<strong>各个关系的框架的集合</strong></li>
+<li><strong><em>域</em></strong>：<font color="red">是一组具有相同数据类型的值的集合</font><font color="purple">（注意表达，最好不要直接说为“取值范围”）</font>，通常用 D 表示，域中所包含的值的个数称为域的<em>基数</em>（用 m 表示）</li>
+<li><strong><em>笛卡尔积</em></strong>：
+<ul>
+<li>笛卡尔积每一个元素（d1，d2，d3，…，dn）叫做一个<em>n 元组</em>，简称<em>元组</em>（Tuple）</li>
+</ul>
+</li>
+<li>数学上关系是笛卡尔积的任意子集，但在实际应用中关系是笛卡尔积中所取的<strong>有意义的子集</strong></li>
+</ul>
+<h3 id="关系模式"><a class="markdownIt-Anchor" href="#关系模式"></a> 关系模式</h3>
+<ul>
+<li>关系模式：关系的描述称为关系模式。它可以形式化地表示为 R(U,D,DOM,F)
+<ul>
+<li>其中 R 为关系名,U 为组成该关系的属性名集合,D 为属性组 U 中属性所来自的域,DOM 为属性向域的映像集合,F 为属性间数据的依赖关系集合。</li>
+</ul>
+</li>
+<li>关系：是<strong>关系模式在某一时刻的状态或内容</strong>。</li>
+<li>关系模式是静态的、稳定的而关系是动态的、随时间不断变化的；<font color="purple"><strong>关系模式是型，关系是值</strong></font></li>
+</ul>
+<h3 id="重要性质"><a class="markdownIt-Anchor" href="#重要性质"></a> 重要性质</h3>
+<ul>
+<li>关系中每一分量必须是<strong>不可分的</strong>数据项。所有属性值都是原子的，是一个确定的值，而不是值的集合</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/03/18/mj1WFkcs9afZl4h.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h2 id="er-模型向关系模型转化"><a class="markdownIt-Anchor" href="#er-模型向关系模型转化"></a> <strong>ER 模型向关系模型转化</strong></h2>
+<h3 id="基本规则"><a class="markdownIt-Anchor" href="#基本规则"></a> 基本规则</h3>
+<ul>
+<li>
+<p><strong>实体类型</strong>：关系模式的属性为<strong>实体的属性</strong></p>
+</li>
+<li>
+<p><strong>二元联系</strong></p>
+<ul>
+<li>
+<p><strong>m:n 联系</strong>：将联系类型也单独转换成关系模式，关系模式属性为<strong>联系的属性和两联系实体的主键</strong><br />
+<img src="https://s2.loli.net/2024/03/18/6ruF9IVjoHBg1sz.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+<li>
+<p><strong>1：n 联系</strong>：合并到 n 端对应的实体关系模式中</p>
+<ul>
+<li>注意合并时不要漏掉<strong>另一个实体的主键</strong>！<br />
+<img src="https://s2.loli.net/2024/03/18/fGz9tORQ8oqFBHT.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></li>
+</ul>
+</li>
+<li>
+<p><strong>1：1 联系</strong>：可以合并到任意端对应的实体关系模式中，最好选择<strong>常用</strong>的一个<br />
+<img src="https://s2.loli.net/2024/03/18/UDCboBWcRkdu2v1.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>三元联系</strong></p>
+<ul>
+<li><strong>1:1:1 联系</strong>与 1:1 联系同理</li>
+<li><strong>1:1:n 联系</strong>与 1:n 联系同理</li>
+<li><strong>m:n:p 联系与 1 : m : n 联系</strong>：将联系类型也单独转换成关系模式，其属性为多端实体类型的键（作为外键）加上联系的属性</li>
+</ul>
+</li>
+</ul>
+<h2 id="关系的完整性约束"><a class="markdownIt-Anchor" href="#关系的完整性约束"></a> 关系的完整性约束</h2>
+<h3 id="域完整性"><a class="markdownIt-Anchor" href="#域完整性"></a> 域完整性</h3>
+<ul>
+<li>对属性值 <strong>能否为空(NULL)</strong> 的检查也是域完整性约束的一部分</li>
+</ul>
+<h3 id="实体完整性"><a class="markdownIt-Anchor" href="#实体完整性"></a> 实体完整性</h3>
+<ul>
+<li>实体完整性<strong>用主键来约束</strong>
+<ul>
+<li>主属性不能为空，且取值唯一</li>
+</ul>
+</li>
+</ul>
+<h3 id="参照完整性"><a class="markdownIt-Anchor" href="#参照完整性"></a> 参照完整性</h3>
+<ul>
+<li><strong><em>外键</em></strong>
+<ul>
+<li>设 F 是关系 R 的一个或一组属性，但<strong>不是关系 R 的键</strong>，且 F<strong>与关系 S 的主键 K 相对应</strong>（相对应的意思就是符合参照完整性规则），则称 F 是关系 R 的外键
+<ul>
+<li>关系 R 称为<em>参照关系</em></li>
+<li>关系 S 称为<em>被参照关系</em>或<em>目标关系</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>参照完整性规则</strong>：外键上的取值只能是空值，或等于被参照关系中某个元组的主键值<font color="purple">（可以没分配，不能分到不存在的地方）</font><br />
+<img src="https://s2.loli.net/2024/03/18/lvZTRWVc9JK2IEo.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/>
+<ul>
+<li><font color="blue">如果外码属性<strong>相对应的主码属性存在</strong>，而外码本身不存在，则外码属性的值可以为空值</font></li>
+<li><font color="red">关系 R 和 S 不一定是不同的关系
+<ul>
+<li>eg 在学生（学号，姓名，年龄，专业号，班长）关系中，“学号”属性是主键，“班长”属性表示该学生所在班级的班长的学号，可以作为关系的外键</font></li>
+</ul>
+</li>
+<li>目标关系 S 的主键 K 和参照关系的外键 F 必须定义在同一个（或一组）域上</li>
+<li>外键并不一定要与相应的主键同名
+<ul>
+<li>当外键与相应的主键属于不同关系时，往往取相同的名字，以便于识别</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="用户定义的完整性"><a class="markdownIt-Anchor" href="#用户定义的完整性"></a> 用户定义的完整性</h3>
+<ul>
+<li>是针对某一具体关系数据库的约束条件，反映某一<strong>具体应用所涉及的数据必须满足的语义要求</strong></li>
+</ul>
+<h2 id="关系代数关系操作集合"><a class="markdownIt-Anchor" href="#关系代数关系操作集合"></a> 关系代数（关系操作集合）</h2>
+<h3 id="什么是代数"><a class="markdownIt-Anchor" href="#什么是代数"></a> 什么是代数</h3>
+<p>运算对象+运算符</p>
+<h3 id="什么是关系代数"><a class="markdownIt-Anchor" href="#什么是关系代数"></a> 什么是关系代数</h3>
+<ul>
+<li>关系代数是对关系的查询语言：<strong>以对关系的运算表达查询</strong></li>
+<li>关系代数运算的三个要素
+<ul>
+<li>运算对象：关系</li>
+<li>运算结果：关系</li>
+<li>运算符<font color="purple">（操作）</font>：四类<br />
+<img src="https://s2.loli.net/2024/03/18/weaSoNv1hKmFLDz.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/>
+<ul>
+<li>右列起辅助作用</li>
+<li>标黄的五种运算符构成基本运算，可以推导出其它所有运算</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>关系代数具有能力限制，比如不能实现传递闭包</li>
+</ul>
+<h3 id="运算规则"><a class="markdownIt-Anchor" href="#运算规则"></a> 运算规则</h3>
+<ul>
+<li>
+<p>并、交、差</p>
+<ul>
+<li>前提条件：<strong><em>相容</em></strong>（同元、对应属性域相同）</li>
+</ul>
+</li>
+<li>
+<p><font color="red">广义</font>笛卡尔积（R x S）</p>
+</li>
+<li>
+<p><strong><em>选择（selection）</em></strong> <font color="purple">条件筛选</font></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>σ</mi><mi>F</mi></msub><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">{</mo><mi>t</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo>∈</mo><mi>R</mi><mo>∧</mo><mi>F</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mi>t</mi><mi>r</mi><mi>u</mi><mi>e</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\sigma_F(R)= \{t | t \in R \wedge F(t) = true\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault">t</span><span class="mord">∣</span><span class="mord mathdefault">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathdefault">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">u</span><span class="mord mathdefault">e</span><span class="mclose">}</span></span></span></span></span></p>
+<p><img src="https://s2.loli.net/2024/03/18/B6mps8Nd7uxSfZM.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li><font color="blue">多个条件用逻辑与<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∧</mo></mrow><annotation encoding="application/x-tex">\wedge</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.55556em;vertical-align:0em;"></span><span class="mord">∧</span></span></span></span>或者逻辑或<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∨</mo></mrow><annotation encoding="application/x-tex">\vee</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.55556em;vertical-align:0em;"></span><span class="mord">∨</span></span></span></span>表述</font></li>
+</ul>
+</li>
+<li>
+<p><strong><em>投影（projection）</em></strong> <font color="purple">保留关注的属性</font></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi mathvariant="normal">Π</mi><mi>A</mi></msub><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">{</mo><mi>r</mi><mi mathvariant="normal">.</mi><mi>A</mi><mi mathvariant="normal">∣</mi><mi>r</mi><mo>∈</mo><mi>R</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\Pi_A (R) = \{r.A | r \in R\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">.</span><span class="mord mathdefault">A</span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">}</span></span></span></span></span></p>
+<p><img src="https://s2.loli.net/2024/03/18/dsptTjyNvkGqSwu.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>两步：选择属性，<font color="red"><strong>删除重复行（去重）</strong></font></li>
+</ul>
+</li>
+<li>
+<p><strong><em>连接（join）</em></strong> <font color="purple">把不同表里的信息汇总</font></p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><munder><mo><mo>⋈</mo></mo><mrow><mi>A</mi><mi>θ</mi><mi>B</mi></mrow></munder><mi>S</mi><mo>=</mo><mo stretchy="false">{</mo><mi>t</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo>=</mo><mo>&lt;</mo><mi>r</mi><mo separator="true">,</mo><mi>s</mi><mo>&gt;</mo><mo>∧</mo><mi>r</mi><mo>∈</mo><mi>R</mi><mo>∧</mo><mi>s</mi><mo>∈</mo><mi>S</mi><mo>∧</mo><mi>r</mi><mo stretchy="false">[</mo><mi>A</mi><mo stretchy="false">]</mo><mi>θ</mi><mi>s</mi><mo stretchy="false">[</mo><mi>B</mi><mo stretchy="false">]</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">R \mathop\bowtie\limits_{A\theta B} S = \{ t | t = &lt; r, s &gt; \wedge r\in R \wedge s\in S \wedge r[A] \theta s[B]\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.4404379999999999em;vertical-align:-0.7571079999999999em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.505em;"><span style="top:-2.342892em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">A</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">θ</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⋈</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7571079999999999em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault">t</span><span class="mord">∣</span><span class="mord mathdefault">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7335400000000001em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.5946600000000001em;vertical-align:-0.0391em;"></span><span class="mord">∧</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mopen">[</span><span class="mord mathdefault">A</span><span class="mclose">]</span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mord mathdefault">s</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mclose">]</span><span class="mclose">}</span></span></span></span></span></p>
+<p><img src="https://s2.loli.net/2024/03/18/yhBlomJgjciV7Zv.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li><strong><em>自然连接（natural join）</em></strong>
+<ul>
+<li><strong><em>等值连接</em></strong>（从两个关系的笛卡尔积中选取相同属性值相等的元组）<font color="red">+ 去掉重复属性</font></li>
+<li>不用写 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span></span></span></span> 操作</li>
+</ul>
+</li>
+<li><strong><em>外连接（outer join）</em></strong><br />
+为避免自然连接时因<strong>失配</strong>而发生的信息丢失，可以假定往参与连接的一方表中<strong>附加一个取值全为空值的行</strong>
+<ul>
+<li><font color="blue">外连接 = 自然连接 + 失配的元组</font></li>
+<li>左外连接 ⟕（自然连接+左侧表失配），右外连接 ⟖，全外连接 ⟗</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><em>除法</em></strong><br />
+设 R(X,Y)和 S(Y)是两个关系，则</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>R</mi><mo>÷</mo><mi>S</mi><mo>=</mo><msub><mi mathvariant="normal">Π</mi><mi>X</mi></msub><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mi mathvariant="normal">－</mi><msub><mi mathvariant="normal">Π</mi><mi>X</mi></msub><mo stretchy="false">(</mo><mo stretchy="false">(</mo><msub><mi mathvariant="normal">Π</mi><mi>X</mi></msub><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo>×</mo><msub><mi mathvariant="normal">Π</mi><mi>Y</mi></msub><mo stretchy="false">(</mo><mi>S</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mi mathvariant="normal">－</mi><mi>R</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">{</mo><mi>r</mi><mi mathvariant="normal">.</mi><mi>X</mi><mi mathvariant="normal">∣</mi><mi>r</mi><mo>∈</mo><mi>R</mi><mo>∧</mo><msub><mi>Y</mi><mi>x</mi></msub><mo>⊆</mo><mi>S</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">R÷S = \Pi_X(R) －\Pi_X(( \Pi_X(R) \times \Pi_Y(S)) － R )= \{r.X | r \in R\wedge Y_x \subseteq S\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mord cjk_fallback">－</span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mopen">(</span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.07847em;">X</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.22222em;">Y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mclose">)</span><span class="mclose">)</span><span class="mord cjk_fallback">－</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">.</span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="mord">∣</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">⊆</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mclose">}</span></span></span></span></span></p>
+<ul>
+<li>第二个等号的理解
+<ul>
+<li><font color="purple">元组在 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07847em;">X</span></span></span></span> 上的分量值 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span> 的象集 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>Y</mi><mi>x</mi></msub></mrow><annotation encoding="application/x-tex">Y_x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.22222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 包含关系 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span></span></span></span> 在属性组 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span></span></span></span> 上投影的集合</font></li>
+<li><strong><em>象集</em></strong> :本质是一次选择运算和一次投影运算</li>
+</ul>
+</li>
+<li>书写时注意 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">Π</mi></mrow><annotation encoding="application/x-tex">\Pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">Π</span></span></span></span> 的正确应用
+<ul>
+<li><font color="blue">eg.求至少用了供应商 S1 所供应的全部零件的工程号 JNO</font><p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi mathvariant="normal">Π</mi><mrow><mi>J</mi><mi>N</mi><mi>O</mi><mo separator="true">,</mo><mi>P</mi><mi>N</mi><mi>O</mi></mrow></msub><mo stretchy="false">(</mo><mi>S</mi><mi>P</mi><mi>J</mi><mo stretchy="false">)</mo><mo>÷</mo><msub><mi mathvariant="normal">Π</mi><mrow><mi>P</mi><mi>N</mi><mi>O</mi></mrow></msub><mo stretchy="false">(</mo><msub><mi>σ</mi><mrow><mi>S</mi><mi>I</mi><mi>D</mi><mo>=</mo><mi>S</mi><mn>1</mn></mrow></msub><mo stretchy="false">(</mo><mi>S</mi><mi>P</mi><mi>J</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Pi_{JNO,PNO}(SPJ)÷\Pi_{PNO}(\sigma_{SID=S1}(SPJ))
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328331em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.09618em;">J</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">O</span><span class="mpunct mtight">,</span><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">O</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">Π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">P</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">O</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05764em;">S</span><span class="mord mathdefault mtight" style="margin-right:0.07847em;">I</span><span class="mord mathdefault mtight" style="margin-right:0.02778em;">D</span><span class="mrel mtight">=</span><span class="mord mathdefault mtight" style="margin-right:0.05764em;">S</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>“最多”问题——创建副本</p>
+<ul>
+<li>eg.查询最多选修了一门其直接先行课为 6 号课程的学生姓名<br />
+<img src="https://s2.loli.net/2024/03/18/tev2LOwSCuDhfdE.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/><br />
+步骤：
+<ol>
+<li>将 SC 与 COURSE 做自然连接为表 A</li>
+<li>投影留下属性 sno、cno、cpno 为表 B</li>
+<li>创建 B 的副本 B1，属性分别为 sno1、cno1、cpno1</li>
+<li>将 B 与 B1 做连接，连接条件为 sno1=sno,cno1≠cno,cpno1=cpno=6，形成表 C</li>
+<li>做投影（自动去重了）留下属性 sno 形成表 D</li>
+<li>将表 D 与 STUDENT 作自然连接形成表 E</li>
+<li>做投影留下属性 sname 形成表 F ，即为答案</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>DB</category>
+      </categories>
+      <tags>
+        <tag>Notes</tag>
+        <tag>BUAA</tag>
       </tags>
   </entry>
   <entry>
@@ -2745,6 +2745,11 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
 ]]></content>
   </entry>
   <entry>
+    <title>Docker-Basics</title>
+    <url>/uncategorized/Docker-Basics/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Django-Basics</title>
     <url>/Back-end/Django-Basics/</url>
     <content><![CDATA[<h2 id="视图与url"><a class="markdownIt-Anchor" href="#视图与url"></a> 视图与URL</h2>
@@ -3320,11 +3325,6 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
       </tags>
   </entry>
   <entry>
-    <title>Docker-Basics</title>
-    <url>/uncategorized/Docker-Basics/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>HTML-Basics</title>
     <url>/Web/HTML-Basics/</url>
     <content><![CDATA[<h1 id="核心概念"><a class="markdownIt-Anchor" href="#核心概念"></a> 核心概念</h1>
@@ -3883,6 +3883,255 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
 ]]></content>
   </entry>
   <entry>
+    <title>Vue-组件基础</title>
+    <url>/Web/Vue-Components/</url>
+    <content><![CDATA[<p><font color="grey">注意：每个代码片段只举例部分和当前解释的用法有关的代码，其他部分选择性省略</font></p>
+<h2 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h2>
+<p>一般将 Vue 组件定义在一个单独的  <code>.vue</code>  文件中，这被叫做***单文件组件*** (SFC，使组件更有内聚性和可维护性)</p>
+<h3 id="命名注意"><a class="markdownIt-Anchor" href="#命名注意"></a> 命名注意</h3>
+<p>一般使用 <strong>PascalCase</strong> 作为组件名的注册格式，更明显地表明了这是一个 Vue 组件，且便于在 JavaScript 中导入和注册组件</p>
+<h2 id="注册"><a class="markdownIt-Anchor" href="#注册"></a> 注册</h2>
+<p>使用一个子组件前需要在父组件中使用 <code>import</code> 语句导入。通过  <code>**&lt;script setup&gt;**</code>，导入的组件都在模板中<strong>直接可用</strong>，不需要再进行局部注册</p>
+<p>eg.</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">ButtonCounter</span> <span class="keyword">from</span> <span class="string">&quot;./ButtonCounter.vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="局部注册与全局注册"><a class="markdownIt-Anchor" href="#局部注册与全局注册"></a> 局部注册与全局注册</h3>
+<p>如果不使用  <code>&lt;script setup&gt;</code> ，在使用组件前需要先进行注册。</p>
+<ul>
+<li>
+<p><strong><em>局部注册</em></strong></p>
+<p>在使用它的父组件中使用  <code>components</code>  选项显式导入</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ComponentA</span> <span class="keyword">from</span> <span class="string">&quot;./ComponentA.js&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">components</span>: &#123;</span><br><span class="line">    <span class="title class_">ComponentA</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">setup</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>缺点：只能在该父组件中使用</li>
+<li>优点：组件之间的依赖关系更加明确</li>
+</ul>
+</li>
+<li>
+<p><strong><em>全局注册</em></strong><br />
+在 main.js 中使用  <code>.component()</code>  方法</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">MyComponent</span> <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">component</span>(<span class="string">&quot;MyComponent&quot;</span>, <span class="title class_">MyComponent</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>缺点：依赖关系不明确，影响应用可维护性</li>
+<li>优点：组件在当前 Vue 应用中全局可用</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h2>
+<p>每使用一个组件就会创建一个新的<strong>实例</strong>（不同实例之间的参数不相互影响）</p>
+<h3 id="dom-vs-sfc-中组件编写-解析"><a class="markdownIt-Anchor" href="#dom-vs-sfc-中组件编写-解析"></a> DOM VS SFC 中组件编写、解析</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>DOM</th>
+<th>SFC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大小写区分（命名/使用）</td>
+<td>kebab-case (短横线连字符) 形式</td>
+<td>PascalCase 形式</td>
+</tr>
+<tr>
+<td>闭合标签</td>
+<td>必须显式地写出关闭标签 eg.&lt;my-component&gt;&lt;/my-component&gt;</td>
+<td>可以使用 eg.&lt;MyComponent /&gt;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>元素位置限制</strong></p>
+<p>某些 HTML 元素对于放在其中的元素类型有限制，例如  <code>&lt;ul&gt;</code>，<code>&lt;ol&gt;</code>，<code>&lt;table&gt;</code>,这将导致在使用带有此类限制元素的组件时出现问题，如</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">blog-post-row</span>&gt;</span><span class="tag">&lt;/<span class="name">blog-post-row</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们可以使用特殊的  <code>is</code> attribute  作为一种解决方案</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">tr</span> <span class="attr">is</span>=<span class="string">&quot;vue:blog-post-row&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="传递-props"><a class="markdownIt-Anchor" href="#传递-props"></a> <strong>传递 props</strong></h2>
+<p>先在SFC的<code>&lt;script setup&gt;</code>里用 <code>defineProps</code> 宏定义，使用组件时再传参</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineProps</span>([<span class="string">&#x27;title&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h4</span>&gt;</span>&#123;&#123; title &#125;&#125;<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;My journey with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Blogging with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Why Vue is so fun&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="多组props"><a class="markdownIt-Anchor" href="#多组props"></a> 多组<strong>props</strong></h3>
+<p>在实际应用中，在父组件中可能会有如下的一个博客文章数组，这种情况下使用 <code>v-for</code> 来渲染</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> posts = <span class="title function_">ref</span>([</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">title</span>: <span class="string">&#x27;My journey with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">title</span>: <span class="string">&#x27;Blogging with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">title</span>: <span class="string">&#x27;Why Vue is so fun&#x27;</span> &#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;<span class="title class_">BlogPost</span></span><br><span class="line">  v-<span class="keyword">for</span>=<span class="string">&quot;post in posts&quot;</span></span><br><span class="line">  :key=<span class="string">&quot;post.id&quot;</span></span><br><span class="line">  :title=<span class="string">&quot;post.title&quot;</span></span><br><span class="line"> /&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="插槽传递内容"><a class="markdownIt-Anchor" href="#插槽传递内容"></a> <strong>插槽(传递内容)</strong></h2>
+<p>使用***插槽（slot***）在父组件中给子组件传递内容。</p>
+<p>插槽内容可以是任意合法的模板内容，不局限于文本，<strong>可以传入多个元素，甚至是组件</strong></p>
+<ol>
+<li>
+<p>在SFC中设置好插槽出口</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;fancy-btn&quot;</span>&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">slot</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span> <span class="comment">&lt;!-- 插槽出口 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在父组件中传入插槽内容</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">FancyButton</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 插槽内容 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>Click me!<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">AwesomeIcon</span> <span class="attr">name</span>=<span class="string">&quot;plus&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">FancyButton</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="监听事件"><a class="markdownIt-Anchor" href="#监听事件"></a> <strong>监听事件</strong></h2>
+<ol>
+<li>
+<p>在SFC的<code>&lt;script setup&gt;</code>中通过 <code>defineEmits</code> 宏来声明需要抛出的事件（和<code>defineProps</code>有点像）</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineEmits</span>([<span class="string">&#x27;enlarge-text&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>调用内置的 <code>$emit</code> 方法，通过传入事件名称来抛出一个事件</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;$emit(&#x27;enlarge-text&#x27;)&quot;</span>&gt;</span>Enlarge text<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在父组件中通过 <code>v-on</code> 或 <code>@</code> 来选择性地监听子组件上抛的事件</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span></span></span><br><span class="line"><span class="tag">  @<span class="attr">enlarge-text</span>=<span class="string">&quot;postFontSize += 0.1&quot;</span></span></span><br><span class="line"><span class="tag"> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="动态组件"><a class="markdownIt-Anchor" href="#动态组件"></a> 动态组件</h2>
+<p>使用 <code>&lt;component&gt;</code> 元素和特殊的 <code>is</code> attribute 实现动态组件切换</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Home</span> <span class="keyword">from</span> <span class="string">&#x27;./Home.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Posts</span> <span class="keyword">from</span> <span class="string">&#x27;./Posts.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Archive</span> <span class="keyword">from</span> <span class="string">&#x27;./Archive.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> tabs = &#123;<span class="title class_">Home</span>, <span class="title class_">Posts</span>, <span class="title class_">Archive</span>&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;demo&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span></span></span><br><span class="line"><span class="tag">       <span class="attr">v-for</span>=<span class="string">&quot;(_, tab) in tabs&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:key</span>=<span class="string">&quot;tab&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:class</span>=<span class="string">&quot;[&#x27;tab-button&#x27;, &#123; active: currentTab === tab &#125;]&quot;</span></span></span><br><span class="line"><span class="tag">       @<span class="attr">click</span>=<span class="string">&quot;currentTab = tab&quot;</span></span></span><br><span class="line"><span class="tag">     &gt;</span></span><br><span class="line">      &#123;&#123; tab &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 动态组件切换 --&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">component</span> <span class="attr">:is</span>=<span class="string">&quot;tabs[currentTab]&quot;</span> <span class="attr">class</span>=<span class="string">&quot;tab&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue-开始一个新项目</title>
+    <url>/Web/Vue-Start-a-new-project/</url>
+    <content><![CDATA[<h2 id="初始化"><a class="markdownIt-Anchor" href="#初始化"></a> 初始化</h2>
+<p>默认node.js等等已经下载好，并使用vscode进行开发</p>
+<ol>
+<li>
+<p><strong>工程文件的创建</strong></p>
+<p>创建一个空文件夹，在目录下进入命令行cmd，输入</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm create vue@latest</span><br></pre></td></tr></table></figure>
+<p>按需求进行选项选择与配置初始化</p>
+</li>
+<li>
+<p><strong>安装所需的依赖包</strong></p>
+<p>进入vscode，打开终端cmd，输入</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p>它会读取项目目录中的 “package.json” 文件，并从 npm registry 下载定义的依赖包</p>
+</li>
+<li>
+<p><strong>尝试启动开发环境</strong></p>
+<p>同样在上一步终端中输入</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+<p>会给出运行的网址，<code>CTRL+左键</code> 即可预览，用于开发和测试Web应用程序</p>
+</li>
+</ol>
+<h2 id="第三方库配置"><a class="markdownIt-Anchor" href="#第三方库配置"></a> 第三方库配置</h2>
+<h3 id="element-plus"><a class="markdownIt-Anchor" href="#element-plus"></a> <strong>Element Plus</strong></h3>
+<ol>
+<li>
+<p><strong>安装 Element Plus</strong></p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install element-plus --save</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>--save</code> 标志会将 Element Plus 添加到项目的 <code>package.json</code> 文件的依赖列表中，确保其他开发者或者在不同环境中都能通过 <code>npm install</code> 命令安装相同的依赖</li>
+</ul>
+</li>
+<li>
+<p><strong>引入 Element Plus</strong></p>
+<p>在 main.js 中引入 Element Plus（注释掉的是原有语句，用于指示新语句插入位置）</p>
+ <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">//import &#123; createApp &#125; from &#x27;vue&#x27;</span></span><br><span class="line"><span class="comment">//import App from &#x27;./App.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ElementPlus</span> <span class="keyword">from</span> <span class="string">&#x27;element-plus&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;element-plus/dist/index.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//const app = createApp(App)</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title class_">ElementPlus</span>) <span class="comment">// 全局注册 Element Plus 组件</span></span><br><span class="line"><span class="comment">//app.mount(&#x27;#app&#x27;)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>使用 Element Plus 组件</strong></p>
+<p>在需要使用 Element Plus 组件的地方，直接引入即可使用。具体组件的引入方式见<a href="https://element-plus.org/zh-CN/component/overview.html">Element Plus官网</a></p>
+<p>eg.在 App.vue 中使用一个 Button 按钮组件：</p>
+ <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		<span class="tag">&lt;<span class="name">el-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span>&gt;</span>Primary<span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="了解项目结构与重要文件"><a class="markdownIt-Anchor" href="#了解项目结构与重要文件"></a> 了解项目结构与重要文件</h2>
+<p>以下内容未做特别说明，均以vue-cli最初构建的文件为例</p>
+<h3 id="目录结构"><a class="markdownIt-Anchor" href="#目录结构"></a> 目录结构</h3>
+<p><img src="https://s2.loli.net/2024/04/15/83YxJyDNdWkTosi.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="初学者常操作文件"><a class="markdownIt-Anchor" href="#初学者常操作文件"></a> 初学者常操作文件</h3>
+<table>
+<thead>
+<tr>
+<th>关键目录/文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>config</td>
+<td>配置目录，包括端口号等。我们初学可以使用默认的。</td>
+</tr>
+<tr>
+<td>node_modules</td>
+<td>npm 加载的项目依赖模块</td>
+</tr>
+<tr>
+<td>src</td>
+<td>这里是我们要开发的目录，基本上要做的事情都在这个目录里。<br>•assets: 放置一些图片，如logo等。<br>• components: 目录里面放了一个组件文件，可以不用。<br>• App.vue: 项目入口文件，我们也可以直接将组件写这里，而不使用 components 目录。<br>• main.js: 项目的核心文件。<br>• index.css: 样式文件。</td>
+</tr>
+<tr>
+<td>static</td>
+<td>静态资源目录，如图片、字体等。</td>
+</tr>
+<tr>
+<td>test</td>
+<td>初始测试目录，可删除</td>
+</tr>
+<tr>
+<td>index.html</td>
+<td>首页入口文件，可以添加一些 meta 信息或统计代码</td>
+</tr>
+<tr>
+<td>package.json</td>
+<td>项目配置文件。</td>
+</tr>
+<tr>
+<td>dist</td>
+<td>使用 npm run build 命令打包后会生成该目录。</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><strong><code>main.js</code></strong> - 这是 Vue 应用的入口文件。在这个文件中，你通常会进行以下几个操作：
+<ul>
+<li>引入 Vue 库、插件（如 Vuex, Vue Router 等）</li>
+<li>创建 Vue 实例。</li>
+<li>挂载根组件（<code>App.vue</code>）。</li>
+<li>配置全局混入（mixins）或指令（directives）。</li>
+</ul>
+</li>
+<li><strong><code>App.vue</code></strong> - 这是根组件，它是所有其他组件的父级。在这个文件中，你可以定义全局的布局和样式。</li>
+<li><strong><code>components</code></strong> 目录 - 这个目录用于存放项目中使用的所有 Vue 组件。每个组件通常都有自己的 <code>.vue</code> 文件。</li>
+<li><strong><code>views</code></strong> 目录 - 这个目录通常包含一些页面级别的组件，它们通常与 Vue Router 路由相匹配。例如，你可能会有一个 <code>Home.vue</code> 组件对应于主页的路由。</li>
+<li><strong><code>router.js</code></strong> 或 <strong><code>router/index.js</code></strong> - 如果你的应用是一个单页面应用（SPA），并且使用了 Vue Router，那么这个文件用于定义应用的路由。在这里，你可以声明路由路径、视图组件以及路由的嵌套路由。</li>
+<li><strong><code>store.js</code></strong> 或 <strong><code>store/index.js</code></strong> - 如果你的应用需要状态管理，并且使用了 Vuex，那么这个文件或目录用于定义应用的状态。在这里，你可以定义状态、变更状态的 mutation、以及可以触发 mutation 的 action。</li>
+<li><strong><code>assets</code></strong> 目录 - 这个目录位于 <code>src</code> 目录下，用于存放应用中使用的静态资源，如图片、样式表、字体等。这些资源可以在你的组件中通过相对路径引用。</li>
+</ol>
+<h3 id="mainjs"><a class="markdownIt-Anchor" href="#mainjs"></a> main.js</h3>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./assets/main.css&#x27;</span> <span class="comment">// 导入项目中自定义的样式文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span> <span class="comment">// &#x27;createApp&#x27; 函数是创建 Vue 应用实例的函数</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span> <span class="comment">// App.vue是应用的入口点，所有页面都将基于这个组件构建</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&#x27;./router&#x27;</span> <span class="comment">// 导入路由配置</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>) <span class="comment">// 使用 createApp 函数创建一个新的 Vue 应用实例，并传入根组件 App</span></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(router) <span class="comment">// 将路由配置注册到应用实例中，这样应用就可以根据路由规则切换不同的视图</span></span><br><span class="line">app.<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>) <span class="comment">// 将应用实例挂载到 id 为 &#x27;app&#x27; 的 DOM 元素上，这通常是在 index.html 文件中定义的根元素</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>createApp</code> 函数：创建一个新的 Vue 应用实例。这个实例包括了应用的响应式数据、指令、组件、生命周期钩子等核心功能，<font color="red">通过这个实例可以协调和管理整个 Vue 应用的生命周期和功能</font></li>
+<li><em><strong>挂载</strong></em>：是 Vue 应用生命周期的一个重要阶段，它标志着<strong>应用实例开始与 DOM 交互</strong>，应用的渲染和用户交互功能正式开始工作</li>
+<li><em><strong>注册</strong></em>：<strong>指的是将组件、指令、混入（mixins）或其他资源添加到 Vue 应用实例</strong>或 Vue 配置全局中，使得它们可以在应用的任何地方使用或生效
+<ul>
+<li>允许开发者<strong>根据需要添加功能和资源</strong>，而不是强制所有功能都默认可用。这种方式提高了 Vue 的<strong>可扩展性和模块化程度</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="indexhtml"><a class="markdownIt-Anchor" href="#indexhtml"></a> index.html</h3>
+<p>体现vue特点的关键代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span> <span class="attr">src</span>=<span class="string">&quot;/src/main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这段代码的功能是初始化 Vue 应用并将其挂载到页面上：</p>
+<ol>
+<li>页面加载时，浏览器首先解析 <code>index.html</code> 文件，并在 <code>&lt;body&gt;</code> 标签中找到 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素。</li>
+<li>浏览器接着加载并执行 <code>&lt;script&gt;</code> 标签指定的 <code>main.js</code> 文件。</li>
+<li><code>main.js</code> 文件中的代码创建了一个 Vue 应用实例，并调用 <code>.mount('#app')</code> 方法将该实例挂载到 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素上。</li>
+<li>Vue 应用实例开始运行，根据根组件的模板和数据渲染页面内容，替换 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素的初始内容。</li>
+</ol>
+<p>通过这种方式，Vue 应用可以接管页面的 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 部分，并动态地根据数据变化更新页面内容，提供丰富的用户交互和体验。</p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue-基本语法</title>
     <url>/Web/Vue-Basics/</url>
     <content><![CDATA[<h1 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h1>
@@ -4084,255 +4333,6 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
 <h3 id="生命周期钩子-onmounted"><a class="markdownIt-Anchor" href="#生命周期钩子-onmounted"></a> 生命周期钩子 <code>onMounted</code></h3>
 <p>在挂载之后执行代码，我们可以使用 <code>onMounted()</code> 函数：</p>
 <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; onMounted &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">onMounted</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 此时组件已经挂载。</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vue-开始一个新项目</title>
-    <url>/Web/Vue-Start-a-new-project/</url>
-    <content><![CDATA[<h2 id="初始化"><a class="markdownIt-Anchor" href="#初始化"></a> 初始化</h2>
-<p>默认node.js等等已经下载好，并使用vscode进行开发</p>
-<ol>
-<li>
-<p><strong>工程文件的创建</strong></p>
-<p>创建一个空文件夹，在目录下进入命令行cmd，输入</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm create vue@latest</span><br></pre></td></tr></table></figure>
-<p>按需求进行选项选择与配置初始化</p>
-</li>
-<li>
-<p><strong>安装所需的依赖包</strong></p>
-<p>进入vscode，打开终端cmd，输入</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<p>它会读取项目目录中的 “package.json” 文件，并从 npm registry 下载定义的依赖包</p>
-</li>
-<li>
-<p><strong>尝试启动开发环境</strong></p>
-<p>同样在上一步终端中输入</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
-<p>会给出运行的网址，<code>CTRL+左键</code> 即可预览，用于开发和测试Web应用程序</p>
-</li>
-</ol>
-<h2 id="第三方库配置"><a class="markdownIt-Anchor" href="#第三方库配置"></a> 第三方库配置</h2>
-<h3 id="element-plus"><a class="markdownIt-Anchor" href="#element-plus"></a> <strong>Element Plus</strong></h3>
-<ol>
-<li>
-<p><strong>安装 Element Plus</strong></p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install element-plus --save</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>--save</code> 标志会将 Element Plus 添加到项目的 <code>package.json</code> 文件的依赖列表中，确保其他开发者或者在不同环境中都能通过 <code>npm install</code> 命令安装相同的依赖</li>
-</ul>
-</li>
-<li>
-<p><strong>引入 Element Plus</strong></p>
-<p>在 main.js 中引入 Element Plus（注释掉的是原有语句，用于指示新语句插入位置）</p>
- <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">//import &#123; createApp &#125; from &#x27;vue&#x27;</span></span><br><span class="line"><span class="comment">//import App from &#x27;./App.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ElementPlus</span> <span class="keyword">from</span> <span class="string">&#x27;element-plus&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;element-plus/dist/index.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//const app = createApp(App)</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title class_">ElementPlus</span>) <span class="comment">// 全局注册 Element Plus 组件</span></span><br><span class="line"><span class="comment">//app.mount(&#x27;#app&#x27;)</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>使用 Element Plus 组件</strong></p>
-<p>在需要使用 Element Plus 组件的地方，直接引入即可使用。具体组件的引入方式见<a href="https://element-plus.org/zh-CN/component/overview.html">Element Plus官网</a></p>
-<p>eg.在 App.vue 中使用一个 Button 按钮组件：</p>
- <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		<span class="tag">&lt;<span class="name">el-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span>&gt;</span>Primary<span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="了解项目结构与重要文件"><a class="markdownIt-Anchor" href="#了解项目结构与重要文件"></a> 了解项目结构与重要文件</h2>
-<p>以下内容未做特别说明，均以vue-cli最初构建的文件为例</p>
-<h3 id="目录结构"><a class="markdownIt-Anchor" href="#目录结构"></a> 目录结构</h3>
-<p><img src="https://s2.loli.net/2024/04/15/83YxJyDNdWkTosi.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<h3 id="初学者常操作文件"><a class="markdownIt-Anchor" href="#初学者常操作文件"></a> 初学者常操作文件</h3>
-<table>
-<thead>
-<tr>
-<th>关键目录/文件</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>config</td>
-<td>配置目录，包括端口号等。我们初学可以使用默认的。</td>
-</tr>
-<tr>
-<td>node_modules</td>
-<td>npm 加载的项目依赖模块</td>
-</tr>
-<tr>
-<td>src</td>
-<td>这里是我们要开发的目录，基本上要做的事情都在这个目录里。<br>•assets: 放置一些图片，如logo等。<br>• components: 目录里面放了一个组件文件，可以不用。<br>• App.vue: 项目入口文件，我们也可以直接将组件写这里，而不使用 components 目录。<br>• main.js: 项目的核心文件。<br>• index.css: 样式文件。</td>
-</tr>
-<tr>
-<td>static</td>
-<td>静态资源目录，如图片、字体等。</td>
-</tr>
-<tr>
-<td>test</td>
-<td>初始测试目录，可删除</td>
-</tr>
-<tr>
-<td>index.html</td>
-<td>首页入口文件，可以添加一些 meta 信息或统计代码</td>
-</tr>
-<tr>
-<td>package.json</td>
-<td>项目配置文件。</td>
-</tr>
-<tr>
-<td>dist</td>
-<td>使用 npm run build 命令打包后会生成该目录。</td>
-</tr>
-</tbody>
-</table>
-<ol>
-<li><strong><code>main.js</code></strong> - 这是 Vue 应用的入口文件。在这个文件中，你通常会进行以下几个操作：
-<ul>
-<li>引入 Vue 库、插件（如 Vuex, Vue Router 等）</li>
-<li>创建 Vue 实例。</li>
-<li>挂载根组件（<code>App.vue</code>）。</li>
-<li>配置全局混入（mixins）或指令（directives）。</li>
-</ul>
-</li>
-<li><strong><code>App.vue</code></strong> - 这是根组件，它是所有其他组件的父级。在这个文件中，你可以定义全局的布局和样式。</li>
-<li><strong><code>components</code></strong> 目录 - 这个目录用于存放项目中使用的所有 Vue 组件。每个组件通常都有自己的 <code>.vue</code> 文件。</li>
-<li><strong><code>views</code></strong> 目录 - 这个目录通常包含一些页面级别的组件，它们通常与 Vue Router 路由相匹配。例如，你可能会有一个 <code>Home.vue</code> 组件对应于主页的路由。</li>
-<li><strong><code>router.js</code></strong> 或 <strong><code>router/index.js</code></strong> - 如果你的应用是一个单页面应用（SPA），并且使用了 Vue Router，那么这个文件用于定义应用的路由。在这里，你可以声明路由路径、视图组件以及路由的嵌套路由。</li>
-<li><strong><code>store.js</code></strong> 或 <strong><code>store/index.js</code></strong> - 如果你的应用需要状态管理，并且使用了 Vuex，那么这个文件或目录用于定义应用的状态。在这里，你可以定义状态、变更状态的 mutation、以及可以触发 mutation 的 action。</li>
-<li><strong><code>assets</code></strong> 目录 - 这个目录位于 <code>src</code> 目录下，用于存放应用中使用的静态资源，如图片、样式表、字体等。这些资源可以在你的组件中通过相对路径引用。</li>
-</ol>
-<h3 id="mainjs"><a class="markdownIt-Anchor" href="#mainjs"></a> main.js</h3>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./assets/main.css&#x27;</span> <span class="comment">// 导入项目中自定义的样式文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span> <span class="comment">// &#x27;createApp&#x27; 函数是创建 Vue 应用实例的函数</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span> <span class="comment">// App.vue是应用的入口点，所有页面都将基于这个组件构建</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&#x27;./router&#x27;</span> <span class="comment">// 导入路由配置</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>) <span class="comment">// 使用 createApp 函数创建一个新的 Vue 应用实例，并传入根组件 App</span></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(router) <span class="comment">// 将路由配置注册到应用实例中，这样应用就可以根据路由规则切换不同的视图</span></span><br><span class="line">app.<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>) <span class="comment">// 将应用实例挂载到 id 为 &#x27;app&#x27; 的 DOM 元素上，这通常是在 index.html 文件中定义的根元素</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>createApp</code> 函数：创建一个新的 Vue 应用实例。这个实例包括了应用的响应式数据、指令、组件、生命周期钩子等核心功能，<font color="red">通过这个实例可以协调和管理整个 Vue 应用的生命周期和功能</font></li>
-<li><em><strong>挂载</strong></em>：是 Vue 应用生命周期的一个重要阶段，它标志着<strong>应用实例开始与 DOM 交互</strong>，应用的渲染和用户交互功能正式开始工作</li>
-<li><em><strong>注册</strong></em>：<strong>指的是将组件、指令、混入（mixins）或其他资源添加到 Vue 应用实例</strong>或 Vue 配置全局中，使得它们可以在应用的任何地方使用或生效
-<ul>
-<li>允许开发者<strong>根据需要添加功能和资源</strong>，而不是强制所有功能都默认可用。这种方式提高了 Vue 的<strong>可扩展性和模块化程度</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="indexhtml"><a class="markdownIt-Anchor" href="#indexhtml"></a> index.html</h3>
-<p>体现vue特点的关键代码：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span> <span class="attr">src</span>=<span class="string">&quot;/src/main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这段代码的功能是初始化 Vue 应用并将其挂载到页面上：</p>
-<ol>
-<li>页面加载时，浏览器首先解析 <code>index.html</code> 文件，并在 <code>&lt;body&gt;</code> 标签中找到 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素。</li>
-<li>浏览器接着加载并执行 <code>&lt;script&gt;</code> 标签指定的 <code>main.js</code> 文件。</li>
-<li><code>main.js</code> 文件中的代码创建了一个 Vue 应用实例，并调用 <code>.mount('#app')</code> 方法将该实例挂载到 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素上。</li>
-<li>Vue 应用实例开始运行，根据根组件的模板和数据渲染页面内容，替换 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素的初始内容。</li>
-</ol>
-<p>通过这种方式，Vue 应用可以接管页面的 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 部分，并动态地根据数据变化更新页面内容，提供丰富的用户交互和体验。</p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vue-组件基础</title>
-    <url>/Web/Vue-Components/</url>
-    <content><![CDATA[<p><font color="grey">注意：每个代码片段只举例部分和当前解释的用法有关的代码，其他部分选择性省略</font></p>
-<h2 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h2>
-<p>一般将 Vue 组件定义在一个单独的  <code>.vue</code>  文件中，这被叫做***单文件组件*** (SFC，使组件更有内聚性和可维护性)</p>
-<h3 id="命名注意"><a class="markdownIt-Anchor" href="#命名注意"></a> 命名注意</h3>
-<p>一般使用 <strong>PascalCase</strong> 作为组件名的注册格式，更明显地表明了这是一个 Vue 组件，且便于在 JavaScript 中导入和注册组件</p>
-<h2 id="注册"><a class="markdownIt-Anchor" href="#注册"></a> 注册</h2>
-<p>使用一个子组件前需要在父组件中使用 <code>import</code> 语句导入。通过  <code>**&lt;script setup&gt;**</code>，导入的组件都在模板中<strong>直接可用</strong>，不需要再进行局部注册</p>
-<p>eg.</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">ButtonCounter</span> <span class="keyword">from</span> <span class="string">&quot;./ButtonCounter.vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="局部注册与全局注册"><a class="markdownIt-Anchor" href="#局部注册与全局注册"></a> 局部注册与全局注册</h3>
-<p>如果不使用  <code>&lt;script setup&gt;</code> ，在使用组件前需要先进行注册。</p>
-<ul>
-<li>
-<p><strong><em>局部注册</em></strong></p>
-<p>在使用它的父组件中使用  <code>components</code>  选项显式导入</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ComponentA</span> <span class="keyword">from</span> <span class="string">&quot;./ComponentA.js&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">components</span>: &#123;</span><br><span class="line">    <span class="title class_">ComponentA</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">setup</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>缺点：只能在该父组件中使用</li>
-<li>优点：组件之间的依赖关系更加明确</li>
-</ul>
-</li>
-<li>
-<p><strong><em>全局注册</em></strong><br />
-在 main.js 中使用  <code>.component()</code>  方法</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">MyComponent</span> <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">component</span>(<span class="string">&quot;MyComponent&quot;</span>, <span class="title class_">MyComponent</span>);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>缺点：依赖关系不明确，影响应用可维护性</li>
-<li>优点：组件在当前 Vue 应用中全局可用</li>
-</ul>
-</li>
-</ul>
-<h2 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h2>
-<p>每使用一个组件就会创建一个新的<strong>实例</strong>（不同实例之间的参数不相互影响）</p>
-<h3 id="dom-vs-sfc-中组件编写-解析"><a class="markdownIt-Anchor" href="#dom-vs-sfc-中组件编写-解析"></a> DOM VS SFC 中组件编写、解析</h3>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>DOM</th>
-<th>SFC</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>大小写区分（命名/使用）</td>
-<td>kebab-case (短横线连字符) 形式</td>
-<td>PascalCase 形式</td>
-</tr>
-<tr>
-<td>闭合标签</td>
-<td>必须显式地写出关闭标签 eg.&lt;my-component&gt;&lt;/my-component&gt;</td>
-<td>可以使用 eg.&lt;MyComponent /&gt;</td>
-</tr>
-</tbody>
-</table>
-<p><strong>元素位置限制</strong></p>
-<p>某些 HTML 元素对于放在其中的元素类型有限制，例如  <code>&lt;ul&gt;</code>，<code>&lt;ol&gt;</code>，<code>&lt;table&gt;</code>,这将导致在使用带有此类限制元素的组件时出现问题，如</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">blog-post-row</span>&gt;</span><span class="tag">&lt;/<span class="name">blog-post-row</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>我们可以使用特殊的  <code>is</code> attribute  作为一种解决方案</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">tr</span> <span class="attr">is</span>=<span class="string">&quot;vue:blog-post-row&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="传递-props"><a class="markdownIt-Anchor" href="#传递-props"></a> <strong>传递 props</strong></h2>
-<p>先在SFC的<code>&lt;script setup&gt;</code>里用 <code>defineProps</code> 宏定义，使用组件时再传参</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineProps</span>([<span class="string">&#x27;title&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h4</span>&gt;</span>&#123;&#123; title &#125;&#125;<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;My journey with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Blogging with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Why Vue is so fun&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="多组props"><a class="markdownIt-Anchor" href="#多组props"></a> 多组<strong>props</strong></h3>
-<p>在实际应用中，在父组件中可能会有如下的一个博客文章数组，这种情况下使用 <code>v-for</code> 来渲染</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> posts = <span class="title function_">ref</span>([</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">title</span>: <span class="string">&#x27;My journey with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">title</span>: <span class="string">&#x27;Blogging with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">title</span>: <span class="string">&#x27;Why Vue is so fun&#x27;</span> &#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;<span class="title class_">BlogPost</span></span><br><span class="line">  v-<span class="keyword">for</span>=<span class="string">&quot;post in posts&quot;</span></span><br><span class="line">  :key=<span class="string">&quot;post.id&quot;</span></span><br><span class="line">  :title=<span class="string">&quot;post.title&quot;</span></span><br><span class="line"> /&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="插槽传递内容"><a class="markdownIt-Anchor" href="#插槽传递内容"></a> <strong>插槽(传递内容)</strong></h2>
-<p>使用***插槽（slot***）在父组件中给子组件传递内容。</p>
-<p>插槽内容可以是任意合法的模板内容，不局限于文本，<strong>可以传入多个元素，甚至是组件</strong></p>
-<ol>
-<li>
-<p>在SFC中设置好插槽出口</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;fancy-btn&quot;</span>&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">slot</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span> <span class="comment">&lt;!-- 插槽出口 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>在父组件中传入插槽内容</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">FancyButton</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 插槽内容 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>Click me!<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">AwesomeIcon</span> <span class="attr">name</span>=<span class="string">&quot;plus&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">FancyButton</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="监听事件"><a class="markdownIt-Anchor" href="#监听事件"></a> <strong>监听事件</strong></h2>
-<ol>
-<li>
-<p>在SFC的<code>&lt;script setup&gt;</code>中通过 <code>defineEmits</code> 宏来声明需要抛出的事件（和<code>defineProps</code>有点像）</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineEmits</span>([<span class="string">&#x27;enlarge-text&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>调用内置的 <code>$emit</code> 方法，通过传入事件名称来抛出一个事件</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;$emit(&#x27;enlarge-text&#x27;)&quot;</span>&gt;</span>Enlarge text<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>在父组件中通过 <code>v-on</code> 或 <code>@</code> 来选择性地监听子组件上抛的事件</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span></span></span><br><span class="line"><span class="tag">  @<span class="attr">enlarge-text</span>=<span class="string">&quot;postFontSize += 0.1&quot;</span></span></span><br><span class="line"><span class="tag"> /&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="动态组件"><a class="markdownIt-Anchor" href="#动态组件"></a> 动态组件</h2>
-<p>使用 <code>&lt;component&gt;</code> 元素和特殊的 <code>is</code> attribute 实现动态组件切换</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Home</span> <span class="keyword">from</span> <span class="string">&#x27;./Home.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Posts</span> <span class="keyword">from</span> <span class="string">&#x27;./Posts.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Archive</span> <span class="keyword">from</span> <span class="string">&#x27;./Archive.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> tabs = &#123;<span class="title class_">Home</span>, <span class="title class_">Posts</span>, <span class="title class_">Archive</span>&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;demo&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span></span></span><br><span class="line"><span class="tag">       <span class="attr">v-for</span>=<span class="string">&quot;(_, tab) in tabs&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:key</span>=<span class="string">&quot;tab&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:class</span>=<span class="string">&quot;[&#x27;tab-button&#x27;, &#123; active: currentTab === tab &#125;]&quot;</span></span></span><br><span class="line"><span class="tag">       @<span class="attr">click</span>=<span class="string">&quot;currentTab = tab&quot;</span></span></span><br><span class="line"><span class="tag">     &gt;</span></span><br><span class="line">      &#123;&#123; tab &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 动态组件切换 --&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">component</span> <span class="attr">:is</span>=<span class="string">&quot;tabs[currentTab]&quot;</span> <span class="attr">class</span>=<span class="string">&quot;tab&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>Web</category>
       </categories>
