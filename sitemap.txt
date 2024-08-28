@@ -24,10 +24,10 @@ https://roisyl.github.io.git/
 https://roisyl.github.io.git/tags/Notes/
 https://roisyl.github.io.git/tags/BUAA/
 https://roisyl.github.io.git/tags/Lab/
+https://roisyl.github.io.git/tags/Django/
 https://roisyl.github.io.git/tags/HTML/
 https://roisyl.github.io.git/tags/Vue/
-https://roisyl.github.io.git/tags/Django/
 https://roisyl.github.io.git/categories/OS/
 https://roisyl.github.io.git/categories/DB/
-https://roisyl.github.io.git/categories/Web/
 https://roisyl.github.io.git/categories/Back-end/
+https://roisyl.github.io.git/categories/Web/
