@@ -158,6 +158,174 @@
       </tags>
   </entry>
   <entry>
+    <title>BUAA DB-C2-1 数据模型概述&amp;概念模型</title>
+    <url>/DB/BUAA-DB-C2-1/</url>
+    <content><![CDATA[<h1 id="什么是数据模型"><a class="markdownIt-Anchor" href="#什么是数据模型"></a> 什么是<em>数据模型</em></h1>
+<p><img src="https://s2.loli.net/2024/03/18/4PW2tMYyeVNLCqm.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p>数据在计算机中的<strong>组织结构</strong>，和施加在这个结构上的<strong>处理方法</strong>，即是数据模型</p>
+<ul>
+<li>不同的数据模型代表着不同的<strong>抽象方法</strong>，根本性的决定了数据库的<strong>功能/性能特点</strong></li>
+</ul>
+<h2 id="数据模型分类"><a class="markdownIt-Anchor" href="#数据模型分类"></a> 数据模型分类</h2>
+<p>信息世界的数据抽象过程可细分为几个阶段，每个阶段用不同的模型去描述抽象结果：</p>
+<ul>
+<li>
+<p><strong>概念数据模型</strong>（计算机不能接受，<font color="purple"><strong>用户需求→结构</strong></font>）</p>
+<p>只用来描述某个特定组织所关心的信息结构，强调其<strong>语义表达</strong>能力，是设计人员<strong>和用户之间进行交流</strong>的语言</p>
+</li>
+<li>
+<p><strong>逻辑数据模型</strong>（直接面向数据库的逻辑结构，<font color="purple"><strong>“翻译”过程</strong></font>）</p>
+<p>直接与DBMS有关，有<strong>严格的形式化定义</strong>，通常有一组严格定义的无二义性语法和语义的<strong>DB语言</strong>，用于定义、操纵DB中的数据</p>
+<ul>
+<li>通常所说的数据模型即指逻辑数据模型，是区分不同类型数据库的依据，并在很大程度上决定了数据库的性能和应用范围</li>
+<li>该类数据模型有层次模型、网状模型、<strong>关系模型</strong>等</li>
+</ul>
+</li>
+<li>
+<p><font color="grey"><strong>物理数据模型</strong>（一般在前两步基础上自动进行转换，本课程不用深究原理）</p>
+<p>反映了数据在<strong>存储介质上的组成结构</strong>，并描述了访问机制</font></p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/03/18/ugNHFCEoYDVsIG4.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><img src="https://s2.loli.net/2024/03/18/toWfvZxpiyKEbVe.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="两种常用抽象手段"><a class="markdownIt-Anchor" href="#两种常用抽象手段"></a> <strong>两种常用抽象手段</strong></h3>
+<ol>
+<li><strong>分类</strong>（Classification）:定义<strong>某一类概念</strong>作为现实世界中一组对象的类型<font color="purple">（要哪些类的对象）</font>
+<ul>
+<li>eg 大学里的学生，奥运会的赛事，公交公司的司机…</li>
+</ul>
+</li>
+<li><strong>聚集</strong>（Aggregation）:定义<strong>某一类型的组成成分</strong><font color="purple">（特定对象关心哪些属性）</font>
+<ul>
+<li>eg 学生：学号、姓名、年龄等特征组成</li>
+</ul>
+</li>
+</ol>
+<h1 id="概念模型"><a class="markdownIt-Anchor" href="#概念模型"></a> <em>概念模型</em></h1>
+<h2 id="er数据模型实体-关系模型"><a class="markdownIt-Anchor" href="#er数据模型实体-关系模型"></a> <em><strong>ER数据模型（实体-关系模型）</strong></em></h2>
+<p>世界是由一组称作<strong>实体</strong>的基本对象和这些对象之间的<strong>联系</strong>构成的</p>
+<h3 id="三个基本元素"><a class="markdownIt-Anchor" href="#三个基本元素"></a> 三个基本元素</h3>
+<ul>
+<li>
+<p><strong>实体 (Entity)</strong></p>
+<p><strong>客观存在</strong>并<strong>可以相互区分</strong>的客观事物或抽象事件</p>
+</li>
+<li>
+<p><strong>属性 (Attribute)</strong></p>
+<ul>
+<li><em><strong>域</strong></em>：属性的取值范围</li>
+<li><em>简单属性与复合属性</em>区分标准：是否可再分。eg 年龄-简单，地址-复合</li>
+<li><em><strong>键</strong></em>：实体集中能<strong>唯一标识</strong>实体的<strong>属性或属性组</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>联系 (Relation)</strong> <font color="purple">笛卡尔积的子集</font></p>
+<ul>
+<li>
+<p>联系的键必然是复合键</p>
+</li>
+<li>
+<p><em><strong>元</strong></em>：参与联系的实体的个数称为联系的元</p>
+</li>
+<li>
+<p><em>基数比约束</em>：一个实体可以通过联系关联到的另一个实体集中实体的数量</p>
+</li>
+<li>
+<p><strong>一元联系相关</strong></p>
+<ul>
+<li>
+<p>有时二元联系关联的两个实体集实际上属于<strong>同一个实体集的两个副本</strong>，可以将这二个实体集合并，形成一元联系</p>
+<p><img src="https://s2.loli.net/2024/03/18/3G1F4kW2TDhC6ZN.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+<li>
+<p><em><strong>角色</strong></em>：在联系中关联的每个实体集应是相互区别的。在一元联系中，需要用角色来<strong>区分同一实体集的不同副本</strong></p>
+<p><img src="https://s2.loli.net/2024/03/18/vfehqrnt6A3bdci.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+</li>
+<li>
+<p>多元联系比两两联系更便于数据的查询<font color="purple">（可实现操作更多）</font>，两者在语义上并不等价</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="约束"><a class="markdownIt-Anchor" href="#约束"></a> 约束</h3>
+<p>约束是一种对数据库的断言（assertion），数据库应保证该断言成立</p>
+<p>将在后续讲数据完整性的时候深入讨论</p>
+<ul>
+<li><strong>键约束</strong>
+<ul>
+<li>用于引用实体</li>
+<li><em>超键：</em> 是实体集中的一个或一组属性</li>
+<li><em>候选键</em>:某个超键的<strong>最小集</strong></li>
+<li><em>主键</em>：若存在多个候选键，则可以任选一个作为该实体集的主键。主键会被数据库登记和使用。</li>
+</ul>
+</li>
+</ul>
+<h3 id="er图"><a class="markdownIt-Anchor" href="#er图"></a> ER图</h3>
+<ul>
+<li>矩形框——实体</li>
+<li>实体的属性——椭圆框
+<ul>
+<li>用连线连到相应实体</li>
+<li>多值属性——双层椭圆框</li>
+</ul>
+</li>
+<li>实体之间的联系——菱形框表示
+<ul>
+<li>用连线与有关的实体相连</li>
+</ul>
+</li>
+<li>在作为主键的属性下加下划线</li>
+<li><font color="blue"><strong>联系</strong>也可以有属性！！</font></li>
+</ul>
+<p><img src="https://s2.loli.net/2024/03/18/72kw1xlUnt6edLG.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><img src="https://s2.loli.net/2024/03/18/iMEDYdkLz9PJrxm.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><img src="https://s2.loli.net/2024/03/18/TH1mypMIE4hNwoC.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="er模型建模"><a class="markdownIt-Anchor" href="#er模型建模"></a> ER模型建模</h3>
+<ul>
+<li>
+<p>一些建模准则</p>
+<ul>
+<li><strong>忠实于用户需求</strong></li>
+<li>KISS准则 (keep it simple and stupid)</li>
+<li><strong>避免冗余</strong>
+<ul>
+<li>冗余会导致<strong>空间浪费</strong>，更会带来<strong>数据不一致</strong></li>
+<li><font color="blue">在设计时注意，设计完成后检查是否能简化合并</font></li>
+</ul>
+</li>
+<li><strong>能抽象为属性的，就不要抽象为实体</strong>
+<ul>
+<li><font color="blue">符合下面两个情况之一的时候才需要把事物抽象为实体</font>
+<ol>
+<li>事物有至少一个非键属性（不属于键的属性）</li>
+<li>事物处于“一对多”或“多对多”联系中“多”那一端</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>建模过程</p>
+<p>实体类型（找出<font color="blue"><strong>逻辑独立的事物</strong></font>，即管理对象）→联系类型（确定实体之间相互影响的关系）→为实体和联系确定属性</p>
+</li>
+<li>
+<p><font color="blue">三元联系转换为二元联系——把<strong>联系点本身转化为一个实体</strong></font></p>
+<p><img src="https://s2.loli.net/2024/03/18/SqWjR9HnJG517Yw.jpg" alt="2.jpg"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>DB</category>
+      </categories>
+      <tags>
+        <tag>Notes</tag>
+        <tag>BUAA</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BUAA OS-Lab0 Linux基础操作</title>
     <url>/OS/BUAA%20OS-Lab0/</url>
     <content><![CDATA[<h1 id="讲解部分梳理"><a class="markdownIt-Anchor" href="#讲解部分梳理"></a> 讲解部分梳理</h1>
@@ -459,174 +627,6 @@
       <tags>
         <tag>BUAA</tag>
         <tag>Lab</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUAA DB-C2-1 数据模型概述&amp;概念模型</title>
-    <url>/DB/BUAA-DB-C2-1/</url>
-    <content><![CDATA[<h1 id="什么是数据模型"><a class="markdownIt-Anchor" href="#什么是数据模型"></a> 什么是<em>数据模型</em></h1>
-<p><img src="https://s2.loli.net/2024/03/18/4PW2tMYyeVNLCqm.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p>数据在计算机中的<strong>组织结构</strong>，和施加在这个结构上的<strong>处理方法</strong>，即是数据模型</p>
-<ul>
-<li>不同的数据模型代表着不同的<strong>抽象方法</strong>，根本性的决定了数据库的<strong>功能/性能特点</strong></li>
-</ul>
-<h2 id="数据模型分类"><a class="markdownIt-Anchor" href="#数据模型分类"></a> 数据模型分类</h2>
-<p>信息世界的数据抽象过程可细分为几个阶段，每个阶段用不同的模型去描述抽象结果：</p>
-<ul>
-<li>
-<p><strong>概念数据模型</strong>（计算机不能接受，<font color="purple"><strong>用户需求→结构</strong></font>）</p>
-<p>只用来描述某个特定组织所关心的信息结构，强调其<strong>语义表达</strong>能力，是设计人员<strong>和用户之间进行交流</strong>的语言</p>
-</li>
-<li>
-<p><strong>逻辑数据模型</strong>（直接面向数据库的逻辑结构，<font color="purple"><strong>“翻译”过程</strong></font>）</p>
-<p>直接与DBMS有关，有<strong>严格的形式化定义</strong>，通常有一组严格定义的无二义性语法和语义的<strong>DB语言</strong>，用于定义、操纵DB中的数据</p>
-<ul>
-<li>通常所说的数据模型即指逻辑数据模型，是区分不同类型数据库的依据，并在很大程度上决定了数据库的性能和应用范围</li>
-<li>该类数据模型有层次模型、网状模型、<strong>关系模型</strong>等</li>
-</ul>
-</li>
-<li>
-<p><font color="grey"><strong>物理数据模型</strong>（一般在前两步基础上自动进行转换，本课程不用深究原理）</p>
-<p>反映了数据在<strong>存储介质上的组成结构</strong>，并描述了访问机制</font></p>
-</li>
-</ul>
-<p><img src="https://s2.loli.net/2024/03/18/ugNHFCEoYDVsIG4.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p><img src="https://s2.loli.net/2024/03/18/toWfvZxpiyKEbVe.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<h3 id="两种常用抽象手段"><a class="markdownIt-Anchor" href="#两种常用抽象手段"></a> <strong>两种常用抽象手段</strong></h3>
-<ol>
-<li><strong>分类</strong>（Classification）:定义<strong>某一类概念</strong>作为现实世界中一组对象的类型<font color="purple">（要哪些类的对象）</font>
-<ul>
-<li>eg 大学里的学生，奥运会的赛事，公交公司的司机…</li>
-</ul>
-</li>
-<li><strong>聚集</strong>（Aggregation）:定义<strong>某一类型的组成成分</strong><font color="purple">（特定对象关心哪些属性）</font>
-<ul>
-<li>eg 学生：学号、姓名、年龄等特征组成</li>
-</ul>
-</li>
-</ol>
-<h1 id="概念模型"><a class="markdownIt-Anchor" href="#概念模型"></a> <em>概念模型</em></h1>
-<h2 id="er数据模型实体-关系模型"><a class="markdownIt-Anchor" href="#er数据模型实体-关系模型"></a> <em><strong>ER数据模型（实体-关系模型）</strong></em></h2>
-<p>世界是由一组称作<strong>实体</strong>的基本对象和这些对象之间的<strong>联系</strong>构成的</p>
-<h3 id="三个基本元素"><a class="markdownIt-Anchor" href="#三个基本元素"></a> 三个基本元素</h3>
-<ul>
-<li>
-<p><strong>实体 (Entity)</strong></p>
-<p><strong>客观存在</strong>并<strong>可以相互区分</strong>的客观事物或抽象事件</p>
-</li>
-<li>
-<p><strong>属性 (Attribute)</strong></p>
-<ul>
-<li><em><strong>域</strong></em>：属性的取值范围</li>
-<li><em>简单属性与复合属性</em>区分标准：是否可再分。eg 年龄-简单，地址-复合</li>
-<li><em><strong>键</strong></em>：实体集中能<strong>唯一标识</strong>实体的<strong>属性或属性组</strong></li>
-</ul>
-</li>
-<li>
-<p><strong>联系 (Relation)</strong> <font color="purple">笛卡尔积的子集</font></p>
-<ul>
-<li>
-<p>联系的键必然是复合键</p>
-</li>
-<li>
-<p><em><strong>元</strong></em>：参与联系的实体的个数称为联系的元</p>
-</li>
-<li>
-<p><em>基数比约束</em>：一个实体可以通过联系关联到的另一个实体集中实体的数量</p>
-</li>
-<li>
-<p><strong>一元联系相关</strong></p>
-<ul>
-<li>
-<p>有时二元联系关联的两个实体集实际上属于<strong>同一个实体集的两个副本</strong>，可以将这二个实体集合并，形成一元联系</p>
-<p><img src="https://s2.loli.net/2024/03/18/3G1F4kW2TDhC6ZN.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-</li>
-<li>
-<p><em><strong>角色</strong></em>：在联系中关联的每个实体集应是相互区别的。在一元联系中，需要用角色来<strong>区分同一实体集的不同副本</strong></p>
-<p><img src="https://s2.loli.net/2024/03/18/vfehqrnt6A3bdci.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-</li>
-</ul>
-</li>
-<li>
-<p>多元联系比两两联系更便于数据的查询<font color="purple">（可实现操作更多）</font>，两者在语义上并不等价</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="约束"><a class="markdownIt-Anchor" href="#约束"></a> 约束</h3>
-<p>约束是一种对数据库的断言（assertion），数据库应保证该断言成立</p>
-<p>将在后续讲数据完整性的时候深入讨论</p>
-<ul>
-<li><strong>键约束</strong>
-<ul>
-<li>用于引用实体</li>
-<li><em>超键：</em> 是实体集中的一个或一组属性</li>
-<li><em>候选键</em>:某个超键的<strong>最小集</strong></li>
-<li><em>主键</em>：若存在多个候选键，则可以任选一个作为该实体集的主键。主键会被数据库登记和使用。</li>
-</ul>
-</li>
-</ul>
-<h3 id="er图"><a class="markdownIt-Anchor" href="#er图"></a> ER图</h3>
-<ul>
-<li>矩形框——实体</li>
-<li>实体的属性——椭圆框
-<ul>
-<li>用连线连到相应实体</li>
-<li>多值属性——双层椭圆框</li>
-</ul>
-</li>
-<li>实体之间的联系——菱形框表示
-<ul>
-<li>用连线与有关的实体相连</li>
-</ul>
-</li>
-<li>在作为主键的属性下加下划线</li>
-<li><font color="blue"><strong>联系</strong>也可以有属性！！</font></li>
-</ul>
-<p><img src="https://s2.loli.net/2024/03/18/72kw1xlUnt6edLG.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p><img src="https://s2.loli.net/2024/03/18/iMEDYdkLz9PJrxm.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p><img src="https://s2.loli.net/2024/03/18/TH1mypMIE4hNwoC.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<h3 id="er模型建模"><a class="markdownIt-Anchor" href="#er模型建模"></a> ER模型建模</h3>
-<ul>
-<li>
-<p>一些建模准则</p>
-<ul>
-<li><strong>忠实于用户需求</strong></li>
-<li>KISS准则 (keep it simple and stupid)</li>
-<li><strong>避免冗余</strong>
-<ul>
-<li>冗余会导致<strong>空间浪费</strong>，更会带来<strong>数据不一致</strong></li>
-<li><font color="blue">在设计时注意，设计完成后检查是否能简化合并</font></li>
-</ul>
-</li>
-<li><strong>能抽象为属性的，就不要抽象为实体</strong>
-<ul>
-<li><font color="blue">符合下面两个情况之一的时候才需要把事物抽象为实体</font>
-<ol>
-<li>事物有至少一个非键属性（不属于键的属性）</li>
-<li>事物处于“一对多”或“多对多”联系中“多”那一端</li>
-</ol>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>建模过程</p>
-<p>实体类型（找出<font color="blue"><strong>逻辑独立的事物</strong></font>，即管理对象）→联系类型（确定实体之间相互影响的关系）→为实体和联系确定属性</p>
-</li>
-<li>
-<p><font color="blue">三元联系转换为二元联系——把<strong>联系点本身转化为一个实体</strong></font></p>
-<p><img src="https://s2.loli.net/2024/03/18/SqWjR9HnJG517Yw.jpg" alt="2.jpg"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>DB</category>
-      </categories>
-      <tags>
-        <tag>Notes</tag>
-        <tag>BUAA</tag>
       </tags>
   </entry>
   <entry>
@@ -1834,575 +1834,6 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
       </tags>
   </entry>
   <entry>
-    <title>BUAA-OS-Lab3</title>
-    <url>/OS/BUAA-OS-Lab3/</url>
-    <content><![CDATA[<h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
-<p>相关文件：<code>/include/env.h</code> <code>/include/trap.h</code> <code>/kern/env.c</code>  <code>lib/elfloader.c</code> <code>pmap.h</code>  <code>pmap.c</code>  <code>kern/traps.c</code> <code>kern/genex.S</code>  <code>kern/sched.c</code></p>
-<h2 id="进程"><a class="markdownIt-Anchor" href="#进程"></a> 进程</h2>
-<h3 id="模板页表mos专有概念"><a class="markdownIt-Anchor" href="#模板页表mos专有概念"></a> 模板页表（MOS专有概念）</h3>
-<p>在用户空间中读取内核信息</p>
-<p><img src="https://s2.loli.net/2024/04/24/yIaPkFxYbjRBgW1.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li>
-<p><strong>原理</strong></p>
-<p>MOS 被设计成对于其中运行的每一个用户进程，都可以<strong>通过用户地址空间（kuseg）读取 pages 数组和 envs 数组的信息</strong>。为实现该功能，在创建用户进程时我们需要将 pages 数组和 envs 数组映射到用户地址空间中的 <code>UPAGES</code> 与 <code>UENVS</code> 处。</p>
-<p><code>base_pgdir</code> 指向模板页表页目录的<strong>内核虚拟基地址</strong>，以便创建进程时能够根据 “模板页表” 的内容创建自己的页表。每创建一个进程，都将这个模板页表页目录中用来映射 envs 与 pages 的表项复制到新创建的进程的页目录中</p>
-</li>
-<li>
-<p><strong>设置目的</strong></p>
-<p>使用户进程<strong>共享一部分二级页表</strong>，从而节省物理页面</p>
-</li>
-</ul>
-<h3 id="进程的标识"><a class="markdownIt-Anchor" href="#进程的标识"></a> 进程的标识</h3>
-<p><code>struct Env</code> 进程控制块中</p>
-<ul>
-<li><code>env_id</code> 是每个<strong>进程</strong>独一无二的标识符，进程创建的时候就使用<code>mkenvid</code>赋予。</li>
-<li><code>env_asid</code> 记录进程的 ASID，这是<strong>进程虚拟地址</strong>空间的标识
-<ul>
-<li>ASID在TLB映射机制中使用——TLB 事实上构建了一个映射 &lt; VPN, ASID &gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover><mo><mo>⟶</mo></mo><mrow><mi>T</mi><mi>L</mi><mi>B</mi></mrow></mover></mrow><annotation encoding="application/x-tex">\stackrel{TLB}{\longrightarrow}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3003310000000001em;vertical-align:-0.011em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893310000000002em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.7110000000000003em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mord mathdefault mtight">L</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span></span></span></span>&lt; PFN, N, D, V, G &gt;</li>
-<li>ASID 部分只占据了 0-7 共 8 个 bit，即ASID资源是有限的，需要使用一定的资源管理方法来<strong>分配、回收</strong> ASID。MOS 实验采用了位图法管理 256 个可用的 ASID，<strong>如果 ASID 耗尽时仍要创建进程，内核会发生崩溃（panic）</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="设置进程控制块"><a class="markdownIt-Anchor" href="#设置进程控制块"></a> 设置进程控制块</h3>
-<ul>
-<li>
-<p>在 MOS 操作系统<strong>特意将一些内核的数据暴露到用户空间</strong>，使得进程不需要切换到内核态就能访问，这是 MOS 特有的设计</p>
-<p>在这里暴露 UTOP 往上到 UVPT 之间所有进程共享的<strong>只读</strong>空间，也就是把这部分内存对应的<strong>内核<br />
-页表 base_pgdir 拷贝到进程页表中</strong>。从 <strong>UVPT 往上到 ULIM 之间则是进程自己的页表</strong></p>
-<p><img src="https://s2.loli.net/2024/04/24/etFI7plnikVqRT6.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-</li>
-</ul>
-<h3 id="加载二进制镜像"><a class="markdownIt-Anchor" href="#加载二进制镜像"></a> 加载二进制镜像</h3>
-<p>要想正确加载一个 ELF 文件到内存，只需将 ELF 文件中所有<strong>需要加载的程序段加载到对应的<font color="red">虚拟地址</font>上</strong>即可</p>
-<p><img src="https://s2.loli.net/2024/04/24/BlTYwCyVzxOSjkP.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li><code>elf_load_seg</code> 只关心ELF 段的结构，由回调函数处理具体的页面加载过程</li>
-</ul>
-<h3 id="进程运行与切换"><a class="markdownIt-Anchor" href="#进程运行与切换"></a> 进程运行与切换</h3>
-<p>在 Lab3 中，进程切换只需要保存进程的上下文信息。而MOS中的寄存器状态保存的地方是 <code>KSTACKTOP</code> 以下的一个 <code>sizeof(TrapFrame)</code>大小的区域中，而<code>curenv-&gt;env_tf</code>是存放当前进程的上下文的区域</p>
-<p>故保存进程上下文使用语句<code>curenv-&gt;env_tf = *((struct Trapframe *)KSTACKTOP - 1)</code></p>
-<h2 id="中断与异常"><a class="markdownIt-Anchor" href="#中断与异常"></a> 中断与异常</h2>
-<p>CPU 不仅仅有常见的 32 个通用寄存器，还有功能广泛的***协处理器***，而中断/异常部分就用到了其中的协处理器 CP0</p>
-<table>
-<thead>
-<tr>
-<th>寄存器助记符</th>
-<th>CP0 寄存器编号</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Status</td>
-<td>12</td>
-<td>状态寄存器，包括中断引脚使能，其他 CPU 模式等位域</td>
-</tr>
-<tr>
-<td>Cause</td>
-<td>13</td>
-<td>记录导致异常的原因</td>
-</tr>
-<tr>
-<td>EPC</td>
-<td>14</td>
-<td>异常结束后程序恢复执行的位置</td>
-</tr>
-</tbody>
-</table>
-<h3 id="status-寄存器"><a class="markdownIt-Anchor" href="#status-寄存器"></a> <strong>Status 寄存器</strong></h3>
-<p><img src="https://s2.loli.net/2024/04/24/OKAFgDfkURJj2S6.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li>
-<p><code>IE</code> 位表示中断是否开启，为 1 表示开启，否则不开启</p>
-</li>
-<li>
-<p>当且仅当 <code>EXL</code> 被设置为 0 且 <code>UM</code> 被设置为 1 时，处理器处于<strong>用户模式</strong>，其它所有情况下，处理器均处于内核模式下</p>
-<ul>
-<li>
-<p>每当异常发生的时候，EXL 会被自动设置为 1（使处于内核态，能使用特权指令）</p>
-</li>
-<li>
-<p>每个进程在每一次被调度时都会执行</p>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RESTORE_ALL <span class="comment">//恢复处理器寄存器状态</span></span><br><span class="line">eret <span class="comment">// EXL被自动设置为 0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li>
-<p>15-8 位为<em><strong>中断屏蔽位***，每一位代表一个不同的中断活动，其中 15-10 位</strong>使能</em>*硬件中断源<font color="purple">（该中断能否被响应）</font>，9-8位是 Cause 寄存器软件可写的中断位</p>
-</li>
-</ul>
-<h3 id="cause-寄存器"><a class="markdownIt-Anchor" href="#cause-寄存器"></a> Cause 寄存器</h3>
-<p><img src="https://s2.loli.net/2024/04/24/zi1IqLRVo5welC7.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li><code>IP</code> (15-8 位)保存着哪一些中断发生了，其中 15-10 位来自硬件，9-8 位可以由软件写入，<font color="green">当 Status 寄存器中相同位允许中断（为 1）时</font>，Cause 寄存器这一位也为1就会导致中断</li>
-<li><code>ExcCode</code> (6-2位)，记录发生了什么异常。在 MOS 中，中断是 0 号异常。</li>
-</ul>
-<h3 id="cpu异常处理流程"><a class="markdownIt-Anchor" href="#cpu异常处理流程"></a> CPU异常处理流程</h3>
-<p>CPU 如何处理异常？</p>
-<ol>
-<li>设置 EPC 寄存器的值为从异常返回的地址。</li>
-<li>设置 Status 寄存器（<strong>设置 EXL 位，强制 CPU 进入内核态并禁止中断</strong>）</li>
-<li>设置 Cause 寄存器（记录异常原因）</li>
-<li>设置 PC 为<strong>异常入口地址</strong>，随后交给软件处理</li>
-</ol>
-<p>至此，我们成功地切换到内核程序，将异常处理的任务转交给操作系统。</p>
-<ul>
-<li>
-<p>相关指令</p>
-<ul>
-<li>
-<p><code>mfc0</code> Move From Coprocessor 0</p>
-<p>用于从协处理器的某个寄存器中读取值到一个通用寄存器中</p>
-</li>
-<li>
-<p><code>mtc0</code> Move To Coprocessor 0</p>
-<p>用于将一个通用寄存器的值写入协处理器的某个寄存器中</p>
-</li>
-</ul>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">mfc0    t0, CP0_STATUS</span><br><span class="line">and     t0, t0, ~(STATUS_UM | STATUS_EXL | STATUS_IE)</span><br><span class="line">mtc0    t0, CP0_STATUS</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<font color="grey">
-### SAVE_ALL 与异常重入
-<p>在 SAVE_ALL 中进行判断，若 Status 寄存器的 UM 位为 0，说明此次异常在内核态触发， sp 寄存器已经在内核异常栈中。不再将 sp 设置为 KSTACKTOP ，而是使其继续增长。</p>
-<p>这样便能够在异常中处理新的异常，而不会破坏原本的异常处理流程。这一机制被称作异常重入</font></p>
-<h3 id="异常的分发"><a class="markdownIt-Anchor" href="#异常的分发"></a> 异常的分发</h3>
-<p>当发生异常时，处理器会进入一个用于分发异常的程序，这个程序的作用就是检测发生了哪种异常，并调用相应的异常处理程序</p>
-<p>一般来说，异常分发程序会被要求放在固定的某个物理地址上</p>
-<p>在MOS中的实现为：将.text.exc_gen_entry 段和 .text.tlb_miss_entry 段用链接器放到特定的位置—— 0x80000180 和 0x80000000 处，它们是异常处理程序的入口地址。在我们的系统中，CPU 发生异常（除了用户态地址的 TLB Miss 异常）后，就会自动跳转到地址 0x80000180 处；发生用户态地址的 TLB Miss 异常时，会自动跳转到地址 0x80000000处</p>
-<h3 id="时钟中断"><a class="markdownIt-Anchor" href="#时钟中断"></a> 时钟中断</h3>
-<ul>
-<li>
-<p>中断处理的流程</p>
-<ol>
-<li>
-<p>通过异常分发，<strong>判断出当前异常为中断异常</strong>，随后进入相应的<strong>中断处理程序</strong>。在 MOS 中即对应 handle_int 函数。</p>
-<p>此前以异常的角度对时钟中断进行处理；现在以中断的角度对时钟中断进行处理</p>
-</li>
-<li>
-<p>在中断处理程序中<strong>进一步判断 Cause 寄存器中是由几号中断位引发的中断</strong>，然后进入不同中断对应的<strong>中断服务函数</strong>。</p>
-</li>
-<li>
-<p>中断处理完成，通过 ret_from_exception 函数<strong>恢复现场</strong>，继续执行。</p>
-</li>
-</ol>
-</li>
-<li>
-<p>在MOS 中，<strong>时间片的长度是用时钟中断衡量</strong>的。4KC 中的 CP0 内置了一个可产生中断的 Timer，MOS 即使用这个内置的 Timer 产生时钟中断</p>
-<p>（具体细节实现见指导书）</p>
-</li>
-<li>
-<p>内核初始化完毕后陷入死循环，等待第一次时钟中断来临，通过异常处理来调度已经创建好的用户进程运行</p>
-</li>
-</ul>
-<h3 id="进程调度器"><a class="markdownIt-Anchor" href="#进程调度器"></a> 进程调度器</h3>
-<p><strong>什么时候需要切换进程？</strong></p>
-<ol>
-<li>参数 yield 为真时：此时当前进程必须让出。</li>
-<li>count 减为 0 时：此时分给进程的时间片被用完，将执行权让给其他进程。</li>
-<li>无当前进程：内核必然刚刚完成初始化，需要分配一个进程执行。</li>
-<li>进程状态不是可运行：当前进程不能再继续执行，让给其他进程。</li>
-</ol>
-<p><strong>如何切换进程？</strong></p>
-<ol>
-<li>当前进程仍为就绪状态时，需要将其移到 env_sched_list 队列的尾部。</li>
-<li>选中 env_sched_list 队列头部的进程。如果没有可用的进程，内核 panic。</li>
-<li>设置 count 为当前进程的优先级（分配的时间片的数量）。</li>
-</ol>
-<p>（不管是否切换，都）最后将 count 自减 1，调用 env_run 函数。</p>
-<h1 id="时纪"><a class="markdownIt-Anchor" href="#时纪"></a> 时纪</h1>
-<p>E 3.1</p>
-<ul>
-<li>
-<p>注意链表顺序！！初始化是倒序插入</p>
-</li>
-<li>
-<p><font color="red">LIST、TAIL相关宏操作的（参数）一般都是指针！！</font></p>
-</li>
-<li>
-<p>如下定义</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static Pde *base_pgdir;</span><br></pre></td></tr></table></figure>
-<p><code>base_pgdir</code> 是一个Pde类型的指针，即为目录项的虚拟地址；</p>
-<p><code>*base_pgdir</code> 是Pde类型的指针的解引用，即Pde，为目录项的物理地址</p>
-</li>
-</ul>
-<p>E 3.4</p>
-<ul>
-<li><code>NENV</code> 什么时候要用来作为限制条件吗？这里好像不用</li>
-</ul>
-<p>E 3.5</p>
-<ul>
-<li>分配页面后记得加<code>p→pp_ref</code>！！</li>
-</ul>
-<p>E 3.12</p>
-<ul>
-<li>schedule里的count是静态变量，存放在.data区，只初始化一次，不同进程不共享！！所以虽然可能会调度多次schedule函数，但每个进程只执行一次 <code>static int count = 0;</code> 初始化语句！！</li>
-<li>注意，不管要不要插到尾部，都要先移除当前进程！！</li>
-</ul>
-<h1 id="exam前准备"><a class="markdownIt-Anchor" href="#exam前准备"></a> exam前准备</h1>
-<h3 id="有可能出问题"><a class="markdownIt-Anchor" href="#有可能出问题"></a> 有可能出问题</h3>
-<ul>
-<li>scheduled函数，要不要把不是就绪状态的移除</li>
-<li>获取队列的第一个进程时，记得LIST_REMOVE</li>
-</ul>
-<h3 id="extra"><a class="markdownIt-Anchor" href="#extra"></a> extra</h3>
-<p>近年都是处理新的异常</p>
-]]></content>
-      <categories>
-        <category>OS</category>
-      </categories>
-      <tags>
-        <tag>BUAA</tag>
-        <tag>Lab</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUAA-OS-Lab4</title>
-    <url>/uncategorized/BUAA-OS-Lab4/</url>
-    <content><![CDATA[<p>关键文件：kern/syscall_all.c、user/lib/fork.c、include/syscall.h、 user/include/lib.h</p>
-<h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
-<h2 id="系统调用"><a class="markdownIt-Anchor" href="#系统调用"></a> 系统调用</h2>
-<h3 id="系统调用原理-步骤"><a class="markdownIt-Anchor" href="#系统调用原理-步骤"></a> 系统调用原理-步骤</h3>
-<ol>
-<li>存在一些只能由内核来完成的操作（如读写设备、创建进程、IO 等）。</li>
-<li>C 标准库中一些函数的实现须依赖于操作系统（如我们所探究的 puts 函数）。</li>
-<li>通过执行 syscall 指令，用户进程可以陷入到内核态，请求内核提供的服务。</li>
-<li>通过系统调用陷入到内核态时，需要在用户态与内核态之间进行数据传递与保护。</li>
-</ol>
-<h3 id="系统调用机制的实现"><a class="markdownIt-Anchor" href="#系统调用机制的实现"></a> 系统调用机制的实现</h3>
-<p><img src="https://s2.loli.net/2024/05/08/u2oaNfZtzHrOF8e.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li>
-<p><em><strong>syscall_</strong></em>*</p>
-<ul>
-<li>在 MOS中， syscall_* 的函数与内核中的系统调用函数（sys_* 的函数）是一一对应的：syscall_* 的函数是用户空间中最接近的内核的函数，而sys_* 的函数是内核中系统调用的具体实现部分。</li>
-<li>syscall_* 的函数的实现中，毫无例外都调用了 msyscall 函数，而且函数的第一个参数都是一个与调用名相似的宏（如 SYS_print_cons），MOS 中把这个参数称为***系统调用号***，它们被定义在 include/syscall.h中</li>
-</ul>
-</li>
-<li>
-<p><strong>msyscall 函数——参数传递的实现</strong></p>
-<ul>
-<li>进入函数体时会通过对栈指针做减法（压栈）的方式为该函数自身的局部变量、返回地址、调用函数的参数分配存储空间，在函数调用结束之后会对栈指针做加法（弹栈）释放这部分空间，这部分空间称为***栈帧***。调用方在自身栈帧的底部预留被调用函数的参数存储空间，由被调用方从调用方的栈帧中读取参数。</li>
-<li>寄存器 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mn>0</mn><mo>−</mo></mrow><annotation encoding="application/x-tex">a0-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">a</span><span class="mord">0</span><span class="mord">−</span></span></span></span>a3 用于存放函数调用的前四个参数</li>
-<li>剩余的参数仅存放在栈中，但在栈中仍然需要为存放在寄存器中的参数预留空间</li>
-</ul>
-<p><img src="https://s2.loli.net/2024/05/08/fveSLRpnKB4FHN7.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li>系统从用户态切换到内核态后，内核首先将原用户进程的运行现场保存到内核空间（在 kern/entry.S 中通过 SAVE_ALL 宏完成），随后<strong>内核空间的栈指针则指向保存的 Trapframe</strong>，便可以借助这个保存的结构体来获取用户态中传递过来的值</li>
-</ul>
-</li>
-</ul>
-<h3 id="基础系统调用函数"><a class="markdownIt-Anchor" href="#基础系统调用函数"></a> 基础系统调用函数</h3>
-<p>在内核处理进程发起的系统调用时，我们并没有切换地址空间（页目录地址），也不需要将进程上下文（Trapframe）保存到进程控制块中，<strong>只是切换到内核态下，执行了一些内核代码</strong>。</p>
-<p>可以说，处理系统调用时的内核仍然是代表当前进程的，这也是<strong>系统调用、TLB 缺失等同步异常与时钟中断等异步异常的本质区别</strong></p>
-<h2 id="进程间通信机制-ipc"><a class="markdownIt-Anchor" href="#进程间通信机制-ipc"></a> 进程间通信机制 (IPC)</h2>
-<ul>
-<li><strong>IPC的关键</strong>
-<ul>
-<li>
-<p>IPC 的目的是使两个进程之间可以通信</p>
-<p>通俗的讲，就是把一个地址空间中的东西传给另一个地址空间</p>
-</li>
-<li>
-<p>IPC 需要通过系统调用来实现</p>
-<p><strong>所有的进程都共享同一个内核空间（主要为 kseg0</strong>）。因此，想要在不同空间之间交换数据，就可以借助于内核空间来实现。</p>
-<p><strong>发送方进程可以将数据以系统调用的形式存放在进程控制块中，接收方进程同样以系统调用的方式在进程控制块中找到对应的数据，读取并返回</strong>。</p>
-<p><img src="https://s2.loli.net/2024/05/08/agP4SRmOxqF6KB5.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p><img src="https://s2.loli.net/2024/05/08/PbXrGdtc2jamuJT.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="fork"><a class="markdownIt-Anchor" href="#fork"></a> Fork</h2>
-<p><img src="https://s2.loli.net/2024/05/08/QolHFgTN4kqDGUs.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<h3 id="fork基础"><a class="markdownIt-Anchor" href="#fork基础"></a> fork基础</h3>
-<ul>
-<li>
-<p><em><strong>exec</strong></em></p>
-<p>与 fork 经常一起使用的是名为 exec 的一系列系统调用。它会使进程抛弃<br />
-现有的程序和运行现场，<strong>执行一个新的程序</strong></p>
-</li>
-</ul>
-<h3 id="写时复制"><a class="markdownIt-Anchor" href="#写时复制"></a> 写时复制</h3>
-<p>在 fork 时，我们只需将地址空间中的<strong>所有可写页标记为写时复制页面</strong>，使得在父进程或子进程对写时复制页面进行写入时，能够产生一种异常。操作系统在异常处理时，为当前进程<strong>试图写入的</strong>虚拟地址分配新的物理页面，并复制原页面的内容，最后再返回用户程序，对新分配的物理页面进行写入。</p>
-<ul>
-<li>进程调用 fork 时，需要对其所有的可写入的内存页面，设置页表项标志位 PTE_COW 并取消可写位 PTE_D
-<ul>
-<li>
-<p>将写时复制界面的 PTE_D 标志置为 0</p>
-<p>当进程读这个页面时，不会出现问题。但当进程尝试写这个页面时，由于 PTE_D 为 0，所以会触发 TLB Mod 异常，陷入内核执行写时复制流程</p>
-</li>
-<li>
-<p>引入新的标志位 PTE_COW，为 1则需要进行上述的写时复制处理</p>
-<p>利用 TLB 项中的软件保留位，区分真正的“只读”页面和“写时复制”页面</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="页写入异常"><a class="markdownIt-Anchor" href="#页写入异常"></a> 页写入异常</h3>
-<ul>
-<li>
-<p>do_tlb_mod 函数并没有进行页面复制等 COW 的处理操作。事实上，我们的 MOS 操作系统按照微内核的设计理念，<strong>尽可能地将功能实现在用户空间中</strong>，其中也包括了页写入异常的处理，因此主要的处理过程是在用户态下完成的</p>
-</li>
-<li>
-<p>如果需要在用户态下完成页写入异常的处理，是不能直接使用正常情况下的用户栈的（因为发生页写入异常的也可能是正常栈的页面），所以用户进程就需要一个单独的栈来执行处理程序，我们把这个栈称作 <em><strong>异常处理栈</strong></em>，它的栈顶对应的是内存布局中的 <em><strong>UXSTACKTOP</strong></em></p>
-</li>
-<li>
-<p>处理页写入异常的大致流程</p>
-<ol>
-<li>用户进程触发页写入异常，陷入到<strong>内核中的 handle_mod</strong>，再跳转到 do_tlb_mod 函数</li>
-<li>do_tlb_mod 函数负责<strong>将当前现场保存在异常处理栈中</strong>，并设置 a0 和 EPC 寄存器的值，使得从异常恢复后能够以异常处理栈中保存的现场为参数，跳转到env_user_tlb_mod_entry 域存储的用户异常处理函数的地址</li>
-<li>从异常恢复到用户态，跳转到用户异常处理函数cow_entry（fork.c 中定义）中，由用户程序完成写时复制等自定义处理。这个函数进行写时复制处理之后，使用系统调用 syscall_set_trapframe 恢复事先保存好的现场，其中也包括 sp 和 PC 寄存器的值，使得用户程序恢复执行</li>
-</ol>
-<p>内核只是存相关寄存器做准备，用户进程从相关寄存器中取得需要数据进行实际处理</p>
-</li>
-</ul>
-<p><img src="https://s2.loli.net/2024/05/08/ZhkaHj9XGK6ECUl.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<h1 id="时纪"><a class="markdownIt-Anchor" href="#时纪"></a> 时纪</h1>
-<ul>
-<li>
-<p>E 4.1</p>
-<ul>
-<li>有傻子系统调用完不返回啊……如果没有<code>jr ra</code>，系统调用将无法正确返回结果给用户程序，用户程序可能会无限期地等待系统调用的结果，调用者无法恢复执行
-<ul>
-<li>同理，也需要注意EPC的设置，比如<code>tf-&gt;cp0_epc += 4;</code> ，让返回时返回到下一条指令。而如果是延迟槽指令，epc为当前pc,不需要再加4</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>E 4.2</p>
-<ul>
-<li>
-<p>想半天去哪个代码文件找reg的每个编号到底对应哪个寄存器，突然想起是MIPS规定好的……</p>
-<p><img src="https://s2.loli.net/2024/05/08/JUnQaBZqsuYwtjF.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-</li>
-</ul>
-</li>
-<li>
-<p>E 4.10</p>
-<ul>
-<li><font color="green"><strong>修改权限位之后</strong></font>需要<strong>重新进行页面映射</strong></li>
-</ul>
-</li>
-<li>
-<p>E 4.13</p>
-<ul>
-<li><font color="green">注意<strong>使用alloc和map相关函数</strong>时</font>需要考虑虚拟地址页对齐的问题</li>
-</ul>
-</li>
-</ul>
-<h1 id="上机准备"><a class="markdownIt-Anchor" href="#上机准备"></a> 上机准备</h1>
-<h3 id="需时刻注意区分用户态和内核态"><a class="markdownIt-Anchor" href="#需时刻注意区分用户态和内核态"></a> 需时刻注意区分用户态和内核态</h3>
-<ul>
-<li>编写/使用函数的时候需要注意，有些函数只能在内核态使用！比如page_alloc，在用户态需要换为syscall_mem_alloc来实现
-<ul>
-<li><strong>使用系统调用相关函数时</strong>，注意调用<code>syscall_*</code>时的参数列表/类型和<code>sys_*</code><strong>不一定相同</strong></li>
-<li><strong>分配空间、建立映射时</strong>，注意考虑用 <code>page_*</code> 还是 <code>syscall_*</code></li>
-</ul>
-</li>
-</ul>
-<h3 id="常用函数用法"><a class="markdownIt-Anchor" href="#常用函数用法"></a> 常用函数/用法</h3>
-<p><font color="blue"><strong>用函数/实现函数的第一步注意使用前提条件！</strong></font></p>
-<ul>
-<li>
-<p><code>*(vpt+i) &amp; PTE_V</code> <font color="red"><strong>目录项有效性检查</strong></font></p>
-</li>
-<li>
-<p><strong>vpt &amp; vpd 用法</strong></p>
-<p>（*vpd）[va&gt;&gt;22（页目录的索引）]&amp;(~0xfff) 表示二级页表的物理地址， (*vpt)[va &gt;&gt; 12]&amp;(~0xfff) 为 va 对应的物理页面地址，<font color="blue"><strong>使用前记得提前判断有效位</strong></font></p>
-</li>
-<li>
-<p><code>envid2env</code>通过一个进程的 id 获取该进程控制块</p>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">try(envid2env(envid, &amp;env, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><code>is_illegal_va</code> 判断虚拟地址的有效性</p>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(is_illegal_va(va))&#123;</span><br><span class="line">		<span class="keyword">return</span> -E_INVAL;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><code>*((struct Trapframe *)KSTACKTOP - 1)</code> 内核中寄存器快照的位置</p>
-</li>
-<li>
-<p><code>TAILQ_INSERT_TAIL</code> 将进程插入调度队列，注意是<font color="red"><strong>TAIL</strong></font></p>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>( env-&gt;env_status!=ENV_RUNNABLE &amp;&amp; status==ENV_RUNNABLE )&#123;</span><br><span class="line">		TAILQ_INSERT_TAIL(&amp;env_sched_list, env, env_sched_link);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><code>TAILQ_REMOVE</code> 将进程移除调度队列</p>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">TAILQ_REMOVE(&amp;env_sched_list, curenv, env_sched_link);</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><code>page_lookup</code> 写时复制时检查原页面映射是否存在</p>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">p = page_lookup( curenv-&gt;env_pgdir, srcva, <span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">if</span>( p == <span class="literal">NULL</span> )&#123;</span><br><span class="line">		<span class="keyword">return</span> -E_INVAL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><code>perm = *(vpt+VPN(va))&amp;0xfff;</code> 获取页目录项权限</p>
-</li>
-<li>
-<p><code>perm |= PTE_D;	perm &amp;= ~PTE_COW;</code> 更改页目录项权限</p>
-</li>
-<li>
-<p><code>user_panic</code> 用户态崩溃</p>
-</li>
-</ul>
-<h3 id="往年教训"><a class="markdownIt-Anchor" href="#往年教训"></a> 往年教训</h3>
-<ul>
-<li>可能会<font color="green">涉及ipc的具体实现</font>，可以考虑<font color="blue">开结构体数组记录每次信息发送的相关值和一个记录是否完成的标记</font>
-<ul>
-<li>接收进程：首先查表，有无自己可以接受的信息，有的话就接收，设置发送进程状态为RUNNABLE 并正常退出，否则阻塞。</li>
-<li>发送进程：检查接收进程的状态，若阻塞，直接进程信息发送同时设置接收进程状态为RUNNABLE。若接收进程没有阻塞，将待发送的信息添加到信息表中，阻塞。</li>
-</ul>
-</li>
-</ul>
-<h3 id="23-exam"><a class="markdownIt-Anchor" href="#23-exam"></a> 23-exam</h3>
-<p>多进程（进程组）ipc的实现，允许一个进程向指定的进程组发送消息</p>
-<ul>
-<li>增加一种功能需要同步修改几个文件，按照syscall的实现流程来改</li>
-</ul>
-<p><img src="https://s2.loli.net/2024/05/08/EpvcXFL93tyT58G.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p><img src="https://s2.loli.net/2024/05/08/ULDj4XH5K7xY2fR.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p><code>kern/syscall_all.c</code> 增加</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">sys_set_gid</span><span class="params">(u_int gid)</span> &#123;</span><br><span class="line">	curenv-&gt;env_gid = gid;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">sys_ipc_group_send</span><span class="params">(u_int whom, u_int val, u_int srcva, u_int perm)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Env</span> *<span class="title">e</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">p</span>;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 1: Check if &#x27;srcva&#x27; is either zero or a legal address. */</span></span><br><span class="line">	<span class="comment">/* Exercise 4.8: Your code here. (4/8) */</span></span><br><span class="line">	<span class="keyword">if</span> (srcva != <span class="number">0</span> &amp;&amp; is_illegal_va(srcva)) &#123;</span><br><span class="line">		<span class="keyword">return</span> -E_INVAL;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 2: Convert &#x27;envid&#x27; to &#x27;struct Env *e&#x27;. */</span></span><br><span class="line">	<span class="comment">/* This is the only syscall where the &#x27;envid2env&#x27; should be used with &#x27;checkperm&#x27; UNSET,</span></span><br><span class="line"><span class="comment">	 * because the target env is not restricted to &#x27;curenv&#x27;&#x27;s children. */</span></span><br><span class="line">	<span class="comment">/* Exercise 4.8: Your code here. (5/8) */</span></span><br><span class="line">	try(envid2env(whom, &amp;e, <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 3: Check if the target is waiting for a message. */</span></span><br><span class="line">	<span class="comment">/* Exercise 4.8: Your code here. (6/8) */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( e-&gt;env_ipc_recving != <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> -E_IPC_NOT_RECV;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( e-&gt;env_gid != curenv-&gt;env_gid) &#123;</span><br><span class="line">		<span class="keyword">return</span> -E_IPC_NOT_GROUP;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 4: Set the target&#x27;s ipc fields. */</span></span><br><span class="line">	e-&gt;env_ipc_value = val;</span><br><span class="line">	e-&gt;env_ipc_from = curenv-&gt;env_id;</span><br><span class="line">	e-&gt;env_ipc_perm = PTE_V | perm;</span><br><span class="line">	e-&gt;env_ipc_recving = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 5: Set the target&#x27;s status to &#x27;ENV_RUNNABLE&#x27; again and insert it to the tail of</span></span><br><span class="line"><span class="comment">	 * &#x27;env_sched_list&#x27;. */</span></span><br><span class="line">	<span class="comment">/* Exercise 4.8: Your code here. (7/8) */</span></span><br><span class="line">	e-&gt;env_status = ENV_RUNNABLE;</span><br><span class="line">	TAILQ_INSERT_TAIL(&amp;env_sched_list, e, env_sched_link);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 6: If &#x27;srcva&#x27; is not zero, map the page at &#x27;srcva&#x27; in &#x27;curenv&#x27; to &#x27;e-&gt;env_ipc_dstva&#x27;</span></span><br><span class="line"><span class="comment">	 * in &#x27;e&#x27;. */</span></span><br><span class="line">	<span class="comment">/* Return -E_INVAL if &#x27;srcva&#x27; is not zero and not mapped in &#x27;curenv&#x27;. */</span></span><br><span class="line">	<span class="keyword">if</span> (srcva != <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="comment">/* Exercise 4.8: Your code here. (8/8) */</span></span><br><span class="line">		<span class="keyword">if</span> ((p = page_lookup(cur_pgdir, srcva, <span class="literal">NULL</span>)) == <span class="literal">NULL</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> -E_INVAL;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> page_insert(e-&gt;env_pgdir, e-&gt;env_asid, p, e-&gt;env_ipc_dstva, e-&gt;env_ipc_perm);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> *syscall_table[MAX_SYSNO]里新增</span><br><span class="line">		[SYS_set_gid] = sys_set_gid,</span><br><span class="line">    [SYS_ipc_group_send] = sys_ipc_group_send,</span><br></pre></td></tr></table></figure>
-<p><img src="https://s2.loli.net/2024/05/08/g3bp1Y8ZVjQMlPw.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p><img src="https://s2.loli.net/2024/05/08/zU6fsdcKxR4BNyo.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<p>整体思路是：</p>
-<ul>
-<li>首先验证发送的地址是否合法。</li>
-<li>找到目标进程的环境结构体。</li>
-<li>检查目标进程是否准备好接收消息，并且是否与发送进程在同一个组内。</li>
-<li>如果准备好了，设置消息和权限，改变目标进程的状态为可运行，并将其加入到调度队列中。</li>
-<li>如果有数据需要发送，将其从当前进程的地址空间映射到目标进程的地址空间。</li>
-</ul>
-<h3 id="23-extra正确性存疑"><a class="markdownIt-Anchor" href="#23-extra正确性存疑"></a> 23-extra（正确性存疑</h3>
-<p>广播机制的实现，即允许一个进程向其所有子进程发送消息</p>
-<p><img src="https://s2.loli.net/2024/05/08/ZRQLtFTDWjJGlp3.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">is_father</span><span class="params">(u_int may_child, u_int may_father)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (may_child == may_father)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (may_child != <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (may_child == may_father)</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		<span class="class"><span class="keyword">struct</span> <span class="title">Env</span> * <span class="title">e</span> =</span> envs + ENVX(may_child);</span><br><span class="line">		may_child = e-&gt;env_parent_id;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">ipc_broadcast</span><span class="params">(u_int val, <span class="type">void</span> * srcva, u_int perm)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Env</span> * <span class="title">childs</span>[<span class="title">NENV</span>];</span></span><br><span class="line">	<span class="type">int</span> child_num = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; NENV; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (is_father(envs[i].env_id, env-&gt;env_id)) &#123;</span><br><span class="line">			childs[child_num++] = envs + i;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> r;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; child_num; i++) &#123;</span><br><span class="line">		<span class="keyword">while</span> ((r = syscall_ipc_try_send(childs[i]-&gt;env_id, val, srcva, perm)) != <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (r == -E_IPC_NOT_RECV)</span><br><span class="line">				syscall_yield();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>整体思路是：<code>ipc_broadcast</code>函数首先检查要发送的数据地址是否合法，然后获取当前进程的环境ID，并调用<code>ipc_broadcast_send</code>函数。<code>ipc_broadcast_send</code>函数通过遍历所有进程环境结构体，找到所有子进程，然后对每个子进程递归调用自身，实现广播通信。同时，它还调用<code>ipc_send</code>函数直接向每个子进程发送消息。这种设计允许消息在进程树中的所有子节点上广播，而不仅仅是直接的子进程。</p>
-<ul>
-<li>
-<p>另一个版本</p>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">ipc_broadcast</span><span class="params">(u_int val, <span class="type">void</span> * srcva, u_int perm)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span>((srcva &lt; UTEMP || srcva &gt; UTOP) &amp;&amp; srcva != <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	u_int id;</span><br><span class="line">	id = syscall_getenvid();</span><br><span class="line">	ipc_broadcast_send(id, val, srcva, perm);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">ipc_broadcast_send</span><span class="params">(u_int p_envid, u_int val, <span class="type">void</span> * srcva, u_int perm)</span> &#123;</span><br><span class="line">	<span class="type">int</span> num = <span class="number">0</span>;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Env</span> *<span class="title">child_envs</span>[15];</span></span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; NENV; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(envs[i].env_status != ENV_FREE &amp;&amp; envs[i].env_parent_id == p_envid) &#123;</span><br><span class="line">			child_envs[num++] = &amp;envs[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(num == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; num; i++) &#123;</span><br><span class="line">		<span class="comment">//ipc_send(child_envs[i]-&gt;env_id, val, srcva, perm);</span></span><br><span class="line">		ipc_broadcast_send(child_envs[i]-&gt;env_id, val, srcva, perm);</span><br><span class="line">		ipc_send(child_envs[i]-&gt;env_id, val, srcva, perm);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="22-exam"><a class="markdownIt-Anchor" href="#22-exam"></a> <strong>22-Exam</strong></h2>
-<h3 id="一题目描述"><a class="markdownIt-Anchor" href="#一题目描述"></a> <strong>（一）题目描述</strong></h3>
-<p>在本题中，内核需要面向所有进程维护一个公用的锁（下称<strong>锁</strong>）。对于用户程序，锁在同一时刻要么被唯一一个进程持有，要么不被任何进程持有（此时称锁处于<strong>空闲状态</strong>）。内核初始化时，锁应当处于空闲状态。</p>
-<p>为了在用户空间提供自旋锁机制，你需要实现以下两个用户函数：</p>
-<h3 id="检查并设置锁"><a class="markdownIt-Anchor" href="#检查并设置锁"></a> <strong>“检查并设置“锁</strong></h3>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/* user/lib.h */</span><br><span class="line">int syscall_try_acquire_console(void);</span><br></pre></td></tr></table></figure>
-<p>若锁处于空闲状态，该函数设置锁由当前进程持有，并返回 0 ；否则，该函数返回 -1 。</p>
-<p>请注意：只要锁不处于空闲状态，即使锁已由当前进程持有，该函数也返回 -1 。</p>
-<h3 id="释放锁"><a class="markdownIt-Anchor" href="#释放锁"></a> <strong>释放锁</strong></h3>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/* user/lib.h */</span><br><span class="line">int syscall_release_console(void);</span><br></pre></td></tr></table></figure>
-<p>若锁由当前进程持有，该函数设置锁为空闲状态，并返回 0 ，从而使当前进程不再持有锁。否则，该函数返回 -1 。</p>
-<p>为了实现这两个用户函数，你需要设计并添加相应的系统调用，保证这两个锁操作具有原子性，即不会被其他进程打断，导致多个进程持有锁。</p>
-<h3 id="控制台输出锁保护"><a class="markdownIt-Anchor" href="#控制台输出锁保护"></a> <strong>控制台输出锁保护</strong></h3>
-<p>为了在内核中控制控制台输出设备的使用，你需要修改 lib/syscall_all.c 中 <code>sys_putchar</code> 系统调用函数的实现，使得只有持有锁的进程才能向控制台输出字符。如果当前进程不持有锁，该函数应直接返回，<strong>不应输出任何内容</strong>。</p>
-<h3 id="实现要求"><a class="markdownIt-Anchor" href="#实现要求"></a> <strong>实现要求</strong></h3>
-<ul>
-<li>在 user/lib.h 中声明函数 <code>int syscall_try_acquire_console();</code></li>
-<li>在 user/lib.h 中声明函数 <code>int syscall_release_console();</code></li>
-<li>在 user/syscall_lib.c 中实现以上两个用户函数，发起系统调用</li>
-<li>修改相关文件，在内核中添加必要的系统调用，并维护必要的信息，以供用户函数使用。可能涉及的文件有：</li>
-<li>lib/syscall_all.c ：添加系统调用在内核中的实现函数lib/syscall.S ：将实现函数添加到系统调用入口向量表include/unistd.h ：定义系统调用号</li>
-<li>修改 lib/syscall_all.c 中的 <code>sys_putchar</code> 函数</li>
-</ul>
-<h3 id="二题目理解与实现"><a class="markdownIt-Anchor" href="#二题目理解与实现"></a> <strong>（二）题目理解与实现</strong></h3>
-<h3 id="1-新增系统调用"><a class="markdownIt-Anchor" href="#1-新增系统调用"></a> <strong>1. 新增系统调用</strong></h3>
-<p>很显然，题目需要我们新加两个系统调用，并修改原来的系统调用sys_putchar。</p>
-<p>经过课下部分的学习，我们知道，系统调用主要有以下过程：</p>
-<ol>
-<li>用户进程的某些函数需要内核级特权操作，通过用户空间的<code>syscall_xxx</code>发出系统调用，调用msyscall。(user/syscall_lib.c)</li>
-<li><code>msyscall(SYS_xxx, x, x, x, x, x)</code>将相应的参数准备好（<strong>此时依然是用户空间</strong>），正式调用syscall。（user/syscall_wrap.S)</li>
-<li>syscall触发异常，<strong>开始进入内核态</strong>，进入异常分发入口<code>except_vec3</code>。（boot/start.S）</li>
-<li>发现是8号异常（系统调用），进入异常处理<code>handle_sys</code>（lib/syscall.S)</li>
-<li>准备好6个参数（压栈等等），根据系统调用号分发到相应的内核特权级操作函数<code>sys_xxx</code>（来提供用户进程想要的服务）(lib/syscall_all.c)</li>
-<li>内核服务结束，<code>ret_from_exception</code> (lib/genex.S)</li>
-</ol>
-<p>因此在新增加系统调用时，我们完全可以按照系统调用的处理过程来实现（题目中给出的实现要求也明确指出了）：</p>
-<ol>
-<li>用户空间，增加syscall_xxx（在user/lib.h中声明 在user/syscall_lib.c中实现）</li>
-<li>内核空间，增加系统调用号（include/unistd.h）</li>
-<li>内核空间，把相应的内核操作函数sys_xxx塞到系统调用入口向量表（lib/syscall.S的最下面那个table）</li>
-<li>内核空间，实现sys_xxx（lib/syscall_all.c）</li>
-</ol>
-<p>由此，我们便完成了新增系统调用。</p>
-<h3 id="2-锁"><a class="markdownIt-Anchor" href="#2-锁"></a> <strong>2. 锁</strong></h3>
-<p>根据题目的实现提示，“可以在内核中记录锁的相关状态，使内核中的系统调用函数能够确定当前持有锁的进程”，我们可以在内核中新增一个变量 <code>int lock;</code>来表示锁。（可以直接在lib/syscall_all.c中加入 方便系统调用使用）</p>
-<p>而对于这个变量，我们需要它能够表示：</p>
-<ol>
-<li>锁空闲 <code>lock = 0;</code></li>
-<li>锁被某个进程占有 <code>lock = envid;</code></li>
-</ol>
-<p>因此，为了使得<code>lock</code>能够<strong>唯一确定</strong>占有的进程，我们可以直接把<code>envid</code>赋值给<code>lock</code>。此外，由于<code>envid</code>不可能为0，因此我们可以使用<code>lock = 0</code>来表示锁空闲。由此，我们就能够准确表示锁的状态了。（<strong>我们把<code>lock</code>直接设置成全局变量，就可以实现内核初始化时<code>lock</code>为0了</strong>）</p>
-<p>有了锁的状态表示后，就能够比较容易地写出两个系统调用函数了。</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int sys_try_acquire_console() &#123;</span><br><span class="line">    if (lock == 0) &#123;</span><br><span class="line">        lock = curenv-&gt;env_id;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int sys_release_console() &#123;</span><br><span class="line">    if (lock == curenv-&gt;env_id) &#123;</span><br><span class="line">        lock = 0;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>而对于sys_putchar的锁保护，也可以通过锁的状态实现：</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void sys_putchar(int sysno, int c, int a2, int a3, int a4, int a5)</span><br><span class="line">&#123;</span><br><span class="line">    if (lock != curenv-&gt;env_id) return;</span><br><span class="line">    printcharc((char) c);</span><br><span class="line">    return ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="22-extra"><a class="markdownIt-Anchor" href="#22-extra"></a> <strong>22-Extra</strong></h2>
-<h3 id="一题目描述-2"><a class="markdownIt-Anchor" href="#一题目描述-2"></a> <strong>（一）题目描述</strong></h3>
-<p>简单地说，就是IPC中，user/ipc.c中的ipc_send是一种轮询，直到接收方进入接收状态，我们要把这种轮询改掉，改成和ipc_recv一样的阻塞（OS与OO的完美结合）。</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void</span><br><span class="line">ipc_send(u_int whom, u_int val, u_int srcva, u_int perm)</span><br><span class="line">&#123;</span><br><span class="line">    int r;</span><br><span class="line">    while ((r=syscall_ipc_can_send(whom, val, srcva, perm)) == -E_IPC_NOT_RECV) // 这里一直在轮询</span><br><span class="line">    &#123;</span><br><span class="line">        syscall_yield();</span><br><span class="line">        //writef(&quot;QQ&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    if(r == 0)</span><br><span class="line">        return;</span><br><span class="line">    user_panic(&quot;error in ipc_send: %d&quot;, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们需要修改lib/syscall_all.c中的<code>sys_ipc_can_send</code>和<code>sys_ipc_recv</code>，使得<code>ipc_send</code>不用轮询，能够成为下面这个样子（突然清爽好多）：</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void ipc_send(u_int whom, u_int val, u_int srcva, u_int perm) &#123;</span><br><span class="line">    syscall_ipc_can_send(whom, val, srcva, perm);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>不用考虑各种非法的ipc行为，比如发送、接收进程不存在，srcva非法、perm非法等情况。</p>
-<h3 id="实现提示来自善良的助教们"><a class="markdownIt-Anchor" href="#实现提示来自善良的助教们"></a> <strong>实现提示（来自善良的助教们）</strong></h3>
-<ol>
-<li>可以参考当前对接收进程实现的阻塞机制，在接收进程进入接收状态前，让发送进程进入阻塞状态从而不被调度。在接收进程开始接收时，需要唤醒发送进程，并在接收过程中为其完成发送操作。这种情况下，接收进程不再需要被阻塞。</li>
-<li>发送进程进行发送时，如果接收进程已处于接收状态，则不需要阻塞发送进程，可如同课下实现直接发送。</li>
-<li>你可以将完成发送时传递数据的过程封装为单独的函数，并在发送和接收过程中调用，以处理以上的两种情况。</li>
-<li>在接收进程开始接收时，可能有多个进程都向其进行过发送，此时 sys_ipc_recv 仍应保证每次接收只选择一个发送进程，接收其数据并将其唤醒，而其余发送进程仍应处于阻塞状态，等待接收</li>
-<li>进程下一次调用 ipc_recv 。我们对这一接收顺序没有要求（可以与发送顺序不一致），但不应有发送的数据被遗漏。</li>
-<li>在阻塞一个发送进程时，你可能需要将描述本次发送的相关数据信息存储在内核中的缓冲区中，包括发送方和接收方的 envid，以及被发送的 value 、 srcva 和 perm 。开始接收时，你需要找到该接收进程对应的数据信息。</li>
-<li>你可以为每个未进入接收状态的进程准备一个接收队列，将来自每个发送进程的数据放入其中暂存。开始接收时，需要检查接收进程的接收队列是否为空。</li>
-<li>为了保证内存映射的正确性，请避免在 struct Env 中新增字段。你可以使用 ENVX 宏等方式获取进程控制块在 envs 中的下标，并使用独立的静态数组为每个进程在内核中维护必要的信息。</li>
-</ol>
-<p>经过如上的提醒，笔者梳理了以下几点：</p>
-<ol>
-<li>自己封装一个发送数据的函数，减小耦合</li>
-<li>不要改Env的结构体</li>
-<li>每个进程一个信息队列</li>
-<li>发送时，接收进程在接收状态，直接发</li>
-<li>发送时，接收进程不在接收状态，<strong>把信息塞到接收进程的信息队列，自己阻塞</strong></li>
-<li>接收时，自己的队列里没有信息，自己阻塞，等别人发信息过来</li>
-<li>接收时，自己的队列里有信息，拿出<strong>一个</strong>信息，<strong>首先帮助发送者完成发送，其次唤醒被阻塞的发送者</strong></li>
-</ol>
-<h3 id="二题目理解与实现-2"><a class="markdownIt-Anchor" href="#二题目理解与实现-2"></a> <strong>（二）题目理解与实现</strong></h3>
-<h3 id="1-message"><a class="markdownIt-Anchor" href="#1-message"></a> <strong>1. Message</strong></h3>
-<p>经过上面的梳理和实现提示，我们可以看到，发送的单位是“信息”，其中包含发送方、接收方的envid，value, perm, srcva，这么多东西，我们可以把它们打包成Message（OO课重现！）。</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct Message &#123;</span><br><span class="line">    int send_envid;</span><br><span class="line">    int recv_envid;</span><br><span class="line">    int value;</span><br><span class="line">    int perm;</span><br><span class="line">    int srcva;</span><br><span class="line">    LIST_ENTRY(Message) message_link;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="2-发送函数"><a class="markdownIt-Anchor" href="#2-发送函数"></a> <strong>2. 发送函数</strong></h3>
-<p>经过实现提示，我们可以实现一个发送数据的函数来降低耦合性。（可以参考原来的sys_ipc_can_send）</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int mysend(struct Message* m) &#123;</span><br><span class="line">    int send_envid = m-&gt;send_envid;</span><br><span class="line">    int recv_envid = m-&gt;recv_envid;</span><br><span class="line">    int value = m-&gt;value;</span><br><span class="line">    int srcva = m-&gt;srcva;</span><br><span class="line">    int perm = m-&gt;perm;</span><br><span class="line">    struct Env* send_env, recv_env;</span><br><span class="line">    struct Page* p;</span><br><span class="line">    int r;</span><br><span class="line">    r = envid2env(send_envid, &amp;send_env, 0);</span><br><span class="line">    if (r &lt; 0) panic(&quot;cannot find send env&quot;);</span><br><span class="line">    r = envid2env(recv_envid, &amp;recv_env, 0);</span><br><span class="line">    if (r &lt; 0) panic(&quot;cannot find recv env&quot;);</span><br><span class="line">    if (recv-&gt;env_ipc_recving == 0) panic(&quot;recv env is not receiving&quot;);</span><br><span class="line">    recv-&gt;env_ipc_recving = 0;</span><br><span class="line">    recv-&gt;env_ipc_from = send_envid;</span><br><span class="line">    recv-&gt;env_ipc_value = value;</span><br><span class="line">    recv-&gt;env_ipc_perm = perm;</span><br><span class="line">    recv-&gt;env_status = ENV_RUNNABLE;</span><br><span class="line">    if (srcva != 0) &#123;</span><br><span class="line">        Pte* pte;</span><br><span class="line">        p = page_lookup(send_env-&gt;env_pgdir, srcva, &amp;pte);</span><br><span class="line">        if (p == 0) panic(&quot;cannot find page&quot;);</span><br><span class="line">        r = page_insert(recv_env-&gt;env_pgdir, p, recv_env-&gt;env_ipc_dstva, perm);</span><br><span class="line">        if (r &lt; 0) panic(&quot;cannot insert page&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，这个发送函数只负责发送信息和修改接收方的状态，<strong>不负责修改发送方的状态</strong>。</p>
-<h3 id="3-进程信息队列"><a class="markdownIt-Anchor" href="#3-进程信息队列"></a> <strong>3. 进程信息队列</strong></h3>
-<p>对于每个进程，需要存储它获得但未接收的信息。我们可以用LIST来实现。</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">LIST_HEAD(Message_list, Message);</span><br><span class="line">struct Message_list message_buffer[NENV]; // 为了保险，每个进程控制块都来一个信息队列</span><br></pre></td></tr></table></figure>
-<p><strong>不要忘了初始化这些LIST，可以在<code>env_init</code>中实现。</strong></p>
-<p>在lib/syscall_all.c中开一个Message的大数组作为备用的Message。</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct Message messages[10000];</span><br><span class="line">int free_pos; // 指向下一个空闲的Message（每次记得free_pos++）</span><br></pre></td></tr></table></figure>
-<p>如果想要<strong>往某个envid的信息队列里插入或拿出信息</strong>，可以通过ENVX宏和链表宏来实现：</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct Message* m;</span><br><span class="line">// 插入信息队列</span><br><span class="line">LIST_INSERT_HEAD(&amp;message_buffer[ENVX(envid)], m, message_link);</span><br><span class="line">// 取出信息</span><br><span class="line">m = LIST_FIRST(&amp;message_buffer[ENVX(envid)]);</span><br><span class="line">LIST_REMOVE(m, message_link);</span><br></pre></td></tr></table></figure>
-<p>完成进程信息队列，我们就可以开始快乐地写两个系统调用了。</p>
-<h3 id="4-sys_ipc_can_send"><a class="markdownIt-Anchor" href="#4-sys_ipc_can_send"></a> <strong>4. sys_ipc_can_send</strong></h3>
-<p>经过前面的梳理，我们知道，发送时主要有两种情况：</p>
-<ol>
-<li>接收进程已经进入接收状态，直接发送</li>
-<li>接收进程还未进入接收状态，把信息插入接收进程的信息队列，自己阻塞</li>
-</ol>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int sys_ipc_can_send(int sysno, u_int envid, u_int value, u_int srcva,</span><br><span class="line">                     u_int perm) &#123;</span><br><span class="line">    // 创建Message对象</span><br><span class="line">    struct Message* m;</span><br><span class="line">    m = &amp;messages[free_pos];</span><br><span class="line">    free_pos++;</span><br><span class="line">    m-&gt;send_envid = curenv-&gt;env_id;</span><br><span class="line">    m-&gt;recv_envid = envid;</span><br><span class="line">    m-&gt;value = value;</span><br><span class="line">    m-&gt;srcva = srcva;</span><br><span class="line">    m-&gt;perm = perm;</span><br><span class="line">    struct Env* e;</span><br><span class="line">    envid2env(envid, &amp;e, 0);</span><br><span class="line"></span><br><span class="line">    if(e-&gt;env_ipc_recving == 1) &#123; // 接收进程已经在接收状态了，直接发送</span><br><span class="line">        mysend(m);</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123; // 接收进程不在接收状态</span><br><span class="line">        int index = ENVX(m-&gt;recv_envid);</span><br><span class="line">        LIST_INSERT_HEAD(&amp;message_buffer[index], m, message_link); // 加入信息队列</span><br><span class="line">        curenv-&gt;env_status = ENV_NOT_RUNNABLE; // 自己阻塞</span><br><span class="line">        sys_yield();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="5-sys_ipc_recv"><a class="markdownIt-Anchor" href="#5-sys_ipc_recv"></a> <strong>5. sys_ipc_recv</strong></h3>
-<p>这个函数的功能主要是：</p>
-<ol>
-<li>当前信息队列为空，进入接收状态，自己阻塞</li>
-<li>当前信息队列不为空，取出一个信息发送，唤醒发送者</li>
-</ol>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void sys_ipc_recv(int sysno, u_int dstva) &#123;</span><br><span class="line">    // 先设置好curenv的状态</span><br><span class="line">    curenv-&gt;env_ipc_dstva = dstva;</span><br><span class="line">    curenv-&gt;env_ipc_recving = 1; // mysend中会判断，因此需要置1</span><br><span class="line">    int index = ENVX(curenv-&gt;env_id);</span><br><span class="line">    if (LIST_EMPTY(&amp;message_buffer[index])) &#123; // 信息队列为空，自己阻塞</span><br><span class="line">        curenv-&gt;env_status = ENV_NOT_RUNNABLE;</span><br><span class="line">        sys_yield();</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123; // 信息队列不为空</span><br><span class="line">        struct Message* m;</span><br><span class="line">        // 取出一个信息并发送</span><br><span class="line">        m = LIST_FIRST(&amp;message_buffer[index]);</span><br><span class="line">        LIST_REMOVE(m, message_link);</span><br><span class="line">        mysend(m);</span><br><span class="line">        // 唤醒发送者</span><br><span class="line">        struct Env* e;</span><br><span class="line">        envid2env(m-&gt;send_envid, &amp;e, 0);</span><br><span class="line">        e-&gt;env_status = ENV_RUNNABLE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>由此，我们便把轮询改好了！</p>
-</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
     <title>BUAA OS-Lab1</title>
     <url>/OS/BUAA-OS-Lab1/</url>
     <content><![CDATA[<h1 id="指导书梳理讲解"><a class="markdownIt-Anchor" href="#指导书梳理讲解"></a> 指导书梳理&amp;讲解</h1>
@@ -2735,6 +2166,230 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
 </ul>
 </li>
 </ul>
+]]></content>
+      <categories>
+        <category>OS</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>Lab</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUAA-OS-Lab3</title>
+    <url>/OS/BUAA-OS-Lab3/</url>
+    <content><![CDATA[<h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
+<p>相关文件：<code>/include/env.h</code> <code>/include/trap.h</code> <code>/kern/env.c</code>  <code>lib/elfloader.c</code> <code>pmap.h</code>  <code>pmap.c</code>  <code>kern/traps.c</code> <code>kern/genex.S</code>  <code>kern/sched.c</code></p>
+<h2 id="进程"><a class="markdownIt-Anchor" href="#进程"></a> 进程</h2>
+<h3 id="模板页表mos专有概念"><a class="markdownIt-Anchor" href="#模板页表mos专有概念"></a> 模板页表（MOS专有概念）</h3>
+<p>在用户空间中读取内核信息</p>
+<p><img src="https://s2.loli.net/2024/04/24/yIaPkFxYbjRBgW1.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>
+<p><strong>原理</strong></p>
+<p>MOS 被设计成对于其中运行的每一个用户进程，都可以<strong>通过用户地址空间（kuseg）读取 pages 数组和 envs 数组的信息</strong>。为实现该功能，在创建用户进程时我们需要将 pages 数组和 envs 数组映射到用户地址空间中的 <code>UPAGES</code> 与 <code>UENVS</code> 处。</p>
+<p><code>base_pgdir</code> 指向模板页表页目录的<strong>内核虚拟基地址</strong>，以便创建进程时能够根据 “模板页表” 的内容创建自己的页表。每创建一个进程，都将这个模板页表页目录中用来映射 envs 与 pages 的表项复制到新创建的进程的页目录中</p>
+</li>
+<li>
+<p><strong>设置目的</strong></p>
+<p>使用户进程<strong>共享一部分二级页表</strong>，从而节省物理页面</p>
+</li>
+</ul>
+<h3 id="进程的标识"><a class="markdownIt-Anchor" href="#进程的标识"></a> 进程的标识</h3>
+<p><code>struct Env</code> 进程控制块中</p>
+<ul>
+<li><code>env_id</code> 是每个<strong>进程</strong>独一无二的标识符，进程创建的时候就使用<code>mkenvid</code>赋予。</li>
+<li><code>env_asid</code> 记录进程的 ASID，这是<strong>进程虚拟地址</strong>空间的标识
+<ul>
+<li>ASID在TLB映射机制中使用——TLB 事实上构建了一个映射 &lt; VPN, ASID &gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover><mo><mo>⟶</mo></mo><mrow><mi>T</mi><mi>L</mi><mi>B</mi></mrow></mover></mrow><annotation encoding="application/x-tex">\stackrel{TLB}{\longrightarrow}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3003310000000001em;vertical-align:-0.011em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893310000000002em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.7110000000000003em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mord mathdefault mtight">L</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span></span></span></span>&lt; PFN, N, D, V, G &gt;</li>
+<li>ASID 部分只占据了 0-7 共 8 个 bit，即ASID资源是有限的，需要使用一定的资源管理方法来<strong>分配、回收</strong> ASID。MOS 实验采用了位图法管理 256 个可用的 ASID，<strong>如果 ASID 耗尽时仍要创建进程，内核会发生崩溃（panic）</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="设置进程控制块"><a class="markdownIt-Anchor" href="#设置进程控制块"></a> 设置进程控制块</h3>
+<ul>
+<li>
+<p>在 MOS 操作系统<strong>特意将一些内核的数据暴露到用户空间</strong>，使得进程不需要切换到内核态就能访问，这是 MOS 特有的设计</p>
+<p>在这里暴露 UTOP 往上到 UVPT 之间所有进程共享的<strong>只读</strong>空间，也就是把这部分内存对应的<strong>内核<br />
+页表 base_pgdir 拷贝到进程页表中</strong>。从 <strong>UVPT 往上到 ULIM 之间则是进程自己的页表</strong></p>
+<p><img src="https://s2.loli.net/2024/04/24/etFI7plnikVqRT6.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+<h3 id="加载二进制镜像"><a class="markdownIt-Anchor" href="#加载二进制镜像"></a> 加载二进制镜像</h3>
+<p>要想正确加载一个 ELF 文件到内存，只需将 ELF 文件中所有<strong>需要加载的程序段加载到对应的<font color="red">虚拟地址</font>上</strong>即可</p>
+<p><img src="https://s2.loli.net/2024/04/24/BlTYwCyVzxOSjkP.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li><code>elf_load_seg</code> 只关心ELF 段的结构，由回调函数处理具体的页面加载过程</li>
+</ul>
+<h3 id="进程运行与切换"><a class="markdownIt-Anchor" href="#进程运行与切换"></a> 进程运行与切换</h3>
+<p>在 Lab3 中，进程切换只需要保存进程的上下文信息。而MOS中的寄存器状态保存的地方是 <code>KSTACKTOP</code> 以下的一个 <code>sizeof(TrapFrame)</code>大小的区域中，而<code>curenv-&gt;env_tf</code>是存放当前进程的上下文的区域</p>
+<p>故保存进程上下文使用语句<code>curenv-&gt;env_tf = *((struct Trapframe *)KSTACKTOP - 1)</code></p>
+<h2 id="中断与异常"><a class="markdownIt-Anchor" href="#中断与异常"></a> 中断与异常</h2>
+<p>CPU 不仅仅有常见的 32 个通用寄存器，还有功能广泛的***协处理器***，而中断/异常部分就用到了其中的协处理器 CP0</p>
+<table>
+<thead>
+<tr>
+<th>寄存器助记符</th>
+<th>CP0 寄存器编号</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Status</td>
+<td>12</td>
+<td>状态寄存器，包括中断引脚使能，其他 CPU 模式等位域</td>
+</tr>
+<tr>
+<td>Cause</td>
+<td>13</td>
+<td>记录导致异常的原因</td>
+</tr>
+<tr>
+<td>EPC</td>
+<td>14</td>
+<td>异常结束后程序恢复执行的位置</td>
+</tr>
+</tbody>
+</table>
+<h3 id="status-寄存器"><a class="markdownIt-Anchor" href="#status-寄存器"></a> <strong>Status 寄存器</strong></h3>
+<p><img src="https://s2.loli.net/2024/04/24/OKAFgDfkURJj2S6.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>
+<p><code>IE</code> 位表示中断是否开启，为 1 表示开启，否则不开启</p>
+</li>
+<li>
+<p>当且仅当 <code>EXL</code> 被设置为 0 且 <code>UM</code> 被设置为 1 时，处理器处于<strong>用户模式</strong>，其它所有情况下，处理器均处于内核模式下</p>
+<ul>
+<li>
+<p>每当异常发生的时候，EXL 会被自动设置为 1（使处于内核态，能使用特权指令）</p>
+</li>
+<li>
+<p>每个进程在每一次被调度时都会执行</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RESTORE_ALL <span class="comment">//恢复处理器寄存器状态</span></span><br><span class="line">eret <span class="comment">// EXL被自动设置为 0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>15-8 位为<em><strong>中断屏蔽位***，每一位代表一个不同的中断活动，其中 15-10 位</strong>使能</em>*硬件中断源<font color="purple">（该中断能否被响应）</font>，9-8位是 Cause 寄存器软件可写的中断位</p>
+</li>
+</ul>
+<h3 id="cause-寄存器"><a class="markdownIt-Anchor" href="#cause-寄存器"></a> Cause 寄存器</h3>
+<p><img src="https://s2.loli.net/2024/04/24/zi1IqLRVo5welC7.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li><code>IP</code> (15-8 位)保存着哪一些中断发生了，其中 15-10 位来自硬件，9-8 位可以由软件写入，<font color="green">当 Status 寄存器中相同位允许中断（为 1）时</font>，Cause 寄存器这一位也为1就会导致中断</li>
+<li><code>ExcCode</code> (6-2位)，记录发生了什么异常。在 MOS 中，中断是 0 号异常。</li>
+</ul>
+<h3 id="cpu异常处理流程"><a class="markdownIt-Anchor" href="#cpu异常处理流程"></a> CPU异常处理流程</h3>
+<p>CPU 如何处理异常？</p>
+<ol>
+<li>设置 EPC 寄存器的值为从异常返回的地址。</li>
+<li>设置 Status 寄存器（<strong>设置 EXL 位，强制 CPU 进入内核态并禁止中断</strong>）</li>
+<li>设置 Cause 寄存器（记录异常原因）</li>
+<li>设置 PC 为<strong>异常入口地址</strong>，随后交给软件处理</li>
+</ol>
+<p>至此，我们成功地切换到内核程序，将异常处理的任务转交给操作系统。</p>
+<ul>
+<li>
+<p>相关指令</p>
+<ul>
+<li>
+<p><code>mfc0</code> Move From Coprocessor 0</p>
+<p>用于从协处理器的某个寄存器中读取值到一个通用寄存器中</p>
+</li>
+<li>
+<p><code>mtc0</code> Move To Coprocessor 0</p>
+<p>用于将一个通用寄存器的值写入协处理器的某个寄存器中</p>
+</li>
+</ul>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">mfc0    t0, CP0_STATUS</span><br><span class="line">and     t0, t0, ~(STATUS_UM | STATUS_EXL | STATUS_IE)</span><br><span class="line">mtc0    t0, CP0_STATUS</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<font color="grey">
+### SAVE_ALL 与异常重入
+<p>在 SAVE_ALL 中进行判断，若 Status 寄存器的 UM 位为 0，说明此次异常在内核态触发， sp 寄存器已经在内核异常栈中。不再将 sp 设置为 KSTACKTOP ，而是使其继续增长。</p>
+<p>这样便能够在异常中处理新的异常，而不会破坏原本的异常处理流程。这一机制被称作异常重入</font></p>
+<h3 id="异常的分发"><a class="markdownIt-Anchor" href="#异常的分发"></a> 异常的分发</h3>
+<p>当发生异常时，处理器会进入一个用于分发异常的程序，这个程序的作用就是检测发生了哪种异常，并调用相应的异常处理程序</p>
+<p>一般来说，异常分发程序会被要求放在固定的某个物理地址上</p>
+<p>在MOS中的实现为：将.text.exc_gen_entry 段和 .text.tlb_miss_entry 段用链接器放到特定的位置—— 0x80000180 和 0x80000000 处，它们是异常处理程序的入口地址。在我们的系统中，CPU 发生异常（除了用户态地址的 TLB Miss 异常）后，就会自动跳转到地址 0x80000180 处；发生用户态地址的 TLB Miss 异常时，会自动跳转到地址 0x80000000处</p>
+<h3 id="时钟中断"><a class="markdownIt-Anchor" href="#时钟中断"></a> 时钟中断</h3>
+<ul>
+<li>
+<p>中断处理的流程</p>
+<ol>
+<li>
+<p>通过异常分发，<strong>判断出当前异常为中断异常</strong>，随后进入相应的<strong>中断处理程序</strong>。在 MOS 中即对应 handle_int 函数。</p>
+<p>此前以异常的角度对时钟中断进行处理；现在以中断的角度对时钟中断进行处理</p>
+</li>
+<li>
+<p>在中断处理程序中<strong>进一步判断 Cause 寄存器中是由几号中断位引发的中断</strong>，然后进入不同中断对应的<strong>中断服务函数</strong>。</p>
+</li>
+<li>
+<p>中断处理完成，通过 ret_from_exception 函数<strong>恢复现场</strong>，继续执行。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>在MOS 中，<strong>时间片的长度是用时钟中断衡量</strong>的。4KC 中的 CP0 内置了一个可产生中断的 Timer，MOS 即使用这个内置的 Timer 产生时钟中断</p>
+<p>（具体细节实现见指导书）</p>
+</li>
+<li>
+<p>内核初始化完毕后陷入死循环，等待第一次时钟中断来临，通过异常处理来调度已经创建好的用户进程运行</p>
+</li>
+</ul>
+<h3 id="进程调度器"><a class="markdownIt-Anchor" href="#进程调度器"></a> 进程调度器</h3>
+<p><strong>什么时候需要切换进程？</strong></p>
+<ol>
+<li>参数 yield 为真时：此时当前进程必须让出。</li>
+<li>count 减为 0 时：此时分给进程的时间片被用完，将执行权让给其他进程。</li>
+<li>无当前进程：内核必然刚刚完成初始化，需要分配一个进程执行。</li>
+<li>进程状态不是可运行：当前进程不能再继续执行，让给其他进程。</li>
+</ol>
+<p><strong>如何切换进程？</strong></p>
+<ol>
+<li>当前进程仍为就绪状态时，需要将其移到 env_sched_list 队列的尾部。</li>
+<li>选中 env_sched_list 队列头部的进程。如果没有可用的进程，内核 panic。</li>
+<li>设置 count 为当前进程的优先级（分配的时间片的数量）。</li>
+</ol>
+<p>（不管是否切换，都）最后将 count 自减 1，调用 env_run 函数。</p>
+<h1 id="时纪"><a class="markdownIt-Anchor" href="#时纪"></a> 时纪</h1>
+<p>E 3.1</p>
+<ul>
+<li>
+<p>注意链表顺序！！初始化是倒序插入</p>
+</li>
+<li>
+<p><font color="red">LIST、TAIL相关宏操作的（参数）一般都是指针！！</font></p>
+</li>
+<li>
+<p>如下定义</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static Pde *base_pgdir;</span><br></pre></td></tr></table></figure>
+<p><code>base_pgdir</code> 是一个Pde类型的指针，即为目录项的虚拟地址；</p>
+<p><code>*base_pgdir</code> 是Pde类型的指针的解引用，即Pde，为目录项的物理地址</p>
+</li>
+</ul>
+<p>E 3.4</p>
+<ul>
+<li><code>NENV</code> 什么时候要用来作为限制条件吗？这里好像不用</li>
+</ul>
+<p>E 3.5</p>
+<ul>
+<li>分配页面后记得加<code>p→pp_ref</code>！！</li>
+</ul>
+<p>E 3.12</p>
+<ul>
+<li>schedule里的count是静态变量，存放在.data区，只初始化一次，不同进程不共享！！所以虽然可能会调度多次schedule函数，但每个进程只执行一次 <code>static int count = 0;</code> 初始化语句！！</li>
+<li>注意，不管要不要插到尾部，都要先移除当前进程！！</li>
+</ul>
+<h1 id="exam前准备"><a class="markdownIt-Anchor" href="#exam前准备"></a> exam前准备</h1>
+<h3 id="有可能出问题"><a class="markdownIt-Anchor" href="#有可能出问题"></a> 有可能出问题</h3>
+<ul>
+<li>scheduled函数，要不要把不是就绪状态的移除</li>
+<li>获取队列的第一个进程时，记得LIST_REMOVE</li>
+</ul>
+<h3 id="extra"><a class="markdownIt-Anchor" href="#extra"></a> extra</h3>
+<p>近年都是处理新的异常</p>
 ]]></content>
       <categories>
         <category>OS</category>
@@ -3706,6 +3361,351 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
       <tags>
         <tag>Django</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>BUAA-OS-Lab4</title>
+    <url>/uncategorized/BUAA-OS-Lab4/</url>
+    <content><![CDATA[<p>关键文件：kern/syscall_all.c、user/lib/fork.c、include/syscall.h、 user/include/lib.h</p>
+<h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
+<h2 id="系统调用"><a class="markdownIt-Anchor" href="#系统调用"></a> 系统调用</h2>
+<h3 id="系统调用原理-步骤"><a class="markdownIt-Anchor" href="#系统调用原理-步骤"></a> 系统调用原理-步骤</h3>
+<ol>
+<li>存在一些只能由内核来完成的操作（如读写设备、创建进程、IO 等）。</li>
+<li>C 标准库中一些函数的实现须依赖于操作系统（如我们所探究的 puts 函数）。</li>
+<li>通过执行 syscall 指令，用户进程可以陷入到内核态，请求内核提供的服务。</li>
+<li>通过系统调用陷入到内核态时，需要在用户态与内核态之间进行数据传递与保护。</li>
+</ol>
+<h3 id="系统调用机制的实现"><a class="markdownIt-Anchor" href="#系统调用机制的实现"></a> 系统调用机制的实现</h3>
+<p><img src="https://s2.loli.net/2024/05/08/u2oaNfZtzHrOF8e.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>
+<p><em><strong>syscall_</strong></em>*</p>
+<ul>
+<li>在 MOS中， syscall_* 的函数与内核中的系统调用函数（sys_* 的函数）是一一对应的：syscall_* 的函数是用户空间中最接近的内核的函数，而sys_* 的函数是内核中系统调用的具体实现部分。</li>
+<li>syscall_* 的函数的实现中，毫无例外都调用了 msyscall 函数，而且函数的第一个参数都是一个与调用名相似的宏（如 SYS_print_cons），MOS 中把这个参数称为***系统调用号***，它们被定义在 include/syscall.h中</li>
+</ul>
+</li>
+<li>
+<p><strong>msyscall 函数——参数传递的实现</strong></p>
+<ul>
+<li>进入函数体时会通过对栈指针做减法（压栈）的方式为该函数自身的局部变量、返回地址、调用函数的参数分配存储空间，在函数调用结束之后会对栈指针做加法（弹栈）释放这部分空间，这部分空间称为***栈帧***。调用方在自身栈帧的底部预留被调用函数的参数存储空间，由被调用方从调用方的栈帧中读取参数。</li>
+<li>寄存器 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mn>0</mn><mo>−</mo></mrow><annotation encoding="application/x-tex">a0-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">a</span><span class="mord">0</span><span class="mord">−</span></span></span></span>a3 用于存放函数调用的前四个参数</li>
+<li>剩余的参数仅存放在栈中，但在栈中仍然需要为存放在寄存器中的参数预留空间</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/05/08/fveSLRpnKB4FHN7.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>系统从用户态切换到内核态后，内核首先将原用户进程的运行现场保存到内核空间（在 kern/entry.S 中通过 SAVE_ALL 宏完成），随后<strong>内核空间的栈指针则指向保存的 Trapframe</strong>，便可以借助这个保存的结构体来获取用户态中传递过来的值</li>
+</ul>
+</li>
+</ul>
+<h3 id="基础系统调用函数"><a class="markdownIt-Anchor" href="#基础系统调用函数"></a> 基础系统调用函数</h3>
+<p>在内核处理进程发起的系统调用时，我们并没有切换地址空间（页目录地址），也不需要将进程上下文（Trapframe）保存到进程控制块中，<strong>只是切换到内核态下，执行了一些内核代码</strong>。</p>
+<p>可以说，处理系统调用时的内核仍然是代表当前进程的，这也是<strong>系统调用、TLB 缺失等同步异常与时钟中断等异步异常的本质区别</strong></p>
+<h2 id="进程间通信机制-ipc"><a class="markdownIt-Anchor" href="#进程间通信机制-ipc"></a> 进程间通信机制 (IPC)</h2>
+<ul>
+<li><strong>IPC的关键</strong>
+<ul>
+<li>
+<p>IPC 的目的是使两个进程之间可以通信</p>
+<p>通俗的讲，就是把一个地址空间中的东西传给另一个地址空间</p>
+</li>
+<li>
+<p>IPC 需要通过系统调用来实现</p>
+<p><strong>所有的进程都共享同一个内核空间（主要为 kseg0</strong>）。因此，想要在不同空间之间交换数据，就可以借助于内核空间来实现。</p>
+<p><strong>发送方进程可以将数据以系统调用的形式存放在进程控制块中，接收方进程同样以系统调用的方式在进程控制块中找到对应的数据，读取并返回</strong>。</p>
+<p><img src="https://s2.loli.net/2024/05/08/agP4SRmOxqF6KB5.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><img src="https://s2.loli.net/2024/05/08/PbXrGdtc2jamuJT.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="fork"><a class="markdownIt-Anchor" href="#fork"></a> Fork</h2>
+<p><img src="https://s2.loli.net/2024/05/08/QolHFgTN4kqDGUs.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="fork基础"><a class="markdownIt-Anchor" href="#fork基础"></a> fork基础</h3>
+<ul>
+<li>
+<p><em><strong>exec</strong></em></p>
+<p>与 fork 经常一起使用的是名为 exec 的一系列系统调用。它会使进程抛弃<br />
+现有的程序和运行现场，<strong>执行一个新的程序</strong></p>
+</li>
+</ul>
+<h3 id="写时复制"><a class="markdownIt-Anchor" href="#写时复制"></a> 写时复制</h3>
+<p>在 fork 时，我们只需将地址空间中的<strong>所有可写页标记为写时复制页面</strong>，使得在父进程或子进程对写时复制页面进行写入时，能够产生一种异常。操作系统在异常处理时，为当前进程<strong>试图写入的</strong>虚拟地址分配新的物理页面，并复制原页面的内容，最后再返回用户程序，对新分配的物理页面进行写入。</p>
+<ul>
+<li>进程调用 fork 时，需要对其所有的可写入的内存页面，设置页表项标志位 PTE_COW 并取消可写位 PTE_D
+<ul>
+<li>
+<p>将写时复制界面的 PTE_D 标志置为 0</p>
+<p>当进程读这个页面时，不会出现问题。但当进程尝试写这个页面时，由于 PTE_D 为 0，所以会触发 TLB Mod 异常，陷入内核执行写时复制流程</p>
+</li>
+<li>
+<p>引入新的标志位 PTE_COW，为 1则需要进行上述的写时复制处理</p>
+<p>利用 TLB 项中的软件保留位，区分真正的“只读”页面和“写时复制”页面</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="页写入异常"><a class="markdownIt-Anchor" href="#页写入异常"></a> 页写入异常</h3>
+<ul>
+<li>
+<p>do_tlb_mod 函数并没有进行页面复制等 COW 的处理操作。事实上，我们的 MOS 操作系统按照微内核的设计理念，<strong>尽可能地将功能实现在用户空间中</strong>，其中也包括了页写入异常的处理，因此主要的处理过程是在用户态下完成的</p>
+</li>
+<li>
+<p>如果需要在用户态下完成页写入异常的处理，是不能直接使用正常情况下的用户栈的（因为发生页写入异常的也可能是正常栈的页面），所以用户进程就需要一个单独的栈来执行处理程序，我们把这个栈称作 <em><strong>异常处理栈</strong></em>，它的栈顶对应的是内存布局中的 <em><strong>UXSTACKTOP</strong></em></p>
+</li>
+<li>
+<p>处理页写入异常的大致流程</p>
+<ol>
+<li>用户进程触发页写入异常，陷入到<strong>内核中的 handle_mod</strong>，再跳转到 do_tlb_mod 函数</li>
+<li>do_tlb_mod 函数负责<strong>将当前现场保存在异常处理栈中</strong>，并设置 a0 和 EPC 寄存器的值，使得从异常恢复后能够以异常处理栈中保存的现场为参数，跳转到env_user_tlb_mod_entry 域存储的用户异常处理函数的地址</li>
+<li>从异常恢复到用户态，跳转到用户异常处理函数cow_entry（fork.c 中定义）中，由用户程序完成写时复制等自定义处理。这个函数进行写时复制处理之后，使用系统调用 syscall_set_trapframe 恢复事先保存好的现场，其中也包括 sp 和 PC 寄存器的值，使得用户程序恢复执行</li>
+</ol>
+<p>内核只是存相关寄存器做准备，用户进程从相关寄存器中取得需要数据进行实际处理</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/05/08/ZhkaHj9XGK6ECUl.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h1 id="时纪"><a class="markdownIt-Anchor" href="#时纪"></a> 时纪</h1>
+<ul>
+<li>
+<p>E 4.1</p>
+<ul>
+<li>有傻子系统调用完不返回啊……如果没有<code>jr ra</code>，系统调用将无法正确返回结果给用户程序，用户程序可能会无限期地等待系统调用的结果，调用者无法恢复执行
+<ul>
+<li>同理，也需要注意EPC的设置，比如<code>tf-&gt;cp0_epc += 4;</code> ，让返回时返回到下一条指令。而如果是延迟槽指令，epc为当前pc,不需要再加4</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>E 4.2</p>
+<ul>
+<li>
+<p>想半天去哪个代码文件找reg的每个编号到底对应哪个寄存器，突然想起是MIPS规定好的……</p>
+<p><img src="https://s2.loli.net/2024/05/08/JUnQaBZqsuYwtjF.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+</li>
+<li>
+<p>E 4.10</p>
+<ul>
+<li><font color="green"><strong>修改权限位之后</strong></font>需要<strong>重新进行页面映射</strong></li>
+</ul>
+</li>
+<li>
+<p>E 4.13</p>
+<ul>
+<li><font color="green">注意<strong>使用alloc和map相关函数</strong>时</font>需要考虑虚拟地址页对齐的问题</li>
+</ul>
+</li>
+</ul>
+<h1 id="上机准备"><a class="markdownIt-Anchor" href="#上机准备"></a> 上机准备</h1>
+<h3 id="需时刻注意区分用户态和内核态"><a class="markdownIt-Anchor" href="#需时刻注意区分用户态和内核态"></a> 需时刻注意区分用户态和内核态</h3>
+<ul>
+<li>编写/使用函数的时候需要注意，有些函数只能在内核态使用！比如page_alloc，在用户态需要换为syscall_mem_alloc来实现
+<ul>
+<li><strong>使用系统调用相关函数时</strong>，注意调用<code>syscall_*</code>时的参数列表/类型和<code>sys_*</code><strong>不一定相同</strong></li>
+<li><strong>分配空间、建立映射时</strong>，注意考虑用 <code>page_*</code> 还是 <code>syscall_*</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="常用函数用法"><a class="markdownIt-Anchor" href="#常用函数用法"></a> 常用函数/用法</h3>
+<p><font color="blue"><strong>用函数/实现函数的第一步注意使用前提条件！</strong></font></p>
+<ul>
+<li>
+<p><code>*(vpt+i) &amp; PTE_V</code> <font color="red"><strong>目录项有效性检查</strong></font></p>
+</li>
+<li>
+<p><strong>vpt &amp; vpd 用法</strong></p>
+<p>（*vpd）[va&gt;&gt;22（页目录的索引）]&amp;(~0xfff) 表示二级页表的物理地址， (*vpt)[va &gt;&gt; 12]&amp;(~0xfff) 为 va 对应的物理页面地址，<font color="blue"><strong>使用前记得提前判断有效位</strong></font></p>
+</li>
+<li>
+<p><code>envid2env</code>通过一个进程的 id 获取该进程控制块</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">try(envid2env(envid, &amp;env, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>is_illegal_va</code> 判断虚拟地址的有效性</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(is_illegal_va(va))&#123;</span><br><span class="line">		<span class="keyword">return</span> -E_INVAL;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>*((struct Trapframe *)KSTACKTOP - 1)</code> 内核中寄存器快照的位置</p>
+</li>
+<li>
+<p><code>TAILQ_INSERT_TAIL</code> 将进程插入调度队列，注意是<font color="red"><strong>TAIL</strong></font></p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>( env-&gt;env_status!=ENV_RUNNABLE &amp;&amp; status==ENV_RUNNABLE )&#123;</span><br><span class="line">		TAILQ_INSERT_TAIL(&amp;env_sched_list, env, env_sched_link);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>TAILQ_REMOVE</code> 将进程移除调度队列</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">TAILQ_REMOVE(&amp;env_sched_list, curenv, env_sched_link);</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>page_lookup</code> 写时复制时检查原页面映射是否存在</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">p = page_lookup( curenv-&gt;env_pgdir, srcva, <span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">if</span>( p == <span class="literal">NULL</span> )&#123;</span><br><span class="line">		<span class="keyword">return</span> -E_INVAL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>perm = *(vpt+VPN(va))&amp;0xfff;</code> 获取页目录项权限</p>
+</li>
+<li>
+<p><code>perm |= PTE_D;	perm &amp;= ~PTE_COW;</code> 更改页目录项权限</p>
+</li>
+<li>
+<p><code>user_panic</code> 用户态崩溃</p>
+</li>
+</ul>
+<h3 id="往年教训"><a class="markdownIt-Anchor" href="#往年教训"></a> 往年教训</h3>
+<ul>
+<li>可能会<font color="green">涉及ipc的具体实现</font>，可以考虑<font color="blue">开结构体数组记录每次信息发送的相关值和一个记录是否完成的标记</font>
+<ul>
+<li>接收进程：首先查表，有无自己可以接受的信息，有的话就接收，设置发送进程状态为RUNNABLE 并正常退出，否则阻塞。</li>
+<li>发送进程：检查接收进程的状态，若阻塞，直接进程信息发送同时设置接收进程状态为RUNNABLE。若接收进程没有阻塞，将待发送的信息添加到信息表中，阻塞。</li>
+</ul>
+</li>
+</ul>
+<h3 id="23-exam"><a class="markdownIt-Anchor" href="#23-exam"></a> 23-exam</h3>
+<p>多进程（进程组）ipc的实现，允许一个进程向指定的进程组发送消息</p>
+<ul>
+<li>增加一种功能需要同步修改几个文件，按照syscall的实现流程来改</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/05/08/EpvcXFL93tyT58G.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><img src="https://s2.loli.net/2024/05/08/ULDj4XH5K7xY2fR.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><code>kern/syscall_all.c</code> 增加</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">sys_set_gid</span><span class="params">(u_int gid)</span> &#123;</span><br><span class="line">	curenv-&gt;env_gid = gid;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">sys_ipc_group_send</span><span class="params">(u_int whom, u_int val, u_int srcva, u_int perm)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Env</span> *<span class="title">e</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">p</span>;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 1: Check if &#x27;srcva&#x27; is either zero or a legal address. */</span></span><br><span class="line">	<span class="comment">/* Exercise 4.8: Your code here. (4/8) */</span></span><br><span class="line">	<span class="keyword">if</span> (srcva != <span class="number">0</span> &amp;&amp; is_illegal_va(srcva)) &#123;</span><br><span class="line">		<span class="keyword">return</span> -E_INVAL;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 2: Convert &#x27;envid&#x27; to &#x27;struct Env *e&#x27;. */</span></span><br><span class="line">	<span class="comment">/* This is the only syscall where the &#x27;envid2env&#x27; should be used with &#x27;checkperm&#x27; UNSET,</span></span><br><span class="line"><span class="comment">	 * because the target env is not restricted to &#x27;curenv&#x27;&#x27;s children. */</span></span><br><span class="line">	<span class="comment">/* Exercise 4.8: Your code here. (5/8) */</span></span><br><span class="line">	try(envid2env(whom, &amp;e, <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 3: Check if the target is waiting for a message. */</span></span><br><span class="line">	<span class="comment">/* Exercise 4.8: Your code here. (6/8) */</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( e-&gt;env_ipc_recving != <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> -E_IPC_NOT_RECV;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( e-&gt;env_gid != curenv-&gt;env_gid) &#123;</span><br><span class="line">		<span class="keyword">return</span> -E_IPC_NOT_GROUP;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 4: Set the target&#x27;s ipc fields. */</span></span><br><span class="line">	e-&gt;env_ipc_value = val;</span><br><span class="line">	e-&gt;env_ipc_from = curenv-&gt;env_id;</span><br><span class="line">	e-&gt;env_ipc_perm = PTE_V | perm;</span><br><span class="line">	e-&gt;env_ipc_recving = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 5: Set the target&#x27;s status to &#x27;ENV_RUNNABLE&#x27; again and insert it to the tail of</span></span><br><span class="line"><span class="comment">	 * &#x27;env_sched_list&#x27;. */</span></span><br><span class="line">	<span class="comment">/* Exercise 4.8: Your code here. (7/8) */</span></span><br><span class="line">	e-&gt;env_status = ENV_RUNNABLE;</span><br><span class="line">	TAILQ_INSERT_TAIL(&amp;env_sched_list, e, env_sched_link);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 6: If &#x27;srcva&#x27; is not zero, map the page at &#x27;srcva&#x27; in &#x27;curenv&#x27; to &#x27;e-&gt;env_ipc_dstva&#x27;</span></span><br><span class="line"><span class="comment">	 * in &#x27;e&#x27;. */</span></span><br><span class="line">	<span class="comment">/* Return -E_INVAL if &#x27;srcva&#x27; is not zero and not mapped in &#x27;curenv&#x27;. */</span></span><br><span class="line">	<span class="keyword">if</span> (srcva != <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="comment">/* Exercise 4.8: Your code here. (8/8) */</span></span><br><span class="line">		<span class="keyword">if</span> ((p = page_lookup(cur_pgdir, srcva, <span class="literal">NULL</span>)) == <span class="literal">NULL</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> -E_INVAL;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> page_insert(e-&gt;env_pgdir, e-&gt;env_asid, p, e-&gt;env_ipc_dstva, e-&gt;env_ipc_perm);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> *syscall_table[MAX_SYSNO]里新增</span><br><span class="line">		[SYS_set_gid] = sys_set_gid,</span><br><span class="line">    [SYS_ipc_group_send] = sys_ipc_group_send,</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.loli.net/2024/05/08/g3bp1Y8ZVjQMlPw.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><img src="https://s2.loli.net/2024/05/08/zU6fsdcKxR4BNyo.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p>整体思路是：</p>
+<ul>
+<li>首先验证发送的地址是否合法。</li>
+<li>找到目标进程的环境结构体。</li>
+<li>检查目标进程是否准备好接收消息，并且是否与发送进程在同一个组内。</li>
+<li>如果准备好了，设置消息和权限，改变目标进程的状态为可运行，并将其加入到调度队列中。</li>
+<li>如果有数据需要发送，将其从当前进程的地址空间映射到目标进程的地址空间。</li>
+</ul>
+<h3 id="23-extra正确性存疑"><a class="markdownIt-Anchor" href="#23-extra正确性存疑"></a> 23-extra（正确性存疑</h3>
+<p>广播机制的实现，即允许一个进程向其所有子进程发送消息</p>
+<p><img src="https://s2.loli.net/2024/05/08/ZRQLtFTDWjJGlp3.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">is_father</span><span class="params">(u_int may_child, u_int may_father)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (may_child == may_father)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (may_child != <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (may_child == may_father)</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		<span class="class"><span class="keyword">struct</span> <span class="title">Env</span> * <span class="title">e</span> =</span> envs + ENVX(may_child);</span><br><span class="line">		may_child = e-&gt;env_parent_id;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">ipc_broadcast</span><span class="params">(u_int val, <span class="type">void</span> * srcva, u_int perm)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Env</span> * <span class="title">childs</span>[<span class="title">NENV</span>];</span></span><br><span class="line">	<span class="type">int</span> child_num = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; NENV; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (is_father(envs[i].env_id, env-&gt;env_id)) &#123;</span><br><span class="line">			childs[child_num++] = envs + i;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> r;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; child_num; i++) &#123;</span><br><span class="line">		<span class="keyword">while</span> ((r = syscall_ipc_try_send(childs[i]-&gt;env_id, val, srcva, perm)) != <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (r == -E_IPC_NOT_RECV)</span><br><span class="line">				syscall_yield();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>整体思路是：<code>ipc_broadcast</code>函数首先检查要发送的数据地址是否合法，然后获取当前进程的环境ID，并调用<code>ipc_broadcast_send</code>函数。<code>ipc_broadcast_send</code>函数通过遍历所有进程环境结构体，找到所有子进程，然后对每个子进程递归调用自身，实现广播通信。同时，它还调用<code>ipc_send</code>函数直接向每个子进程发送消息。这种设计允许消息在进程树中的所有子节点上广播，而不仅仅是直接的子进程。</p>
+<ul>
+<li>
+<p>另一个版本</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">ipc_broadcast</span><span class="params">(u_int val, <span class="type">void</span> * srcva, u_int perm)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span>((srcva &lt; UTEMP || srcva &gt; UTOP) &amp;&amp; srcva != <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	u_int id;</span><br><span class="line">	id = syscall_getenvid();</span><br><span class="line">	ipc_broadcast_send(id, val, srcva, perm);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">ipc_broadcast_send</span><span class="params">(u_int p_envid, u_int val, <span class="type">void</span> * srcva, u_int perm)</span> &#123;</span><br><span class="line">	<span class="type">int</span> num = <span class="number">0</span>;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Env</span> *<span class="title">child_envs</span>[15];</span></span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; NENV; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span>(envs[i].env_status != ENV_FREE &amp;&amp; envs[i].env_parent_id == p_envid) &#123;</span><br><span class="line">			child_envs[num++] = &amp;envs[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(num == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; num; i++) &#123;</span><br><span class="line">		<span class="comment">//ipc_send(child_envs[i]-&gt;env_id, val, srcva, perm);</span></span><br><span class="line">		ipc_broadcast_send(child_envs[i]-&gt;env_id, val, srcva, perm);</span><br><span class="line">		ipc_send(child_envs[i]-&gt;env_id, val, srcva, perm);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="22-exam"><a class="markdownIt-Anchor" href="#22-exam"></a> <strong>22-Exam</strong></h2>
+<h3 id="一题目描述"><a class="markdownIt-Anchor" href="#一题目描述"></a> <strong>（一）题目描述</strong></h3>
+<p>在本题中，内核需要面向所有进程维护一个公用的锁（下称<strong>锁</strong>）。对于用户程序，锁在同一时刻要么被唯一一个进程持有，要么不被任何进程持有（此时称锁处于<strong>空闲状态</strong>）。内核初始化时，锁应当处于空闲状态。</p>
+<p>为了在用户空间提供自旋锁机制，你需要实现以下两个用户函数：</p>
+<h3 id="检查并设置锁"><a class="markdownIt-Anchor" href="#检查并设置锁"></a> <strong>“检查并设置“锁</strong></h3>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/* user/lib.h */</span><br><span class="line">int syscall_try_acquire_console(void);</span><br></pre></td></tr></table></figure>
+<p>若锁处于空闲状态，该函数设置锁由当前进程持有，并返回 0 ；否则，该函数返回 -1 。</p>
+<p>请注意：只要锁不处于空闲状态，即使锁已由当前进程持有，该函数也返回 -1 。</p>
+<h3 id="释放锁"><a class="markdownIt-Anchor" href="#释放锁"></a> <strong>释放锁</strong></h3>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/* user/lib.h */</span><br><span class="line">int syscall_release_console(void);</span><br></pre></td></tr></table></figure>
+<p>若锁由当前进程持有，该函数设置锁为空闲状态，并返回 0 ，从而使当前进程不再持有锁。否则，该函数返回 -1 。</p>
+<p>为了实现这两个用户函数，你需要设计并添加相应的系统调用，保证这两个锁操作具有原子性，即不会被其他进程打断，导致多个进程持有锁。</p>
+<h3 id="控制台输出锁保护"><a class="markdownIt-Anchor" href="#控制台输出锁保护"></a> <strong>控制台输出锁保护</strong></h3>
+<p>为了在内核中控制控制台输出设备的使用，你需要修改 lib/syscall_all.c 中 <code>sys_putchar</code> 系统调用函数的实现，使得只有持有锁的进程才能向控制台输出字符。如果当前进程不持有锁，该函数应直接返回，<strong>不应输出任何内容</strong>。</p>
+<h3 id="实现要求"><a class="markdownIt-Anchor" href="#实现要求"></a> <strong>实现要求</strong></h3>
+<ul>
+<li>在 user/lib.h 中声明函数 <code>int syscall_try_acquire_console();</code></li>
+<li>在 user/lib.h 中声明函数 <code>int syscall_release_console();</code></li>
+<li>在 user/syscall_lib.c 中实现以上两个用户函数，发起系统调用</li>
+<li>修改相关文件，在内核中添加必要的系统调用，并维护必要的信息，以供用户函数使用。可能涉及的文件有：</li>
+<li>lib/syscall_all.c ：添加系统调用在内核中的实现函数lib/syscall.S ：将实现函数添加到系统调用入口向量表include/unistd.h ：定义系统调用号</li>
+<li>修改 lib/syscall_all.c 中的 <code>sys_putchar</code> 函数</li>
+</ul>
+<h3 id="二题目理解与实现"><a class="markdownIt-Anchor" href="#二题目理解与实现"></a> <strong>（二）题目理解与实现</strong></h3>
+<h3 id="1-新增系统调用"><a class="markdownIt-Anchor" href="#1-新增系统调用"></a> <strong>1. 新增系统调用</strong></h3>
+<p>很显然，题目需要我们新加两个系统调用，并修改原来的系统调用sys_putchar。</p>
+<p>经过课下部分的学习，我们知道，系统调用主要有以下过程：</p>
+<ol>
+<li>用户进程的某些函数需要内核级特权操作，通过用户空间的<code>syscall_xxx</code>发出系统调用，调用msyscall。(user/syscall_lib.c)</li>
+<li><code>msyscall(SYS_xxx, x, x, x, x, x)</code>将相应的参数准备好（<strong>此时依然是用户空间</strong>），正式调用syscall。（user/syscall_wrap.S)</li>
+<li>syscall触发异常，<strong>开始进入内核态</strong>，进入异常分发入口<code>except_vec3</code>。（boot/start.S）</li>
+<li>发现是8号异常（系统调用），进入异常处理<code>handle_sys</code>（lib/syscall.S)</li>
+<li>准备好6个参数（压栈等等），根据系统调用号分发到相应的内核特权级操作函数<code>sys_xxx</code>（来提供用户进程想要的服务）(lib/syscall_all.c)</li>
+<li>内核服务结束，<code>ret_from_exception</code> (lib/genex.S)</li>
+</ol>
+<p>因此在新增加系统调用时，我们完全可以按照系统调用的处理过程来实现（题目中给出的实现要求也明确指出了）：</p>
+<ol>
+<li>用户空间，增加syscall_xxx（在user/lib.h中声明 在user/syscall_lib.c中实现）</li>
+<li>内核空间，增加系统调用号（include/unistd.h）</li>
+<li>内核空间，把相应的内核操作函数sys_xxx塞到系统调用入口向量表（lib/syscall.S的最下面那个table）</li>
+<li>内核空间，实现sys_xxx（lib/syscall_all.c）</li>
+</ol>
+<p>由此，我们便完成了新增系统调用。</p>
+<h3 id="2-锁"><a class="markdownIt-Anchor" href="#2-锁"></a> <strong>2. 锁</strong></h3>
+<p>根据题目的实现提示，“可以在内核中记录锁的相关状态，使内核中的系统调用函数能够确定当前持有锁的进程”，我们可以在内核中新增一个变量 <code>int lock;</code>来表示锁。（可以直接在lib/syscall_all.c中加入 方便系统调用使用）</p>
+<p>而对于这个变量，我们需要它能够表示：</p>
+<ol>
+<li>锁空闲 <code>lock = 0;</code></li>
+<li>锁被某个进程占有 <code>lock = envid;</code></li>
+</ol>
+<p>因此，为了使得<code>lock</code>能够<strong>唯一确定</strong>占有的进程，我们可以直接把<code>envid</code>赋值给<code>lock</code>。此外，由于<code>envid</code>不可能为0，因此我们可以使用<code>lock = 0</code>来表示锁空闲。由此，我们就能够准确表示锁的状态了。（<strong>我们把<code>lock</code>直接设置成全局变量，就可以实现内核初始化时<code>lock</code>为0了</strong>）</p>
+<p>有了锁的状态表示后，就能够比较容易地写出两个系统调用函数了。</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int sys_try_acquire_console() &#123;</span><br><span class="line">    if (lock == 0) &#123;</span><br><span class="line">        lock = curenv-&gt;env_id;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int sys_release_console() &#123;</span><br><span class="line">    if (lock == curenv-&gt;env_id) &#123;</span><br><span class="line">        lock = 0;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而对于sys_putchar的锁保护，也可以通过锁的状态实现：</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void sys_putchar(int sysno, int c, int a2, int a3, int a4, int a5)</span><br><span class="line">&#123;</span><br><span class="line">    if (lock != curenv-&gt;env_id) return;</span><br><span class="line">    printcharc((char) c);</span><br><span class="line">    return ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="22-extra"><a class="markdownIt-Anchor" href="#22-extra"></a> <strong>22-Extra</strong></h2>
+<h3 id="一题目描述-2"><a class="markdownIt-Anchor" href="#一题目描述-2"></a> <strong>（一）题目描述</strong></h3>
+<p>简单地说，就是IPC中，user/ipc.c中的ipc_send是一种轮询，直到接收方进入接收状态，我们要把这种轮询改掉，改成和ipc_recv一样的阻塞（OS与OO的完美结合）。</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void</span><br><span class="line">ipc_send(u_int whom, u_int val, u_int srcva, u_int perm)</span><br><span class="line">&#123;</span><br><span class="line">    int r;</span><br><span class="line">    while ((r=syscall_ipc_can_send(whom, val, srcva, perm)) == -E_IPC_NOT_RECV) // 这里一直在轮询</span><br><span class="line">    &#123;</span><br><span class="line">        syscall_yield();</span><br><span class="line">        //writef(&quot;QQ&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    if(r == 0)</span><br><span class="line">        return;</span><br><span class="line">    user_panic(&quot;error in ipc_send: %d&quot;, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们需要修改lib/syscall_all.c中的<code>sys_ipc_can_send</code>和<code>sys_ipc_recv</code>，使得<code>ipc_send</code>不用轮询，能够成为下面这个样子（突然清爽好多）：</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void ipc_send(u_int whom, u_int val, u_int srcva, u_int perm) &#123;</span><br><span class="line">    syscall_ipc_can_send(whom, val, srcva, perm);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不用考虑各种非法的ipc行为，比如发送、接收进程不存在，srcva非法、perm非法等情况。</p>
+<h3 id="实现提示来自善良的助教们"><a class="markdownIt-Anchor" href="#实现提示来自善良的助教们"></a> <strong>实现提示（来自善良的助教们）</strong></h3>
+<ol>
+<li>可以参考当前对接收进程实现的阻塞机制，在接收进程进入接收状态前，让发送进程进入阻塞状态从而不被调度。在接收进程开始接收时，需要唤醒发送进程，并在接收过程中为其完成发送操作。这种情况下，接收进程不再需要被阻塞。</li>
+<li>发送进程进行发送时，如果接收进程已处于接收状态，则不需要阻塞发送进程，可如同课下实现直接发送。</li>
+<li>你可以将完成发送时传递数据的过程封装为单独的函数，并在发送和接收过程中调用，以处理以上的两种情况。</li>
+<li>在接收进程开始接收时，可能有多个进程都向其进行过发送，此时 sys_ipc_recv 仍应保证每次接收只选择一个发送进程，接收其数据并将其唤醒，而其余发送进程仍应处于阻塞状态，等待接收</li>
+<li>进程下一次调用 ipc_recv 。我们对这一接收顺序没有要求（可以与发送顺序不一致），但不应有发送的数据被遗漏。</li>
+<li>在阻塞一个发送进程时，你可能需要将描述本次发送的相关数据信息存储在内核中的缓冲区中，包括发送方和接收方的 envid，以及被发送的 value 、 srcva 和 perm 。开始接收时，你需要找到该接收进程对应的数据信息。</li>
+<li>你可以为每个未进入接收状态的进程准备一个接收队列，将来自每个发送进程的数据放入其中暂存。开始接收时，需要检查接收进程的接收队列是否为空。</li>
+<li>为了保证内存映射的正确性，请避免在 struct Env 中新增字段。你可以使用 ENVX 宏等方式获取进程控制块在 envs 中的下标，并使用独立的静态数组为每个进程在内核中维护必要的信息。</li>
+</ol>
+<p>经过如上的提醒，笔者梳理了以下几点：</p>
+<ol>
+<li>自己封装一个发送数据的函数，减小耦合</li>
+<li>不要改Env的结构体</li>
+<li>每个进程一个信息队列</li>
+<li>发送时，接收进程在接收状态，直接发</li>
+<li>发送时，接收进程不在接收状态，<strong>把信息塞到接收进程的信息队列，自己阻塞</strong></li>
+<li>接收时，自己的队列里没有信息，自己阻塞，等别人发信息过来</li>
+<li>接收时，自己的队列里有信息，拿出<strong>一个</strong>信息，<strong>首先帮助发送者完成发送，其次唤醒被阻塞的发送者</strong></li>
+</ol>
+<h3 id="二题目理解与实现-2"><a class="markdownIt-Anchor" href="#二题目理解与实现-2"></a> <strong>（二）题目理解与实现</strong></h3>
+<h3 id="1-message"><a class="markdownIt-Anchor" href="#1-message"></a> <strong>1. Message</strong></h3>
+<p>经过上面的梳理和实现提示，我们可以看到，发送的单位是“信息”，其中包含发送方、接收方的envid，value, perm, srcva，这么多东西，我们可以把它们打包成Message（OO课重现！）。</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct Message &#123;</span><br><span class="line">    int send_envid;</span><br><span class="line">    int recv_envid;</span><br><span class="line">    int value;</span><br><span class="line">    int perm;</span><br><span class="line">    int srcva;</span><br><span class="line">    LIST_ENTRY(Message) message_link;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="2-发送函数"><a class="markdownIt-Anchor" href="#2-发送函数"></a> <strong>2. 发送函数</strong></h3>
+<p>经过实现提示，我们可以实现一个发送数据的函数来降低耦合性。（可以参考原来的sys_ipc_can_send）</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int mysend(struct Message* m) &#123;</span><br><span class="line">    int send_envid = m-&gt;send_envid;</span><br><span class="line">    int recv_envid = m-&gt;recv_envid;</span><br><span class="line">    int value = m-&gt;value;</span><br><span class="line">    int srcva = m-&gt;srcva;</span><br><span class="line">    int perm = m-&gt;perm;</span><br><span class="line">    struct Env* send_env, recv_env;</span><br><span class="line">    struct Page* p;</span><br><span class="line">    int r;</span><br><span class="line">    r = envid2env(send_envid, &amp;send_env, 0);</span><br><span class="line">    if (r &lt; 0) panic(&quot;cannot find send env&quot;);</span><br><span class="line">    r = envid2env(recv_envid, &amp;recv_env, 0);</span><br><span class="line">    if (r &lt; 0) panic(&quot;cannot find recv env&quot;);</span><br><span class="line">    if (recv-&gt;env_ipc_recving == 0) panic(&quot;recv env is not receiving&quot;);</span><br><span class="line">    recv-&gt;env_ipc_recving = 0;</span><br><span class="line">    recv-&gt;env_ipc_from = send_envid;</span><br><span class="line">    recv-&gt;env_ipc_value = value;</span><br><span class="line">    recv-&gt;env_ipc_perm = perm;</span><br><span class="line">    recv-&gt;env_status = ENV_RUNNABLE;</span><br><span class="line">    if (srcva != 0) &#123;</span><br><span class="line">        Pte* pte;</span><br><span class="line">        p = page_lookup(send_env-&gt;env_pgdir, srcva, &amp;pte);</span><br><span class="line">        if (p == 0) panic(&quot;cannot find page&quot;);</span><br><span class="line">        r = page_insert(recv_env-&gt;env_pgdir, p, recv_env-&gt;env_ipc_dstva, perm);</span><br><span class="line">        if (r &lt; 0) panic(&quot;cannot insert page&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，这个发送函数只负责发送信息和修改接收方的状态，<strong>不负责修改发送方的状态</strong>。</p>
+<h3 id="3-进程信息队列"><a class="markdownIt-Anchor" href="#3-进程信息队列"></a> <strong>3. 进程信息队列</strong></h3>
+<p>对于每个进程，需要存储它获得但未接收的信息。我们可以用LIST来实现。</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">LIST_HEAD(Message_list, Message);</span><br><span class="line">struct Message_list message_buffer[NENV]; // 为了保险，每个进程控制块都来一个信息队列</span><br></pre></td></tr></table></figure>
+<p><strong>不要忘了初始化这些LIST，可以在<code>env_init</code>中实现。</strong></p>
+<p>在lib/syscall_all.c中开一个Message的大数组作为备用的Message。</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct Message messages[10000];</span><br><span class="line">int free_pos; // 指向下一个空闲的Message（每次记得free_pos++）</span><br></pre></td></tr></table></figure>
+<p>如果想要<strong>往某个envid的信息队列里插入或拿出信息</strong>，可以通过ENVX宏和链表宏来实现：</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct Message* m;</span><br><span class="line">// 插入信息队列</span><br><span class="line">LIST_INSERT_HEAD(&amp;message_buffer[ENVX(envid)], m, message_link);</span><br><span class="line">// 取出信息</span><br><span class="line">m = LIST_FIRST(&amp;message_buffer[ENVX(envid)]);</span><br><span class="line">LIST_REMOVE(m, message_link);</span><br></pre></td></tr></table></figure>
+<p>完成进程信息队列，我们就可以开始快乐地写两个系统调用了。</p>
+<h3 id="4-sys_ipc_can_send"><a class="markdownIt-Anchor" href="#4-sys_ipc_can_send"></a> <strong>4. sys_ipc_can_send</strong></h3>
+<p>经过前面的梳理，我们知道，发送时主要有两种情况：</p>
+<ol>
+<li>接收进程已经进入接收状态，直接发送</li>
+<li>接收进程还未进入接收状态，把信息插入接收进程的信息队列，自己阻塞</li>
+</ol>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int sys_ipc_can_send(int sysno, u_int envid, u_int value, u_int srcva,</span><br><span class="line">                     u_int perm) &#123;</span><br><span class="line">    // 创建Message对象</span><br><span class="line">    struct Message* m;</span><br><span class="line">    m = &amp;messages[free_pos];</span><br><span class="line">    free_pos++;</span><br><span class="line">    m-&gt;send_envid = curenv-&gt;env_id;</span><br><span class="line">    m-&gt;recv_envid = envid;</span><br><span class="line">    m-&gt;value = value;</span><br><span class="line">    m-&gt;srcva = srcva;</span><br><span class="line">    m-&gt;perm = perm;</span><br><span class="line">    struct Env* e;</span><br><span class="line">    envid2env(envid, &amp;e, 0);</span><br><span class="line"></span><br><span class="line">    if(e-&gt;env_ipc_recving == 1) &#123; // 接收进程已经在接收状态了，直接发送</span><br><span class="line">        mysend(m);</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123; // 接收进程不在接收状态</span><br><span class="line">        int index = ENVX(m-&gt;recv_envid);</span><br><span class="line">        LIST_INSERT_HEAD(&amp;message_buffer[index], m, message_link); // 加入信息队列</span><br><span class="line">        curenv-&gt;env_status = ENV_NOT_RUNNABLE; // 自己阻塞</span><br><span class="line">        sys_yield();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-sys_ipc_recv"><a class="markdownIt-Anchor" href="#5-sys_ipc_recv"></a> <strong>5. sys_ipc_recv</strong></h3>
+<p>这个函数的功能主要是：</p>
+<ol>
+<li>当前信息队列为空，进入接收状态，自己阻塞</li>
+<li>当前信息队列不为空，取出一个信息发送，唤醒发送者</li>
+</ol>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void sys_ipc_recv(int sysno, u_int dstva) &#123;</span><br><span class="line">    // 先设置好curenv的状态</span><br><span class="line">    curenv-&gt;env_ipc_dstva = dstva;</span><br><span class="line">    curenv-&gt;env_ipc_recving = 1; // mysend中会判断，因此需要置1</span><br><span class="line">    int index = ENVX(curenv-&gt;env_id);</span><br><span class="line">    if (LIST_EMPTY(&amp;message_buffer[index])) &#123; // 信息队列为空，自己阻塞</span><br><span class="line">        curenv-&gt;env_status = ENV_NOT_RUNNABLE;</span><br><span class="line">        sys_yield();</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123; // 信息队列不为空</span><br><span class="line">        struct Message* m;</span><br><span class="line">        // 取出一个信息并发送</span><br><span class="line">        m = LIST_FIRST(&amp;message_buffer[index]);</span><br><span class="line">        LIST_REMOVE(m, message_link);</span><br><span class="line">        mysend(m);</span><br><span class="line">        // 唤醒发送者</span><br><span class="line">        struct Env* e;</span><br><span class="line">        envid2env(m-&gt;send_envid, &amp;e, 0);</span><br><span class="line">        e-&gt;env_status = ENV_RUNNABLE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由此，我们便把轮询改好了！</p>
+</li>
+</ul>
+]]></content>
   </entry>
   <entry>
     <title>Docker-Basics</title>
