@@ -3813,12 +3813,43 @@ pre .coffeescript .title {
 *,
 ::after,
 ::before {
-  box-sizing: border-box;
-  scrollbar-width: auto;
   scrollbar-color: #b8b0d8 transparent;
 }
 body {
   background-color: var(--body-bg-color);
+  letter-spacing: 0.1em;
+  font-weight: 530;
+}
+h1 {
+  font-size: 2.4rem;
+}
+.trm-label {
+  font-size: 13px;
+}
+.trm-top-bar .container .trm-left-side .trm-logo-frame .trm-logo-text {
+  font-size: 23px;
+}
+.trm-menu nav ul li a {
+  font-size: 13px;
+}
+.trm-mode-switcher-place .trm-mode-switcher i {
+  font-size: 13px;
+}
+.trm-mc-header .trm-name {
+  font-size: 23px;
+}
+.trm-post-copyright {
+  font-size: 0.85rem;
+}
+.trm-post-toc {
+  background-color: var(--theme-bg2-color);
+}
+.trm-post-toc-header {
+  padding: 10px 10px;
+  font-size: 0.7rem;
+}
+.trm-post-toc-content {
+  padding: 10px 15px;
 }
 :root {
   --body-bg-color: white;
@@ -3828,10 +3859,10 @@ body {
 }
 :root.dark {
   --primary: #8b83ff;
-  --body-bg-color: black;
-  --theme-bg-color: #011431;
-  --theme-bg2-color: black;
-  --fixed-button-bg-color: #043680;
+  --body-bg-color: #301c59;
+  --theme-bg-color: black;
+  --theme-bg2-color: #301c59;
+  --fixed-button-bg-color: #847cb0;
   --fixed-button-color: white;
 }
 .trm-top-bar,
