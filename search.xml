@@ -2176,230 +2176,6 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
       </tags>
   </entry>
   <entry>
-    <title>BUAA-OS-Lab3</title>
-    <url>/OS/BUAA-OS-Lab3/</url>
-    <content><![CDATA[<h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
-<p>相关文件：<code>/include/env.h</code> <code>/include/trap.h</code> <code>/kern/env.c</code>  <code>lib/elfloader.c</code> <code>pmap.h</code>  <code>pmap.c</code>  <code>kern/traps.c</code> <code>kern/genex.S</code>  <code>kern/sched.c</code></p>
-<h2 id="进程"><a class="markdownIt-Anchor" href="#进程"></a> 进程</h2>
-<h3 id="模板页表mos专有概念"><a class="markdownIt-Anchor" href="#模板页表mos专有概念"></a> 模板页表（MOS专有概念）</h3>
-<p>在用户空间中读取内核信息</p>
-<p><img src="https://s2.loli.net/2024/04/24/yIaPkFxYbjRBgW1.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li>
-<p><strong>原理</strong></p>
-<p>MOS 被设计成对于其中运行的每一个用户进程，都可以<strong>通过用户地址空间（kuseg）读取 pages 数组和 envs 数组的信息</strong>。为实现该功能，在创建用户进程时我们需要将 pages 数组和 envs 数组映射到用户地址空间中的 <code>UPAGES</code> 与 <code>UENVS</code> 处。</p>
-<p><code>base_pgdir</code> 指向模板页表页目录的<strong>内核虚拟基地址</strong>，以便创建进程时能够根据 “模板页表” 的内容创建自己的页表。每创建一个进程，都将这个模板页表页目录中用来映射 envs 与 pages 的表项复制到新创建的进程的页目录中</p>
-</li>
-<li>
-<p><strong>设置目的</strong></p>
-<p>使用户进程<strong>共享一部分二级页表</strong>，从而节省物理页面</p>
-</li>
-</ul>
-<h3 id="进程的标识"><a class="markdownIt-Anchor" href="#进程的标识"></a> 进程的标识</h3>
-<p><code>struct Env</code> 进程控制块中</p>
-<ul>
-<li><code>env_id</code> 是每个<strong>进程</strong>独一无二的标识符，进程创建的时候就使用<code>mkenvid</code>赋予。</li>
-<li><code>env_asid</code> 记录进程的 ASID，这是<strong>进程虚拟地址</strong>空间的标识
-<ul>
-<li>ASID在TLB映射机制中使用——TLB 事实上构建了一个映射 &lt; VPN, ASID &gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover><mo><mo>⟶</mo></mo><mrow><mi>T</mi><mi>L</mi><mi>B</mi></mrow></mover></mrow><annotation encoding="application/x-tex">\stackrel{TLB}{\longrightarrow}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3003310000000001em;vertical-align:-0.011em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893310000000002em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.7110000000000003em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mord mathdefault mtight">L</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span></span></span></span>&lt; PFN, N, D, V, G &gt;</li>
-<li>ASID 部分只占据了 0-7 共 8 个 bit，即ASID资源是有限的，需要使用一定的资源管理方法来<strong>分配、回收</strong> ASID。MOS 实验采用了位图法管理 256 个可用的 ASID，<strong>如果 ASID 耗尽时仍要创建进程，内核会发生崩溃（panic）</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="设置进程控制块"><a class="markdownIt-Anchor" href="#设置进程控制块"></a> 设置进程控制块</h3>
-<ul>
-<li>
-<p>在 MOS 操作系统<strong>特意将一些内核的数据暴露到用户空间</strong>，使得进程不需要切换到内核态就能访问，这是 MOS 特有的设计</p>
-<p>在这里暴露 UTOP 往上到 UVPT 之间所有进程共享的<strong>只读</strong>空间，也就是把这部分内存对应的<strong>内核<br />
-页表 base_pgdir 拷贝到进程页表中</strong>。从 <strong>UVPT 往上到 ULIM 之间则是进程自己的页表</strong></p>
-<p><img src="https://s2.loli.net/2024/04/24/etFI7plnikVqRT6.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-</li>
-</ul>
-<h3 id="加载二进制镜像"><a class="markdownIt-Anchor" href="#加载二进制镜像"></a> 加载二进制镜像</h3>
-<p>要想正确加载一个 ELF 文件到内存，只需将 ELF 文件中所有<strong>需要加载的程序段加载到对应的<font color="red">虚拟地址</font>上</strong>即可</p>
-<p><img src="https://s2.loli.net/2024/04/24/BlTYwCyVzxOSjkP.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li><code>elf_load_seg</code> 只关心ELF 段的结构，由回调函数处理具体的页面加载过程</li>
-</ul>
-<h3 id="进程运行与切换"><a class="markdownIt-Anchor" href="#进程运行与切换"></a> 进程运行与切换</h3>
-<p>在 Lab3 中，进程切换只需要保存进程的上下文信息。而MOS中的寄存器状态保存的地方是 <code>KSTACKTOP</code> 以下的一个 <code>sizeof(TrapFrame)</code>大小的区域中，而<code>curenv-&gt;env_tf</code>是存放当前进程的上下文的区域</p>
-<p>故保存进程上下文使用语句<code>curenv-&gt;env_tf = *((struct Trapframe *)KSTACKTOP - 1)</code></p>
-<h2 id="中断与异常"><a class="markdownIt-Anchor" href="#中断与异常"></a> 中断与异常</h2>
-<p>CPU 不仅仅有常见的 32 个通用寄存器，还有功能广泛的***协处理器***，而中断/异常部分就用到了其中的协处理器 CP0</p>
-<table>
-<thead>
-<tr>
-<th>寄存器助记符</th>
-<th>CP0 寄存器编号</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Status</td>
-<td>12</td>
-<td>状态寄存器，包括中断引脚使能，其他 CPU 模式等位域</td>
-</tr>
-<tr>
-<td>Cause</td>
-<td>13</td>
-<td>记录导致异常的原因</td>
-</tr>
-<tr>
-<td>EPC</td>
-<td>14</td>
-<td>异常结束后程序恢复执行的位置</td>
-</tr>
-</tbody>
-</table>
-<h3 id="status-寄存器"><a class="markdownIt-Anchor" href="#status-寄存器"></a> <strong>Status 寄存器</strong></h3>
-<p><img src="https://s2.loli.net/2024/04/24/OKAFgDfkURJj2S6.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li>
-<p><code>IE</code> 位表示中断是否开启，为 1 表示开启，否则不开启</p>
-</li>
-<li>
-<p>当且仅当 <code>EXL</code> 被设置为 0 且 <code>UM</code> 被设置为 1 时，处理器处于<strong>用户模式</strong>，其它所有情况下，处理器均处于内核模式下</p>
-<ul>
-<li>
-<p>每当异常发生的时候，EXL 会被自动设置为 1（使处于内核态，能使用特权指令）</p>
-</li>
-<li>
-<p>每个进程在每一次被调度时都会执行</p>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RESTORE_ALL <span class="comment">//恢复处理器寄存器状态</span></span><br><span class="line">eret <span class="comment">// EXL被自动设置为 0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li>
-<p>15-8 位为<em><strong>中断屏蔽位***，每一位代表一个不同的中断活动，其中 15-10 位</strong>使能</em>*硬件中断源<font color="purple">（该中断能否被响应）</font>，9-8位是 Cause 寄存器软件可写的中断位</p>
-</li>
-</ul>
-<h3 id="cause-寄存器"><a class="markdownIt-Anchor" href="#cause-寄存器"></a> Cause 寄存器</h3>
-<p><img src="https://s2.loli.net/2024/04/24/zi1IqLRVo5welC7.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li><code>IP</code> (15-8 位)保存着哪一些中断发生了，其中 15-10 位来自硬件，9-8 位可以由软件写入，<font color="green">当 Status 寄存器中相同位允许中断（为 1）时</font>，Cause 寄存器这一位也为1就会导致中断</li>
-<li><code>ExcCode</code> (6-2位)，记录发生了什么异常。在 MOS 中，中断是 0 号异常。</li>
-</ul>
-<h3 id="cpu异常处理流程"><a class="markdownIt-Anchor" href="#cpu异常处理流程"></a> CPU异常处理流程</h3>
-<p>CPU 如何处理异常？</p>
-<ol>
-<li>设置 EPC 寄存器的值为从异常返回的地址。</li>
-<li>设置 Status 寄存器（<strong>设置 EXL 位，强制 CPU 进入内核态并禁止中断</strong>）</li>
-<li>设置 Cause 寄存器（记录异常原因）</li>
-<li>设置 PC 为<strong>异常入口地址</strong>，随后交给软件处理</li>
-</ol>
-<p>至此，我们成功地切换到内核程序，将异常处理的任务转交给操作系统。</p>
-<ul>
-<li>
-<p>相关指令</p>
-<ul>
-<li>
-<p><code>mfc0</code> Move From Coprocessor 0</p>
-<p>用于从协处理器的某个寄存器中读取值到一个通用寄存器中</p>
-</li>
-<li>
-<p><code>mtc0</code> Move To Coprocessor 0</p>
-<p>用于将一个通用寄存器的值写入协处理器的某个寄存器中</p>
-</li>
-</ul>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">mfc0    t0, CP0_STATUS</span><br><span class="line">and     t0, t0, ~(STATUS_UM | STATUS_EXL | STATUS_IE)</span><br><span class="line">mtc0    t0, CP0_STATUS</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<font color="grey">
-### SAVE_ALL 与异常重入
-<p>在 SAVE_ALL 中进行判断，若 Status 寄存器的 UM 位为 0，说明此次异常在内核态触发， sp 寄存器已经在内核异常栈中。不再将 sp 设置为 KSTACKTOP ，而是使其继续增长。</p>
-<p>这样便能够在异常中处理新的异常，而不会破坏原本的异常处理流程。这一机制被称作异常重入</font></p>
-<h3 id="异常的分发"><a class="markdownIt-Anchor" href="#异常的分发"></a> 异常的分发</h3>
-<p>当发生异常时，处理器会进入一个用于分发异常的程序，这个程序的作用就是检测发生了哪种异常，并调用相应的异常处理程序</p>
-<p>一般来说，异常分发程序会被要求放在固定的某个物理地址上</p>
-<p>在MOS中的实现为：将.text.exc_gen_entry 段和 .text.tlb_miss_entry 段用链接器放到特定的位置—— 0x80000180 和 0x80000000 处，它们是异常处理程序的入口地址。在我们的系统中，CPU 发生异常（除了用户态地址的 TLB Miss 异常）后，就会自动跳转到地址 0x80000180 处；发生用户态地址的 TLB Miss 异常时，会自动跳转到地址 0x80000000处</p>
-<h3 id="时钟中断"><a class="markdownIt-Anchor" href="#时钟中断"></a> 时钟中断</h3>
-<ul>
-<li>
-<p>中断处理的流程</p>
-<ol>
-<li>
-<p>通过异常分发，<strong>判断出当前异常为中断异常</strong>，随后进入相应的<strong>中断处理程序</strong>。在 MOS 中即对应 handle_int 函数。</p>
-<p>此前以异常的角度对时钟中断进行处理；现在以中断的角度对时钟中断进行处理</p>
-</li>
-<li>
-<p>在中断处理程序中<strong>进一步判断 Cause 寄存器中是由几号中断位引发的中断</strong>，然后进入不同中断对应的<strong>中断服务函数</strong>。</p>
-</li>
-<li>
-<p>中断处理完成，通过 ret_from_exception 函数<strong>恢复现场</strong>，继续执行。</p>
-</li>
-</ol>
-</li>
-<li>
-<p>在MOS 中，<strong>时间片的长度是用时钟中断衡量</strong>的。4KC 中的 CP0 内置了一个可产生中断的 Timer，MOS 即使用这个内置的 Timer 产生时钟中断</p>
-<p>（具体细节实现见指导书）</p>
-</li>
-<li>
-<p>内核初始化完毕后陷入死循环，等待第一次时钟中断来临，通过异常处理来调度已经创建好的用户进程运行</p>
-</li>
-</ul>
-<h3 id="进程调度器"><a class="markdownIt-Anchor" href="#进程调度器"></a> 进程调度器</h3>
-<p><strong>什么时候需要切换进程？</strong></p>
-<ol>
-<li>参数 yield 为真时：此时当前进程必须让出。</li>
-<li>count 减为 0 时：此时分给进程的时间片被用完，将执行权让给其他进程。</li>
-<li>无当前进程：内核必然刚刚完成初始化，需要分配一个进程执行。</li>
-<li>进程状态不是可运行：当前进程不能再继续执行，让给其他进程。</li>
-</ol>
-<p><strong>如何切换进程？</strong></p>
-<ol>
-<li>当前进程仍为就绪状态时，需要将其移到 env_sched_list 队列的尾部。</li>
-<li>选中 env_sched_list 队列头部的进程。如果没有可用的进程，内核 panic。</li>
-<li>设置 count 为当前进程的优先级（分配的时间片的数量）。</li>
-</ol>
-<p>（不管是否切换，都）最后将 count 自减 1，调用 env_run 函数。</p>
-<h1 id="时纪"><a class="markdownIt-Anchor" href="#时纪"></a> 时纪</h1>
-<p>E 3.1</p>
-<ul>
-<li>
-<p>注意链表顺序！！初始化是倒序插入</p>
-</li>
-<li>
-<p><font color="red">LIST、TAIL相关宏操作的（参数）一般都是指针！！</font></p>
-</li>
-<li>
-<p>如下定义</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static Pde *base_pgdir;</span><br></pre></td></tr></table></figure>
-<p><code>base_pgdir</code> 是一个Pde类型的指针，即为目录项的虚拟地址；</p>
-<p><code>*base_pgdir</code> 是Pde类型的指针的解引用，即Pde，为目录项的物理地址</p>
-</li>
-</ul>
-<p>E 3.4</p>
-<ul>
-<li><code>NENV</code> 什么时候要用来作为限制条件吗？这里好像不用</li>
-</ul>
-<p>E 3.5</p>
-<ul>
-<li>分配页面后记得加<code>p→pp_ref</code>！！</li>
-</ul>
-<p>E 3.12</p>
-<ul>
-<li>schedule里的count是静态变量，存放在.data区，只初始化一次，不同进程不共享！！所以虽然可能会调度多次schedule函数，但每个进程只执行一次 <code>static int count = 0;</code> 初始化语句！！</li>
-<li>注意，不管要不要插到尾部，都要先移除当前进程！！</li>
-</ul>
-<h1 id="exam前准备"><a class="markdownIt-Anchor" href="#exam前准备"></a> exam前准备</h1>
-<h3 id="有可能出问题"><a class="markdownIt-Anchor" href="#有可能出问题"></a> 有可能出问题</h3>
-<ul>
-<li>scheduled函数，要不要把不是就绪状态的移除</li>
-<li>获取队列的第一个进程时，记得LIST_REMOVE</li>
-</ul>
-<h3 id="extra"><a class="markdownIt-Anchor" href="#extra"></a> extra</h3>
-<p>近年都是处理新的异常</p>
-]]></content>
-      <categories>
-        <category>OS</category>
-      </categories>
-      <tags>
-        <tag>BUAA</tag>
-        <tag>Lab</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>BUAA-OS-Lab4</title>
     <url>/uncategorized/BUAA-OS-Lab4/</url>
     <content><![CDATA[<p>关键文件：kern/syscall_all.c、user/lib/fork.c、include/syscall.h、 user/include/lib.h</p>
@@ -2743,6 +2519,230 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
 </li>
 </ul>
 ]]></content>
+  </entry>
+  <entry>
+    <title>BUAA-OS-Lab3</title>
+    <url>/OS/BUAA-OS-Lab3/</url>
+    <content><![CDATA[<h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
+<p>相关文件：<code>/include/env.h</code> <code>/include/trap.h</code> <code>/kern/env.c</code>  <code>lib/elfloader.c</code> <code>pmap.h</code>  <code>pmap.c</code>  <code>kern/traps.c</code> <code>kern/genex.S</code>  <code>kern/sched.c</code></p>
+<h2 id="进程"><a class="markdownIt-Anchor" href="#进程"></a> 进程</h2>
+<h3 id="模板页表mos专有概念"><a class="markdownIt-Anchor" href="#模板页表mos专有概念"></a> 模板页表（MOS专有概念）</h3>
+<p>在用户空间中读取内核信息</p>
+<p><img src="https://s2.loli.net/2024/04/24/yIaPkFxYbjRBgW1.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>
+<p><strong>原理</strong></p>
+<p>MOS 被设计成对于其中运行的每一个用户进程，都可以<strong>通过用户地址空间（kuseg）读取 pages 数组和 envs 数组的信息</strong>。为实现该功能，在创建用户进程时我们需要将 pages 数组和 envs 数组映射到用户地址空间中的 <code>UPAGES</code> 与 <code>UENVS</code> 处。</p>
+<p><code>base_pgdir</code> 指向模板页表页目录的<strong>内核虚拟基地址</strong>，以便创建进程时能够根据 “模板页表” 的内容创建自己的页表。每创建一个进程，都将这个模板页表页目录中用来映射 envs 与 pages 的表项复制到新创建的进程的页目录中</p>
+</li>
+<li>
+<p><strong>设置目的</strong></p>
+<p>使用户进程<strong>共享一部分二级页表</strong>，从而节省物理页面</p>
+</li>
+</ul>
+<h3 id="进程的标识"><a class="markdownIt-Anchor" href="#进程的标识"></a> 进程的标识</h3>
+<p><code>struct Env</code> 进程控制块中</p>
+<ul>
+<li><code>env_id</code> 是每个<strong>进程</strong>独一无二的标识符，进程创建的时候就使用<code>mkenvid</code>赋予。</li>
+<li><code>env_asid</code> 记录进程的 ASID，这是<strong>进程虚拟地址</strong>空间的标识
+<ul>
+<li>ASID在TLB映射机制中使用——TLB 事实上构建了一个映射 &lt; VPN, ASID &gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover><mo><mo>⟶</mo></mo><mrow><mi>T</mi><mi>L</mi><mi>B</mi></mrow></mover></mrow><annotation encoding="application/x-tex">\stackrel{TLB}{\longrightarrow}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3003310000000001em;vertical-align:-0.011em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893310000000002em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.7110000000000003em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mord mathdefault mtight">L</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span></span></span></span>&lt; PFN, N, D, V, G &gt;</li>
+<li>ASID 部分只占据了 0-7 共 8 个 bit，即ASID资源是有限的，需要使用一定的资源管理方法来<strong>分配、回收</strong> ASID。MOS 实验采用了位图法管理 256 个可用的 ASID，<strong>如果 ASID 耗尽时仍要创建进程，内核会发生崩溃（panic）</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="设置进程控制块"><a class="markdownIt-Anchor" href="#设置进程控制块"></a> 设置进程控制块</h3>
+<ul>
+<li>
+<p>在 MOS 操作系统<strong>特意将一些内核的数据暴露到用户空间</strong>，使得进程不需要切换到内核态就能访问，这是 MOS 特有的设计</p>
+<p>在这里暴露 UTOP 往上到 UVPT 之间所有进程共享的<strong>只读</strong>空间，也就是把这部分内存对应的<strong>内核<br />
+页表 base_pgdir 拷贝到进程页表中</strong>。从 <strong>UVPT 往上到 ULIM 之间则是进程自己的页表</strong></p>
+<p><img src="https://s2.loli.net/2024/04/24/etFI7plnikVqRT6.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+<h3 id="加载二进制镜像"><a class="markdownIt-Anchor" href="#加载二进制镜像"></a> 加载二进制镜像</h3>
+<p>要想正确加载一个 ELF 文件到内存，只需将 ELF 文件中所有<strong>需要加载的程序段加载到对应的<font color="red">虚拟地址</font>上</strong>即可</p>
+<p><img src="https://s2.loli.net/2024/04/24/BlTYwCyVzxOSjkP.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li><code>elf_load_seg</code> 只关心ELF 段的结构，由回调函数处理具体的页面加载过程</li>
+</ul>
+<h3 id="进程运行与切换"><a class="markdownIt-Anchor" href="#进程运行与切换"></a> 进程运行与切换</h3>
+<p>在 Lab3 中，进程切换只需要保存进程的上下文信息。而MOS中的寄存器状态保存的地方是 <code>KSTACKTOP</code> 以下的一个 <code>sizeof(TrapFrame)</code>大小的区域中，而<code>curenv-&gt;env_tf</code>是存放当前进程的上下文的区域</p>
+<p>故保存进程上下文使用语句<code>curenv-&gt;env_tf = *((struct Trapframe *)KSTACKTOP - 1)</code></p>
+<h2 id="中断与异常"><a class="markdownIt-Anchor" href="#中断与异常"></a> 中断与异常</h2>
+<p>CPU 不仅仅有常见的 32 个通用寄存器，还有功能广泛的***协处理器***，而中断/异常部分就用到了其中的协处理器 CP0</p>
+<table>
+<thead>
+<tr>
+<th>寄存器助记符</th>
+<th>CP0 寄存器编号</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Status</td>
+<td>12</td>
+<td>状态寄存器，包括中断引脚使能，其他 CPU 模式等位域</td>
+</tr>
+<tr>
+<td>Cause</td>
+<td>13</td>
+<td>记录导致异常的原因</td>
+</tr>
+<tr>
+<td>EPC</td>
+<td>14</td>
+<td>异常结束后程序恢复执行的位置</td>
+</tr>
+</tbody>
+</table>
+<h3 id="status-寄存器"><a class="markdownIt-Anchor" href="#status-寄存器"></a> <strong>Status 寄存器</strong></h3>
+<p><img src="https://s2.loli.net/2024/04/24/OKAFgDfkURJj2S6.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>
+<p><code>IE</code> 位表示中断是否开启，为 1 表示开启，否则不开启</p>
+</li>
+<li>
+<p>当且仅当 <code>EXL</code> 被设置为 0 且 <code>UM</code> 被设置为 1 时，处理器处于<strong>用户模式</strong>，其它所有情况下，处理器均处于内核模式下</p>
+<ul>
+<li>
+<p>每当异常发生的时候，EXL 会被自动设置为 1（使处于内核态，能使用特权指令）</p>
+</li>
+<li>
+<p>每个进程在每一次被调度时都会执行</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RESTORE_ALL <span class="comment">//恢复处理器寄存器状态</span></span><br><span class="line">eret <span class="comment">// EXL被自动设置为 0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>15-8 位为<em><strong>中断屏蔽位***，每一位代表一个不同的中断活动，其中 15-10 位</strong>使能</em>*硬件中断源<font color="purple">（该中断能否被响应）</font>，9-8位是 Cause 寄存器软件可写的中断位</p>
+</li>
+</ul>
+<h3 id="cause-寄存器"><a class="markdownIt-Anchor" href="#cause-寄存器"></a> Cause 寄存器</h3>
+<p><img src="https://s2.loli.net/2024/04/24/zi1IqLRVo5welC7.png" alt="Untitled"  loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li><code>IP</code> (15-8 位)保存着哪一些中断发生了，其中 15-10 位来自硬件，9-8 位可以由软件写入，<font color="green">当 Status 寄存器中相同位允许中断（为 1）时</font>，Cause 寄存器这一位也为1就会导致中断</li>
+<li><code>ExcCode</code> (6-2位)，记录发生了什么异常。在 MOS 中，中断是 0 号异常。</li>
+</ul>
+<h3 id="cpu异常处理流程"><a class="markdownIt-Anchor" href="#cpu异常处理流程"></a> CPU异常处理流程</h3>
+<p>CPU 如何处理异常？</p>
+<ol>
+<li>设置 EPC 寄存器的值为从异常返回的地址。</li>
+<li>设置 Status 寄存器（<strong>设置 EXL 位，强制 CPU 进入内核态并禁止中断</strong>）</li>
+<li>设置 Cause 寄存器（记录异常原因）</li>
+<li>设置 PC 为<strong>异常入口地址</strong>，随后交给软件处理</li>
+</ol>
+<p>至此，我们成功地切换到内核程序，将异常处理的任务转交给操作系统。</p>
+<ul>
+<li>
+<p>相关指令</p>
+<ul>
+<li>
+<p><code>mfc0</code> Move From Coprocessor 0</p>
+<p>用于从协处理器的某个寄存器中读取值到一个通用寄存器中</p>
+</li>
+<li>
+<p><code>mtc0</code> Move To Coprocessor 0</p>
+<p>用于将一个通用寄存器的值写入协处理器的某个寄存器中</p>
+</li>
+</ul>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">mfc0    t0, CP0_STATUS</span><br><span class="line">and     t0, t0, ~(STATUS_UM | STATUS_EXL | STATUS_IE)</span><br><span class="line">mtc0    t0, CP0_STATUS</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<font color="grey">
+### SAVE_ALL 与异常重入
+<p>在 SAVE_ALL 中进行判断，若 Status 寄存器的 UM 位为 0，说明此次异常在内核态触发， sp 寄存器已经在内核异常栈中。不再将 sp 设置为 KSTACKTOP ，而是使其继续增长。</p>
+<p>这样便能够在异常中处理新的异常，而不会破坏原本的异常处理流程。这一机制被称作异常重入</font></p>
+<h3 id="异常的分发"><a class="markdownIt-Anchor" href="#异常的分发"></a> 异常的分发</h3>
+<p>当发生异常时，处理器会进入一个用于分发异常的程序，这个程序的作用就是检测发生了哪种异常，并调用相应的异常处理程序</p>
+<p>一般来说，异常分发程序会被要求放在固定的某个物理地址上</p>
+<p>在MOS中的实现为：将.text.exc_gen_entry 段和 .text.tlb_miss_entry 段用链接器放到特定的位置—— 0x80000180 和 0x80000000 处，它们是异常处理程序的入口地址。在我们的系统中，CPU 发生异常（除了用户态地址的 TLB Miss 异常）后，就会自动跳转到地址 0x80000180 处；发生用户态地址的 TLB Miss 异常时，会自动跳转到地址 0x80000000处</p>
+<h3 id="时钟中断"><a class="markdownIt-Anchor" href="#时钟中断"></a> 时钟中断</h3>
+<ul>
+<li>
+<p>中断处理的流程</p>
+<ol>
+<li>
+<p>通过异常分发，<strong>判断出当前异常为中断异常</strong>，随后进入相应的<strong>中断处理程序</strong>。在 MOS 中即对应 handle_int 函数。</p>
+<p>此前以异常的角度对时钟中断进行处理；现在以中断的角度对时钟中断进行处理</p>
+</li>
+<li>
+<p>在中断处理程序中<strong>进一步判断 Cause 寄存器中是由几号中断位引发的中断</strong>，然后进入不同中断对应的<strong>中断服务函数</strong>。</p>
+</li>
+<li>
+<p>中断处理完成，通过 ret_from_exception 函数<strong>恢复现场</strong>，继续执行。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>在MOS 中，<strong>时间片的长度是用时钟中断衡量</strong>的。4KC 中的 CP0 内置了一个可产生中断的 Timer，MOS 即使用这个内置的 Timer 产生时钟中断</p>
+<p>（具体细节实现见指导书）</p>
+</li>
+<li>
+<p>内核初始化完毕后陷入死循环，等待第一次时钟中断来临，通过异常处理来调度已经创建好的用户进程运行</p>
+</li>
+</ul>
+<h3 id="进程调度器"><a class="markdownIt-Anchor" href="#进程调度器"></a> 进程调度器</h3>
+<p><strong>什么时候需要切换进程？</strong></p>
+<ol>
+<li>参数 yield 为真时：此时当前进程必须让出。</li>
+<li>count 减为 0 时：此时分给进程的时间片被用完，将执行权让给其他进程。</li>
+<li>无当前进程：内核必然刚刚完成初始化，需要分配一个进程执行。</li>
+<li>进程状态不是可运行：当前进程不能再继续执行，让给其他进程。</li>
+</ol>
+<p><strong>如何切换进程？</strong></p>
+<ol>
+<li>当前进程仍为就绪状态时，需要将其移到 env_sched_list 队列的尾部。</li>
+<li>选中 env_sched_list 队列头部的进程。如果没有可用的进程，内核 panic。</li>
+<li>设置 count 为当前进程的优先级（分配的时间片的数量）。</li>
+</ol>
+<p>（不管是否切换，都）最后将 count 自减 1，调用 env_run 函数。</p>
+<h1 id="时纪"><a class="markdownIt-Anchor" href="#时纪"></a> 时纪</h1>
+<p>E 3.1</p>
+<ul>
+<li>
+<p>注意链表顺序！！初始化是倒序插入</p>
+</li>
+<li>
+<p><font color="red">LIST、TAIL相关宏操作的（参数）一般都是指针！！</font></p>
+</li>
+<li>
+<p>如下定义</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static Pde *base_pgdir;</span><br></pre></td></tr></table></figure>
+<p><code>base_pgdir</code> 是一个Pde类型的指针，即为目录项的虚拟地址；</p>
+<p><code>*base_pgdir</code> 是Pde类型的指针的解引用，即Pde，为目录项的物理地址</p>
+</li>
+</ul>
+<p>E 3.4</p>
+<ul>
+<li><code>NENV</code> 什么时候要用来作为限制条件吗？这里好像不用</li>
+</ul>
+<p>E 3.5</p>
+<ul>
+<li>分配页面后记得加<code>p→pp_ref</code>！！</li>
+</ul>
+<p>E 3.12</p>
+<ul>
+<li>schedule里的count是静态变量，存放在.data区，只初始化一次，不同进程不共享！！所以虽然可能会调度多次schedule函数，但每个进程只执行一次 <code>static int count = 0;</code> 初始化语句！！</li>
+<li>注意，不管要不要插到尾部，都要先移除当前进程！！</li>
+</ul>
+<h1 id="exam前准备"><a class="markdownIt-Anchor" href="#exam前准备"></a> exam前准备</h1>
+<h3 id="有可能出问题"><a class="markdownIt-Anchor" href="#有可能出问题"></a> 有可能出问题</h3>
+<ul>
+<li>scheduled函数，要不要把不是就绪状态的移除</li>
+<li>获取队列的第一个进程时，记得LIST_REMOVE</li>
+</ul>
+<h3 id="extra"><a class="markdownIt-Anchor" href="#extra"></a> extra</h3>
+<p>近年都是处理新的异常</p>
+]]></content>
+      <categories>
+        <category>OS</category>
+      </categories>
+      <tags>
+        <tag>BUAA</tag>
+        <tag>Lab</tag>
+      </tags>
   </entry>
   <entry>
     <title>BUAA-OS-Lab5</title>
@@ -3131,6 +3131,499 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">fs_list_dir</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *path, <span class="type">char</span>* ans)</span> &#123;    <span class="type">void</span>* blk;    <span class="class"><span class="keyword">struct</span> <span class="title">File</span>* <span class="title">dir</span>;</span>    <span class="class"><span class="keyword">struct</span> <span class="title">File</span>* <span class="title">f</span>;</span>    <span class="type">int</span> i,j;    <span class="type">int</span> r;    r = walk_path(path, <span class="number">0</span>, &amp;dir, <span class="number">0</span>);    <span class="keyword">if</span> (r &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;    <span class="type">int</span> nblock = dir-&gt;f_size / BY2BLK;    <span class="comment">/* 二重遍历 获得文件名 */</span>    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; nblock; i++) &#123;        r = file_get_block(dir, i, &amp;blk);        <span class="keyword">if</span> (r &lt; <span class="number">0</span>) <span class="keyword">return</span> r;        <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; FILE2BLK; j++) &#123;            f = (<span class="keyword">struct</span> File*) (blk + j * <span class="keyword">sizeof</span>(<span class="keyword">struct</span> File));            <span class="keyword">if</span> (*(f-&gt;f_name) != <span class="string">&#x27;\0&#x27;</span>) &#123;                user_bcopy(f-&gt;f_name, ans, <span class="built_in">strlen</span>(f-&gt;f_name));                ans = ans + <span class="built_in">strlen</span>(f-&gt;f_name);                *ans = <span class="string">&#x27; &#x27;</span>;                ans++;            &#125;        &#125;    &#125;    <span class="keyword">return</span> <span class="number">0</span>;&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Docker-Basics</title>
+    <url>/uncategorized/Docker-Basics/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>Vue-基本语法</title>
+    <url>/Web/Vue-Basics/</url>
+    <content><![CDATA[<h1 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h1>
+<h2 id="核心功能与特点"><a class="markdownIt-Anchor" href="#核心功能与特点"></a> 核心功能与特点</h2>
+<ul>
+<li><strong>声明式渲染</strong>：基于标准 HTML 拓展了一套模板语法，使得可以<strong>声明式地描述最终输出的 HTML 和 JavaScript 状态之间的关系</strong></li>
+<li><strong>响应性</strong>：Vue 会自动跟踪 JavaScript 状态并在其发生变化时<strong>响应式地更新 DOM</strong></li>
+<li><strong>单文件组件</strong>:将一个 Vue 组件的模板、逻辑与样式封装在单个文件中。在 <code>setup()</code> 函数中手动暴露大量的状态和方法非常繁琐,故使用单文件组件。</li>
+<li><strong>渐进式框架</strong>：适配多种需求场景，可以被逐步集成</li>
+</ul>
+<h2 id="api风格"><a class="markdownIt-Anchor" href="#api风格"></a> API风格</h2>
+<h3 id="选项式-api"><a class="markdownIt-Anchor" href="#选项式-api"></a> <strong>选项式 API</strong></h3>
+<p>使用选项式 API，我们可以用包含多个选项的对象来描述组件逻辑，例如 <code>data</code>、<code>methods</code> 和 <code>mounted</code>。选项<strong>定义的属性会暴露在函数内部的 <code>this</code> 上</strong>，它会指向当前的组件实例。</p>
+<h3 id="组合式-api"><a class="markdownIt-Anchor" href="#组合式-api"></a> <strong>组合式 API</strong></h3>
+<p>使用导入的 API 函数来描述组件逻辑</p>
+<ul>
+<li>在单文件组件中，组合式 API 通常会与 <strong><code>&lt;script setup&gt;</code></strong> 搭配使用</li>
+</ul>
+<h3 id="应用场景"><a class="markdownIt-Anchor" href="#应用场景"></a> 应用场景</h3>
+<ul>
+<li><font color="green">不需要使用构建工具/场景复杂度低（例如渐进增强的应用场景）</font>：选项式 API</li>
+<li><font color="green">构建完整的单页应用</font>：组合式 API + 单文件组件</li>
+</ul>
+<h1 id="使用注意"><a class="markdownIt-Anchor" href="#使用注意"></a> 使用注意</h1>
+<ul>
+<li>绑定/传递动态属性/值注意要用 <code>v-bind</code> 或者简写<code>：</code></li>
+<li>注意SFC里<strong>CSS属性是连字符的要变为PascalCase 形式</strong></li>
+</ul>
+<h1 id="基本语法"><a class="markdownIt-Anchor" href="#基本语法"></a> 基本语法</h1>
+<h2 id="声明式渲染"><a class="markdownIt-Anchor" href="#声明式渲染"></a> 声明式渲染</h2>
+<h3 id="在组件中声明"><a class="markdownIt-Anchor" href="#在组件中声明"></a> 在组件中声明</h3>
+<ul>
+<li>
+<p><strong><code>reactive()</code></strong></p>
+<p>只适用于对象(包括数组和内置类型，如 <code>Map</code> 和 <code>Set</code>)</p>
+</li>
+<li>
+<p><strong><code>ref()</code></strong></p>
+<p>可以接受任何值类型</p>
+</li>
+<li>
+<p>两者区别：</p>
+<ul>
+<li><code>ref()</code> 将内部值<strong>包装</strong>在特殊对象中，<code>reactive()</code> 将使对象<strong>本身</strong>具有响应性</li>
+<li><code>reactive()</code> API 有较多局限性，如对解构操作不友好，故建议使用建议使用 <code>ref()</code></li>
+</ul>
+</li>
+<li>
+<p>两者共同点</p>
+<ul>
+<li>具有深层响应性，这一性质也可以放弃</li>
+</ul>
+</li>
+</ul>
+<h3 id="改变"><a class="markdownIt-Anchor" href="#改变"></a> 改变</h3>
+<ul>
+<li><strong><code>ref()</code></strong>
+<ul>
+<li>
+<p>简单改变：可以直接在事件监听器中改变</p>
+  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;count++&quot;</span>&gt;</span></span><br><span class="line">  &#123;&#123; count &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>复杂改变：在同一作用域内声明更改 ref 的函数</p>
+  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> count = <span class="title function_">ref</span>(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">increment</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 在 JavaScript 中需要 .value</span></span><br><span class="line">  count.<span class="property">value</span>++</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="font-colorgreydom-更新时机"><a class="markdownIt-Anchor" href="#font-colorgreydom-更新时机"></a> <font color="grey">DOM 更新时机</h3>
+<p>DOM 更新不是同步的，而是在更新周期中缓冲所有状态的修改，统一更新一次。要等待 DOM 更新完成后再执行额外的代码，可以使用 <code>await nextTick()</code></p>
+<h3 id="代理"><a class="markdownIt-Anchor" href="#代理"></a> 代理</h3>
+<p>注意<code>reactive()</code> 返回的是一个原始对象的代理，它和原始对象是不相等的，只有代理对象是响应式的。</p>
+<p>为保证访问代理的一致性，对同一个原始对象调用 <code>reactive()</code> 会总是返回同样的代理对象，而对一个已存在的代理对象调用 <code>reactive()</code> 会返回其本身。</p>
+<p>依靠深层响应性，响应式对象内的嵌套对象依然是代理<br />
+</font></p>
+<h2 id="模板语法"><a class="markdownIt-Anchor" href="#模板语法"></a> <strong>模板语法</strong></h2>
+<h3 id="文本插值"><a class="markdownIt-Anchor" href="#文本插值"></a> 文本插值</h3>
+<p>mustache 语法 (即双大括号)</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">// 双大括号标签会被替换为相应组件实例中 msg 属性的值</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Message: &#123;&#123; msg &#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="原始-html"><a class="markdownIt-Anchor" href="#原始-html"></a> <strong>原始 HTML</strong></h3>
+<p>插入 HTML需要使用 <strong><code>v-html</code></strong> 指令</p>
+<p>容易出现安全问题，故一般不常用，有需求<a href="https://cn.vuejs.org/guide/essentials/template-syntax.html">再看</a></p>
+<h3 id="attribute-绑定"><a class="markdownIt-Anchor" href="#attribute-绑定"></a> <strong>Attribute 绑定</strong></h3>
+<ul>
+<li>
+<p>简写语法为</p>
+  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line">// 元素的 id属性 将与组件状态里的 dynamicId属性 保持同步</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">:id</span>=<span class="string">&quot;dynamicId&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>布尔型 Attribute</strong></p>
+<p>依据 true / false 值来决定 attribute 是否应该存在于该元素上。<strong><code>disabled</code></strong> 就是最常见的例子之一</p>
+</li>
+</ul>
+<h3 id="使用-javascript-表达式"><a class="markdownIt-Anchor" href="#使用-javascript-表达式"></a> <strong>使用 JavaScript 表达式</strong></h3>
+<ul>
+<li>使用场景：
+<ul>
+<li>在文本插值中 (<strong>双大括号</strong>)</li>
+<li>在任何 Vue 指令 (<strong>以 <code>v-</code> 开头的特殊 attribute</strong>) attribute 的值中</li>
+</ul>
+</li>
+<li>注意事项：仅支持<strong>单一表达式</strong>（不能写条件判断语句等）</li>
+</ul>
+<h3 id="指令-directives"><a class="markdownIt-Anchor" href="#指令-directives"></a> <strong>指令 Directives</strong></h3>
+<p><em>指令</em>是带有 <code>v-</code> 前缀的特殊 attribute，会在其表达式的值变化时响应式地更新 DOM</p>
+<ul>
+<li>
+<p>一些缩写：</p>
+<ul>
+<li>响应式更新属性值 <code>v-bind:</code> ： <code>:</code></li>
+<li>监听 DOM 事件 <code>v-on</code> ： <code>@</code></li>
+</ul>
+</li>
+<li>
+<p><strong>动态参数</strong></p>
+<p>在指令参数上也可以使用一个 JavaScript 表达式，需要包含在<strong>方括号</strong>内</p>
+  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line">// 当 eventName 的值是 &quot;focus&quot; 时，v-on:[eventName] 就等价于 v-on:focus</span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> @[<span class="attr">eventName</span>]=<span class="string">&quot;doSomething&quot;</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>限制
+<ul>
+<li>动态参数表达式<strong>不能出现空格和引号</strong></li>
+<li>当使用 DOM 内嵌模板 (直接写在 HTML 文件里的模板) 时，名称中<strong>不能使用大写字母</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>条件渲染 <code>v-if</code> <code>v-else</code> <code>v-else-if</code></p>
+</li>
+<li>
+<p><strong>修饰符 Modifiers</strong></p>
+<p>是以点开头</p>
+<p>的特殊后缀，表明指令需要以一些特殊的方式被绑定。</p>
+<p>例如 <code>.prevent</code> 修饰符会告知 <code>v-on</code> 指令对触发的事件调用 <code>event.preventDefault()</code>：</p>
+  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> @<span class="attr">submit.prevent</span>=<span class="string">&quot;onSubmit&quot;</span>&gt;</span>...<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="表单输入绑定"><a class="markdownIt-Anchor" href="#表单输入绑定"></a> <strong>表单输入绑定</strong></h2>
+<h3 id="v-model-指令"><a class="markdownIt-Anchor" href="#v-model-指令"></a> <code>v-model</code> 指令</h3>
+<p>将表单输入框的内容同步给 JavaScript 中相应的变量</p>
+<ul>
+<li>
+<p>可以用于<code>&lt;input&gt;</code> 和 <code>&lt;textarea&gt;</code>等各种不同类型的输入，根据所使用的元素自动使用对应的 DOM 属性和事件组合</p>
+  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;p&gt;<span class="title class_">Message</span> <span class="attr">is</span>: &#123;&#123; message &#125;&#125;&lt;/p&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model</span>=<span class="string">&quot;message&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;edit me&quot;</span> /&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>如果需要绑定动态值<code>v-bind</code></p>
+  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;input type=<span class="string">&quot;radio&quot;</span> v-model=<span class="string">&quot;pick&quot;</span> :value=<span class="string">&quot;first&quot;</span> /&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">v-model</span>=<span class="string">&quot;pick&quot;</span> <span class="attr">:value</span>=<span class="string">&quot;second&quot;</span> /&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>修饰符 <code>.number</code> <code>.trim</code></p>
+</li>
+</ul>
+<h2 id="列表渲染"><a class="markdownIt-Anchor" href="#列表渲染"></a> 列表渲染</h2>
+<h3 id="v-for"><a class="markdownIt-Anchor" href="#v-for"></a> <code>v-for</code></h3>
+<ul>
+<li>
+<p>基本用法</p>
+  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> id = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> newTodo = <span class="title function_">ref</span>(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> todos = <span class="title function_">ref</span>([</span><br><span class="line">&#123; <span class="attr">id</span>: id++, <span class="attr">text</span>: <span class="string">&#x27;Learn HTML&#x27;</span> &#125;,</span><br><span class="line">&#123; <span class="attr">id</span>: id++, <span class="attr">text</span>: <span class="string">&#x27;Learn JavaScript&#x27;</span> &#125;,</span><br><span class="line">&#123; <span class="attr">id</span>: id++, <span class="attr">text</span>: <span class="string">&#x27;Learn Vue&#x27;</span> &#125;</span><br><span class="line">])</span><br><span class="line"><span class="comment">// 更新列表的两种方式 ——  .push &amp; =filter</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">addTodo</span>(<span class="params"></span>) &#123;</span><br><span class="line">todos.<span class="property">value</span>.<span class="title function_">push</span>(&#123;<span class="attr">id</span>:id++,<span class="attr">text</span>:newTodo.<span class="property">value</span>&#125;)</span><br><span class="line">newTodo.<span class="property">value</span> = <span class="string">&#x27;&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">removeTodo</span>(<span class="params">todo</span>) &#123;</span><br><span class="line">todos.<span class="property">value</span>=todos.<span class="property">value</span>.<span class="title function_">filter</span>(<span class="function">(<span class="params">t</span>)=&gt;</span>t!==todo)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">&quot;todo in todos&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;todo.id&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123; todo.text &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;removeTodo(todo)&quot;</span>&gt;</span>X<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>注意！如果和 v-if 放在同一节点，v-if 优先级更高，无法访问 v-for 中定义的变量，故最好不放在同一节点</p>
+  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">v-for</span>=<span class="string">&quot;todo in todos&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-if</span>=<span class="string">&quot;!todo.isComplete&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123; todo.name &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>为了以便Vue可以跟踪每个节点的标识，最好为每个元素对应的块提供一个唯一的 <code>key</code> attribute：</p>
+  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">&quot;item in items&quot;</span> **<span class="attr">:key</span>=<span class="string">&quot;item.id**&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="计算属性"><a class="markdownIt-Anchor" href="#计算属性"></a> 计算属性</h3>
+<ul>
+<li>
+<p><strong><code>computed()</code></strong>:可以帮助创建一计算属性 ref，动态地根据其他响应式数据源来计算自身 <code>.value</code></p>
+  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> hideCompleted = <span class="title function_">ref</span>(<span class="literal">false</span>)</span></span><br><span class="line"><span class="language-javascript">**<span class="keyword">const</span> filteredTodos = <span class="title function_">computed</span>(<span class="function">()=&gt;</span>&#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">return</span> hideCompleted.<span class="property">value</span></span></span><br><span class="line"><span class="language-javascript">  ? todos.<span class="property">value</span>.<span class="title function_">filter</span>(<span class="function">(<span class="params">t</span>)=&gt;</span>t.<span class="property">done</span>!=<span class="literal">true</span>)</span></span><br><span class="line"><span class="language-javascript">  : todos.<span class="property">value</span> ;</span></span><br><span class="line"><span class="language-javascript">&#125;)**</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="侦听器"><a class="markdownIt-Anchor" href="#侦听器"></a> 侦听器</h2>
+<p>计算属性允许我们声明性地计算衍生值。然而在有些情况下，我们需要在状态变化时执行一些其他操作</p>
+<p>使用 <strong><code>watch</code> ，<strong>在每次</strong>响应式状态发生变化时触发回调函数</strong></p>
+<h2 id="模板引用"><a class="markdownIt-Anchor" href="#模板引用"></a> 模板引用</h2>
+<p>可以给底层 DOM 元素添加 <code>ref</code> attribute以通过 <code>.value</code> 直接访问</p>
+<ul>
+<li>可以通过这种方法在组件挂载时将焦点设置到一个 input 元素上，或在一个元素上初始化一个第三方库</li>
+</ul>
+<h3 id="使用注意-2"><a class="markdownIt-Anchor" href="#使用注意-2"></a> 使用注意</h3>
+<ul>
+<li>需要先声明一个匹配模板 ref attribute 值的 ref 量</li>
+<li>在挂载后才能使用</li>
+</ul>
+<p>eg</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; ref, onMounted &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> pElementRef = <span class="title function_">ref</span>(<span class="literal">null</span>)</span><br><span class="line"><span class="title function_">onMounted</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">  pElementRef.<span class="property">value</span>.<span class="property">textContent</span>=<span class="string">&quot;happy&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&quot;pElementRef&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="函数模板引用"><a class="markdownIt-Anchor" href="#函数模板引用"></a> 函数模板引用</h3>
+<p>除了使用字符串值作名字，<code>ref</code> attribute 还可以绑定为一个函数，会在每次组件更新时都被调用。该函数会收到元素引用作为其第一个参数：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">:ref</span>=<span class="string">&quot;(el) =&gt; &#123; /* 将 el 赋值给一个数据属性或 ref 变量 */ &#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>注意这里需要使用动态的 <code>:ref</code> 绑定才能够传入</p>
+<h2 id="生命周期"><a class="markdownIt-Anchor" href="#生命周期"></a> 生命周期</h2>
+<h3 id="生命周期钩子-onmounted"><a class="markdownIt-Anchor" href="#生命周期钩子-onmounted"></a> 生命周期钩子 <code>onMounted</code></h3>
+<p>在挂载之后执行代码，我们可以使用 <code>onMounted()</code> 函数：</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; onMounted &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">onMounted</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 此时组件已经挂载。</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HTML-Basics</title>
+    <url>/Web/HTML-Basics/</url>
+    <content><![CDATA[<h1 id="核心概念"><a class="markdownIt-Anchor" href="#核心概念"></a> 核心概念</h1>
+<ul>
+<li><em><strong>元素</strong></em>：开始标签、内容、结束标签三部分组成的整体</li>
+<li><em><strong>属性</strong></em>：是写在一个元素的开始标签中的特殊词汇，它们用于控制这个元素的行为</li>
+</ul>
+<h2 id="基本结构"><a class="markdownIt-Anchor" href="#基本结构"></a> 基本结构</h2>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;styles.css&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span> <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">section</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="常用标签及属性"><a class="markdownIt-Anchor" href="#常用标签及属性"></a> 常用标签及属性</h1>
+<h2 id="规范性标签"><a class="markdownIt-Anchor" href="#规范性标签"></a> “规范性“标签</h2>
+<h3 id="doctype-html"><a class="markdownIt-Anchor" href="#doctype-html"></a> <code>&lt;!DOCTYPE html&gt;</code></h3>
+<p>所有页面都应以其开头，被称为<em>声明</em>，确保浏览器尝试满足行业范围的规范</p>
+<h2 id="描述性标签"><a class="markdownIt-Anchor" href="#描述性标签"></a> “描述性”标签</h2>
+<h3 id="meta"><a class="markdownIt-Anchor" href="#meta"></a> <code>&lt;meta&gt;</code></h3>
+<p>在 HTML 中，<code>&lt;meta&gt;</code> 标签用于定义文档的元数据，对页面的描述、行为和外观有重要影响。</p>
+<p><code>&lt;meta&gt;</code> 信息位于 <code>&lt;head&gt;</code> 部分，对搜索引擎优化（SEO）、浏览器行为、页面性能和用户体验等方面都有重要作用。</p>
+<ol>
+<li>
+<p><strong>字符集声明</strong>：<meta charset="UTF-8"></p>
+</li>
+<li>
+<p><strong>视口设置</strong>（针对移动设备）：控制页面在移动设备上的布局和缩放行为。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>描述</strong>：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">//</span><br><span class="line">提供页面内容的简短描述，有助于搜索引擎理解页面内容，并在搜索结果中显示为摘要。</span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;description&quot;</span> <span class="attr">content</span>=<span class="string">&quot;这里是页面描述&quot;</span> /&gt;</span></span><br><span class="line">// 列出与页面内容相关的关键词，有助于搜索引擎分类和索引页面</span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;keywords&quot;</span> <span class="attr">content</span>=<span class="string">&quot;关键词1, 关键词2, 关键词3&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;author&quot;</span> <span class="attr">content</span>=<span class="string">&quot;作者名&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>社交分享优化</strong>（Open Graph 和 Twitter Cards）：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">property</span>=<span class="string">&quot;og:title&quot;</span> <span class="attr">content</span>=<span class="string">&quot;分享的标题&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">property</span>=<span class="string">&quot;og:description&quot;</span> <span class="attr">content</span>=<span class="string">&quot;分享的描述&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">property</span>=<span class="string">&quot;og:image&quot;</span> <span class="attr">content</span>=<span class="string">&quot;分享的图片链接&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="功能性标签"><a class="markdownIt-Anchor" href="#功能性标签"></a> “功能性”标签</h2>
+<h3 id="img"><a class="markdownIt-Anchor" href="#img"></a> <em><code>img</code></em></h3>
+<ul>
+<li>注意它是<strong>自闭合</strong>标签（无结束标签）</li>
+<li>常用属性：<code>alt</code>（替代文本）、<code>src</code></li>
+</ul>
+<h3 id="a"><a class="markdownIt-Anchor" href="#a"></a> <em><code>a</code></em></h3>
+<p><em><strong>锚点元素（超链接）</strong></em>，链接到另一个页面</p>
+<ul>
+<li>常用属性：<code>href</code> 、
+<ul>
+<li><code>target</code>  规定在何处打开链接
+<ul>
+<li><code>_blank</code>  在新窗口中打开</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="ul-ol"><a class="markdownIt-Anchor" href="#ul-ol"></a> <em><code>ul</code> &amp; <code>ol</code></em></h3>
+<p><strong><em>无序&amp;有序列表</em></strong></p>
+<h3 id="li"><a class="markdownIt-Anchor" href="#li"></a> <em><code>li</code></em></h3>
+<p><strong><em>列表项</em></strong></p>
+<h3 id="form"><a class="markdownIt-Anchor" href="#form"></a> <em><code>form</code></em></h3>
+<p><em>表单</em></p>
+<ul>
+<li>常用属性：<code>action</code> （指示应将表单数据发送到哪里）
+<ul>
+<li><code>method</code>  规定如何发送表单数据
+<ul>
+<li>常用参数：
+<ul>
+<li>get：<strong>将表单数据以名称/值对的形式附加到 URL 中</strong>，对于用户希望将结果加为书签的表单提交很有用，<strong>更适合非安全数据</strong></li>
+<li>post：<strong>在 HTTP 请求的正文中附加表单数据</strong>（数据不会显示在 URL 中）<strong>，适合敏感数据</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="input"><a class="markdownIt-Anchor" href="#input"></a> <em><code>input</code></em></h3>
+<ul>
+<li>注意它是<strong>自闭合的、内联的</strong></li>
+<li>常用属性：<code>placeholder</code> ，<code>required</code> （注意该属性无属性值，代表“必填”），<code>checked</code>（注意该属性无属性值，代表“使该复选框或单选按钮默认被选中”）
+<ul>
+<li><code>type</code>  创建多种输入
+<ul>
+<li>text：文本，表单数据将为输入的内容</li>
+<li>radio：单选，表单数据将为<code>name</code> / <code>value</code> 属性对</li>
+<li>checkbox：复选框，表单数据将为<code>name</code> / <code>value</code> 属性对</li>
+</ul>
+</li>
+<li><code>name</code>  指定输入数据的存放位置，或者说指明数据”属性“
+<ul>
+<li>可以用于限制单选，通过<strong>给每一个单选按钮添加相同的  <code>name</code>  属性以关联单选按钮</strong></li>
+</ul>
+</li>
+<li><code>value</code>  设置 input 的数据值
+<ul>
+<li>常在<code>type=radio</code>时使用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>距离父级  <code>form</code>  元素最近的第一个  <code>type</code>  为  <code>submit</code>  的  <code>input</code>  元素会被当作提交按钮<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Submit&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="label"><a class="markdownIt-Anchor" href="#label"></a> <em><code>label</code></em></h3>
+<p>帮助将  <code>input</code>  、<code>select</code>等元素的文本与元素本身关联起来，<strong>默认是行内元素</strong></p>
+<ul>
+<li>用法
+<ol>
+<li>套在<code>input</code>外面</li>
+<li>套在<code>input</code>的文本外面，并添加与  <code>input</code> 的  <code>id</code> 具有相同值的  <code>for</code> 属性</li>
+</ol>
+</li>
+</ul>
+<h3 id="button"><a class="markdownIt-Anchor" href="#button"></a> <em><code>button</code></em></h3>
+<p>单击没有任何属性的表单按钮的默认行为会将数据提交到表单的  <code>action</code>  属性中指定的位置</p>
+<ul>
+<li>注意它是<strong>内联的</strong></li>
+<li>常用属性：<code>type</code></li>
+</ul>
+<h3 id="select"><a class="markdownIt-Anchor" href="#select"></a> <em><code>select</code></em></h3>
+<p>给表单添加一个下拉列表</p>
+<p><code>select</code>  是包含一组  <code>option</code>  元素的容器，<code>option</code>  元素就是下拉列表的内容</p>
+<h3 id="option"><a class="markdownIt-Anchor" href="#option"></a> <em><code>option</code></em></h3>
+<ul>
+<li>每一个  <code>option</code>  需要指定一个  <code>value</code>  属性。 如果没有指定，向服务器默认提交的是  <code>option</code>  内的文本</li>
+</ul>
+<h3 id="textarea"><a class="markdownIt-Anchor" href="#textarea"></a> <em><code>textarea</code></em></h3>
+<ul>
+<li>和  <code>text</code>  类型的  <code>input</code>  类似，区别是 <code>textarea</code> 有一些额外的好处，比如可以方便地添加更多的文本以及设置默认显示的行数和列宽。</li>
+</ul>
+<h3 id="span-与-div"><a class="markdownIt-Anchor" href="#span-与-div"></a> <code>&lt;span&gt;</code>  与 <code>&lt;div&gt;</code></h3>
+<ul>
+<li><code>&lt;div&gt;</code>是块级元素，而  <code>&lt;span&gt;</code>  是行内元素</li>
+</ul>
+<h2 id="美化性标签"><a class="markdownIt-Anchor" href="#美化性标签"></a> “美化性”标签</h2>
+<ul>
+<li><em><code>main</code>  正文</em></li>
+<li><em><code>footer</code>  页脚</em></li>
+<li><em><code>article</code> 信息内容</em></li>
+<li><em><code>div</code>  用于设计布局</em>
+<ul>
+<li>常用属性：<code>class</code></li>
+</ul>
+</li>
+<li><em><code>em</code>斜体</em></li>
+<li><em><code>strong</code>  加粗</em></li>
+<li><em><code>figure</code>独立引用内容</em>
+<ul>
+<li><em><code>figcaption</code>： 说明</em></li>
+</ul>
+</li>
+<li><em><code>fieldset</code>  块级元素</em>（划分内容）
+<ul>
+<li><em><code>legend</code> ：<code>fieldset</code></em> 元素中内容的<em>标题</em></li>
+</ul>
+</li>
+<li><em><code>hr</code>  分隔符</em>
+<ul>
+<li>注意是<strong>自闭合标签</strong></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue-组件基础</title>
+    <url>/Web/Vue-Components/</url>
+    <content><![CDATA[<p><font color="grey">注意：每个代码片段只举例部分和当前解释的用法有关的代码，其他部分选择性省略</font></p>
+<h2 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h2>
+<p>一般将 Vue 组件定义在一个单独的  <code>.vue</code>  文件中，这被叫做***单文件组件*** (SFC，使组件更有内聚性和可维护性)</p>
+<h3 id="命名注意"><a class="markdownIt-Anchor" href="#命名注意"></a> 命名注意</h3>
+<p>一般使用 <strong>PascalCase</strong> 作为组件名的注册格式，更明显地表明了这是一个 Vue 组件，且便于在 JavaScript 中导入和注册组件</p>
+<h2 id="注册"><a class="markdownIt-Anchor" href="#注册"></a> 注册</h2>
+<p>使用一个子组件前需要在父组件中使用 <code>import</code> 语句导入。通过  <code>**&lt;script setup&gt;**</code>，导入的组件都在模板中<strong>直接可用</strong>，不需要再进行局部注册</p>
+<p>eg.</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">ButtonCounter</span> <span class="keyword">from</span> <span class="string">&quot;./ButtonCounter.vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="局部注册与全局注册"><a class="markdownIt-Anchor" href="#局部注册与全局注册"></a> 局部注册与全局注册</h3>
+<p>如果不使用  <code>&lt;script setup&gt;</code> ，在使用组件前需要先进行注册。</p>
+<ul>
+<li>
+<p><strong><em>局部注册</em></strong></p>
+<p>在使用它的父组件中使用  <code>components</code>  选项显式导入</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ComponentA</span> <span class="keyword">from</span> <span class="string">&quot;./ComponentA.js&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">components</span>: &#123;</span><br><span class="line">    <span class="title class_">ComponentA</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">setup</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>缺点：只能在该父组件中使用</li>
+<li>优点：组件之间的依赖关系更加明确</li>
+</ul>
+</li>
+<li>
+<p><strong><em>全局注册</em></strong><br />
+在 main.js 中使用  <code>.component()</code>  方法</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">MyComponent</span> <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">component</span>(<span class="string">&quot;MyComponent&quot;</span>, <span class="title class_">MyComponent</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>缺点：依赖关系不明确，影响应用可维护性</li>
+<li>优点：组件在当前 Vue 应用中全局可用</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h2>
+<p>每使用一个组件就会创建一个新的<strong>实例</strong>（不同实例之间的参数不相互影响）</p>
+<h3 id="dom-vs-sfc-中组件编写-解析"><a class="markdownIt-Anchor" href="#dom-vs-sfc-中组件编写-解析"></a> DOM VS SFC 中组件编写、解析</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>DOM</th>
+<th>SFC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大小写区分（命名/使用）</td>
+<td>kebab-case (短横线连字符) 形式</td>
+<td>PascalCase 形式</td>
+</tr>
+<tr>
+<td>闭合标签</td>
+<td>必须显式地写出关闭标签 eg.&lt;my-component&gt;&lt;/my-component&gt;</td>
+<td>可以使用 eg.&lt;MyComponent /&gt;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>元素位置限制</strong></p>
+<p>某些 HTML 元素对于放在其中的元素类型有限制，例如  <code>&lt;ul&gt;</code>，<code>&lt;ol&gt;</code>，<code>&lt;table&gt;</code>,这将导致在使用带有此类限制元素的组件时出现问题，如</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">blog-post-row</span>&gt;</span><span class="tag">&lt;/<span class="name">blog-post-row</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们可以使用特殊的  <code>is</code> attribute  作为一种解决方案</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">tr</span> <span class="attr">is</span>=<span class="string">&quot;vue:blog-post-row&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="传递-props"><a class="markdownIt-Anchor" href="#传递-props"></a> <strong>传递 props</strong></h2>
+<p>先在SFC的<code>&lt;script setup&gt;</code>里用 <code>defineProps</code> 宏定义，使用组件时再传参</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineProps</span>([<span class="string">&#x27;title&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h4</span>&gt;</span>&#123;&#123; title &#125;&#125;<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;My journey with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Blogging with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Why Vue is so fun&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="多组props"><a class="markdownIt-Anchor" href="#多组props"></a> 多组<strong>props</strong></h3>
+<p>在实际应用中，在父组件中可能会有如下的一个博客文章数组，这种情况下使用 <code>v-for</code> 来渲染</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> posts = <span class="title function_">ref</span>([</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">title</span>: <span class="string">&#x27;My journey with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">title</span>: <span class="string">&#x27;Blogging with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">title</span>: <span class="string">&#x27;Why Vue is so fun&#x27;</span> &#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;<span class="title class_">BlogPost</span></span><br><span class="line">  v-<span class="keyword">for</span>=<span class="string">&quot;post in posts&quot;</span></span><br><span class="line">  :key=<span class="string">&quot;post.id&quot;</span></span><br><span class="line">  :title=<span class="string">&quot;post.title&quot;</span></span><br><span class="line"> /&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="插槽传递内容"><a class="markdownIt-Anchor" href="#插槽传递内容"></a> <strong>插槽(传递内容)</strong></h2>
+<p>使用***插槽（slot***）在父组件中给子组件传递内容。</p>
+<p>插槽内容可以是任意合法的模板内容，不局限于文本，<strong>可以传入多个元素，甚至是组件</strong></p>
+<ol>
+<li>
+<p>在SFC中设置好插槽出口</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;fancy-btn&quot;</span>&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">slot</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span> <span class="comment">&lt;!-- 插槽出口 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在父组件中传入插槽内容</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">FancyButton</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 插槽内容 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>Click me!<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">AwesomeIcon</span> <span class="attr">name</span>=<span class="string">&quot;plus&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">FancyButton</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="监听事件"><a class="markdownIt-Anchor" href="#监听事件"></a> <strong>监听事件</strong></h2>
+<ol>
+<li>
+<p>在SFC的<code>&lt;script setup&gt;</code>中通过 <code>defineEmits</code> 宏来声明需要抛出的事件（和<code>defineProps</code>有点像）</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineEmits</span>([<span class="string">&#x27;enlarge-text&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>调用内置的 <code>$emit</code> 方法，通过传入事件名称来抛出一个事件</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;$emit(&#x27;enlarge-text&#x27;)&quot;</span>&gt;</span>Enlarge text<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在父组件中通过 <code>v-on</code> 或 <code>@</code> 来选择性地监听子组件上抛的事件</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span></span></span><br><span class="line"><span class="tag">  @<span class="attr">enlarge-text</span>=<span class="string">&quot;postFontSize += 0.1&quot;</span></span></span><br><span class="line"><span class="tag"> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="动态组件"><a class="markdownIt-Anchor" href="#动态组件"></a> 动态组件</h2>
+<p>使用 <code>&lt;component&gt;</code> 元素和特殊的 <code>is</code> attribute 实现动态组件切换</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Home</span> <span class="keyword">from</span> <span class="string">&#x27;./Home.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Posts</span> <span class="keyword">from</span> <span class="string">&#x27;./Posts.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Archive</span> <span class="keyword">from</span> <span class="string">&#x27;./Archive.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> tabs = &#123;<span class="title class_">Home</span>, <span class="title class_">Posts</span>, <span class="title class_">Archive</span>&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;demo&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span></span></span><br><span class="line"><span class="tag">       <span class="attr">v-for</span>=<span class="string">&quot;(_, tab) in tabs&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:key</span>=<span class="string">&quot;tab&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:class</span>=<span class="string">&quot;[&#x27;tab-button&#x27;, &#123; active: currentTab === tab &#125;]&quot;</span></span></span><br><span class="line"><span class="tag">       @<span class="attr">click</span>=<span class="string">&quot;currentTab = tab&quot;</span></span></span><br><span class="line"><span class="tag">     &gt;</span></span><br><span class="line">      &#123;&#123; tab &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 动态组件切换 --&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">component</span> <span class="attr">:is</span>=<span class="string">&quot;tabs[currentTab]&quot;</span> <span class="attr">class</span>=<span class="string">&quot;tab&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
   </entry>
   <entry>
     <title>Django-Basics</title>
@@ -3705,499 +4198,6 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
       </categories>
       <tags>
         <tag>Django</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HTML-Basics</title>
-    <url>/Web/HTML-Basics/</url>
-    <content><![CDATA[<h1 id="核心概念"><a class="markdownIt-Anchor" href="#核心概念"></a> 核心概念</h1>
-<ul>
-<li><em><strong>元素</strong></em>：开始标签、内容、结束标签三部分组成的整体</li>
-<li><em><strong>属性</strong></em>：是写在一个元素的开始标签中的特殊词汇，它们用于控制这个元素的行为</li>
-</ul>
-<h2 id="基本结构"><a class="markdownIt-Anchor" href="#基本结构"></a> 基本结构</h2>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;styles.css&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span> <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">section</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h1 id="常用标签及属性"><a class="markdownIt-Anchor" href="#常用标签及属性"></a> 常用标签及属性</h1>
-<h2 id="规范性标签"><a class="markdownIt-Anchor" href="#规范性标签"></a> “规范性“标签</h2>
-<h3 id="doctype-html"><a class="markdownIt-Anchor" href="#doctype-html"></a> <code>&lt;!DOCTYPE html&gt;</code></h3>
-<p>所有页面都应以其开头，被称为<em>声明</em>，确保浏览器尝试满足行业范围的规范</p>
-<h2 id="描述性标签"><a class="markdownIt-Anchor" href="#描述性标签"></a> “描述性”标签</h2>
-<h3 id="meta"><a class="markdownIt-Anchor" href="#meta"></a> <code>&lt;meta&gt;</code></h3>
-<p>在 HTML 中，<code>&lt;meta&gt;</code> 标签用于定义文档的元数据，对页面的描述、行为和外观有重要影响。</p>
-<p><code>&lt;meta&gt;</code> 信息位于 <code>&lt;head&gt;</code> 部分，对搜索引擎优化（SEO）、浏览器行为、页面性能和用户体验等方面都有重要作用。</p>
-<ol>
-<li>
-<p><strong>字符集声明</strong>：<meta charset="UTF-8"></p>
-</li>
-<li>
-<p><strong>视口设置</strong>（针对移动设备）：控制页面在移动设备上的布局和缩放行为。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>描述</strong>：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">//</span><br><span class="line">提供页面内容的简短描述，有助于搜索引擎理解页面内容，并在搜索结果中显示为摘要。</span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;description&quot;</span> <span class="attr">content</span>=<span class="string">&quot;这里是页面描述&quot;</span> /&gt;</span></span><br><span class="line">// 列出与页面内容相关的关键词，有助于搜索引擎分类和索引页面</span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;keywords&quot;</span> <span class="attr">content</span>=<span class="string">&quot;关键词1, 关键词2, 关键词3&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;author&quot;</span> <span class="attr">content</span>=<span class="string">&quot;作者名&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>社交分享优化</strong>（Open Graph 和 Twitter Cards）：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">property</span>=<span class="string">&quot;og:title&quot;</span> <span class="attr">content</span>=<span class="string">&quot;分享的标题&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">property</span>=<span class="string">&quot;og:description&quot;</span> <span class="attr">content</span>=<span class="string">&quot;分享的描述&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">property</span>=<span class="string">&quot;og:image&quot;</span> <span class="attr">content</span>=<span class="string">&quot;分享的图片链接&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="功能性标签"><a class="markdownIt-Anchor" href="#功能性标签"></a> “功能性”标签</h2>
-<h3 id="img"><a class="markdownIt-Anchor" href="#img"></a> <em><code>img</code></em></h3>
-<ul>
-<li>注意它是<strong>自闭合</strong>标签（无结束标签）</li>
-<li>常用属性：<code>alt</code>（替代文本）、<code>src</code></li>
-</ul>
-<h3 id="a"><a class="markdownIt-Anchor" href="#a"></a> <em><code>a</code></em></h3>
-<p><em><strong>锚点元素（超链接）</strong></em>，链接到另一个页面</p>
-<ul>
-<li>常用属性：<code>href</code> 、
-<ul>
-<li><code>target</code>  规定在何处打开链接
-<ul>
-<li><code>_blank</code>  在新窗口中打开</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="ul-ol"><a class="markdownIt-Anchor" href="#ul-ol"></a> <em><code>ul</code> &amp; <code>ol</code></em></h3>
-<p><strong><em>无序&amp;有序列表</em></strong></p>
-<h3 id="li"><a class="markdownIt-Anchor" href="#li"></a> <em><code>li</code></em></h3>
-<p><strong><em>列表项</em></strong></p>
-<h3 id="form"><a class="markdownIt-Anchor" href="#form"></a> <em><code>form</code></em></h3>
-<p><em>表单</em></p>
-<ul>
-<li>常用属性：<code>action</code> （指示应将表单数据发送到哪里）
-<ul>
-<li><code>method</code>  规定如何发送表单数据
-<ul>
-<li>常用参数：
-<ul>
-<li>get：<strong>将表单数据以名称/值对的形式附加到 URL 中</strong>，对于用户希望将结果加为书签的表单提交很有用，<strong>更适合非安全数据</strong></li>
-<li>post：<strong>在 HTTP 请求的正文中附加表单数据</strong>（数据不会显示在 URL 中）<strong>，适合敏感数据</strong></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="input"><a class="markdownIt-Anchor" href="#input"></a> <em><code>input</code></em></h3>
-<ul>
-<li>注意它是<strong>自闭合的、内联的</strong></li>
-<li>常用属性：<code>placeholder</code> ，<code>required</code> （注意该属性无属性值，代表“必填”），<code>checked</code>（注意该属性无属性值，代表“使该复选框或单选按钮默认被选中”）
-<ul>
-<li><code>type</code>  创建多种输入
-<ul>
-<li>text：文本，表单数据将为输入的内容</li>
-<li>radio：单选，表单数据将为<code>name</code> / <code>value</code> 属性对</li>
-<li>checkbox：复选框，表单数据将为<code>name</code> / <code>value</code> 属性对</li>
-</ul>
-</li>
-<li><code>name</code>  指定输入数据的存放位置，或者说指明数据”属性“
-<ul>
-<li>可以用于限制单选，通过<strong>给每一个单选按钮添加相同的  <code>name</code>  属性以关联单选按钮</strong></li>
-</ul>
-</li>
-<li><code>value</code>  设置 input 的数据值
-<ul>
-<li>常在<code>type=radio</code>时使用</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>距离父级  <code>form</code>  元素最近的第一个  <code>type</code>  为  <code>submit</code>  的  <code>input</code>  元素会被当作提交按钮<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Submit&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="label"><a class="markdownIt-Anchor" href="#label"></a> <em><code>label</code></em></h3>
-<p>帮助将  <code>input</code>  、<code>select</code>等元素的文本与元素本身关联起来，<strong>默认是行内元素</strong></p>
-<ul>
-<li>用法
-<ol>
-<li>套在<code>input</code>外面</li>
-<li>套在<code>input</code>的文本外面，并添加与  <code>input</code> 的  <code>id</code> 具有相同值的  <code>for</code> 属性</li>
-</ol>
-</li>
-</ul>
-<h3 id="button"><a class="markdownIt-Anchor" href="#button"></a> <em><code>button</code></em></h3>
-<p>单击没有任何属性的表单按钮的默认行为会将数据提交到表单的  <code>action</code>  属性中指定的位置</p>
-<ul>
-<li>注意它是<strong>内联的</strong></li>
-<li>常用属性：<code>type</code></li>
-</ul>
-<h3 id="select"><a class="markdownIt-Anchor" href="#select"></a> <em><code>select</code></em></h3>
-<p>给表单添加一个下拉列表</p>
-<p><code>select</code>  是包含一组  <code>option</code>  元素的容器，<code>option</code>  元素就是下拉列表的内容</p>
-<h3 id="option"><a class="markdownIt-Anchor" href="#option"></a> <em><code>option</code></em></h3>
-<ul>
-<li>每一个  <code>option</code>  需要指定一个  <code>value</code>  属性。 如果没有指定，向服务器默认提交的是  <code>option</code>  内的文本</li>
-</ul>
-<h3 id="textarea"><a class="markdownIt-Anchor" href="#textarea"></a> <em><code>textarea</code></em></h3>
-<ul>
-<li>和  <code>text</code>  类型的  <code>input</code>  类似，区别是 <code>textarea</code> 有一些额外的好处，比如可以方便地添加更多的文本以及设置默认显示的行数和列宽。</li>
-</ul>
-<h3 id="span-与-div"><a class="markdownIt-Anchor" href="#span-与-div"></a> <code>&lt;span&gt;</code>  与 <code>&lt;div&gt;</code></h3>
-<ul>
-<li><code>&lt;div&gt;</code>是块级元素，而  <code>&lt;span&gt;</code>  是行内元素</li>
-</ul>
-<h2 id="美化性标签"><a class="markdownIt-Anchor" href="#美化性标签"></a> “美化性”标签</h2>
-<ul>
-<li><em><code>main</code>  正文</em></li>
-<li><em><code>footer</code>  页脚</em></li>
-<li><em><code>article</code> 信息内容</em></li>
-<li><em><code>div</code>  用于设计布局</em>
-<ul>
-<li>常用属性：<code>class</code></li>
-</ul>
-</li>
-<li><em><code>em</code>斜体</em></li>
-<li><em><code>strong</code>  加粗</em></li>
-<li><em><code>figure</code>独立引用内容</em>
-<ul>
-<li><em><code>figcaption</code>： 说明</em></li>
-</ul>
-</li>
-<li><em><code>fieldset</code>  块级元素</em>（划分内容）
-<ul>
-<li><em><code>legend</code> ：<code>fieldset</code></em> 元素中内容的<em>标题</em></li>
-</ul>
-</li>
-<li><em><code>hr</code>  分隔符</em>
-<ul>
-<li>注意是<strong>自闭合标签</strong></li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>HTML</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vue-基本语法</title>
-    <url>/Web/Vue-Basics/</url>
-    <content><![CDATA[<h1 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h1>
-<h2 id="核心功能与特点"><a class="markdownIt-Anchor" href="#核心功能与特点"></a> 核心功能与特点</h2>
-<ul>
-<li><strong>声明式渲染</strong>：基于标准 HTML 拓展了一套模板语法，使得可以<strong>声明式地描述最终输出的 HTML 和 JavaScript 状态之间的关系</strong></li>
-<li><strong>响应性</strong>：Vue 会自动跟踪 JavaScript 状态并在其发生变化时<strong>响应式地更新 DOM</strong></li>
-<li><strong>单文件组件</strong>:将一个 Vue 组件的模板、逻辑与样式封装在单个文件中。在 <code>setup()</code> 函数中手动暴露大量的状态和方法非常繁琐,故使用单文件组件。</li>
-<li><strong>渐进式框架</strong>：适配多种需求场景，可以被逐步集成</li>
-</ul>
-<h2 id="api风格"><a class="markdownIt-Anchor" href="#api风格"></a> API风格</h2>
-<h3 id="选项式-api"><a class="markdownIt-Anchor" href="#选项式-api"></a> <strong>选项式 API</strong></h3>
-<p>使用选项式 API，我们可以用包含多个选项的对象来描述组件逻辑，例如 <code>data</code>、<code>methods</code> 和 <code>mounted</code>。选项<strong>定义的属性会暴露在函数内部的 <code>this</code> 上</strong>，它会指向当前的组件实例。</p>
-<h3 id="组合式-api"><a class="markdownIt-Anchor" href="#组合式-api"></a> <strong>组合式 API</strong></h3>
-<p>使用导入的 API 函数来描述组件逻辑</p>
-<ul>
-<li>在单文件组件中，组合式 API 通常会与 <strong><code>&lt;script setup&gt;</code></strong> 搭配使用</li>
-</ul>
-<h3 id="应用场景"><a class="markdownIt-Anchor" href="#应用场景"></a> 应用场景</h3>
-<ul>
-<li><font color="green">不需要使用构建工具/场景复杂度低（例如渐进增强的应用场景）</font>：选项式 API</li>
-<li><font color="green">构建完整的单页应用</font>：组合式 API + 单文件组件</li>
-</ul>
-<h1 id="使用注意"><a class="markdownIt-Anchor" href="#使用注意"></a> 使用注意</h1>
-<ul>
-<li>绑定/传递动态属性/值注意要用 <code>v-bind</code> 或者简写<code>：</code></li>
-<li>注意SFC里<strong>CSS属性是连字符的要变为PascalCase 形式</strong></li>
-</ul>
-<h1 id="基本语法"><a class="markdownIt-Anchor" href="#基本语法"></a> 基本语法</h1>
-<h2 id="声明式渲染"><a class="markdownIt-Anchor" href="#声明式渲染"></a> 声明式渲染</h2>
-<h3 id="在组件中声明"><a class="markdownIt-Anchor" href="#在组件中声明"></a> 在组件中声明</h3>
-<ul>
-<li>
-<p><strong><code>reactive()</code></strong></p>
-<p>只适用于对象(包括数组和内置类型，如 <code>Map</code> 和 <code>Set</code>)</p>
-</li>
-<li>
-<p><strong><code>ref()</code></strong></p>
-<p>可以接受任何值类型</p>
-</li>
-<li>
-<p>两者区别：</p>
-<ul>
-<li><code>ref()</code> 将内部值<strong>包装</strong>在特殊对象中，<code>reactive()</code> 将使对象<strong>本身</strong>具有响应性</li>
-<li><code>reactive()</code> API 有较多局限性，如对解构操作不友好，故建议使用建议使用 <code>ref()</code></li>
-</ul>
-</li>
-<li>
-<p>两者共同点</p>
-<ul>
-<li>具有深层响应性，这一性质也可以放弃</li>
-</ul>
-</li>
-</ul>
-<h3 id="改变"><a class="markdownIt-Anchor" href="#改变"></a> 改变</h3>
-<ul>
-<li><strong><code>ref()</code></strong>
-<ul>
-<li>
-<p>简单改变：可以直接在事件监听器中改变</p>
-  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;count++&quot;</span>&gt;</span></span><br><span class="line">  &#123;&#123; count &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>复杂改变：在同一作用域内声明更改 ref 的函数</p>
-  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> count = <span class="title function_">ref</span>(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">increment</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 在 JavaScript 中需要 .value</span></span><br><span class="line">  count.<span class="property">value</span>++</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="font-colorgreydom-更新时机"><a class="markdownIt-Anchor" href="#font-colorgreydom-更新时机"></a> <font color="grey">DOM 更新时机</h3>
-<p>DOM 更新不是同步的，而是在更新周期中缓冲所有状态的修改，统一更新一次。要等待 DOM 更新完成后再执行额外的代码，可以使用 <code>await nextTick()</code></p>
-<h3 id="代理"><a class="markdownIt-Anchor" href="#代理"></a> 代理</h3>
-<p>注意<code>reactive()</code> 返回的是一个原始对象的代理，它和原始对象是不相等的，只有代理对象是响应式的。</p>
-<p>为保证访问代理的一致性，对同一个原始对象调用 <code>reactive()</code> 会总是返回同样的代理对象，而对一个已存在的代理对象调用 <code>reactive()</code> 会返回其本身。</p>
-<p>依靠深层响应性，响应式对象内的嵌套对象依然是代理<br />
-</font></p>
-<h2 id="模板语法"><a class="markdownIt-Anchor" href="#模板语法"></a> <strong>模板语法</strong></h2>
-<h3 id="文本插值"><a class="markdownIt-Anchor" href="#文本插值"></a> 文本插值</h3>
-<p>mustache 语法 (即双大括号)</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">// 双大括号标签会被替换为相应组件实例中 msg 属性的值</span><br><span class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Message: &#123;&#123; msg &#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="原始-html"><a class="markdownIt-Anchor" href="#原始-html"></a> <strong>原始 HTML</strong></h3>
-<p>插入 HTML需要使用 <strong><code>v-html</code></strong> 指令</p>
-<p>容易出现安全问题，故一般不常用，有需求<a href="https://cn.vuejs.org/guide/essentials/template-syntax.html">再看</a></p>
-<h3 id="attribute-绑定"><a class="markdownIt-Anchor" href="#attribute-绑定"></a> <strong>Attribute 绑定</strong></h3>
-<ul>
-<li>
-<p>简写语法为</p>
-  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line">// 元素的 id属性 将与组件状态里的 dynamicId属性 保持同步</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">:id</span>=<span class="string">&quot;dynamicId&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>布尔型 Attribute</strong></p>
-<p>依据 true / false 值来决定 attribute 是否应该存在于该元素上。<strong><code>disabled</code></strong> 就是最常见的例子之一</p>
-</li>
-</ul>
-<h3 id="使用-javascript-表达式"><a class="markdownIt-Anchor" href="#使用-javascript-表达式"></a> <strong>使用 JavaScript 表达式</strong></h3>
-<ul>
-<li>使用场景：
-<ul>
-<li>在文本插值中 (<strong>双大括号</strong>)</li>
-<li>在任何 Vue 指令 (<strong>以 <code>v-</code> 开头的特殊 attribute</strong>) attribute 的值中</li>
-</ul>
-</li>
-<li>注意事项：仅支持<strong>单一表达式</strong>（不能写条件判断语句等）</li>
-</ul>
-<h3 id="指令-directives"><a class="markdownIt-Anchor" href="#指令-directives"></a> <strong>指令 Directives</strong></h3>
-<p><em>指令</em>是带有 <code>v-</code> 前缀的特殊 attribute，会在其表达式的值变化时响应式地更新 DOM</p>
-<ul>
-<li>
-<p>一些缩写：</p>
-<ul>
-<li>响应式更新属性值 <code>v-bind:</code> ： <code>:</code></li>
-<li>监听 DOM 事件 <code>v-on</code> ： <code>@</code></li>
-</ul>
-</li>
-<li>
-<p><strong>动态参数</strong></p>
-<p>在指令参数上也可以使用一个 JavaScript 表达式，需要包含在<strong>方括号</strong>内</p>
-  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line">// 当 eventName 的值是 &quot;focus&quot; 时，v-on:[eventName] 就等价于 v-on:focus</span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> @[<span class="attr">eventName</span>]=<span class="string">&quot;doSomething&quot;</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>限制
-<ul>
-<li>动态参数表达式<strong>不能出现空格和引号</strong></li>
-<li>当使用 DOM 内嵌模板 (直接写在 HTML 文件里的模板) 时，名称中<strong>不能使用大写字母</strong></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>条件渲染 <code>v-if</code> <code>v-else</code> <code>v-else-if</code></p>
-</li>
-<li>
-<p><strong>修饰符 Modifiers</strong></p>
-<p>是以点开头</p>
-<p>的特殊后缀，表明指令需要以一些特殊的方式被绑定。</p>
-<p>例如 <code>.prevent</code> 修饰符会告知 <code>v-on</code> 指令对触发的事件调用 <code>event.preventDefault()</code>：</p>
-  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> @<span class="attr">submit.prevent</span>=<span class="string">&quot;onSubmit&quot;</span>&gt;</span>...<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="表单输入绑定"><a class="markdownIt-Anchor" href="#表单输入绑定"></a> <strong>表单输入绑定</strong></h2>
-<h3 id="v-model-指令"><a class="markdownIt-Anchor" href="#v-model-指令"></a> <code>v-model</code> 指令</h3>
-<p>将表单输入框的内容同步给 JavaScript 中相应的变量</p>
-<ul>
-<li>
-<p>可以用于<code>&lt;input&gt;</code> 和 <code>&lt;textarea&gt;</code>等各种不同类型的输入，根据所使用的元素自动使用对应的 DOM 属性和事件组合</p>
-  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;p&gt;<span class="title class_">Message</span> <span class="attr">is</span>: &#123;&#123; message &#125;&#125;&lt;/p&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">v-model</span>=<span class="string">&quot;message&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;edit me&quot;</span> /&gt;</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>如果需要绑定动态值<code>v-bind</code></p>
-  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;input type=<span class="string">&quot;radio&quot;</span> v-model=<span class="string">&quot;pick&quot;</span> :value=<span class="string">&quot;first&quot;</span> /&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;radio&quot;</span> <span class="attr">v-model</span>=<span class="string">&quot;pick&quot;</span> <span class="attr">:value</span>=<span class="string">&quot;second&quot;</span> /&gt;</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>修饰符 <code>.number</code> <code>.trim</code></p>
-</li>
-</ul>
-<h2 id="列表渲染"><a class="markdownIt-Anchor" href="#列表渲染"></a> 列表渲染</h2>
-<h3 id="v-for"><a class="markdownIt-Anchor" href="#v-for"></a> <code>v-for</code></h3>
-<ul>
-<li>
-<p>基本用法</p>
-  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> id = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> newTodo = <span class="title function_">ref</span>(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> todos = <span class="title function_">ref</span>([</span><br><span class="line">&#123; <span class="attr">id</span>: id++, <span class="attr">text</span>: <span class="string">&#x27;Learn HTML&#x27;</span> &#125;,</span><br><span class="line">&#123; <span class="attr">id</span>: id++, <span class="attr">text</span>: <span class="string">&#x27;Learn JavaScript&#x27;</span> &#125;,</span><br><span class="line">&#123; <span class="attr">id</span>: id++, <span class="attr">text</span>: <span class="string">&#x27;Learn Vue&#x27;</span> &#125;</span><br><span class="line">])</span><br><span class="line"><span class="comment">// 更新列表的两种方式 ——  .push &amp; =filter</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">addTodo</span>(<span class="params"></span>) &#123;</span><br><span class="line">todos.<span class="property">value</span>.<span class="title function_">push</span>(&#123;<span class="attr">id</span>:id++,<span class="attr">text</span>:newTodo.<span class="property">value</span>&#125;)</span><br><span class="line">newTodo.<span class="property">value</span> = <span class="string">&#x27;&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">removeTodo</span>(<span class="params">todo</span>) &#123;</span><br><span class="line">todos.<span class="property">value</span>=todos.<span class="property">value</span>.<span class="title function_">filter</span>(<span class="function">(<span class="params">t</span>)=&gt;</span>t!==todo)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">&quot;todo in todos&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;todo.id&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123; todo.text &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;removeTodo(todo)&quot;</span>&gt;</span>X<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>注意！如果和 v-if 放在同一节点，v-if 优先级更高，无法访问 v-for 中定义的变量，故最好不放在同一节点</p>
-  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">v-for</span>=<span class="string">&quot;todo in todos&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-if</span>=<span class="string">&quot;!todo.isComplete&quot;</span>&gt;</span></span><br><span class="line">    &#123;&#123; todo.name &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>为了以便Vue可以跟踪每个节点的标识，最好为每个元素对应的块提供一个唯一的 <code>key</code> attribute：</p>
-  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">&quot;item in items&quot;</span> **<span class="attr">:key</span>=<span class="string">&quot;item.id**&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="计算属性"><a class="markdownIt-Anchor" href="#计算属性"></a> 计算属性</h3>
-<ul>
-<li>
-<p><strong><code>computed()</code></strong>:可以帮助创建一计算属性 ref，动态地根据其他响应式数据源来计算自身 <code>.value</code></p>
-  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> hideCompleted = <span class="title function_">ref</span>(<span class="literal">false</span>)</span></span><br><span class="line"><span class="language-javascript">**<span class="keyword">const</span> filteredTodos = <span class="title function_">computed</span>(<span class="function">()=&gt;</span>&#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">return</span> hideCompleted.<span class="property">value</span></span></span><br><span class="line"><span class="language-javascript">  ? todos.<span class="property">value</span>.<span class="title function_">filter</span>(<span class="function">(<span class="params">t</span>)=&gt;</span>t.<span class="property">done</span>!=<span class="literal">true</span>)</span></span><br><span class="line"><span class="language-javascript">  : todos.<span class="property">value</span> ;</span></span><br><span class="line"><span class="language-javascript">&#125;)**</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="侦听器"><a class="markdownIt-Anchor" href="#侦听器"></a> 侦听器</h2>
-<p>计算属性允许我们声明性地计算衍生值。然而在有些情况下，我们需要在状态变化时执行一些其他操作</p>
-<p>使用 <strong><code>watch</code> ，<strong>在每次</strong>响应式状态发生变化时触发回调函数</strong></p>
-<h2 id="模板引用"><a class="markdownIt-Anchor" href="#模板引用"></a> 模板引用</h2>
-<p>可以给底层 DOM 元素添加 <code>ref</code> attribute以通过 <code>.value</code> 直接访问</p>
-<ul>
-<li>可以通过这种方法在组件挂载时将焦点设置到一个 input 元素上，或在一个元素上初始化一个第三方库</li>
-</ul>
-<h3 id="使用注意-2"><a class="markdownIt-Anchor" href="#使用注意-2"></a> 使用注意</h3>
-<ul>
-<li>需要先声明一个匹配模板 ref attribute 值的 ref 量</li>
-<li>在挂载后才能使用</li>
-</ul>
-<p>eg</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; ref, onMounted &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> pElementRef = <span class="title function_">ref</span>(<span class="literal">null</span>)</span><br><span class="line"><span class="title function_">onMounted</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">  pElementRef.<span class="property">value</span>.<span class="property">textContent</span>=<span class="string">&quot;happy&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">ref</span>=<span class="string">&quot;pElementRef&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-<h3 id="函数模板引用"><a class="markdownIt-Anchor" href="#函数模板引用"></a> 函数模板引用</h3>
-<p>除了使用字符串值作名字，<code>ref</code> attribute 还可以绑定为一个函数，会在每次组件更新时都被调用。该函数会收到元素引用作为其第一个参数：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">:ref</span>=<span class="string">&quot;(el) =&gt; &#123; /* 将 el 赋值给一个数据属性或 ref 变量 */ &#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>注意这里需要使用动态的 <code>:ref</code> 绑定才能够传入</p>
-<h2 id="生命周期"><a class="markdownIt-Anchor" href="#生命周期"></a> 生命周期</h2>
-<h3 id="生命周期钩子-onmounted"><a class="markdownIt-Anchor" href="#生命周期钩子-onmounted"></a> 生命周期钩子 <code>onMounted</code></h3>
-<p>在挂载之后执行代码，我们可以使用 <code>onMounted()</code> 函数：</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; onMounted &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">onMounted</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 此时组件已经挂载。</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker-Basics</title>
-    <url>/uncategorized/Docker-Basics/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>Vue-组件基础</title>
-    <url>/Web/Vue-Components/</url>
-    <content><![CDATA[<p><font color="grey">注意：每个代码片段只举例部分和当前解释的用法有关的代码，其他部分选择性省略</font></p>
-<h2 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h2>
-<p>一般将 Vue 组件定义在一个单独的  <code>.vue</code>  文件中，这被叫做***单文件组件*** (SFC，使组件更有内聚性和可维护性)</p>
-<h3 id="命名注意"><a class="markdownIt-Anchor" href="#命名注意"></a> 命名注意</h3>
-<p>一般使用 <strong>PascalCase</strong> 作为组件名的注册格式，更明显地表明了这是一个 Vue 组件，且便于在 JavaScript 中导入和注册组件</p>
-<h2 id="注册"><a class="markdownIt-Anchor" href="#注册"></a> 注册</h2>
-<p>使用一个子组件前需要在父组件中使用 <code>import</code> 语句导入。通过  <code>**&lt;script setup&gt;**</code>，导入的组件都在模板中<strong>直接可用</strong>，不需要再进行局部注册</p>
-<p>eg.</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">ButtonCounter</span> <span class="keyword">from</span> <span class="string">&quot;./ButtonCounter.vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="局部注册与全局注册"><a class="markdownIt-Anchor" href="#局部注册与全局注册"></a> 局部注册与全局注册</h3>
-<p>如果不使用  <code>&lt;script setup&gt;</code> ，在使用组件前需要先进行注册。</p>
-<ul>
-<li>
-<p><strong><em>局部注册</em></strong></p>
-<p>在使用它的父组件中使用  <code>components</code>  选项显式导入</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ComponentA</span> <span class="keyword">from</span> <span class="string">&quot;./ComponentA.js&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">components</span>: &#123;</span><br><span class="line">    <span class="title class_">ComponentA</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">setup</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>缺点：只能在该父组件中使用</li>
-<li>优点：组件之间的依赖关系更加明确</li>
-</ul>
-</li>
-<li>
-<p><strong><em>全局注册</em></strong><br />
-在 main.js 中使用  <code>.component()</code>  方法</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">MyComponent</span> <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">component</span>(<span class="string">&quot;MyComponent&quot;</span>, <span class="title class_">MyComponent</span>);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>缺点：依赖关系不明确，影响应用可维护性</li>
-<li>优点：组件在当前 Vue 应用中全局可用</li>
-</ul>
-</li>
-</ul>
-<h2 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h2>
-<p>每使用一个组件就会创建一个新的<strong>实例</strong>（不同实例之间的参数不相互影响）</p>
-<h3 id="dom-vs-sfc-中组件编写-解析"><a class="markdownIt-Anchor" href="#dom-vs-sfc-中组件编写-解析"></a> DOM VS SFC 中组件编写、解析</h3>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>DOM</th>
-<th>SFC</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>大小写区分（命名/使用）</td>
-<td>kebab-case (短横线连字符) 形式</td>
-<td>PascalCase 形式</td>
-</tr>
-<tr>
-<td>闭合标签</td>
-<td>必须显式地写出关闭标签 eg.&lt;my-component&gt;&lt;/my-component&gt;</td>
-<td>可以使用 eg.&lt;MyComponent /&gt;</td>
-</tr>
-</tbody>
-</table>
-<p><strong>元素位置限制</strong></p>
-<p>某些 HTML 元素对于放在其中的元素类型有限制，例如  <code>&lt;ul&gt;</code>，<code>&lt;ol&gt;</code>，<code>&lt;table&gt;</code>,这将导致在使用带有此类限制元素的组件时出现问题，如</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">blog-post-row</span>&gt;</span><span class="tag">&lt;/<span class="name">blog-post-row</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>我们可以使用特殊的  <code>is</code> attribute  作为一种解决方案</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">tr</span> <span class="attr">is</span>=<span class="string">&quot;vue:blog-post-row&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="传递-props"><a class="markdownIt-Anchor" href="#传递-props"></a> <strong>传递 props</strong></h2>
-<p>先在SFC的<code>&lt;script setup&gt;</code>里用 <code>defineProps</code> 宏定义，使用组件时再传参</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineProps</span>([<span class="string">&#x27;title&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h4</span>&gt;</span>&#123;&#123; title &#125;&#125;<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;My journey with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Blogging with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Why Vue is so fun&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="多组props"><a class="markdownIt-Anchor" href="#多组props"></a> 多组<strong>props</strong></h3>
-<p>在实际应用中，在父组件中可能会有如下的一个博客文章数组，这种情况下使用 <code>v-for</code> 来渲染</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> posts = <span class="title function_">ref</span>([</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">title</span>: <span class="string">&#x27;My journey with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">title</span>: <span class="string">&#x27;Blogging with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">title</span>: <span class="string">&#x27;Why Vue is so fun&#x27;</span> &#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;<span class="title class_">BlogPost</span></span><br><span class="line">  v-<span class="keyword">for</span>=<span class="string">&quot;post in posts&quot;</span></span><br><span class="line">  :key=<span class="string">&quot;post.id&quot;</span></span><br><span class="line">  :title=<span class="string">&quot;post.title&quot;</span></span><br><span class="line"> /&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="插槽传递内容"><a class="markdownIt-Anchor" href="#插槽传递内容"></a> <strong>插槽(传递内容)</strong></h2>
-<p>使用***插槽（slot***）在父组件中给子组件传递内容。</p>
-<p>插槽内容可以是任意合法的模板内容，不局限于文本，<strong>可以传入多个元素，甚至是组件</strong></p>
-<ol>
-<li>
-<p>在SFC中设置好插槽出口</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;fancy-btn&quot;</span>&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">slot</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span> <span class="comment">&lt;!-- 插槽出口 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>在父组件中传入插槽内容</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">FancyButton</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 插槽内容 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>Click me!<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">AwesomeIcon</span> <span class="attr">name</span>=<span class="string">&quot;plus&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">FancyButton</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="监听事件"><a class="markdownIt-Anchor" href="#监听事件"></a> <strong>监听事件</strong></h2>
-<ol>
-<li>
-<p>在SFC的<code>&lt;script setup&gt;</code>中通过 <code>defineEmits</code> 宏来声明需要抛出的事件（和<code>defineProps</code>有点像）</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineEmits</span>([<span class="string">&#x27;enlarge-text&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>调用内置的 <code>$emit</code> 方法，通过传入事件名称来抛出一个事件</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;$emit(&#x27;enlarge-text&#x27;)&quot;</span>&gt;</span>Enlarge text<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>在父组件中通过 <code>v-on</code> 或 <code>@</code> 来选择性地监听子组件上抛的事件</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span></span></span><br><span class="line"><span class="tag">  @<span class="attr">enlarge-text</span>=<span class="string">&quot;postFontSize += 0.1&quot;</span></span></span><br><span class="line"><span class="tag"> /&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="动态组件"><a class="markdownIt-Anchor" href="#动态组件"></a> 动态组件</h2>
-<p>使用 <code>&lt;component&gt;</code> 元素和特殊的 <code>is</code> attribute 实现动态组件切换</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Home</span> <span class="keyword">from</span> <span class="string">&#x27;./Home.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Posts</span> <span class="keyword">from</span> <span class="string">&#x27;./Posts.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Archive</span> <span class="keyword">from</span> <span class="string">&#x27;./Archive.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> tabs = &#123;<span class="title class_">Home</span>, <span class="title class_">Posts</span>, <span class="title class_">Archive</span>&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;demo&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span></span></span><br><span class="line"><span class="tag">       <span class="attr">v-for</span>=<span class="string">&quot;(_, tab) in tabs&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:key</span>=<span class="string">&quot;tab&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:class</span>=<span class="string">&quot;[&#x27;tab-button&#x27;, &#123; active: currentTab === tab &#125;]&quot;</span></span></span><br><span class="line"><span class="tag">       @<span class="attr">click</span>=<span class="string">&quot;currentTab = tab&quot;</span></span></span><br><span class="line"><span class="tag">     &gt;</span></span><br><span class="line">      &#123;&#123; tab &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 动态组件切换 --&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">component</span> <span class="attr">:is</span>=<span class="string">&quot;tabs[currentTab]&quot;</span> <span class="attr">class</span>=<span class="string">&quot;tab&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Vue</tag>
       </tags>
   </entry>
   <entry>
