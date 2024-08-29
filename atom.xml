@@ -6,7 +6,7 @@
   <link href="https://roisyl.github.io.git/atom.xml" rel="self"/>
   
   <link href="https://roisyl.github.io.git/"/>
-  <updated>2024-08-29T13:02:48.236Z</updated>
+  <updated>2024-08-29T13:11:43.054Z</updated>
   <id>https://roisyl.github.io.git/</id>
   
   <author>
@@ -15,48 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>Test-Cypress</title>
-    <link href="https://roisyl.github.io.git/Front-end/Test-Cypress/"/>
-    <id>https://roisyl.github.io.git/Front-end/Test-Cypress/</id>
-    <published>2024-08-29T12:48:42.000Z</published>
-    <updated>2024-08-29T13:02:48.236Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="概念与原理"><a class="markdownIt-Anchor" href="#概念与原理"></a> 概念与原理</h1><h3 id="集成测试端到端e2e侧重点"><a class="markdownIt-Anchor" href="#集成测试端到端e2e侧重点"></a> <strong>集成测试（端到端E2E）侧重点</strong></h3><p>端到端测试的重点是多页面的应用表现，针对你的应用在生产环境下进行网络请求。通常需要建立一个数据库或其他形式的后端，甚至可能针对一个预备上线的环境运行。</p><p>端到端测试通常会捕捉到路由、状态管理库、顶级组件（常见为 App 或 Layout）、公共资源或任何请求处理方面的问题，即可以捕捉到单元测试或组件测试无法捕捉的关键问题。</p><h1 id="工具-cypress"><a class="markdownIt-Anchor" href="#工具-cypress"></a> 工具-<strong>Cypress</strong></h1><blockquote><p><strong>参考文档</strong></p><ul><li>官方文档 <a href="https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test#Write-a-real-test">Effective E2E: Cypress App Testing | Cypress Documentation</a></li><li>语法（简洁版） <a href="https://www.cnblogs.com/memebuguoshixingfu/p/11808582.html">Cypress-自动化测试-语法 - childish - 博客园 (cnblogs.com)</a></li></ul></blockquote><h2 id="操作"><a class="markdownIt-Anchor" href="#操作"></a> 操作</h2><h3 id="集成到项目中"><a class="markdownIt-Anchor" href="#集成到项目中"></a> 集成到项目中</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g vue-cli  <span class="comment">#先安装vue-cli</span></span><br><span class="line">vue add @vue/e2e-cypress <span class="comment"># 再安装插件</span></span><br></pre></td></tr></table></figure><h3 id="打开cypress"><a class="markdownIt-Anchor" href="#打开cypress"></a> 打开Cypress</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx cypress open</span><br></pre></td></tr></table></figure><h2 id="mocha测试框架相关语法"><a class="markdownIt-Anchor" href="#mocha测试框架相关语法"></a> Mocha测试框架相关语法</h2><ul><li><p><code>describe</code> 函数用于定义一个测试套件（test suite），它是一个包含多个测试用例的容器。<code>''</code> 中是这个测试套件的名称，这个名称会在测试报告中显示。</p></li><li><p><code>it</code> 函数定义了一个单独的测试用例（test case）。<code>''</code> 里是这个测试用例的名称，它描述了测试用例的功能或目的。</p><ul><li>第一个参数：测试用例的名称，是一个字符串。</li><li>第二个参数：一个回调函数，在该函数内部编写具体的测试逻辑。</li></ul></li><li><p>在 <code>it</code> 函数的回调中编写测试逻辑，比如使用Cypress命令来与页面元素交互，断言页面的状态等。</p></li><li><p>示例</p>  <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">describe</span>(<span class="string">&#x27;login test&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">it</span>(<span class="string">&#x27;login&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 访问网页</span></span><br><span class="line">    cy.<span class="title function_">visit</span>(<span class="string">&#x27;http://101.42.36.160/Main&#x27;</span>)</span><br><span class="line">    <span class="comment">// 选择登录按钮</span></span><br><span class="line">    cy.<span class="title function_">contains</span>(<span class="string">&#x27;登录&#x27;</span>).<span class="title function_">click</span>()</span><br><span class="line">    <span class="comment">// 输入测试用户名和密码</span></span><br><span class="line">    cy.<span class="title function_">contains</span>(<span class="string">&#x27;身份证号&#x27;</span>).<span class="title function_">type</span>(<span class="string">&#x27;000001&#x27;</span>)</span><br><span class="line">    cy.<span class="title function_">contains</span>(<span class="string">&#x27;密码&#x27;</span>).<span class="title function_">type</span>(<span class="string">&#x27;123456&#x27;</span>)</span><br><span class="line">    cy.<span class="title function_">contains</span>(<span class="string">&#x27;身份选择&#x27;</span>).<span class="title function_">click</span>();</span><br><span class="line">    cy.<span class="title function_">contains</span>(<span class="string">&#x27;普通用户&#x27;</span>).<span class="title function_">click</span>();</span><br><span class="line">    <span class="comment">// 点击登录按钮</span></span><br><span class="line">    cy.<span class="title function_">contains</span>(<span class="string">&#x27;登录&#x27;</span>).<span class="title function_">click</span>();</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure></li></ul><h2 id="cypress命令常用语法"><a class="markdownIt-Anchor" href="#cypress命令常用语法"></a> <strong>Cypress命令常用</strong>语法</h2><h3 id="访问网页"><a class="markdownIt-Anchor" href="#访问网页"></a> 访问网页</h3><p><code>.visit()</code></p><p><img src="https://s2.loli.net/2024/08/29/eVPTdCGg8tRKEFI.png" alt="1.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p><h3 id="元素定位"><a class="markdownIt-Anchor" href="#元素定位"></a> 元素定位</h3><ul><li><p>选择DOM元素 <code>cy.get(selector)</code></p><ul><li>最好通过源代码确定属性，F12里显示的很多属性是经浏览器影响的</li></ul><p><img src="https://s2.loli.net/2024/08/29/3BpR6eNnF2U5Djb.png" alt="2.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p></li><li><p>根据文本内容选择  <code>contains(content)</code><strong>（最常用！）</strong></p><p><img src="https://s2.loli.net/2024/08/29/iHmj9v3rDlWq6eh.png" alt="3.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p></li><li><p>定位列表中的字段</p><p>使用<code>cy.get('form&gt;div&gt;tr&gt;td')</code>的方式定位到第一行第一个值</p></li><li><p>根据上下文定位</p><ul><li><code>cy. get('.class').first()</code>定位到该class的第一个元素。</li><li><code>cy.get('.class').eq(1);</code> 选择第二个元素，因为索引从0开始</li><li><code>cy.get(id).next()</code> 可以定位到get(’#id’)元素的下一个元素。</li><li><code>cy.get('#id').children()</code>定位到子元素。</li><li><code>cy. get('#id').children().first()</code>定位到第一个子元素。</li></ul></li></ul><h3 id="点击"><a class="markdownIt-Anchor" href="#点击"></a> 点击</h3><ul><li><code>.click()</code> 单击</li><li><code>.dbclick()</code>双击</li></ul><h3 id="写入"><a class="markdownIt-Anchor" href="#写入"></a> 写入</h3><p><code>.type(text)</code></p><p><img src="https://s2.loli.net/2024/08/29/YERrSQv5U37OmoW.png" alt="4.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cy.get(<span class="string">&#x27;input[placeholder=&quot;请输入姓名&quot;]&#x27;</span>).<span class="built_in">type</span>(<span class="string">&#x27;小学期可怜人&#x27;</span>)</span><br></pre></td></tr></table></figure><h3 id="断言"><a class="markdownIt-Anchor" href="#断言"></a> 断言</h3><ul><li><code>.should(chainers)</code> ,chainers表示特定的语句</li><li><code>.should(chainers,value)</code>表示断言的期望值</li><li><code>.should(chainers,method,value)</code>一般用于断言元素的属性值</li></ul><p><img src="https://s2.loli.net/2024/08/29/RbC7dFPBuoAxIap.png" alt="5.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>]]></content>
-    
-    
-    <summary type="html">简单梳理Cypress端到端测试框架和Mocha测试语法，具体总结Cypress命令进行页面访问、元素定位、用户交互和断言验证的语法</summary>
-    
-    
-    
-    <category term="Front-end" scheme="https://roisyl.github.io.git/categories/Front-end/"/>
-    
-    
-    <category term="Test" scheme="https://roisyl.github.io.git/tags/Test/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CI/CD Pipline</title>
-    <link href="https://roisyl.github.io.git/Back-end/CI&amp;CD-Pipline/"/>
-    <id>https://roisyl.github.io.git/Back-end/CI&amp;CD-Pipline/</id>
-    <published>2024-08-29T12:39:57.000Z</published>
-    <updated>2024-08-29T12:47:40.408Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="概念与思想"><a class="markdownIt-Anchor" href="#概念与思想"></a> 概念与思想</h1><h2 id="devops"><a class="markdownIt-Anchor" href="#devops"></a> <strong>DevOps</strong></h2><p>是一种<strong>软件开发方法</strong>（或者说软件工程思想），将持续开发、持续测试、持续集成、持续部署和持续监控贯穿于软件开发的整个生命周期</p><p><img src="https://s2.loli.net/2024/08/29/1vHfPoR9tWVYxyZ.png" alt="1.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p><h2 id="cicd-流水线"><a class="markdownIt-Anchor" href="#cicd-流水线"></a> <strong>CI/CD 流水线</strong></h2><p>通过自动化流程和工具自动构建应用、测试应用、部署应用</p><p><img src="https://s2.loli.net/2024/08/29/tHSq5sWZxXILN1m.png" alt="2.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p><h3 id="ci"><a class="markdownIt-Anchor" href="#ci"></a> CI</h3><p>CI 代表持续集成（Continuous Integration），是指开发团队通过版本控制工具，将代码的不同部分<strong>集成</strong>到共享存储库中，并利用自动化构建工具和单元测试框架频繁地进行<strong>构建和测试</strong></p><h3 id="cd"><a class="markdownIt-Anchor" href="#cd"></a> CD</h3><p>CD 代表持续交付（Continuous Delivery）和持续部署（Continuous Deployment），建立在持续集成的基础上，运行脚本构建打包应用，通过自动化部署工具部署到生产环境运行应用，监控生产环境指标，确保软件可以随时随地进行<strong>部署与应用</strong></p><h1 id="自动化工具"><a class="markdownIt-Anchor" href="#自动化工具"></a> 自动化工具</h1><h2 id="容器化技术栈"><a class="markdownIt-Anchor" href="#容器化技术栈"></a> <strong>容器化技术栈</strong></h2><h3 id="docker"><a class="markdownIt-Anchor" href="#docker"></a> <strong>Docker</strong></h3><p>一个开源的<strong>容器化平台</strong>，用于创建、管理虚拟环境（容器）</p><h3 id="kubernetesk8s"><a class="markdownIt-Anchor" href="#kubernetesk8s"></a> <strong>Kubernetes（K8s）</strong></h3><p>一个开源的<strong>容器编排系统</strong>，用于自动化部署、扩展和管理容器化应用程序</p><ul><li><em><strong>Docker</strong></em> 提供了容器化技术的基础，而***Kubernetes*** 在此基础上提供了容器的高级编排和管理功能。在实际应用中，它们经常一起使用，以实现高效的容器化应用部署和管理。</li></ul><h2 id="cicd技术栈"><a class="markdownIt-Anchor" href="#cicd技术栈"></a> CI/CD技术栈</h2><h3 id="jenkins"><a class="markdownIt-Anchor" href="#jenkins"></a> Jenkins</h3><p>提供各种接口和工具，以实现持续集成和持续交付流程的自动化</p><p><img src="https://s2.loli.net/2024/08/29/qetlQ6vaVohIA3R.png" alt="3.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p><h3 id="github-actions"><a class="markdownIt-Anchor" href="#github-actions"></a> GitHub Actions</h3><p>一个实现持续集成交付的自动化流程工具</p><ul><li><strong>核心</strong>：通过编写 <strong>YAML 文件</strong>， 可以定义在代码库中发生特定事件(比如：Push、Tag等) 时所触发的工作流程，从而实现自动化的 CI/CD</li></ul><h1 id="github-actions-2"><a class="markdownIt-Anchor" href="#github-actions-2"></a> GitHub Actions</h1><h2 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h2><ul><li><p><strong>工作流（Workflows）</strong></p><p>工作流是GitHub Actions执行任务的基本单位，可以为Git上不同的事件（如push、pull、request等）定义不同的工作流，以响应操作代码的变更</p></li><li><p><strong>任务（Jobs）</strong></p><p>工作流程由一个或多个任务组成，每个任务运行在独立的虚拟环境中。任务可以是构建、测试、部署等操作</p></li><li><p><strong>步骤（Steps）</strong></p><p>任务由多个步骤组成，每个步骤执行一个操作。一个步骤可以是运行命令、使用某个预定义的操作，或者调用自定义脚本</p></li><li><p><strong>动作（actions）</strong></p><p>每个 step 可以依次执行一个或多个命令</p></li></ul><h2 id="workflow文件基础结构"><a class="markdownIt-Anchor" href="#workflow文件基础结构"></a> workflow文件基础结构</h2><ul><li><p><strong><code>name</code></strong></p><p>指定 workflow 的名称</p></li><li><p><strong><code>on</code></strong></p><p>指定触发 workflow 的条件，通常是某些事件。</p>  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># push事件触发 workflow</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">push</span></span><br></pre></td></tr></table></figure><ul><li><p><code>on</code>字段也可以是事件的数组。</p>  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">on:</span> [<span class="string">push</span>, <span class="string">pull_request</span>]</span><br></pre></td></tr></table></figure><p>完整事件列表见官方文档。除了代码库事件，GitHub Actions 也支持外部事件触发，或者定时运行。</p></li><li><p><strong><code>on.&lt;push|pull_request&gt;.&lt;tags|branches&gt;</code></strong></p><p>指定触发事件时，可以限定分支或标签。</p>  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只有master分支发生push事件时，才会触发 workflow</span></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span>    </span><br><span class="line">      <span class="bullet">-</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></li></ul></li><li><p><strong><code>jobs.&lt;job_id&gt;.name</code></strong></p><p>workflow 文件的主体是<code>jobs</code>字段，表示要执行的一项或多项任务。</p><p><code>jobs</code>字段里面，需要写出每一项任务的<code>job_id</code>，具体名称自定义。<code>job_id</code>里面的<code>name</code>字段是任务的说明。</p>  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">my_first_job:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">first</span> <span class="string">job</span></span><br><span class="line">  <span class="attr">my_second_job:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">second</span> <span class="string">job</span></span><br></pre></td></tr></table></figure></li><li><p><strong><code>jobs.&lt;job_id&gt;.needs</code></strong></p><p>指定当前任务的依赖关系，即运行顺序。</p>  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">job1:</span></span><br><span class="line">  <span class="attr">job2:</span></span><br><span class="line">    <span class="attr">needs:</span> <span class="string">job1</span></span><br><span class="line">  <span class="attr">job3:</span></span><br><span class="line">    <span class="attr">needs:</span> [<span class="string">job1</span>, <span class="string">job2</span>]</span><br></pre></td></tr></table></figure></li><li><p><strong><code>jobs.&lt;job_id&gt;.runs-on</code></strong></p><p>指定运行所需要的虚拟机环境。它是<strong>必填字段</strong></p>  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定虚拟机环境为ubuntu-18.04</span></span><br><span class="line"><span class="attr">runs-on:</span> <span class="string">ubuntu-18.04</span></span><br></pre></td></tr></table></figure></li><li><p><strong><code>jobs.&lt;job_id&gt;.steps</code></strong></p><p>指定每个 Job 的运行步骤，可以包含一个或多个步骤。每个步骤都可以指定以下三个字段。</p>  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">jobs.&lt;job_id&gt;.steps.name：步骤名称。</span></span><br><span class="line"><span class="string">jobs.&lt;job_id&gt;.steps.run：该步骤运行的命令或者</span> <span class="string">action。</span></span><br><span class="line"><span class="string">jobs.&lt;job_id&gt;.steps.env：该步骤所需的环境变量。</span></span><br></pre></td></tr></table></figure></li><li><p>示例</p>  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Greeting</span> <span class="string">from</span> <span class="string">Mona</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">push</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">my-job:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">Job</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Print</span> <span class="string">a</span> <span class="string">greeting</span></span><br><span class="line">      <span class="attr">env:</span></span><br><span class="line">        <span class="attr">MY_VAR:</span> <span class="string">Hi</span> <span class="string">there!</span> <span class="string">My</span> <span class="string">name</span> <span class="string">is</span></span><br><span class="line">        <span class="attr">FIRST_NAME:</span> <span class="string">Mona</span></span><br><span class="line">        <span class="attr">MIDDLE_NAME:</span> <span class="string">The</span></span><br><span class="line">        <span class="attr">LAST_NAME:</span> <span class="string">Octocat</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">echo</span> <span class="string">$MY_VAR</span> <span class="string">$FIRST_NAME</span> <span class="string">$MIDDLE_NAME</span> <span class="string">$LAST_NAME.</span></span><br></pre></td></tr></table></figure></li></ul><blockquote><p>参考博客</p><ul><li><p>Jenkins</p><p><a href="https://www.infoq.cn/article/WHt0wFMDRrBU-dtkh1Xp">如何从零开始搭建 CI/CD 流水线_DevOps &amp; 平台工程_Saurabh Kulshrestha_InfoQ精选文章</a></p><p><a href="https://cloud.tencent.com/developer/article/1821177">一文详解 Jenkins 与 Docker 的自动化 CI/CD 实战-腾讯云开发者社区-腾讯云 (tencent.com)</a></p></li><li><p>github action</p><p><a href="https://blog.csdn.net/weixin_44268936/article/details/133753519">深入理解CI/CD：构建、测试和部署的完整流程_cicd自动化部署流程-CSDN博客</a></p><p>官方文档 <a href="https://docs.github.com/zh/actions/writing-workflows/quickstart">GitHub Actions 快速入门 - GitHub 文档</a></p><p><a href="https://blog.csdn.net/qq_36697163/article/details/140383476">使用 GitHub Actions 构建 CI/CD 流水线_github cicd-CSDN博客</a></p><p><a href="https://xie.infoq.cn/article/a4a484f96611612054a16493c">最佳实践-使用Github Actions来构建跨平台容器镜像_GitHub_EquatorCoco_InfoQ写作社区</a></p><p><a href="https://www.mikesay.com/2022/04/10/creating-self-hosted-actions-runner-k8s/#Actions-Runner-Controller">在Kubernetes中创建自托管GitHub Actions Runner - 云斋随笔 (mikesay.com)</a></p><p><a href="https://cloud.tencent.com/developer/article/1729523">用 Github Actions 在 K8S 中运行 CI 测试-腾讯云开发者社区-腾讯云 (tencent.com)</a></p></li></ul></blockquote>]]></content>
-    
-    
-    <summary type="html">简单介绍CI/CD流水线的自动化实践，涵盖DevOps理念、持续集成与部署策略，以及GitHub Actions的具体应用</summary>
-    
-    
-    
-    <category term="Back-end" scheme="https://roisyl.github.io.git/categories/Back-end/"/>
-    
-    
-    <category term="CI&amp;CD" scheme="https://roisyl.github.io.git/tags/CI-CD/"/>
-    
-  </entry>
   
   <entry>
     <title>Docker基础</title>
@@ -96,9 +54,9 @@
     <category term="OS" scheme="https://roisyl.github.io.git/categories/OS/"/>
     
     
-    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
-    
     <category term="BUAA" scheme="https://roisyl.github.io.git/tags/BUAA/"/>
+    
+    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
     
   </entry>
   
@@ -119,9 +77,9 @@
     <category term="OS" scheme="https://roisyl.github.io.git/categories/OS/"/>
     
     
-    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
-    
     <category term="BUAA" scheme="https://roisyl.github.io.git/tags/BUAA/"/>
+    
+    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
     
   </entry>
   
@@ -142,9 +100,9 @@
     <category term="OS" scheme="https://roisyl.github.io.git/categories/OS/"/>
     
     
-    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
-    
     <category term="BUAA" scheme="https://roisyl.github.io.git/tags/BUAA/"/>
+    
+    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
     
   </entry>
   
@@ -165,9 +123,9 @@
     <category term="OS" scheme="https://roisyl.github.io.git/categories/OS/"/>
     
     
-    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
-    
     <category term="BUAA" scheme="https://roisyl.github.io.git/tags/BUAA/"/>
+    
+    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
     
   </entry>
   
@@ -209,9 +167,9 @@
     <category term="Back-end" scheme="https://roisyl.github.io.git/categories/Back-end/"/>
     
     
-    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
-    
     <category term="BUAA" scheme="https://roisyl.github.io.git/tags/BUAA/"/>
+    
+    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
     
     <category term="DB" scheme="https://roisyl.github.io.git/tags/DB/"/>
     
@@ -234,9 +192,9 @@
     <category term="OS" scheme="https://roisyl.github.io.git/categories/OS/"/>
     
     
-    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
-    
     <category term="BUAA" scheme="https://roisyl.github.io.git/tags/BUAA/"/>
+    
+    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
     
   </entry>
   
@@ -320,9 +278,9 @@
     <category term="OS" scheme="https://roisyl.github.io.git/categories/OS/"/>
     
     
-    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
-    
     <category term="BUAA" scheme="https://roisyl.github.io.git/tags/BUAA/"/>
+    
+    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
     
   </entry>
   
@@ -343,9 +301,9 @@
     <category term="OS" scheme="https://roisyl.github.io.git/categories/OS/"/>
     
     
-    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
-    
     <category term="BUAA" scheme="https://roisyl.github.io.git/tags/BUAA/"/>
+    
+    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
     
   </entry>
   
@@ -366,9 +324,9 @@
     <category term="OS" scheme="https://roisyl.github.io.git/categories/OS/"/>
     
     
-    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
-    
     <category term="BUAA" scheme="https://roisyl.github.io.git/tags/BUAA/"/>
+    
+    <category term="Lab" scheme="https://roisyl.github.io.git/tags/Lab/"/>
     
   </entry>
   
