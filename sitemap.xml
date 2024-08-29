@@ -2,42 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://roisyl.github.io.git/Front-end/Test-Cypress/</loc>
-    
-    <lastmod>2024-08-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roisyl.github.io.git/Back-end/CI&CD-Pipline/</loc>
-    
-    <lastmod>2024-08-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roisyl.github.io.git/Back-end/Docker-Basics/</loc>
-    
-    <lastmod>2024-08-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roisyl.github.io.git/Back-end/BUAA-DB-SQLAlchemy/</loc>
-    
-    <lastmod>2024-08-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://roisyl.github.io.git/Front-end/Vue-Start-a-new-project/</loc>
     
     <lastmod>2024-08-29</lastmod>
@@ -66,6 +30,15 @@
   
   <url>
     <loc>https://roisyl.github.io.git/Front-end/HTML-Basics/</loc>
+    
+    <lastmod>2024-08-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/Back-end/Docker-Basics/</loc>
     
     <lastmod>2024-08-29</lastmod>
     
@@ -111,6 +84,33 @@
   
   <url>
     <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab2/</loc>
+    
+    <lastmod>2024-08-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/Back-end/BUAA-DB-SQLAlchemy/</loc>
+    
+    <lastmod>2024-08-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/Front-end/Test-Cypress/</loc>
+    
+    <lastmod>2024-08-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/Back-end/CI&CD-Pipline/</loc>
     
     <lastmod>2024-08-29</lastmod>
     
