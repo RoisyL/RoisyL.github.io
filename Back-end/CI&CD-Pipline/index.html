@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="简单介绍CI&#x2F;CD流水线的自动化实践，涵盖DevOps理念、持续集成与部署策略，以及GitHub Actions的具体应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CI&#x2F;CD Pipline">
+<meta property="og:url" content="https://roisyl.github.io.git/Back-end/CI&CD-Pipline/">
+<meta property="og:site_name" content="Roisy&#39;s blog">
+<meta property="og:description" content="简单介绍CI&#x2F;CD流水线的自动化实践，涵盖DevOps理念、持续集成与部署策略，以及GitHub Actions的具体应用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="article:published_time" content="2024-08-29T12:39:57.000Z">
+<meta property="article:modified_time" content="2024-08-29T12:47:40.408Z">
+<meta property="article:author" content="Roisy Luo">
+<meta property="article:tag" content="CI&amp;CD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
+
+    <meta name="keywords" content="CI/CD 持续集成部署, Github Actions, 流水线搭建">
+
+
+<title >CI/CD Pipline</title>
+
+<!-- Favicon -->
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["on the road"],"theme_version":"2.2.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)Hey! Good again!","hide_text":"(●—●)Oh, crash!","safari_pinned_tab":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"danmu":{"enable":false,"el":".trm-banner"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-08-29 20:47:40"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="Roisy's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/imgs/rabbit.jpg">
+    
+    
+        <div class="trm-logo-text">
+            Ro<span>isy</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    index
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    categories
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Front-end/" target="">
+                            Front-end
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Back-end/" target="">
+                            Back-end
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags/" target="">
+                    tags
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    archives
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    about
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/08/29/utU4pYKE65icW9C.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            Many a little makes a mickle
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            CI/CD Pipline
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        Back-end
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            08/29
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            20:39
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Roisy Luo
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="概念与思想"><a class="markdownIt-Anchor" href="#概念与思想"></a> 概念与思想</h1>
+<h2 id="devops"><a class="markdownIt-Anchor" href="#devops"></a> <strong>DevOps</strong></h2>
+<p>是一种<strong>软件开发方法</strong>（或者说软件工程思想），将持续开发、持续测试、持续集成、持续部署和持续监控贯穿于软件开发的整个生命周期</p>
+<p><img src="https://s2.loli.net/2024/08/29/1vHfPoR9tWVYxyZ.png" alt="1.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h2 id="cicd-流水线"><a class="markdownIt-Anchor" href="#cicd-流水线"></a> <strong>CI/CD 流水线</strong></h2>
+<p>通过自动化流程和工具自动构建应用、测试应用、部署应用</p>
+<p><img src="https://s2.loli.net/2024/08/29/tHSq5sWZxXILN1m.png" alt="2.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="ci"><a class="markdownIt-Anchor" href="#ci"></a> CI</h3>
+<p>CI 代表持续集成（Continuous Integration），是指开发团队通过版本控制工具，将代码的不同部分<strong>集成</strong>到共享存储库中，并利用自动化构建工具和单元测试框架频繁地进行<strong>构建和测试</strong></p>
+<h3 id="cd"><a class="markdownIt-Anchor" href="#cd"></a> CD</h3>
+<p>CD 代表持续交付（Continuous Delivery）和持续部署（Continuous Deployment），建立在持续集成的基础上，运行脚本构建打包应用，通过自动化部署工具部署到生产环境运行应用，监控生产环境指标，确保软件可以随时随地进行<strong>部署与应用</strong></p>
+<h1 id="自动化工具"><a class="markdownIt-Anchor" href="#自动化工具"></a> 自动化工具</h1>
+<h2 id="容器化技术栈"><a class="markdownIt-Anchor" href="#容器化技术栈"></a> <strong>容器化技术栈</strong></h2>
+<h3 id="docker"><a class="markdownIt-Anchor" href="#docker"></a> <strong>Docker</strong></h3>
+<p>一个开源的<strong>容器化平台</strong>，用于创建、管理虚拟环境（容器）</p>
+<h3 id="kubernetesk8s"><a class="markdownIt-Anchor" href="#kubernetesk8s"></a> <strong>Kubernetes（K8s）</strong></h3>
+<p>一个开源的<strong>容器编排系统</strong>，用于自动化部署、扩展和管理容器化应用程序</p>
+<ul>
+<li><em><strong>Docker</strong></em> 提供了容器化技术的基础，而***Kubernetes*** 在此基础上提供了容器的高级编排和管理功能。在实际应用中，它们经常一起使用，以实现高效的容器化应用部署和管理。</li>
+</ul>
+<h2 id="cicd技术栈"><a class="markdownIt-Anchor" href="#cicd技术栈"></a> CI/CD技术栈</h2>
+<h3 id="jenkins"><a class="markdownIt-Anchor" href="#jenkins"></a> Jenkins</h3>
+<p>提供各种接口和工具，以实现持续集成和持续交付流程的自动化</p>
+<p><img src="https://s2.loli.net/2024/08/29/qetlQ6vaVohIA3R.png" alt="3.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="github-actions"><a class="markdownIt-Anchor" href="#github-actions"></a> GitHub Actions</h3>
+<p>一个实现持续集成交付的自动化流程工具</p>
+<ul>
+<li><strong>核心</strong>：通过编写 <strong>YAML 文件</strong>， 可以定义在代码库中发生特定事件(比如：Push、Tag等) 时所触发的工作流程，从而实现自动化的 CI/CD</li>
+</ul>
+<h1 id="github-actions-2"><a class="markdownIt-Anchor" href="#github-actions-2"></a> GitHub Actions</h1>
+<h2 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h2>
+<ul>
+<li>
+<p><strong>工作流（Workflows）</strong></p>
+<p>工作流是GitHub Actions执行任务的基本单位，可以为Git上不同的事件（如push、pull、request等）定义不同的工作流，以响应操作代码的变更</p>
+</li>
+<li>
+<p><strong>任务（Jobs）</strong></p>
+<p>工作流程由一个或多个任务组成，每个任务运行在独立的虚拟环境中。任务可以是构建、测试、部署等操作</p>
+</li>
+<li>
+<p><strong>步骤（Steps）</strong></p>
+<p>任务由多个步骤组成，每个步骤执行一个操作。一个步骤可以是运行命令、使用某个预定义的操作，或者调用自定义脚本</p>
+</li>
+<li>
+<p><strong>动作（actions）</strong></p>
+<p>每个 step 可以依次执行一个或多个命令</p>
+</li>
+</ul>
+<h2 id="workflow文件基础结构"><a class="markdownIt-Anchor" href="#workflow文件基础结构"></a> workflow文件基础结构</h2>
+<ul>
+<li>
+<p><strong><code>name</code></strong></p>
+<p>指定 workflow 的名称</p>
+</li>
+<li>
+<p><strong><code>on</code></strong></p>
+<p>指定触发 workflow 的条件，通常是某些事件。</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># push事件触发 workflow</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">push</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><code>on</code>字段也可以是事件的数组。</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">on:</span> [<span class="string">push</span>, <span class="string">pull_request</span>]</span><br></pre></td></tr></table></figure>
+<p>完整事件列表见官方文档。除了代码库事件，GitHub Actions 也支持外部事件触发，或者定时运行。</p>
+</li>
+<li>
+<p><strong><code>on.&lt;push|pull_request&gt;.&lt;tags|branches&gt;</code></strong></p>
+<p>指定触发事件时，可以限定分支或标签。</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只有master分支发生push事件时，才会触发 workflow</span></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span>    </span><br><span class="line">      <span class="bullet">-</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>jobs.&lt;job_id&gt;.name</code></strong></p>
+<p>workflow 文件的主体是<code>jobs</code>字段，表示要执行的一项或多项任务。</p>
+<p><code>jobs</code>字段里面，需要写出每一项任务的<code>job_id</code>，具体名称自定义。<code>job_id</code>里面的<code>name</code>字段是任务的说明。</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">my_first_job:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">first</span> <span class="string">job</span></span><br><span class="line">  <span class="attr">my_second_job:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">second</span> <span class="string">job</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>jobs.&lt;job_id&gt;.needs</code></strong></p>
+<p>指定当前任务的依赖关系，即运行顺序。</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">job1:</span></span><br><span class="line">  <span class="attr">job2:</span></span><br><span class="line">    <span class="attr">needs:</span> <span class="string">job1</span></span><br><span class="line">  <span class="attr">job3:</span></span><br><span class="line">    <span class="attr">needs:</span> [<span class="string">job1</span>, <span class="string">job2</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>jobs.&lt;job_id&gt;.runs-on</code></strong></p>
+<p>指定运行所需要的虚拟机环境。它是<strong>必填字段</strong></p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定虚拟机环境为ubuntu-18.04</span></span><br><span class="line"><span class="attr">runs-on:</span> <span class="string">ubuntu-18.04</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>jobs.&lt;job_id&gt;.steps</code></strong></p>
+<p>指定每个 Job 的运行步骤，可以包含一个或多个步骤。每个步骤都可以指定以下三个字段。</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">jobs.&lt;job_id&gt;.steps.name：步骤名称。</span></span><br><span class="line"><span class="string">jobs.&lt;job_id&gt;.steps.run：该步骤运行的命令或者</span> <span class="string">action。</span></span><br><span class="line"><span class="string">jobs.&lt;job_id&gt;.steps.env：该步骤所需的环境变量。</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>示例</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Greeting</span> <span class="string">from</span> <span class="string">Mona</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">push</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">my-job:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">Job</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Print</span> <span class="string">a</span> <span class="string">greeting</span></span><br><span class="line">      <span class="attr">env:</span></span><br><span class="line">        <span class="attr">MY_VAR:</span> <span class="string">Hi</span> <span class="string">there!</span> <span class="string">My</span> <span class="string">name</span> <span class="string">is</span></span><br><span class="line">        <span class="attr">FIRST_NAME:</span> <span class="string">Mona</span></span><br><span class="line">        <span class="attr">MIDDLE_NAME:</span> <span class="string">The</span></span><br><span class="line">        <span class="attr">LAST_NAME:</span> <span class="string">Octocat</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">echo</span> <span class="string">$MY_VAR</span> <span class="string">$FIRST_NAME</span> <span class="string">$MIDDLE_NAME</span> <span class="string">$LAST_NAME.</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>参考博客</p>
+<ul>
+<li>
+<p>Jenkins</p>
+<p><a target="_blank" rel="noopener" href="https://www.infoq.cn/article/WHt0wFMDRrBU-dtkh1Xp">如何从零开始搭建 CI/CD 流水线_DevOps &amp; 平台工程_Saurabh Kulshrestha_InfoQ精选文章</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1821177">一文详解 Jenkins 与 Docker 的自动化 CI/CD 实战-腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+</li>
+<li>
+<p>github action</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44268936/article/details/133753519">深入理解CI/CD：构建、测试和部署的完整流程_cicd自动化部署流程-CSDN博客</a></p>
+<p>官方文档 <a target="_blank" rel="noopener" href="https://docs.github.com/zh/actions/writing-workflows/quickstart">GitHub Actions 快速入门 - GitHub 文档</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36697163/article/details/140383476">使用 GitHub Actions 构建 CI/CD 流水线_github cicd-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/a4a484f96611612054a16493c">最佳实践-使用Github Actions来构建跨平台容器镜像_GitHub_EquatorCoco_InfoQ写作社区</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.mikesay.com/2022/04/10/creating-self-hosted-actions-runner-k8s/#Actions-Runner-Controller">在Kubernetes中创建自托管GitHub Actions Runner - 云斋随笔 (mikesay.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1729523">用 Github Actions 在 K8S 中运行 CI 测试-腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+</li>
+</ul>
+</blockquote>
+
+</article>
+    
+    
+
+<ul class="trm-post-copyright">
+    <li class="trm-post-copyright-author">
+        <strong>Post author: </strong>
+        Roisy Luo
+    </li>
+    <li class="trm-post-copyright-link">
+        <strong>Post link: </strong>
+        <a id="original-link" href="https://roisyl.github.io.git/Back-end/CI&CD-Pipline/" title="CI/CD Pipline">https://roisyl.github.io.git/Back-end/CI&CD-Pipline/</a>
+    </li>
+    <li class="trm-post-copyright-license">
+        <strong>Copyright Notice: </strong>
+        All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 ">CC BY-NC-SA 4.0</a> unless otherwise stated.
+    </li>
+</ul>
+
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            Other Articles
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/Front-end/Test-Cypress/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/oPqrY4HOdbBMX3L.jpg">
+                </span>
+                <h6 class="trm-op-title">Test-Cypress</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/08/29</li>
+                <li>20:48</li>
+                <li>Front-end</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/Back-end/Docker-Basics/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/gOaF81YxHl5QnXA.jpg">
+                </span>
+                <h6 class="trm-op-title">Docker基础</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/08/29</li>
+                <li>15:45</li>
+                <li>Back-end</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+    <div id="giscus-wrap" class="trm-card trm-scroll-animation comment-container"></div>
+<script data-swup-reload-script>
+    function loadGiscus() {
+        let nowTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        const config = {
+            src: 'https://giscus.app/client.js',
+            "data-repo": 'RoisyL/RoisyL.github.io',
+            "data-repo-id": 'R_kgDOLd8WqQ',
+            "data-category": 'General',
+            "data-category-id": 'DIC_kwDOLd8Wqc4Cd4lq',
+            "data-mapping": 'pathname',
+            "data-reactions-enabled": '1',
+            "data-emit-metadata": '0',
+            "data-theme": nowTheme,
+            "data-lang": 'en',
+            crossorigin: "anonymous",
+            async: true
+        }
+        let ele = document.createElement('script')
+        for (let key in config) {
+            ele.setAttribute(key, config[key])
+        }
+        document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin', ele)
+    }
+
+    function changeGiscusTheme() {
+        let theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+        function sendMessage(message) {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (!iframe) return;
+            iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+
+        sendMessage({
+            setConfig: {
+                theme: theme
+            }
+        });
+    }
+
+    loadGiscus();
+</script>
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> v7.1.1
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                Theme - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.2.3
+            </span>
+        </div>
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        Article table of contents
+				<span id="post-toc-top">
+					TOP
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title=" 概念与思想"><a rel="nofollow" class="trm-toc-link" href="#概念与思想"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> 概念与思想</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" DevOps"><a rel="nofollow" class="trm-toc-link" href="#devops"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text"> DevOps</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" CI&#x2F;CD 流水线"><a rel="nofollow" class="trm-toc-link" href="#cicd-流水线"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text"> CI&#x2F;CD 流水线</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" CI"><a rel="nofollow" class="trm-toc-link" href="#ci"><span class="trm-toc-number">1.2.1.</span> <span class="trm-toc-text"> CI</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" CD"><a rel="nofollow" class="trm-toc-link" href="#cd"><span class="trm-toc-number">1.2.2.</span> <span class="trm-toc-text"> CD</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 自动化工具"><a rel="nofollow" class="trm-toc-link" href="#自动化工具"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> 自动化工具</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 容器化技术栈"><a rel="nofollow" class="trm-toc-link" href="#容器化技术栈"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text"> 容器化技术栈</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" Docker"><a rel="nofollow" class="trm-toc-link" href="#docker"><span class="trm-toc-number">2.1.1.</span> <span class="trm-toc-text"> Docker</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" Kubernetes（K8s）"><a rel="nofollow" class="trm-toc-link" href="#kubernetesk8s"><span class="trm-toc-number">2.1.2.</span> <span class="trm-toc-text"> Kubernetes（K8s）</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" CI&#x2F;CD技术栈"><a rel="nofollow" class="trm-toc-link" href="#cicd技术栈"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text"> CI&#x2F;CD技术栈</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" Jenkins"><a rel="nofollow" class="trm-toc-link" href="#jenkins"><span class="trm-toc-number">2.2.1.</span> <span class="trm-toc-text"> Jenkins</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" GitHub Actions"><a rel="nofollow" class="trm-toc-link" href="#github-actions"><span class="trm-toc-number">2.2.2.</span> <span class="trm-toc-text"> GitHub Actions</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" GitHub Actions"><a rel="nofollow" class="trm-toc-link" href="#github-actions-2"><span class="trm-toc-number">3.</span> <span class="trm-toc-text"> GitHub Actions</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 基本概念"><a rel="nofollow" class="trm-toc-link" href="#基本概念"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text"> 基本概念</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" workflow文件基础结构"><a rel="nofollow" class="trm-toc-link" href="#workflow文件基础结构"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text"> workflow文件基础结构</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="Open toc">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="Read Mode" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="Back To Top">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="Searching...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    Please enter keywords to search
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.3"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.3"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+    <script data-swup-reload-script>
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+
+
+<script id="async-script" src="/js/main.js?v=2.2.3"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
