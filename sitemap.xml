@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roisyl.github.io.git/categories/</loc>
+    
+    <lastmod>2024-08-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roisyl.github.io.git/uncategorized/Docker-Basics/</loc>
     
     <lastmod>2024-08-28</lastmod>
@@ -185,15 +194,6 @@
     <loc>https://roisyl.github.io.git/googlea68f389f21ea577d</loc>
     
     <lastmod>2024-03-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roisyl.github.io.git/categories/</loc>
-    
-    <lastmod>2024-03-09</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
