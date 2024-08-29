@@ -3956,18 +3956,19 @@ h1 {
   padding: 10px 15px;
 }
 :root {
-  --body-bg-color: white;
   --primary: #8f82e7;
+  --body-bg-color: white;
   --theme-bg-color: white;
   --theme-bg2-color: #ccc5e7;
 }
 :root.dark {
   --primary: #8b83ff;
-  --body-bg-color: #301c59;
+  --body-bg-color: black;
   --theme-bg-color: black;
-  --theme-bg2-color: #301c59;
-  --fixed-button-bg-color: #847cb0;
+  --theme-bg2-color: #644a97;
+  --fixed-button-bg-color: #a994d1;
   --fixed-button-color: white;
+  --tab-border-color: #584566;
 }
 .trm-top-bar,
 .trm-main-card,
