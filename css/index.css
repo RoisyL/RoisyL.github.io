@@ -3987,3 +3987,6 @@ h6 {
 footer {
   background-image: url(https://www.imalun.com/images/foggy-birds.png);
 }
+blockquote {
+  text-align: center;
+}

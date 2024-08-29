@@ -305,375 +305,6 @@
       </tags>
   </entry>
   <entry>
-    <title>BUAA-OS-Lab 经验总结</title>
-    <url>/OS/BUAA-OS-Lab-General/</url>
-    <content><![CDATA[<h1 id="官方提醒"><a class="markdownIt-Anchor" href="#官方提醒"></a> 官方提醒</h1>
-<ul>
-<li>在之后的 Lab 中，运行 MOS 时容易出现的 <font color="green"><strong>too low</strong> </font>等错误信息就是访问了一个过低的地址导致的。此时应该检查代码中<strong>是否存在访问非法内存（如空指针、野指针）的操作，或者忘记将物理地址转化为 kseg0 内核虚拟地址的问题</strong>。</li>
-</ul>
-<h1 id="实验代码阅读与把握"><a class="markdownIt-Anchor" href="#实验代码阅读与把握"></a> 实验代码阅读与把握</h1>
-<ul>
-<li>整体结构把握
-<ul>
-<li>完整的函数调用关系可以<font color="blue">查看指导书每个Lab后面的调用顺序图（<strong>利用好指导书</strong>）</font></li>
-<li><font color="blue">把握好顶层架构</font><br />
-为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编码</li>
-<li><font color="blue">用好外部变量</font><br />
-很多时候<font color="green">要用的量和想实现的功能</font>在相应的文件中都有宏定义或者函数定义。所以先阅读文件，找不到再自己写</li>
-</ul>
-</li>
-<li>具体参数意义理解
-<ul>
-<li><font color="blue">通过检索的方式在指导书、讲解 PPT 等多处资源中广泛找思路</font>
-<ul>
-<li>比如<code>vprintfmt</code>参数列表中的<code>data</code>是什么？<br />
-指导书中没有说明，但讲解 PPT 中讲的很清楚。不要纠结与单一资料，学会广泛检索。</li>
-</ul>
-</li>
-<li><font color="blue"><strong>通过阅读并理解更大范围（比如完整函数、上层调用函数）代码段，明白本质，进而把握单个参数意义</strong></font>
-<ul>
-<li>比如<code>vprintfmt</code>参数列表中<code>ap</code>这一可变参数指的是哪些参数？<br />
-<code>vprintfmt</code>函数实现的是格式化输出的主体逻辑，被<code>printk</code>调用，参数列表中的 ap 参数也是从上层函数中得来。结合<code>printk</code>的用法，比如<code>printk(&quot;%d%c%ld&quot;, a, b, c)</code>，很容易明白可变参数就是需要输出的一系列变量，而<code>fmt</code>就是引号中的字符串。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="编写"><a class="markdownIt-Anchor" href="#编写"></a> 编写</h1>
-<ul>
-<li>“由俭入奢易，由奢入俭难“，某种程度上也适用于代码编写。<font color="red">用最<strong>简单直接精炼</strong>的代码实现，不要为求安心无脑加一些<strong>似是似非</strong>的代码</font>，容易导致一些意想不到的错误而且难找原因。一定要<font color="green"><strong>百分百确定有漏洞</strong></font>才<font color="blue"><strong>恰当地打补丁</strong></font>。</li>
-<li><strong>不是只填空就可以了</strong>，注意初始代码的改动。<font color="red">（<strong>已经定义好的参数的初始化</strong>）代码本身的行为一定要明确！</font> <font color="blue">比如处理好各变量初值（0、NULL），空指针使用</font>。不要过渡依赖编译器</li>
-<li><font color="blue"><strong>解引用指针之前必须判断是否为空/试错（见后”常用函数“）</strong>！！！</font>野指针会导致死循环或超时无法结束
-<ul>
-<li><font color="color">注意不同函数的错误值不一样</font>，<font color="blue"><strong>不要混用</strong></font>！！</li>
-</ul>
-</li>
-<li><font color="green">“仿照xxx部分进行实现”，<strong>有一些部分不确定要不要保留</strong></font>就<font color="blue"><strong>先保留</strong></font>！！（很有可能涉及到一些隐性机制的实现）</li>
-<li><font color="green">“当出现错误时返回相应错误值”</font>常用操作是<font color="blue">用<code>r</code>记录返回值再判断**<code>if(r&gt;0)</code>**</font>
-<ul>
-<li>是判断是否<font color="red">&gt;0</font>！！错误值一般都是负值，<font color="red"><strong>正常值不一定是0也可能是正数</strong></font>！！</li>
-</ul>
-</li>
-<li><font color="green">用 gitlab IDE 编辑提交之后，切回跳板机运行前</font>记得<code>git pull</code>！！</li>
-<li>写<font color="green"><strong>循环</strong></font>时一定注意
-<ul>
-<li><font color="red"><strong>i++</strong></li>
-<li>数据更新（比如每次开始前<strong>读入下一部分数据</strong>）</font></li>
-</ul>
-</li>
-<li>注意<strong>运算符优先级</strong>
-<ul>
-<li><strong>移位运算符的优先级低于加号</strong>，需要加括号</li>
-<li><code>*</code> 优先级低于 <code>.</code> <code>→</code> ，故不需要加括号</li>
-</ul>
-</li>
-</ul>
-<h1 id="调试debug"><a class="markdownIt-Anchor" href="#调试debug"></a> 调试/debug</h1>
-<ul>
-<li>debug 时优先检查<font color="red"><strong>条件判断</strong></font>是否出错！
-<ul>
-<li>less than，应该是<code>-lt</code> 不是 <code>-le</code> 🥲</li>
-</ul>
-</li>
-<li>先本地<strong>开优化</strong>编译运行！<strong>根据报错或者运行异常去找原因</strong>，实在不行加<font color="blue"><strong>printf</strong></font></li>
-</ul>
-<h2 id="make-的使用"><a class="markdownIt-Anchor" href="#make-的使用"></a> make 的使用</h2>
-<h3 id="编译"><a class="markdownIt-Anchor" href="#编译"></a> 编译</h3>
-<ul>
-<li><code>make</code> 编译完整内核
-<ul>
-<li>需要在 init/init.c 的 mips_init 里添加自己的测试代码</li>
-</ul>
-</li>
-<li><code>make test lab=&lt;x&gt;_&lt;y&gt;</code>编译指定测试点， lab<x> 的第 y 个测试用例<br />
-eg make test lab=1_2</li>
-</ul>
-<h3 id="运行与调试"><a class="markdownIt-Anchor" href="#运行与调试"></a> 运行与调试</h3>
-<ul>
-<li><code>make run</code> 运行</li>
-<li><code>make dbg</code> 使用 QEMU 模拟器以调试模式运行内核，并进入 GDB 调试界面。</li>
-<li><code>make objdump</code> 将项目中的目标文件反汇编</li>
-<li><code>Ctrl+A+X</code> 退出 QEMU</li>
-</ul>
-<h1 id="实验代码结构"><a class="markdownIt-Anchor" href="#实验代码结构"></a> 实验代码结构</h1>
-<ul>
-<li>
-<p>kern里的.c文件和include里面的.h文件很多是一一对应的，分别为某部分功能的实现以及相关函数、宏定义</p>
-</li>
-<li>
-<p>include目录——存放系统头文件和一些常用函数定义</p>
-<ul>
-<li>
-<p>mmu.h——存储内存布局、<strong>与地址转换、虚拟地址管理</strong>相关的宏</p>
-<ul>
-<li>有一张内存布局图，在填写 linker script 的时候需要<strong>根据这个图设置相应节的加载地址</strong></li>
-<li><code>PDX(va)</code> ：页目录偏移量（查找遍历页表时常用）</li>
-<li><code>PTX(va)</code> ：页表偏移量（查找遍历页表时常用）</li>
-<li><code>PTE_ADDR(pte)</code> ：获取页表项中的物理地址（读取 pte 时常用）</li>
-<li><code>PADDR(kva)</code> ：kseg0 处虚地址 物理地址</li>
-<li><code>KADDR(pa)</code> ：物理地址 kseg0 处虚地址（读取 pte 后可进行转换）</li>
-</ul>
-</li>
-<li>
-<p>pmap.h ——存储与<strong>地址</strong>相关的宏</p>
-<ul>
-<li><code>va2pa(Pde *pgdir, u_long va)</code> ：查页表，虚地址 物理地址（测试时常用</li>
-<li><code>pa2page(u_long pa)</code> ：物理地址 页控制块（读取 pte 后可进行转换）</li>
-<li><code>page2pa(struct Page *pp)</code> ：页控制块 物理地址（填充 pte 时常用）</li>
-</ul>
-</li>
-<li>
-<p>print.h</p>
-<ul>
-<li>声明了<em>vprintfmt</em>函数，解释了相关参数</li>
-</ul>
-</li>
-<li>
-<p>string.h——定义了一些常用的字符串函数，忘记了具体参数含义可以来这里找</p>
-</li>
-<li>
-<p>printk.h——定义了<strong>内核崩溃宏</strong></p>
-</li>
-<li>
-<p>elf.h</p>
-<ul>
-<li>ELF_FOREACH_PHDR_OFF——<em>for循环迭代遍历所有段头</em></li>
-</ul>
-</li>
-<li>
-<p>type.h——定义和align有关的宏</p>
-<ul>
-<li><code>ROUNDDOWN(a, n)</code> 返回 ⌊<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>a</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>⌋n（将 a 按 n 向下对齐）,要求 n 必须是 2 的非负整数次幂</li>
-<li><code>ROUND(a, n)</code>  返回 ⌈<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>a</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>⌉n（将 a 按 n 向上对齐）,要求 n 必须是 2 的非负整数次幂</li>
-</ul>
-</li>
-<li>
-<p>queue.h——<strong>链表、双向队列宏</strong>的定义</p>
-<p>太多了…具体功能见文件注释</p>
-</li>
-<li>
-<p>trap.h——定义Trapframe结构体</p>
-</li>
-<li>
-<p>env.h——和进程调度有关的结构体定义</p>
-</li>
-<li>
-<p>stackframe.h——定义宏 SAVE_ALL</p>
-<ul>
-<li><code>SAVE_ALL</code>——将当前的 CPU 现场（上下文）保存到内核的异常栈中</li>
-</ul>
-</li>
-<li>
-<p>kclock.h——定义RESET_KCLOCK 宏，完成了对 CP0 中 Timer 的配置</p>
-</li>
-<li>
-<p>syscall.h——定义系统调用号</p>
-</li>
-</ul>
-</li>
-<li>
-<p><a href="http://include.mk">include.mk</a></p>
-</li>
-<li>
-<p>init目录——初始化内核相关代码</p>
-<ul>
-<li>
-<p>start.S</p>
-<ul>
-<li>
-<p>_start 函数</p>
-<p>是 CPU 控制权被转交给内核后执行的<strong>第一个函数</strong>，主要工作是初始化 CPU 和栈指针，然后跳转至 MOS 的初始化函数（ mips_init ）</p>
-<p>内核栈空间的地址可以在 include/mmu.h 中看到，注意栈的增长方向</p>
-</li>
-</ul>
-</li>
-<li>
-<p>init.c</p>
-<ul>
-<li>
-<p>mips_init 函数</p>
-<p>内核中<strong>各模块的初始化函数</strong>都会在这里被调用</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>kern目录——存放内核的主体代码</p>
-<ul>
-<li>
-<p>machine.c——往 QEMU 的控制台输出、读入字符，重置系统</p>
-<p>原理为读写某一个特殊的内存地址</p>
-</li>
-<li>
-<p>printk.c——实现了 printk</p>
-<p>实际上是把输出字符的函数，接受的输出参数给传递给了 vprintfmt 这个函数</p>
-</li>
-<li>
-<p>console.c——实现printcharc（向某内存地址写入）</p>
-</li>
-<li>
-<p>pmap.c——实现内存管理</p>
-<ul>
-<li>page_init()  初始化 pages 数组中的 Page 结构体以及空闲链表</li>
-<li>mips_detect_memory()  探测硬件可用内存，并对一些和内存管理相关的变量进行初始化</li>
-<li>mips_vm_init 建立内存管理机制</li>
-<li>alloc（） 注意！只在建立页式内存管理机制之前使用</li>
-</ul>
-</li>
-<li>
-<p>env.c——实现进程调度</p>
-</li>
-<li>
-<p>traps.c——定义异常向量组，用于定位中断处理程序</p>
-</li>
-<li>
-<p>genex.S —— 异常处理函数的声明，异常处理流程实现</p>
-</li>
-<li>
-<p>env_asm.S</p>
-<ul>
-<li>env_pop_tf ——用于设置 ASID 和重置时钟，以及最后从异常处理中返回</li>
-</ul>
-</li>
-<li>
-<p>sched.c——实现时间片调度</p>
-</li>
-<li>
-<p>syscall_all.c——系统调用相关函数实现</p>
-<ul>
-<li>do_syscall——内核部分的系统调用机制实现</li>
-</ul>
-</li>
-<li>
-<p>tlbex.c——写时复制相关函数的实现</p>
-</li>
-</ul>
-</li>
-<li>
-<p>kernel.lds</p>
-</li>
-<li>
-<p>lib目录——存放一些常用库函数的实现</p>
-<ul>
-<li>print.c——实现了 <strong>vprintfmt 函数(实现了格式化输出的主体逻辑)、打印字符、字符串和数字的函数</strong></li>
-<li>string——实现了一些常用的字符串函数</li>
-<li>elfloader.c——解析 ELF 文件的相关函数和宏</li>
-</ul>
-</li>
-<li>
-<p>Makefile</p>
-</li>
-<li>
-<p>mk目录</p>
-</li>
-<li>
-<p>tests目录——存放公开的测试用例</p>
-</li>
-<li>
-<p>tools目录——构建时辅助工具的代码</p>
-<ul>
-<li>readelf目录
-<ul>
-<li>
-<p>elf.h ——存放解析ELF文件要用的三个关键数据结构</p>
-<ul>
-<li>包括三个结构体，第一个对应ELF 的文件头，第二个对应节（section）头表，第三个对应段（segment）头表</li>
-</ul>
-</li>
-<li>
-<p>readelf.c ——用于解析ELF文件</p>
-<ul>
-<li>is_elf_format函数——判断输入是否为ELF文件</li>
-<li>readelf 函数——输出 ELF 文件中所有节头中的地址信息</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>fsformat.c——创建符合我们定义的文件系统镜像的工具</li>
-</ul>
-</li>
-<li>
-<p>user目录</p>
-<ul>
-<li>lib目录
-<ul>
-<li>debug.c——实现debugf函数（处理8号异常）</li>
-<li>syscall_lib.c ——实现syscall_* 函数</li>
-<li>fork.c
-<ul>
-<li>fork 函数——fork机制实现的核心</li>
-<li>cow_entry 函数——写时复制处理的函数</li>
-<li>duppage 函数——父进程对子进程页面空间进行映射以及相关标志的函数</li>
-</ul>
-</li>
-<li>entry.S——用户进程的入口</li>
-<li>libos.c——用户进程入口的 C 语言部分</li>
-<li>file.c、fd.c、fsipc.c —— 存放文件系统用户库
-<ul>
-<li>fsipc.c ——实现与文件系统服务进程的交互</li>
-<li>file.c ——实现文件系统的用户接口</li>
-<li>fd.c ——实现文件描述符，允许用户程序使用统一接口操作文件</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>include目录
-<ul>
-<li>lib.h——系统调用相关宏定义</li>
-<li>syscall.h——定义系统调用号</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>fs目录——文件系统服务程序</p>
-<ul>
-<li>fs.c ——实现文件系统的基本功能函数</li>
-<li>ide.c ——通过系统调用与磁盘镜像进行交互</li>
-<li>serv.c 中——文件系统服务进程主干函数，通过 IPC 通信与用户进程 user/lib/fsipc.c 内的通信函数进行交互</li>
-</ul>
-</li>
-</ul>
-<h2 id="常用函数"><a class="markdownIt-Anchor" href="#常用函数"></a> 常用函数</h2>
-<ul>
-<li>
-<p>错误处理相关</p>
-<p>用try最稳妥</p>
-<ul>
-<li><code>panic_on</code> 直接崩溃</li>
-<li><code>try / if(某操作返回值==错误值)</code> 抛出去给上层函数处理</li>
-<li><code>user_panic</code> 用户态进程崩溃
-<ul>
-<li>user_panic(“syscall_set_trapframe returned %d”, r);</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>清空内存 <code>memset</code>  实现于lib/string.c</p>
-</li>
-<li>
-<p><code>ROUND(a, n)</code>  返回 ⌈<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>a</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>⌉n（将 a 按 n 向上对齐）,要求 n 必须是 2 的非负整数次幂</p>
-</li>
-</ul>
-<h1 id="一些-q-a"><a class="markdownIt-Anchor" href="#一些-q-a"></a> 一些 Q &amp; A</h1>
-<blockquote>
-<p>在编写操作系统的c代码时，变量分别存放在哪部分物理内存？page_alloc() 申请的物理页面用来存什么？</p>
-</blockquote>
-<p>代码段、全局变量和静态变量在编译阶段被确定，链接时被链入0x8002 0000向上这部分物理内存</p>
-<p>临时变量在内核栈区，被存放在0x8040 0000向下<em>KSTKSIZE</em>部分内存。</p>
-<p>申请物理页面的用途：lab3用于给新进程申请页目录、给内核进程加载外部二进制elf文件并执行；lab4用于为用户进程申请用户栈、duppage()时为COW复制的页表申请物理空间；lab5在进程内存放文件内容、lab6用于给用户进程加载外部二进制elf文件来执行命令。申请的页面存放在0x8040 0000向上这部分物理内存</p>
-]]></content>
-      <categories>
-        <category>OS</category>
-      </categories>
-      <tags>
-        <tag>Lab</tag>
-        <tag>BUAA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>BUAA-DB-期中大作业(SQLAlchemy)</title>
     <url>/Back-end/BUAA-DB-SQLAlchemy/</url>
     <content><![CDATA[<h2 id="理论部分"><a class="markdownIt-Anchor" href="#理论部分"></a> 理论部分</h2>
@@ -1325,230 +956,6 @@ eg make test lab=1_2</li>
       </tags>
   </entry>
   <entry>
-    <title>BUAA-OS-Lab3 进程与异常</title>
-    <url>/OS/BUAA-OS-Lab3/</url>
-    <content><![CDATA[<h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
-<p>相关文件：<code>/include/env.h</code> <code>/include/trap.h</code> <code>/kern/env.c</code>  <code>lib/elfloader.c</code> <code>pmap.h</code>  <code>pmap.c</code>  <code>kern/traps.c</code> <code>kern/genex.S</code>  <code>kern/sched.c</code></p>
-<h2 id="进程"><a class="markdownIt-Anchor" href="#进程"></a> 进程</h2>
-<h3 id="模板页表mos专有概念"><a class="markdownIt-Anchor" href="#模板页表mos专有概念"></a> 模板页表（MOS专有概念）</h3>
-<p>在用户空间中读取内核信息</p>
-<p><img src="https://s2.loli.net/2024/04/24/yIaPkFxYbjRBgW1.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li>
-<p><strong>原理</strong></p>
-<p>MOS 被设计成对于其中运行的每一个用户进程，都可以<strong>通过用户地址空间（kuseg）读取 pages 数组和 envs 数组的信息</strong>。为实现该功能，在创建用户进程时我们需要将 pages 数组和 envs 数组映射到用户地址空间中的 <code>UPAGES</code> 与 <code>UENVS</code> 处。</p>
-<p><code>base_pgdir</code> 指向模板页表页目录的<strong>内核虚拟基地址</strong>，以便创建进程时能够根据 “模板页表” 的内容创建自己的页表。每创建一个进程，都将这个模板页表页目录中用来映射 envs 与 pages 的表项复制到新创建的进程的页目录中</p>
-</li>
-<li>
-<p><strong>设置目的</strong></p>
-<p>使用户进程<strong>共享一部分二级页表</strong>，从而节省物理页面</p>
-</li>
-</ul>
-<h3 id="进程的标识"><a class="markdownIt-Anchor" href="#进程的标识"></a> 进程的标识</h3>
-<p><code>struct Env</code> 进程控制块中</p>
-<ul>
-<li><code>env_id</code> 是每个<strong>进程</strong>独一无二的标识符，进程创建的时候就使用<code>mkenvid</code>赋予。</li>
-<li><code>env_asid</code> 记录进程的 ASID，这是<strong>进程虚拟地址</strong>空间的标识
-<ul>
-<li>ASID在TLB映射机制中使用——TLB 事实上构建了一个映射 &lt; VPN, ASID &gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover><mo><mo>⟶</mo></mo><mrow><mi>T</mi><mi>L</mi><mi>B</mi></mrow></mover></mrow><annotation encoding="application/x-tex">\stackrel{TLB}{\longrightarrow}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3003310000000001em;vertical-align:-0.011em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893310000000002em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.7110000000000003em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mord mathdefault mtight">L</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span></span></span></span>&lt; PFN, N, D, V, G &gt;</li>
-<li>ASID 部分只占据了 0-7 共 8 个 bit，即ASID资源是有限的，需要使用一定的资源管理方法来<strong>分配、回收</strong> ASID。MOS 实验采用了位图法管理 256 个可用的 ASID，<strong>如果 ASID 耗尽时仍要创建进程，内核会发生崩溃（panic）</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="设置进程控制块"><a class="markdownIt-Anchor" href="#设置进程控制块"></a> 设置进程控制块</h3>
-<ul>
-<li>
-<p>在 MOS 操作系统<strong>特意将一些内核的数据暴露到用户空间</strong>，使得进程不需要切换到内核态就能访问，这是 MOS 特有的设计</p>
-<p>在这里暴露 UTOP 往上到 UVPT 之间所有进程共享的<strong>只读</strong>空间，也就是把这部分内存对应的<strong>内核<br />
-页表 base_pgdir 拷贝到进程页表中</strong>。从 <strong>UVPT 往上到 ULIM 之间则是进程自己的页表</strong></p>
-<p><img src="https://s2.loli.net/2024/04/24/etFI7plnikVqRT6.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-</li>
-</ul>
-<h3 id="加载二进制镜像"><a class="markdownIt-Anchor" href="#加载二进制镜像"></a> 加载二进制镜像</h3>
-<p>要想正确加载一个 ELF 文件到内存，只需将 ELF 文件中所有<strong>需要加载的程序段加载到对应的<font color="red">虚拟地址</font>上</strong>即可</p>
-<p><img src="https://s2.loli.net/2024/04/24/BlTYwCyVzxOSjkP.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li><code>elf_load_seg</code> 只关心ELF 段的结构，由回调函数处理具体的页面加载过程</li>
-</ul>
-<h3 id="进程运行与切换"><a class="markdownIt-Anchor" href="#进程运行与切换"></a> 进程运行与切换</h3>
-<p>在 Lab3 中，进程切换只需要保存进程的上下文信息。而MOS中的寄存器状态保存的地方是 <code>KSTACKTOP</code> 以下的一个 <code>sizeof(TrapFrame)</code>大小的区域中，而<code>curenv-&gt;env_tf</code>是存放当前进程的上下文的区域</p>
-<p>故保存进程上下文使用语句<code>curenv-&gt;env_tf = *((struct Trapframe *)KSTACKTOP - 1)</code></p>
-<h2 id="中断与异常"><a class="markdownIt-Anchor" href="#中断与异常"></a> 中断与异常</h2>
-<p>CPU 不仅仅有常见的 32 个通用寄存器，还有功能广泛的***协处理器***，而中断/异常部分就用到了其中的协处理器 CP0</p>
-<table>
-<thead>
-<tr>
-<th>寄存器助记符</th>
-<th>CP0 寄存器编号</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Status</td>
-<td>12</td>
-<td>状态寄存器，包括中断引脚使能，其他 CPU 模式等位域</td>
-</tr>
-<tr>
-<td>Cause</td>
-<td>13</td>
-<td>记录导致异常的原因</td>
-</tr>
-<tr>
-<td>EPC</td>
-<td>14</td>
-<td>异常结束后程序恢复执行的位置</td>
-</tr>
-</tbody>
-</table>
-<h3 id="status-寄存器"><a class="markdownIt-Anchor" href="#status-寄存器"></a> <strong>Status 寄存器</strong></h3>
-<p><img src="https://s2.loli.net/2024/04/24/OKAFgDfkURJj2S6.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li>
-<p><code>IE</code> 位表示中断是否开启，为 1 表示开启，否则不开启</p>
-</li>
-<li>
-<p>当且仅当 <code>EXL</code> 被设置为 0 且 <code>UM</code> 被设置为 1 时，处理器处于<strong>用户模式</strong>，其它所有情况下，处理器均处于内核模式下</p>
-<ul>
-<li>
-<p>每当异常发生的时候，EXL 会被自动设置为 1（使处于内核态，能使用特权指令）</p>
-</li>
-<li>
-<p>每个进程在每一次被调度时都会执行</p>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RESTORE_ALL <span class="comment">//恢复处理器寄存器状态</span></span><br><span class="line">eret <span class="comment">// EXL被自动设置为 0</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li>
-<p>15-8 位为<em><strong>中断屏蔽位***，每一位代表一个不同的中断活动，其中 15-10 位</strong>使能</em>*硬件中断源<font color="purple">（该中断能否被响应）</font>，9-8位是 Cause 寄存器软件可写的中断位</p>
-</li>
-</ul>
-<h3 id="cause-寄存器"><a class="markdownIt-Anchor" href="#cause-寄存器"></a> Cause 寄存器</h3>
-<p><img src="https://s2.loli.net/2024/04/24/zi1IqLRVo5welC7.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<ul>
-<li><code>IP</code> (15-8 位)保存着哪一些中断发生了，其中 15-10 位来自硬件，9-8 位可以由软件写入，<font color="green">当 Status 寄存器中相同位允许中断（为 1）时</font>，Cause 寄存器这一位也为1就会导致中断</li>
-<li><code>ExcCode</code> (6-2位)，记录发生了什么异常。在 MOS 中，中断是 0 号异常。</li>
-</ul>
-<h3 id="cpu异常处理流程"><a class="markdownIt-Anchor" href="#cpu异常处理流程"></a> CPU异常处理流程</h3>
-<p>CPU 如何处理异常？</p>
-<ol>
-<li>设置 EPC 寄存器的值为从异常返回的地址。</li>
-<li>设置 Status 寄存器（<strong>设置 EXL 位，强制 CPU 进入内核态并禁止中断</strong>）</li>
-<li>设置 Cause 寄存器（记录异常原因）</li>
-<li>设置 PC 为<strong>异常入口地址</strong>，随后交给软件处理</li>
-</ol>
-<p>至此，我们成功地切换到内核程序，将异常处理的任务转交给操作系统。</p>
-<ul>
-<li>
-<p>相关指令</p>
-<ul>
-<li>
-<p><code>mfc0</code> Move From Coprocessor 0</p>
-<p>用于从协处理器的某个寄存器中读取值到一个通用寄存器中</p>
-</li>
-<li>
-<p><code>mtc0</code> Move To Coprocessor 0</p>
-<p>用于将一个通用寄存器的值写入协处理器的某个寄存器中</p>
-</li>
-</ul>
-  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">mfc0    t0, CP0_STATUS</span><br><span class="line">and     t0, t0, ~(STATUS_UM | STATUS_EXL | STATUS_IE)</span><br><span class="line">mtc0    t0, CP0_STATUS</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<font color="grey">
-### SAVE_ALL 与异常重入
-<p>在 SAVE_ALL 中进行判断，若 Status 寄存器的 UM 位为 0，说明此次异常在内核态触发， sp 寄存器已经在内核异常栈中。不再将 sp 设置为 KSTACKTOP ，而是使其继续增长。</p>
-<p>这样便能够在异常中处理新的异常，而不会破坏原本的异常处理流程。这一机制被称作异常重入</font></p>
-<h3 id="异常的分发"><a class="markdownIt-Anchor" href="#异常的分发"></a> 异常的分发</h3>
-<p>当发生异常时，处理器会进入一个用于分发异常的程序，这个程序的作用就是检测发生了哪种异常，并调用相应的异常处理程序</p>
-<p>一般来说，异常分发程序会被要求放在固定的某个物理地址上</p>
-<p>在MOS中的实现为：将.text.exc_gen_entry 段和 .text.tlb_miss_entry 段用链接器放到特定的位置—— 0x80000180 和 0x80000000 处，它们是异常处理程序的入口地址。在我们的系统中，CPU 发生异常（除了用户态地址的 TLB Miss 异常）后，就会自动跳转到地址 0x80000180 处；发生用户态地址的 TLB Miss 异常时，会自动跳转到地址 0x80000000处</p>
-<h3 id="时钟中断"><a class="markdownIt-Anchor" href="#时钟中断"></a> 时钟中断</h3>
-<ul>
-<li>
-<p>中断处理的流程</p>
-<ol>
-<li>
-<p>通过异常分发，<strong>判断出当前异常为中断异常</strong>，随后进入相应的<strong>中断处理程序</strong>。在 MOS 中即对应 handle_int 函数。</p>
-<p>此前以异常的角度对时钟中断进行处理；现在以中断的角度对时钟中断进行处理</p>
-</li>
-<li>
-<p>在中断处理程序中<strong>进一步判断 Cause 寄存器中是由几号中断位引发的中断</strong>，然后进入不同中断对应的<strong>中断服务函数</strong>。</p>
-</li>
-<li>
-<p>中断处理完成，通过 ret_from_exception 函数<strong>恢复现场</strong>，继续执行。</p>
-</li>
-</ol>
-</li>
-<li>
-<p>在MOS 中，<strong>时间片的长度是用时钟中断衡量</strong>的。4KC 中的 CP0 内置了一个可产生中断的 Timer，MOS 即使用这个内置的 Timer 产生时钟中断</p>
-<p>（具体细节实现见指导书）</p>
-</li>
-<li>
-<p>内核初始化完毕后陷入死循环，等待第一次时钟中断来临，通过异常处理来调度已经创建好的用户进程运行</p>
-</li>
-</ul>
-<h3 id="进程调度器"><a class="markdownIt-Anchor" href="#进程调度器"></a> 进程调度器</h3>
-<p><strong>什么时候需要切换进程？</strong></p>
-<ol>
-<li>参数 yield 为真时：此时当前进程必须让出。</li>
-<li>count 减为 0 时：此时分给进程的时间片被用完，将执行权让给其他进程。</li>
-<li>无当前进程：内核必然刚刚完成初始化，需要分配一个进程执行。</li>
-<li>进程状态不是可运行：当前进程不能再继续执行，让给其他进程。</li>
-</ol>
-<p><strong>如何切换进程？</strong></p>
-<ol>
-<li>当前进程仍为就绪状态时，需要将其移到 env_sched_list 队列的尾部。</li>
-<li>选中 env_sched_list 队列头部的进程。如果没有可用的进程，内核 panic。</li>
-<li>设置 count 为当前进程的优先级（分配的时间片的数量）。</li>
-</ol>
-<p>（不管是否切换，都）最后将 count 自减 1，调用 env_run 函数。</p>
-<h1 id="时纪"><a class="markdownIt-Anchor" href="#时纪"></a> 时纪</h1>
-<p>E 3.1</p>
-<ul>
-<li>
-<p>注意链表顺序！！初始化是倒序插入</p>
-</li>
-<li>
-<p><font color="red">LIST、TAIL相关宏操作的（参数）一般都是指针！！</font></p>
-</li>
-<li>
-<p>如下定义</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static Pde *base_pgdir;</span><br></pre></td></tr></table></figure>
-<p><code>base_pgdir</code> 是一个Pde类型的指针，即为目录项的虚拟地址；</p>
-<p><code>*base_pgdir</code> 是Pde类型的指针的解引用，即Pde，为目录项的物理地址</p>
-</li>
-</ul>
-<p>E 3.4</p>
-<ul>
-<li><code>NENV</code> 什么时候要用来作为限制条件吗？这里好像不用</li>
-</ul>
-<p>E 3.5</p>
-<ul>
-<li>分配页面后记得加<code>p→pp_ref</code>！！</li>
-</ul>
-<p>E 3.12</p>
-<ul>
-<li>schedule里的count是静态变量，存放在.data区，只初始化一次，不同进程不共享！！所以虽然可能会调度多次schedule函数，但每个进程只执行一次 <code>static int count = 0;</code> 初始化语句！！</li>
-<li>注意，不管要不要插到尾部，都要先移除当前进程！！</li>
-</ul>
-<h1 id="exam前准备"><a class="markdownIt-Anchor" href="#exam前准备"></a> exam前准备</h1>
-<h3 id="有可能出问题"><a class="markdownIt-Anchor" href="#有可能出问题"></a> 有可能出问题</h3>
-<ul>
-<li>scheduled函数，要不要把不是就绪状态的移除</li>
-<li>获取队列的第一个进程时，记得LIST_REMOVE</li>
-</ul>
-<h3 id="extra"><a class="markdownIt-Anchor" href="#extra"></a> extra</h3>
-<p>近年都是处理新的异常</p>
-]]></content>
-      <categories>
-        <category>OS</category>
-      </categories>
-      <tags>
-        <tag>Lab</tag>
-        <tag>BUAA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>BUAA-OS-Lab2 内存管理</title>
     <url>/OS/BUAA-OS-Lab2/</url>
     <content><![CDATA[<h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
@@ -2073,6 +1480,599 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
 </ul>
 </li>
 </ul>
+]]></content>
+      <categories>
+        <category>OS</category>
+      </categories>
+      <tags>
+        <tag>Lab</tag>
+        <tag>BUAA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUAA-OS-Lab3 进程与异常</title>
+    <url>/OS/BUAA-OS-Lab3/</url>
+    <content><![CDATA[<h1 id="指导书梳理"><a class="markdownIt-Anchor" href="#指导书梳理"></a> 指导书梳理</h1>
+<p>相关文件：<code>/include/env.h</code> <code>/include/trap.h</code> <code>/kern/env.c</code>  <code>lib/elfloader.c</code> <code>pmap.h</code>  <code>pmap.c</code>  <code>kern/traps.c</code> <code>kern/genex.S</code>  <code>kern/sched.c</code></p>
+<h2 id="进程"><a class="markdownIt-Anchor" href="#进程"></a> 进程</h2>
+<h3 id="模板页表mos专有概念"><a class="markdownIt-Anchor" href="#模板页表mos专有概念"></a> 模板页表（MOS专有概念）</h3>
+<p>在用户空间中读取内核信息</p>
+<p><img src="https://s2.loli.net/2024/04/24/yIaPkFxYbjRBgW1.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>
+<p><strong>原理</strong></p>
+<p>MOS 被设计成对于其中运行的每一个用户进程，都可以<strong>通过用户地址空间（kuseg）读取 pages 数组和 envs 数组的信息</strong>。为实现该功能，在创建用户进程时我们需要将 pages 数组和 envs 数组映射到用户地址空间中的 <code>UPAGES</code> 与 <code>UENVS</code> 处。</p>
+<p><code>base_pgdir</code> 指向模板页表页目录的<strong>内核虚拟基地址</strong>，以便创建进程时能够根据 “模板页表” 的内容创建自己的页表。每创建一个进程，都将这个模板页表页目录中用来映射 envs 与 pages 的表项复制到新创建的进程的页目录中</p>
+</li>
+<li>
+<p><strong>设置目的</strong></p>
+<p>使用户进程<strong>共享一部分二级页表</strong>，从而节省物理页面</p>
+</li>
+</ul>
+<h3 id="进程的标识"><a class="markdownIt-Anchor" href="#进程的标识"></a> 进程的标识</h3>
+<p><code>struct Env</code> 进程控制块中</p>
+<ul>
+<li><code>env_id</code> 是每个<strong>进程</strong>独一无二的标识符，进程创建的时候就使用<code>mkenvid</code>赋予。</li>
+<li><code>env_asid</code> 记录进程的 ASID，这是<strong>进程虚拟地址</strong>空间的标识
+<ul>
+<li>ASID在TLB映射机制中使用——TLB 事实上构建了一个映射 &lt; VPN, ASID &gt;<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover><mo><mo>⟶</mo></mo><mrow><mi>T</mi><mi>L</mi><mi>B</mi></mrow></mover></mrow><annotation encoding="application/x-tex">\stackrel{TLB}{\longrightarrow}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3003310000000001em;vertical-align:-0.011em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2893310000000002em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">⟶</span></span></span><span style="top:-3.7110000000000003em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span><span class="mord mathdefault mtight">L</span><span class="mord mathdefault mtight" style="margin-right:0.05017em;">B</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span></span></span></span>&lt; PFN, N, D, V, G &gt;</li>
+<li>ASID 部分只占据了 0-7 共 8 个 bit，即ASID资源是有限的，需要使用一定的资源管理方法来<strong>分配、回收</strong> ASID。MOS 实验采用了位图法管理 256 个可用的 ASID，<strong>如果 ASID 耗尽时仍要创建进程，内核会发生崩溃（panic）</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="设置进程控制块"><a class="markdownIt-Anchor" href="#设置进程控制块"></a> 设置进程控制块</h3>
+<ul>
+<li>
+<p>在 MOS 操作系统<strong>特意将一些内核的数据暴露到用户空间</strong>，使得进程不需要切换到内核态就能访问，这是 MOS 特有的设计</p>
+<p>在这里暴露 UTOP 往上到 UVPT 之间所有进程共享的<strong>只读</strong>空间，也就是把这部分内存对应的<strong>内核<br />
+页表 base_pgdir 拷贝到进程页表中</strong>。从 <strong>UVPT 往上到 ULIM 之间则是进程自己的页表</strong></p>
+<p><img src="https://s2.loli.net/2024/04/24/etFI7plnikVqRT6.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+<h3 id="加载二进制镜像"><a class="markdownIt-Anchor" href="#加载二进制镜像"></a> 加载二进制镜像</h3>
+<p>要想正确加载一个 ELF 文件到内存，只需将 ELF 文件中所有<strong>需要加载的程序段加载到对应的<font color="red">虚拟地址</font>上</strong>即可</p>
+<p><img src="https://s2.loli.net/2024/04/24/BlTYwCyVzxOSjkP.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li><code>elf_load_seg</code> 只关心ELF 段的结构，由回调函数处理具体的页面加载过程</li>
+</ul>
+<h3 id="进程运行与切换"><a class="markdownIt-Anchor" href="#进程运行与切换"></a> 进程运行与切换</h3>
+<p>在 Lab3 中，进程切换只需要保存进程的上下文信息。而MOS中的寄存器状态保存的地方是 <code>KSTACKTOP</code> 以下的一个 <code>sizeof(TrapFrame)</code>大小的区域中，而<code>curenv-&gt;env_tf</code>是存放当前进程的上下文的区域</p>
+<p>故保存进程上下文使用语句<code>curenv-&gt;env_tf = *((struct Trapframe *)KSTACKTOP - 1)</code></p>
+<h2 id="中断与异常"><a class="markdownIt-Anchor" href="#中断与异常"></a> 中断与异常</h2>
+<p>CPU 不仅仅有常见的 32 个通用寄存器，还有功能广泛的***协处理器***，而中断/异常部分就用到了其中的协处理器 CP0</p>
+<table>
+<thead>
+<tr>
+<th>寄存器助记符</th>
+<th>CP0 寄存器编号</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Status</td>
+<td>12</td>
+<td>状态寄存器，包括中断引脚使能，其他 CPU 模式等位域</td>
+</tr>
+<tr>
+<td>Cause</td>
+<td>13</td>
+<td>记录导致异常的原因</td>
+</tr>
+<tr>
+<td>EPC</td>
+<td>14</td>
+<td>异常结束后程序恢复执行的位置</td>
+</tr>
+</tbody>
+</table>
+<h3 id="status-寄存器"><a class="markdownIt-Anchor" href="#status-寄存器"></a> <strong>Status 寄存器</strong></h3>
+<p><img src="https://s2.loli.net/2024/04/24/OKAFgDfkURJj2S6.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li>
+<p><code>IE</code> 位表示中断是否开启，为 1 表示开启，否则不开启</p>
+</li>
+<li>
+<p>当且仅当 <code>EXL</code> 被设置为 0 且 <code>UM</code> 被设置为 1 时，处理器处于<strong>用户模式</strong>，其它所有情况下，处理器均处于内核模式下</p>
+<ul>
+<li>
+<p>每当异常发生的时候，EXL 会被自动设置为 1（使处于内核态，能使用特权指令）</p>
+</li>
+<li>
+<p>每个进程在每一次被调度时都会执行</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RESTORE_ALL <span class="comment">//恢复处理器寄存器状态</span></span><br><span class="line">eret <span class="comment">// EXL被自动设置为 0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>15-8 位为<em><strong>中断屏蔽位***，每一位代表一个不同的中断活动，其中 15-10 位</strong>使能</em>*硬件中断源<font color="purple">（该中断能否被响应）</font>，9-8位是 Cause 寄存器软件可写的中断位</p>
+</li>
+</ul>
+<h3 id="cause-寄存器"><a class="markdownIt-Anchor" href="#cause-寄存器"></a> Cause 寄存器</h3>
+<p><img src="https://s2.loli.net/2024/04/24/zi1IqLRVo5welC7.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<ul>
+<li><code>IP</code> (15-8 位)保存着哪一些中断发生了，其中 15-10 位来自硬件，9-8 位可以由软件写入，<font color="green">当 Status 寄存器中相同位允许中断（为 1）时</font>，Cause 寄存器这一位也为1就会导致中断</li>
+<li><code>ExcCode</code> (6-2位)，记录发生了什么异常。在 MOS 中，中断是 0 号异常。</li>
+</ul>
+<h3 id="cpu异常处理流程"><a class="markdownIt-Anchor" href="#cpu异常处理流程"></a> CPU异常处理流程</h3>
+<p>CPU 如何处理异常？</p>
+<ol>
+<li>设置 EPC 寄存器的值为从异常返回的地址。</li>
+<li>设置 Status 寄存器（<strong>设置 EXL 位，强制 CPU 进入内核态并禁止中断</strong>）</li>
+<li>设置 Cause 寄存器（记录异常原因）</li>
+<li>设置 PC 为<strong>异常入口地址</strong>，随后交给软件处理</li>
+</ol>
+<p>至此，我们成功地切换到内核程序，将异常处理的任务转交给操作系统。</p>
+<ul>
+<li>
+<p>相关指令</p>
+<ul>
+<li>
+<p><code>mfc0</code> Move From Coprocessor 0</p>
+<p>用于从协处理器的某个寄存器中读取值到一个通用寄存器中</p>
+</li>
+<li>
+<p><code>mtc0</code> Move To Coprocessor 0</p>
+<p>用于将一个通用寄存器的值写入协处理器的某个寄存器中</p>
+</li>
+</ul>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">mfc0    t0, CP0_STATUS</span><br><span class="line">and     t0, t0, ~(STATUS_UM | STATUS_EXL | STATUS_IE)</span><br><span class="line">mtc0    t0, CP0_STATUS</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<font color="grey">
+### SAVE_ALL 与异常重入
+<p>在 SAVE_ALL 中进行判断，若 Status 寄存器的 UM 位为 0，说明此次异常在内核态触发， sp 寄存器已经在内核异常栈中。不再将 sp 设置为 KSTACKTOP ，而是使其继续增长。</p>
+<p>这样便能够在异常中处理新的异常，而不会破坏原本的异常处理流程。这一机制被称作异常重入</font></p>
+<h3 id="异常的分发"><a class="markdownIt-Anchor" href="#异常的分发"></a> 异常的分发</h3>
+<p>当发生异常时，处理器会进入一个用于分发异常的程序，这个程序的作用就是检测发生了哪种异常，并调用相应的异常处理程序</p>
+<p>一般来说，异常分发程序会被要求放在固定的某个物理地址上</p>
+<p>在MOS中的实现为：将.text.exc_gen_entry 段和 .text.tlb_miss_entry 段用链接器放到特定的位置—— 0x80000180 和 0x80000000 处，它们是异常处理程序的入口地址。在我们的系统中，CPU 发生异常（除了用户态地址的 TLB Miss 异常）后，就会自动跳转到地址 0x80000180 处；发生用户态地址的 TLB Miss 异常时，会自动跳转到地址 0x80000000处</p>
+<h3 id="时钟中断"><a class="markdownIt-Anchor" href="#时钟中断"></a> 时钟中断</h3>
+<ul>
+<li>
+<p>中断处理的流程</p>
+<ol>
+<li>
+<p>通过异常分发，<strong>判断出当前异常为中断异常</strong>，随后进入相应的<strong>中断处理程序</strong>。在 MOS 中即对应 handle_int 函数。</p>
+<p>此前以异常的角度对时钟中断进行处理；现在以中断的角度对时钟中断进行处理</p>
+</li>
+<li>
+<p>在中断处理程序中<strong>进一步判断 Cause 寄存器中是由几号中断位引发的中断</strong>，然后进入不同中断对应的<strong>中断服务函数</strong>。</p>
+</li>
+<li>
+<p>中断处理完成，通过 ret_from_exception 函数<strong>恢复现场</strong>，继续执行。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>在MOS 中，<strong>时间片的长度是用时钟中断衡量</strong>的。4KC 中的 CP0 内置了一个可产生中断的 Timer，MOS 即使用这个内置的 Timer 产生时钟中断</p>
+<p>（具体细节实现见指导书）</p>
+</li>
+<li>
+<p>内核初始化完毕后陷入死循环，等待第一次时钟中断来临，通过异常处理来调度已经创建好的用户进程运行</p>
+</li>
+</ul>
+<h3 id="进程调度器"><a class="markdownIt-Anchor" href="#进程调度器"></a> 进程调度器</h3>
+<p><strong>什么时候需要切换进程？</strong></p>
+<ol>
+<li>参数 yield 为真时：此时当前进程必须让出。</li>
+<li>count 减为 0 时：此时分给进程的时间片被用完，将执行权让给其他进程。</li>
+<li>无当前进程：内核必然刚刚完成初始化，需要分配一个进程执行。</li>
+<li>进程状态不是可运行：当前进程不能再继续执行，让给其他进程。</li>
+</ol>
+<p><strong>如何切换进程？</strong></p>
+<ol>
+<li>当前进程仍为就绪状态时，需要将其移到 env_sched_list 队列的尾部。</li>
+<li>选中 env_sched_list 队列头部的进程。如果没有可用的进程，内核 panic。</li>
+<li>设置 count 为当前进程的优先级（分配的时间片的数量）。</li>
+</ol>
+<p>（不管是否切换，都）最后将 count 自减 1，调用 env_run 函数。</p>
+<h1 id="时纪"><a class="markdownIt-Anchor" href="#时纪"></a> 时纪</h1>
+<p>E 3.1</p>
+<ul>
+<li>
+<p>注意链表顺序！！初始化是倒序插入</p>
+</li>
+<li>
+<p><font color="red">LIST、TAIL相关宏操作的（参数）一般都是指针！！</font></p>
+</li>
+<li>
+<p>如下定义</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static Pde *base_pgdir;</span><br></pre></td></tr></table></figure>
+<p><code>base_pgdir</code> 是一个Pde类型的指针，即为目录项的虚拟地址；</p>
+<p><code>*base_pgdir</code> 是Pde类型的指针的解引用，即Pde，为目录项的物理地址</p>
+</li>
+</ul>
+<p>E 3.4</p>
+<ul>
+<li><code>NENV</code> 什么时候要用来作为限制条件吗？这里好像不用</li>
+</ul>
+<p>E 3.5</p>
+<ul>
+<li>分配页面后记得加<code>p→pp_ref</code>！！</li>
+</ul>
+<p>E 3.12</p>
+<ul>
+<li>schedule里的count是静态变量，存放在.data区，只初始化一次，不同进程不共享！！所以虽然可能会调度多次schedule函数，但每个进程只执行一次 <code>static int count = 0;</code> 初始化语句！！</li>
+<li>注意，不管要不要插到尾部，都要先移除当前进程！！</li>
+</ul>
+<h1 id="exam前准备"><a class="markdownIt-Anchor" href="#exam前准备"></a> exam前准备</h1>
+<h3 id="有可能出问题"><a class="markdownIt-Anchor" href="#有可能出问题"></a> 有可能出问题</h3>
+<ul>
+<li>scheduled函数，要不要把不是就绪状态的移除</li>
+<li>获取队列的第一个进程时，记得LIST_REMOVE</li>
+</ul>
+<h3 id="extra"><a class="markdownIt-Anchor" href="#extra"></a> extra</h3>
+<p>近年都是处理新的异常</p>
+]]></content>
+      <categories>
+        <category>OS</category>
+      </categories>
+      <tags>
+        <tag>Lab</tag>
+        <tag>BUAA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BUAA-OS-Lab 经验总结</title>
+    <url>/OS/BUAA-OS-Lab-General/</url>
+    <content><![CDATA[<h1 id="官方提醒"><a class="markdownIt-Anchor" href="#官方提醒"></a> 官方提醒</h1>
+<ul>
+<li>在之后的 Lab 中，运行 MOS 时容易出现的 <font color="green"><strong>too low</strong> </font>等错误信息就是访问了一个过低的地址导致的。此时应该检查代码中<strong>是否存在访问非法内存（如空指针、野指针）的操作，或者忘记将物理地址转化为 kseg0 内核虚拟地址的问题</strong>。</li>
+</ul>
+<h1 id="实验代码阅读与把握"><a class="markdownIt-Anchor" href="#实验代码阅读与把握"></a> 实验代码阅读与把握</h1>
+<ul>
+<li>整体结构把握
+<ul>
+<li>完整的函数调用关系可以<font color="blue">查看指导书每个Lab后面的调用顺序图（<strong>利用好指导书</strong>）</font></li>
+<li><font color="blue">把握好顶层架构</font><br />
+为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编码</li>
+<li><font color="blue">用好外部变量</font><br />
+很多时候<font color="green">要用的量和想实现的功能</font>在相应的文件中都有宏定义或者函数定义。所以先阅读文件，找不到再自己写</li>
+</ul>
+</li>
+<li>具体参数意义理解
+<ul>
+<li><font color="blue">通过检索的方式在指导书、讲解 PPT 等多处资源中广泛找思路</font>
+<ul>
+<li>比如<code>vprintfmt</code>参数列表中的<code>data</code>是什么？<br />
+指导书中没有说明，但讲解 PPT 中讲的很清楚。不要纠结与单一资料，学会广泛检索。</li>
+</ul>
+</li>
+<li><font color="blue"><strong>通过阅读并理解更大范围（比如完整函数、上层调用函数）代码段，明白本质，进而把握单个参数意义</strong></font>
+<ul>
+<li>比如<code>vprintfmt</code>参数列表中<code>ap</code>这一可变参数指的是哪些参数？<br />
+<code>vprintfmt</code>函数实现的是格式化输出的主体逻辑，被<code>printk</code>调用，参数列表中的 ap 参数也是从上层函数中得来。结合<code>printk</code>的用法，比如<code>printk(&quot;%d%c%ld&quot;, a, b, c)</code>，很容易明白可变参数就是需要输出的一系列变量，而<code>fmt</code>就是引号中的字符串。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="编写"><a class="markdownIt-Anchor" href="#编写"></a> 编写</h1>
+<ul>
+<li>“由俭入奢易，由奢入俭难“，某种程度上也适用于代码编写。<font color="red">用最<strong>简单直接精炼</strong>的代码实现，不要为求安心无脑加一些<strong>似是似非</strong>的代码</font>，容易导致一些意想不到的错误而且难找原因。一定要<font color="green"><strong>百分百确定有漏洞</strong></font>才<font color="blue"><strong>恰当地打补丁</strong></font>。</li>
+<li><strong>不是只填空就可以了</strong>，注意初始代码的改动。<font color="red">（<strong>已经定义好的参数的初始化</strong>）代码本身的行为一定要明确！</font> <font color="blue">比如处理好各变量初值（0、NULL），空指针使用</font>。不要过渡依赖编译器</li>
+<li><font color="blue"><strong>解引用指针之前必须判断是否为空/试错（见后”常用函数“）</strong>！！！</font>野指针会导致死循环或超时无法结束
+<ul>
+<li><font color="color">注意不同函数的错误值不一样</font>，<font color="blue"><strong>不要混用</strong></font>！！</li>
+</ul>
+</li>
+<li><font color="green">“仿照xxx部分进行实现”，<strong>有一些部分不确定要不要保留</strong></font>就<font color="blue"><strong>先保留</strong></font>！！（很有可能涉及到一些隐性机制的实现）</li>
+<li><font color="green">“当出现错误时返回相应错误值”</font>常用操作是<font color="blue">用<code>r</code>记录返回值再判断**<code>if(r&gt;0)</code>**</font>
+<ul>
+<li>是判断是否<font color="red">&gt;0</font>！！错误值一般都是负值，<font color="red"><strong>正常值不一定是0也可能是正数</strong></font>！！</li>
+</ul>
+</li>
+<li><font color="green">用 gitlab IDE 编辑提交之后，切回跳板机运行前</font>记得<code>git pull</code>！！</li>
+<li>写<font color="green"><strong>循环</strong></font>时一定注意
+<ul>
+<li><font color="red"><strong>i++</strong></li>
+<li>数据更新（比如每次开始前<strong>读入下一部分数据</strong>）</font></li>
+</ul>
+</li>
+<li>注意<strong>运算符优先级</strong>
+<ul>
+<li><strong>移位运算符的优先级低于加号</strong>，需要加括号</li>
+<li><code>*</code> 优先级低于 <code>.</code> <code>→</code> ，故不需要加括号</li>
+</ul>
+</li>
+</ul>
+<h1 id="调试debug"><a class="markdownIt-Anchor" href="#调试debug"></a> 调试/debug</h1>
+<ul>
+<li>debug 时优先检查<font color="red"><strong>条件判断</strong></font>是否出错！
+<ul>
+<li>less than，应该是<code>-lt</code> 不是 <code>-le</code> 🥲</li>
+</ul>
+</li>
+<li>先本地<strong>开优化</strong>编译运行！<strong>根据报错或者运行异常去找原因</strong>，实在不行加<font color="blue"><strong>printf</strong></font></li>
+</ul>
+<h2 id="make-的使用"><a class="markdownIt-Anchor" href="#make-的使用"></a> make 的使用</h2>
+<h3 id="编译"><a class="markdownIt-Anchor" href="#编译"></a> 编译</h3>
+<ul>
+<li><code>make</code> 编译完整内核
+<ul>
+<li>需要在 init/init.c 的 mips_init 里添加自己的测试代码</li>
+</ul>
+</li>
+<li><code>make test lab=&lt;x&gt;_&lt;y&gt;</code>编译指定测试点， lab<x> 的第 y 个测试用例<br />
+eg make test lab=1_2</li>
+</ul>
+<h3 id="运行与调试"><a class="markdownIt-Anchor" href="#运行与调试"></a> 运行与调试</h3>
+<ul>
+<li><code>make run</code> 运行</li>
+<li><code>make dbg</code> 使用 QEMU 模拟器以调试模式运行内核，并进入 GDB 调试界面。</li>
+<li><code>make objdump</code> 将项目中的目标文件反汇编</li>
+<li><code>Ctrl+A+X</code> 退出 QEMU</li>
+</ul>
+<h1 id="实验代码结构"><a class="markdownIt-Anchor" href="#实验代码结构"></a> 实验代码结构</h1>
+<ul>
+<li>
+<p>kern里的.c文件和include里面的.h文件很多是一一对应的，分别为某部分功能的实现以及相关函数、宏定义</p>
+</li>
+<li>
+<p>include目录——存放系统头文件和一些常用函数定义</p>
+<ul>
+<li>
+<p>mmu.h——存储内存布局、<strong>与地址转换、虚拟地址管理</strong>相关的宏</p>
+<ul>
+<li>有一张内存布局图，在填写 linker script 的时候需要<strong>根据这个图设置相应节的加载地址</strong></li>
+<li><code>PDX(va)</code> ：页目录偏移量（查找遍历页表时常用）</li>
+<li><code>PTX(va)</code> ：页表偏移量（查找遍历页表时常用）</li>
+<li><code>PTE_ADDR(pte)</code> ：获取页表项中的物理地址（读取 pte 时常用）</li>
+<li><code>PADDR(kva)</code> ：kseg0 处虚地址 物理地址</li>
+<li><code>KADDR(pa)</code> ：物理地址 kseg0 处虚地址（读取 pte 后可进行转换）</li>
+</ul>
+</li>
+<li>
+<p>pmap.h ——存储与<strong>地址</strong>相关的宏</p>
+<ul>
+<li><code>va2pa(Pde *pgdir, u_long va)</code> ：查页表，虚地址 物理地址（测试时常用</li>
+<li><code>pa2page(u_long pa)</code> ：物理地址 页控制块（读取 pte 后可进行转换）</li>
+<li><code>page2pa(struct Page *pp)</code> ：页控制块 物理地址（填充 pte 时常用）</li>
+</ul>
+</li>
+<li>
+<p>print.h</p>
+<ul>
+<li>声明了<em>vprintfmt</em>函数，解释了相关参数</li>
+</ul>
+</li>
+<li>
+<p>string.h——定义了一些常用的字符串函数，忘记了具体参数含义可以来这里找</p>
+</li>
+<li>
+<p>printk.h——定义了<strong>内核崩溃宏</strong></p>
+</li>
+<li>
+<p>elf.h</p>
+<ul>
+<li>ELF_FOREACH_PHDR_OFF——<em>for循环迭代遍历所有段头</em></li>
+</ul>
+</li>
+<li>
+<p>type.h——定义和align有关的宏</p>
+<ul>
+<li><code>ROUNDDOWN(a, n)</code> 返回 ⌊<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>a</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>⌋n（将 a 按 n 向下对齐）,要求 n 必须是 2 的非负整数次幂</li>
+<li><code>ROUND(a, n)</code>  返回 ⌈<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>a</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>⌉n（将 a 按 n 向上对齐）,要求 n 必须是 2 的非负整数次幂</li>
+</ul>
+</li>
+<li>
+<p>queue.h——<strong>链表、双向队列宏</strong>的定义</p>
+<p>太多了…具体功能见文件注释</p>
+</li>
+<li>
+<p>trap.h——定义Trapframe结构体</p>
+</li>
+<li>
+<p>env.h——和进程调度有关的结构体定义</p>
+</li>
+<li>
+<p>stackframe.h——定义宏 SAVE_ALL</p>
+<ul>
+<li><code>SAVE_ALL</code>——将当前的 CPU 现场（上下文）保存到内核的异常栈中</li>
+</ul>
+</li>
+<li>
+<p>kclock.h——定义RESET_KCLOCK 宏，完成了对 CP0 中 Timer 的配置</p>
+</li>
+<li>
+<p>syscall.h——定义系统调用号</p>
+</li>
+</ul>
+</li>
+<li>
+<p><a href="http://include.mk">include.mk</a></p>
+</li>
+<li>
+<p>init目录——初始化内核相关代码</p>
+<ul>
+<li>
+<p>start.S</p>
+<ul>
+<li>
+<p>_start 函数</p>
+<p>是 CPU 控制权被转交给内核后执行的<strong>第一个函数</strong>，主要工作是初始化 CPU 和栈指针，然后跳转至 MOS 的初始化函数（ mips_init ）</p>
+<p>内核栈空间的地址可以在 include/mmu.h 中看到，注意栈的增长方向</p>
+</li>
+</ul>
+</li>
+<li>
+<p>init.c</p>
+<ul>
+<li>
+<p>mips_init 函数</p>
+<p>内核中<strong>各模块的初始化函数</strong>都会在这里被调用</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>kern目录——存放内核的主体代码</p>
+<ul>
+<li>
+<p>machine.c——往 QEMU 的控制台输出、读入字符，重置系统</p>
+<p>原理为读写某一个特殊的内存地址</p>
+</li>
+<li>
+<p>printk.c——实现了 printk</p>
+<p>实际上是把输出字符的函数，接受的输出参数给传递给了 vprintfmt 这个函数</p>
+</li>
+<li>
+<p>console.c——实现printcharc（向某内存地址写入）</p>
+</li>
+<li>
+<p>pmap.c——实现内存管理</p>
+<ul>
+<li>page_init()  初始化 pages 数组中的 Page 结构体以及空闲链表</li>
+<li>mips_detect_memory()  探测硬件可用内存，并对一些和内存管理相关的变量进行初始化</li>
+<li>mips_vm_init 建立内存管理机制</li>
+<li>alloc（） 注意！只在建立页式内存管理机制之前使用</li>
+</ul>
+</li>
+<li>
+<p>env.c——实现进程调度</p>
+</li>
+<li>
+<p>traps.c——定义异常向量组，用于定位中断处理程序</p>
+</li>
+<li>
+<p>genex.S —— 异常处理函数的声明，异常处理流程实现</p>
+</li>
+<li>
+<p>env_asm.S</p>
+<ul>
+<li>env_pop_tf ——用于设置 ASID 和重置时钟，以及最后从异常处理中返回</li>
+</ul>
+</li>
+<li>
+<p>sched.c——实现时间片调度</p>
+</li>
+<li>
+<p>syscall_all.c——系统调用相关函数实现</p>
+<ul>
+<li>do_syscall——内核部分的系统调用机制实现</li>
+</ul>
+</li>
+<li>
+<p>tlbex.c——写时复制相关函数的实现</p>
+</li>
+</ul>
+</li>
+<li>
+<p>kernel.lds</p>
+</li>
+<li>
+<p>lib目录——存放一些常用库函数的实现</p>
+<ul>
+<li>print.c——实现了 <strong>vprintfmt 函数(实现了格式化输出的主体逻辑)、打印字符、字符串和数字的函数</strong></li>
+<li>string——实现了一些常用的字符串函数</li>
+<li>elfloader.c——解析 ELF 文件的相关函数和宏</li>
+</ul>
+</li>
+<li>
+<p>Makefile</p>
+</li>
+<li>
+<p>mk目录</p>
+</li>
+<li>
+<p>tests目录——存放公开的测试用例</p>
+</li>
+<li>
+<p>tools目录——构建时辅助工具的代码</p>
+<ul>
+<li>readelf目录
+<ul>
+<li>
+<p>elf.h ——存放解析ELF文件要用的三个关键数据结构</p>
+<ul>
+<li>包括三个结构体，第一个对应ELF 的文件头，第二个对应节（section）头表，第三个对应段（segment）头表</li>
+</ul>
+</li>
+<li>
+<p>readelf.c ——用于解析ELF文件</p>
+<ul>
+<li>is_elf_format函数——判断输入是否为ELF文件</li>
+<li>readelf 函数——输出 ELF 文件中所有节头中的地址信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>fsformat.c——创建符合我们定义的文件系统镜像的工具</li>
+</ul>
+</li>
+<li>
+<p>user目录</p>
+<ul>
+<li>lib目录
+<ul>
+<li>debug.c——实现debugf函数（处理8号异常）</li>
+<li>syscall_lib.c ——实现syscall_* 函数</li>
+<li>fork.c
+<ul>
+<li>fork 函数——fork机制实现的核心</li>
+<li>cow_entry 函数——写时复制处理的函数</li>
+<li>duppage 函数——父进程对子进程页面空间进行映射以及相关标志的函数</li>
+</ul>
+</li>
+<li>entry.S——用户进程的入口</li>
+<li>libos.c——用户进程入口的 C 语言部分</li>
+<li>file.c、fd.c、fsipc.c —— 存放文件系统用户库
+<ul>
+<li>fsipc.c ——实现与文件系统服务进程的交互</li>
+<li>file.c ——实现文件系统的用户接口</li>
+<li>fd.c ——实现文件描述符，允许用户程序使用统一接口操作文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>include目录
+<ul>
+<li>lib.h——系统调用相关宏定义</li>
+<li>syscall.h——定义系统调用号</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>fs目录——文件系统服务程序</p>
+<ul>
+<li>fs.c ——实现文件系统的基本功能函数</li>
+<li>ide.c ——通过系统调用与磁盘镜像进行交互</li>
+<li>serv.c 中——文件系统服务进程主干函数，通过 IPC 通信与用户进程 user/lib/fsipc.c 内的通信函数进行交互</li>
+</ul>
+</li>
+</ul>
+<h2 id="常用函数"><a class="markdownIt-Anchor" href="#常用函数"></a> 常用函数</h2>
+<ul>
+<li>
+<p>错误处理相关</p>
+<p>用try最稳妥</p>
+<ul>
+<li><code>panic_on</code> 直接崩溃</li>
+<li><code>try / if(某操作返回值==错误值)</code> 抛出去给上层函数处理</li>
+<li><code>user_panic</code> 用户态进程崩溃
+<ul>
+<li>user_panic(“syscall_set_trapframe returned %d”, r);</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>清空内存 <code>memset</code>  实现于lib/string.c</p>
+</li>
+<li>
+<p><code>ROUND(a, n)</code>  返回 ⌈<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mi>a</mi><mi>n</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.040392em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>⌉n（将 a 按 n 向上对齐）,要求 n 必须是 2 的非负整数次幂</p>
+</li>
+</ul>
+<h1 id="一些-q-a"><a class="markdownIt-Anchor" href="#一些-q-a"></a> 一些 Q &amp; A</h1>
+<blockquote>
+<p>在编写操作系统的c代码时，变量分别存放在哪部分物理内存？page_alloc() 申请的物理页面用来存什么？</p>
+</blockquote>
+<p>代码段、全局变量和静态变量在编译阶段被确定，链接时被链入0x8002 0000向上这部分物理内存</p>
+<p>临时变量在内核栈区，被存放在0x8040 0000向下<em>KSTKSIZE</em>部分内存。</p>
+<p>申请物理页面的用途：lab3用于给新进程申请页目录、给内核进程加载外部二进制elf文件并执行；lab4用于为用户进程申请用户栈、duppage()时为COW复制的页表申请物理空间；lab5在进程内存放文件内容、lab6用于给用户进程加载外部二进制elf文件来执行命令。申请的页面存放在0x8040 0000向上这部分物理内存</p>
 ]]></content>
       <categories>
         <category>OS</category>
@@ -2745,6 +2745,115 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
       </categories>
       <tags>
         <tag>CI/CD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue组件基础</title>
+    <url>/Front-end/Vue-Components/</url>
+    <content><![CDATA[<p><font color="grey">注意：每个代码片段只举例部分和当前解释的用法有关的代码，其他部分选择性省略</font></p>
+<h2 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h2>
+<p>一般将 Vue 组件定义在一个单独的  <code>.vue</code>  文件中，这被叫做***单文件组件*** (SFC，使组件更有内聚性和可维护性)</p>
+<h3 id="命名注意"><a class="markdownIt-Anchor" href="#命名注意"></a> 命名注意</h3>
+<p>一般使用 <strong>PascalCase</strong> 作为组件名的注册格式，更明显地表明了这是一个 Vue 组件，且便于在 JavaScript 中导入和注册组件</p>
+<h2 id="注册"><a class="markdownIt-Anchor" href="#注册"></a> 注册</h2>
+<p>使用一个子组件前需要在父组件中使用 <code>import</code> 语句导入。通过  <code>**&lt;script setup&gt;**</code>，导入的组件都在模板中<strong>直接可用</strong>，不需要再进行局部注册</p>
+<p>eg.</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">ButtonCounter</span> <span class="keyword">from</span> <span class="string">&quot;./ButtonCounter.vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="局部注册与全局注册"><a class="markdownIt-Anchor" href="#局部注册与全局注册"></a> 局部注册与全局注册</h3>
+<p>如果不使用  <code>&lt;script setup&gt;</code> ，在使用组件前需要先进行注册。</p>
+<ul>
+<li>
+<p><strong><em>局部注册</em></strong></p>
+<p>在使用它的父组件中使用  <code>components</code>  选项显式导入</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ComponentA</span> <span class="keyword">from</span> <span class="string">&quot;./ComponentA.js&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">components</span>: &#123;</span><br><span class="line">    <span class="title class_">ComponentA</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">setup</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>缺点：只能在该父组件中使用</li>
+<li>优点：组件之间的依赖关系更加明确</li>
+</ul>
+</li>
+<li>
+<p><strong><em>全局注册</em></strong><br />
+在 main.js 中使用  <code>.component()</code>  方法</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">MyComponent</span> <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">component</span>(<span class="string">&quot;MyComponent&quot;</span>, <span class="title class_">MyComponent</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>缺点：依赖关系不明确，影响应用可维护性</li>
+<li>优点：组件在当前 Vue 应用中全局可用</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h2>
+<p>每使用一个组件就会创建一个新的<strong>实例</strong>（不同实例之间的参数不相互影响）</p>
+<h3 id="dom-vs-sfc-中组件编写-解析"><a class="markdownIt-Anchor" href="#dom-vs-sfc-中组件编写-解析"></a> DOM VS SFC 中组件编写、解析</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>DOM</th>
+<th>SFC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大小写区分（命名/使用）</td>
+<td>kebab-case (短横线连字符) 形式</td>
+<td>PascalCase 形式</td>
+</tr>
+<tr>
+<td>闭合标签</td>
+<td>必须显式地写出关闭标签 eg.&lt;my-component&gt;&lt;/my-component&gt;</td>
+<td>可以使用 eg.&lt;MyComponent /&gt;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>元素位置限制</strong></p>
+<p>某些 HTML 元素对于放在其中的元素类型有限制，例如  <code>&lt;ul&gt;</code>，<code>&lt;ol&gt;</code>，<code>&lt;table&gt;</code>,这将导致在使用带有此类限制元素的组件时出现问题，如</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">blog-post-row</span>&gt;</span><span class="tag">&lt;/<span class="name">blog-post-row</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我们可以使用特殊的  <code>is</code> attribute  作为一种解决方案</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">tr</span> <span class="attr">is</span>=<span class="string">&quot;vue:blog-post-row&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="传递-props"><a class="markdownIt-Anchor" href="#传递-props"></a> <strong>传递 props</strong></h2>
+<p>先在SFC的<code>&lt;script setup&gt;</code>里用 <code>defineProps</code> 宏定义，使用组件时再传参</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineProps</span>([<span class="string">&#x27;title&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h4</span>&gt;</span>&#123;&#123; title &#125;&#125;<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;My journey with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Blogging with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Why Vue is so fun&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="多组props"><a class="markdownIt-Anchor" href="#多组props"></a> 多组<strong>props</strong></h3>
+<p>在实际应用中，在父组件中可能会有如下的一个博客文章数组，这种情况下使用 <code>v-for</code> 来渲染</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> posts = <span class="title function_">ref</span>([</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">title</span>: <span class="string">&#x27;My journey with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">title</span>: <span class="string">&#x27;Blogging with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">title</span>: <span class="string">&#x27;Why Vue is so fun&#x27;</span> &#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;<span class="title class_">BlogPost</span></span><br><span class="line">  v-<span class="keyword">for</span>=<span class="string">&quot;post in posts&quot;</span></span><br><span class="line">  :key=<span class="string">&quot;post.id&quot;</span></span><br><span class="line">  :title=<span class="string">&quot;post.title&quot;</span></span><br><span class="line"> /&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="插槽传递内容"><a class="markdownIt-Anchor" href="#插槽传递内容"></a> <strong>插槽(传递内容)</strong></h2>
+<p>使用***插槽（slot***）在父组件中给子组件传递内容。</p>
+<p>插槽内容可以是任意合法的模板内容，不局限于文本，<strong>可以传入多个元素，甚至是组件</strong></p>
+<ol>
+<li>
+<p>在SFC中设置好插槽出口</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;fancy-btn&quot;</span>&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">slot</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span> <span class="comment">&lt;!-- 插槽出口 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在父组件中传入插槽内容</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">FancyButton</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 插槽内容 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>Click me!<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">AwesomeIcon</span> <span class="attr">name</span>=<span class="string">&quot;plus&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">FancyButton</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="监听事件"><a class="markdownIt-Anchor" href="#监听事件"></a> <strong>监听事件</strong></h2>
+<ol>
+<li>
+<p>在SFC的<code>&lt;script setup&gt;</code>中通过 <code>defineEmits</code> 宏来声明需要抛出的事件（和<code>defineProps</code>有点像）</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineEmits</span>([<span class="string">&#x27;enlarge-text&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>调用内置的 <code>$emit</code> 方法，通过传入事件名称来抛出一个事件</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;$emit(&#x27;enlarge-text&#x27;)&quot;</span>&gt;</span>Enlarge text<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在父组件中通过 <code>v-on</code> 或 <code>@</code> 来选择性地监听子组件上抛的事件</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span></span></span><br><span class="line"><span class="tag">  @<span class="attr">enlarge-text</span>=<span class="string">&quot;postFontSize += 0.1&quot;</span></span></span><br><span class="line"><span class="tag"> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="动态组件"><a class="markdownIt-Anchor" href="#动态组件"></a> 动态组件</h2>
+<p>使用 <code>&lt;component&gt;</code> 元素和特殊的 <code>is</code> attribute 实现动态组件切换</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Home</span> <span class="keyword">from</span> <span class="string">&#x27;./Home.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Posts</span> <span class="keyword">from</span> <span class="string">&#x27;./Posts.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Archive</span> <span class="keyword">from</span> <span class="string">&#x27;./Archive.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> tabs = &#123;<span class="title class_">Home</span>, <span class="title class_">Posts</span>, <span class="title class_">Archive</span>&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;demo&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span></span></span><br><span class="line"><span class="tag">       <span class="attr">v-for</span>=<span class="string">&quot;(_, tab) in tabs&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:key</span>=<span class="string">&quot;tab&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:class</span>=<span class="string">&quot;[&#x27;tab-button&#x27;, &#123; active: currentTab === tab &#125;]&quot;</span></span></span><br><span class="line"><span class="tag">       @<span class="attr">click</span>=<span class="string">&quot;currentTab = tab&quot;</span></span></span><br><span class="line"><span class="tag">     &gt;</span></span><br><span class="line">      &#123;&#123; tab &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 动态组件切换 --&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">component</span> <span class="attr">:is</span>=<span class="string">&quot;tabs[currentTab]&quot;</span> <span class="attr">class</span>=<span class="string">&quot;tab&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Front-end</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
       </tags>
   </entry>
   <entry>
@@ -3493,6 +3602,146 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
       </tags>
   </entry>
   <entry>
+    <title>开始一个新的Vue项目</title>
+    <url>/Front-end/Vue-Start-a-new-project/</url>
+    <content><![CDATA[<h2 id="初始化"><a class="markdownIt-Anchor" href="#初始化"></a> 初始化</h2>
+<p>默认node.js等等已经下载好，并使用vscode进行开发</p>
+<ol>
+<li>
+<p><strong>工程文件的创建</strong></p>
+<p>创建一个空文件夹，在目录下进入命令行cmd，输入</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm create vue@latest</span><br></pre></td></tr></table></figure>
+<p>按需求进行选项选择与配置初始化</p>
+</li>
+<li>
+<p><strong>安装所需的依赖包</strong></p>
+<p>进入vscode，打开终端cmd，输入</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p>它会读取项目目录中的 “package.json” 文件，并从 npm registry 下载定义的依赖包</p>
+</li>
+<li>
+<p><strong>尝试启动开发环境</strong></p>
+<p>同样在上一步终端中输入</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+<p>会给出运行的网址，<code>CTRL+左键</code> 即可预览，用于开发和测试Web应用程序</p>
+</li>
+</ol>
+<h2 id="第三方库配置"><a class="markdownIt-Anchor" href="#第三方库配置"></a> 第三方库配置</h2>
+<h3 id="element-plus"><a class="markdownIt-Anchor" href="#element-plus"></a> <strong>Element Plus</strong></h3>
+<ol>
+<li>
+<p><strong>安装 Element Plus</strong></p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install element-plus --save</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>--save</code> 标志会将 Element Plus 添加到项目的 <code>package.json</code> 文件的依赖列表中，确保其他开发者或者在不同环境中都能通过 <code>npm install</code> 命令安装相同的依赖</li>
+</ul>
+</li>
+<li>
+<p><strong>引入 Element Plus</strong></p>
+<p>在 main.js 中引入 Element Plus（注释掉的是原有语句，用于指示新语句插入位置）</p>
+ <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">//import &#123; createApp &#125; from &#x27;vue&#x27;</span></span><br><span class="line"><span class="comment">//import App from &#x27;./App.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ElementPlus</span> <span class="keyword">from</span> <span class="string">&#x27;element-plus&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;element-plus/dist/index.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//const app = createApp(App)</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title class_">ElementPlus</span>) <span class="comment">// 全局注册 Element Plus 组件</span></span><br><span class="line"><span class="comment">//app.mount(&#x27;#app&#x27;)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>使用 Element Plus 组件</strong></p>
+<p>在需要使用 Element Plus 组件的地方，直接引入即可使用。具体组件的引入方式见<a href="https://element-plus.org/zh-CN/component/overview.html">Element Plus官网</a></p>
+<p>eg.在 App.vue 中使用一个 Button 按钮组件：</p>
+ <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		<span class="tag">&lt;<span class="name">el-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span>&gt;</span>Primary<span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="了解项目结构与重要文件"><a class="markdownIt-Anchor" href="#了解项目结构与重要文件"></a> 了解项目结构与重要文件</h2>
+<p>以下内容未做特别说明，均以vue-cli最初构建的文件为例</p>
+<h3 id="目录结构"><a class="markdownIt-Anchor" href="#目录结构"></a> 目录结构</h3>
+<p><img src="https://s2.loli.net/2024/04/15/83YxJyDNdWkTosi.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h3 id="初学者常操作文件"><a class="markdownIt-Anchor" href="#初学者常操作文件"></a> 初学者常操作文件</h3>
+<table>
+<thead>
+<tr>
+<th>关键目录/文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>config</td>
+<td>配置目录，包括端口号等。我们初学可以使用默认的。</td>
+</tr>
+<tr>
+<td>node_modules</td>
+<td>npm 加载的项目依赖模块</td>
+</tr>
+<tr>
+<td>src</td>
+<td>这里是我们要开发的目录，基本上要做的事情都在这个目录里。<br>•assets: 放置一些图片，如logo等。<br>• components: 目录里面放了一个组件文件，可以不用。<br>• App.vue: 项目入口文件，我们也可以直接将组件写这里，而不使用 components 目录。<br>• main.js: 项目的核心文件。<br>• index.css: 样式文件。</td>
+</tr>
+<tr>
+<td>static</td>
+<td>静态资源目录，如图片、字体等。</td>
+</tr>
+<tr>
+<td>test</td>
+<td>初始测试目录，可删除</td>
+</tr>
+<tr>
+<td>index.html</td>
+<td>首页入口文件，可以添加一些 meta 信息或统计代码</td>
+</tr>
+<tr>
+<td>package.json</td>
+<td>项目配置文件。</td>
+</tr>
+<tr>
+<td>dist</td>
+<td>使用 npm run build 命令打包后会生成该目录。</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><strong><code>main.js</code></strong> - 这是 Vue 应用的入口文件。在这个文件中，你通常会进行以下几个操作：
+<ul>
+<li>引入 Vue 库、插件（如 Vuex, Vue Router 等）</li>
+<li>创建 Vue 实例。</li>
+<li>挂载根组件（<code>App.vue</code>）。</li>
+<li>配置全局混入（mixins）或指令（directives）。</li>
+</ul>
+</li>
+<li><strong><code>App.vue</code></strong> - 这是根组件，它是所有其他组件的父级。在这个文件中，你可以定义全局的布局和样式。</li>
+<li><strong><code>components</code></strong> 目录 - 这个目录用于存放项目中使用的所有 Vue 组件。每个组件通常都有自己的 <code>.vue</code> 文件。</li>
+<li><strong><code>views</code></strong> 目录 - 这个目录通常包含一些页面级别的组件，它们通常与 Vue Router 路由相匹配。例如，你可能会有一个 <code>Home.vue</code> 组件对应于主页的路由。</li>
+<li><strong><code>router.js</code></strong> 或 <strong><code>router/index.js</code></strong> - 如果你的应用是一个单页面应用（SPA），并且使用了 Vue Router，那么这个文件用于定义应用的路由。在这里，你可以声明路由路径、视图组件以及路由的嵌套路由。</li>
+<li><strong><code>store.js</code></strong> 或 <strong><code>store/index.js</code></strong> - 如果你的应用需要状态管理，并且使用了 Vuex，那么这个文件或目录用于定义应用的状态。在这里，你可以定义状态、变更状态的 mutation、以及可以触发 mutation 的 action。</li>
+<li><strong><code>assets</code></strong> 目录 - 这个目录位于 <code>src</code> 目录下，用于存放应用中使用的静态资源，如图片、样式表、字体等。这些资源可以在你的组件中通过相对路径引用。</li>
+</ol>
+<h3 id="mainjs"><a class="markdownIt-Anchor" href="#mainjs"></a> main.js</h3>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./assets/main.css&#x27;</span> <span class="comment">// 导入项目中自定义的样式文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span> <span class="comment">// &#x27;createApp&#x27; 函数是创建 Vue 应用实例的函数</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span> <span class="comment">// App.vue是应用的入口点，所有页面都将基于这个组件构建</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&#x27;./router&#x27;</span> <span class="comment">// 导入路由配置</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>) <span class="comment">// 使用 createApp 函数创建一个新的 Vue 应用实例，并传入根组件 App</span></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(router) <span class="comment">// 将路由配置注册到应用实例中，这样应用就可以根据路由规则切换不同的视图</span></span><br><span class="line">app.<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>) <span class="comment">// 将应用实例挂载到 id 为 &#x27;app&#x27; 的 DOM 元素上，这通常是在 index.html 文件中定义的根元素</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>createApp</code> 函数：创建一个新的 Vue 应用实例。这个实例包括了应用的响应式数据、指令、组件、生命周期钩子等核心功能，<font color="red">通过这个实例可以协调和管理整个 Vue 应用的生命周期和功能</font></li>
+<li><em><strong>挂载</strong></em>：是 Vue 应用生命周期的一个重要阶段，它标志着<strong>应用实例开始与 DOM 交互</strong>，应用的渲染和用户交互功能正式开始工作</li>
+<li><em><strong>注册</strong></em>：<strong>指的是将组件、指令、混入（mixins）或其他资源添加到 Vue 应用实例</strong>或 Vue 配置全局中，使得它们可以在应用的任何地方使用或生效
+<ul>
+<li>允许开发者<strong>根据需要添加功能和资源</strong>，而不是强制所有功能都默认可用。这种方式提高了 Vue 的<strong>可扩展性和模块化程度</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="indexhtml"><a class="markdownIt-Anchor" href="#indexhtml"></a> index.html</h3>
+<p>体现vue特点的关键代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span> <span class="attr">src</span>=<span class="string">&quot;/src/main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这段代码的功能是初始化 Vue 应用并将其挂载到页面上：</p>
+<ol>
+<li>页面加载时，浏览器首先解析 <code>index.html</code> 文件，并在 <code>&lt;body&gt;</code> 标签中找到 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素。</li>
+<li>浏览器接着加载并执行 <code>&lt;script&gt;</code> 标签指定的 <code>main.js</code> 文件。</li>
+<li><code>main.js</code> 文件中的代码创建了一个 Vue 应用实例，并调用 <code>.mount('#app')</code> 方法将该实例挂载到 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素上。</li>
+<li>Vue 应用实例开始运行，根据根组件的模板和数据渲染页面内容，替换 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素的初始内容。</li>
+</ol>
+<p>通过这种方式，Vue 应用可以接管页面的 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 部分，并动态地根据数据变化更新页面内容，提供丰富的用户交互和体验。</p>
+]]></content>
+      <categories>
+        <category>Front-end</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue基本语法</title>
     <url>/Front-end/Vue-Basics/</url>
     <content><![CDATA[<h1 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h1>
@@ -3694,255 +3943,6 @@ Key，一次查找到两个 Data（一对相邻页面的两个页表项），并
 <h3 id="生命周期钩子-onmounted"><a class="markdownIt-Anchor" href="#生命周期钩子-onmounted"></a> 生命周期钩子 <code>onMounted</code></h3>
 <p>在挂载之后执行代码，我们可以使用 <code>onMounted()</code> 函数：</p>
 <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; onMounted &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">onMounted</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 此时组件已经挂载。</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Front-end</category>
-      </categories>
-      <tags>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vue组件基础</title>
-    <url>/Front-end/Vue-Components/</url>
-    <content><![CDATA[<p><font color="grey">注意：每个代码片段只举例部分和当前解释的用法有关的代码，其他部分选择性省略</font></p>
-<h2 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h2>
-<p>一般将 Vue 组件定义在一个单独的  <code>.vue</code>  文件中，这被叫做***单文件组件*** (SFC，使组件更有内聚性和可维护性)</p>
-<h3 id="命名注意"><a class="markdownIt-Anchor" href="#命名注意"></a> 命名注意</h3>
-<p>一般使用 <strong>PascalCase</strong> 作为组件名的注册格式，更明显地表明了这是一个 Vue 组件，且便于在 JavaScript 中导入和注册组件</p>
-<h2 id="注册"><a class="markdownIt-Anchor" href="#注册"></a> 注册</h2>
-<p>使用一个子组件前需要在父组件中使用 <code>import</code> 语句导入。通过  <code>**&lt;script setup&gt;**</code>，导入的组件都在模板中<strong>直接可用</strong>，不需要再进行局部注册</p>
-<p>eg.</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> <span class="title class_">ButtonCounter</span> <span class="keyword">from</span> <span class="string">&quot;./ButtonCounter.vue&quot;</span>;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="局部注册与全局注册"><a class="markdownIt-Anchor" href="#局部注册与全局注册"></a> 局部注册与全局注册</h3>
-<p>如果不使用  <code>&lt;script setup&gt;</code> ，在使用组件前需要先进行注册。</p>
-<ul>
-<li>
-<p><strong><em>局部注册</em></strong></p>
-<p>在使用它的父组件中使用  <code>components</code>  选项显式导入</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ComponentA</span> <span class="keyword">from</span> <span class="string">&quot;./ComponentA.js&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">components</span>: &#123;</span><br><span class="line">    <span class="title class_">ComponentA</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">setup</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>缺点：只能在该父组件中使用</li>
-<li>优点：组件之间的依赖关系更加明确</li>
-</ul>
-</li>
-<li>
-<p><strong><em>全局注册</em></strong><br />
-在 main.js 中使用  <code>.component()</code>  方法</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">MyComponent</span> <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">component</span>(<span class="string">&quot;MyComponent&quot;</span>, <span class="title class_">MyComponent</span>);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>缺点：依赖关系不明确，影响应用可维护性</li>
-<li>优点：组件在当前 Vue 应用中全局可用</li>
-</ul>
-</li>
-</ul>
-<h2 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h2>
-<p>每使用一个组件就会创建一个新的<strong>实例</strong>（不同实例之间的参数不相互影响）</p>
-<h3 id="dom-vs-sfc-中组件编写-解析"><a class="markdownIt-Anchor" href="#dom-vs-sfc-中组件编写-解析"></a> DOM VS SFC 中组件编写、解析</h3>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>DOM</th>
-<th>SFC</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>大小写区分（命名/使用）</td>
-<td>kebab-case (短横线连字符) 形式</td>
-<td>PascalCase 形式</td>
-</tr>
-<tr>
-<td>闭合标签</td>
-<td>必须显式地写出关闭标签 eg.&lt;my-component&gt;&lt;/my-component&gt;</td>
-<td>可以使用 eg.&lt;MyComponent /&gt;</td>
-</tr>
-</tbody>
-</table>
-<p><strong>元素位置限制</strong></p>
-<p>某些 HTML 元素对于放在其中的元素类型有限制，例如  <code>&lt;ul&gt;</code>，<code>&lt;ol&gt;</code>，<code>&lt;table&gt;</code>,这将导致在使用带有此类限制元素的组件时出现问题，如</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">blog-post-row</span>&gt;</span><span class="tag">&lt;/<span class="name">blog-post-row</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>我们可以使用特殊的  <code>is</code> attribute  作为一种解决方案</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">tr</span> <span class="attr">is</span>=<span class="string">&quot;vue:blog-post-row&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="传递-props"><a class="markdownIt-Anchor" href="#传递-props"></a> <strong>传递 props</strong></h2>
-<p>先在SFC的<code>&lt;script setup&gt;</code>里用 <code>defineProps</code> 宏定义，使用组件时再传参</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineProps</span>([<span class="string">&#x27;title&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h4</span>&gt;</span>&#123;&#123; title &#125;&#125;<span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;My journey with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Blogging with Vue&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span> <span class="attr">title</span>=<span class="string">&quot;Why Vue is so fun&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="多组props"><a class="markdownIt-Anchor" href="#多组props"></a> 多组<strong>props</strong></h3>
-<p>在实际应用中，在父组件中可能会有如下的一个博客文章数组，这种情况下使用 <code>v-for</code> 来渲染</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> posts = <span class="title function_">ref</span>([</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">title</span>: <span class="string">&#x27;My journey with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">title</span>: <span class="string">&#x27;Blogging with Vue&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">title</span>: <span class="string">&#x27;Why Vue is so fun&#x27;</span> &#125;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;<span class="title class_">BlogPost</span></span><br><span class="line">  v-<span class="keyword">for</span>=<span class="string">&quot;post in posts&quot;</span></span><br><span class="line">  :key=<span class="string">&quot;post.id&quot;</span></span><br><span class="line">  :title=<span class="string">&quot;post.title&quot;</span></span><br><span class="line"> /&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="插槽传递内容"><a class="markdownIt-Anchor" href="#插槽传递内容"></a> <strong>插槽(传递内容)</strong></h2>
-<p>使用***插槽（slot***）在父组件中给子组件传递内容。</p>
-<p>插槽内容可以是任意合法的模板内容，不局限于文本，<strong>可以传入多个元素，甚至是组件</strong></p>
-<ol>
-<li>
-<p>在SFC中设置好插槽出口</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;fancy-btn&quot;</span>&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">slot</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span> <span class="comment">&lt;!-- 插槽出口 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>在父组件中传入插槽内容</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">FancyButton</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 插槽内容 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">style</span>=<span class="string">&quot;color:red&quot;</span>&gt;</span>Click me!<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">AwesomeIcon</span> <span class="attr">name</span>=<span class="string">&quot;plus&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">FancyButton</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="监听事件"><a class="markdownIt-Anchor" href="#监听事件"></a> <strong>监听事件</strong></h2>
-<ol>
-<li>
-<p>在SFC的<code>&lt;script setup&gt;</code>中通过 <code>defineEmits</code> 宏来声明需要抛出的事件（和<code>defineProps</code>有点像）</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">defineEmits</span>([<span class="string">&#x27;enlarge-text&#x27;</span>])</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>调用内置的 <code>$emit</code> 方法，通过传入事件名称来抛出一个事件</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;$emit(&#x27;enlarge-text&#x27;)&quot;</span>&gt;</span>Enlarge text<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>在父组件中通过 <code>v-on</code> 或 <code>@</code> 来选择性地监听子组件上抛的事件</p>
- <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">BlogPost</span></span></span><br><span class="line"><span class="tag">  <span class="attr">...</span></span></span><br><span class="line"><span class="tag">  @<span class="attr">enlarge-text</span>=<span class="string">&quot;postFontSize += 0.1&quot;</span></span></span><br><span class="line"><span class="tag"> /&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="动态组件"><a class="markdownIt-Anchor" href="#动态组件"></a> 动态组件</h2>
-<p>使用 <code>&lt;component&gt;</code> 元素和特殊的 <code>is</code> attribute 实现动态组件切换</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Home</span> <span class="keyword">from</span> <span class="string">&#x27;./Home.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Posts</span> <span class="keyword">from</span> <span class="string">&#x27;./Posts.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">Archive</span> <span class="keyword">from</span> <span class="string">&#x27;./Archive.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> tabs = &#123;<span class="title class_">Home</span>, <span class="title class_">Posts</span>, <span class="title class_">Archive</span>&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;demo&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span></span></span><br><span class="line"><span class="tag">       <span class="attr">v-for</span>=<span class="string">&quot;(_, tab) in tabs&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:key</span>=<span class="string">&quot;tab&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">:class</span>=<span class="string">&quot;[&#x27;tab-button&#x27;, &#123; active: currentTab === tab &#125;]&quot;</span></span></span><br><span class="line"><span class="tag">       @<span class="attr">click</span>=<span class="string">&quot;currentTab = tab&quot;</span></span></span><br><span class="line"><span class="tag">     &gt;</span></span><br><span class="line">      &#123;&#123; tab &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 动态组件切换 --&gt;</span></span><br><span class="line">	  <span class="tag">&lt;<span class="name">component</span> <span class="attr">:is</span>=<span class="string">&quot;tabs[currentTab]&quot;</span> <span class="attr">class</span>=<span class="string">&quot;tab&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">component</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>Front-end</category>
-      </categories>
-      <tags>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>开始一个新的Vue项目</title>
-    <url>/Front-end/Vue-Start-a-new-project/</url>
-    <content><![CDATA[<h2 id="初始化"><a class="markdownIt-Anchor" href="#初始化"></a> 初始化</h2>
-<p>默认node.js等等已经下载好，并使用vscode进行开发</p>
-<ol>
-<li>
-<p><strong>工程文件的创建</strong></p>
-<p>创建一个空文件夹，在目录下进入命令行cmd，输入</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm create vue@latest</span><br></pre></td></tr></table></figure>
-<p>按需求进行选项选择与配置初始化</p>
-</li>
-<li>
-<p><strong>安装所需的依赖包</strong></p>
-<p>进入vscode，打开终端cmd，输入</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<p>它会读取项目目录中的 “package.json” 文件，并从 npm registry 下载定义的依赖包</p>
-</li>
-<li>
-<p><strong>尝试启动开发环境</strong></p>
-<p>同样在上一步终端中输入</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
-<p>会给出运行的网址，<code>CTRL+左键</code> 即可预览，用于开发和测试Web应用程序</p>
-</li>
-</ol>
-<h2 id="第三方库配置"><a class="markdownIt-Anchor" href="#第三方库配置"></a> 第三方库配置</h2>
-<h3 id="element-plus"><a class="markdownIt-Anchor" href="#element-plus"></a> <strong>Element Plus</strong></h3>
-<ol>
-<li>
-<p><strong>安装 Element Plus</strong></p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install element-plus --save</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>--save</code> 标志会将 Element Plus 添加到项目的 <code>package.json</code> 文件的依赖列表中，确保其他开发者或者在不同环境中都能通过 <code>npm install</code> 命令安装相同的依赖</li>
-</ul>
-</li>
-<li>
-<p><strong>引入 Element Plus</strong></p>
-<p>在 main.js 中引入 Element Plus（注释掉的是原有语句，用于指示新语句插入位置）</p>
- <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">//import &#123; createApp &#125; from &#x27;vue&#x27;</span></span><br><span class="line"><span class="comment">//import App from &#x27;./App.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ElementPlus</span> <span class="keyword">from</span> <span class="string">&#x27;element-plus&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;element-plus/dist/index.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//const app = createApp(App)</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title class_">ElementPlus</span>) <span class="comment">// 全局注册 Element Plus 组件</span></span><br><span class="line"><span class="comment">//app.mount(&#x27;#app&#x27;)</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>使用 Element Plus 组件</strong></p>
-<p>在需要使用 Element Plus 组件的地方，直接引入即可使用。具体组件的引入方式见<a href="https://element-plus.org/zh-CN/component/overview.html">Element Plus官网</a></p>
-<p>eg.在 App.vue 中使用一个 Button 按钮组件：</p>
- <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">		<span class="tag">&lt;<span class="name">el-button</span> <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span>&gt;</span>Primary<span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="了解项目结构与重要文件"><a class="markdownIt-Anchor" href="#了解项目结构与重要文件"></a> 了解项目结构与重要文件</h2>
-<p>以下内容未做特别说明，均以vue-cli最初构建的文件为例</p>
-<h3 id="目录结构"><a class="markdownIt-Anchor" href="#目录结构"></a> 目录结构</h3>
-<p><img src="https://s2.loli.net/2024/04/15/83YxJyDNdWkTosi.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
-<h3 id="初学者常操作文件"><a class="markdownIt-Anchor" href="#初学者常操作文件"></a> 初学者常操作文件</h3>
-<table>
-<thead>
-<tr>
-<th>关键目录/文件</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>config</td>
-<td>配置目录，包括端口号等。我们初学可以使用默认的。</td>
-</tr>
-<tr>
-<td>node_modules</td>
-<td>npm 加载的项目依赖模块</td>
-</tr>
-<tr>
-<td>src</td>
-<td>这里是我们要开发的目录，基本上要做的事情都在这个目录里。<br>•assets: 放置一些图片，如logo等。<br>• components: 目录里面放了一个组件文件，可以不用。<br>• App.vue: 项目入口文件，我们也可以直接将组件写这里，而不使用 components 目录。<br>• main.js: 项目的核心文件。<br>• index.css: 样式文件。</td>
-</tr>
-<tr>
-<td>static</td>
-<td>静态资源目录，如图片、字体等。</td>
-</tr>
-<tr>
-<td>test</td>
-<td>初始测试目录，可删除</td>
-</tr>
-<tr>
-<td>index.html</td>
-<td>首页入口文件，可以添加一些 meta 信息或统计代码</td>
-</tr>
-<tr>
-<td>package.json</td>
-<td>项目配置文件。</td>
-</tr>
-<tr>
-<td>dist</td>
-<td>使用 npm run build 命令打包后会生成该目录。</td>
-</tr>
-</tbody>
-</table>
-<ol>
-<li><strong><code>main.js</code></strong> - 这是 Vue 应用的入口文件。在这个文件中，你通常会进行以下几个操作：
-<ul>
-<li>引入 Vue 库、插件（如 Vuex, Vue Router 等）</li>
-<li>创建 Vue 实例。</li>
-<li>挂载根组件（<code>App.vue</code>）。</li>
-<li>配置全局混入（mixins）或指令（directives）。</li>
-</ul>
-</li>
-<li><strong><code>App.vue</code></strong> - 这是根组件，它是所有其他组件的父级。在这个文件中，你可以定义全局的布局和样式。</li>
-<li><strong><code>components</code></strong> 目录 - 这个目录用于存放项目中使用的所有 Vue 组件。每个组件通常都有自己的 <code>.vue</code> 文件。</li>
-<li><strong><code>views</code></strong> 目录 - 这个目录通常包含一些页面级别的组件，它们通常与 Vue Router 路由相匹配。例如，你可能会有一个 <code>Home.vue</code> 组件对应于主页的路由。</li>
-<li><strong><code>router.js</code></strong> 或 <strong><code>router/index.js</code></strong> - 如果你的应用是一个单页面应用（SPA），并且使用了 Vue Router，那么这个文件用于定义应用的路由。在这里，你可以声明路由路径、视图组件以及路由的嵌套路由。</li>
-<li><strong><code>store.js</code></strong> 或 <strong><code>store/index.js</code></strong> - 如果你的应用需要状态管理，并且使用了 Vuex，那么这个文件或目录用于定义应用的状态。在这里，你可以定义状态、变更状态的 mutation、以及可以触发 mutation 的 action。</li>
-<li><strong><code>assets</code></strong> 目录 - 这个目录位于 <code>src</code> 目录下，用于存放应用中使用的静态资源，如图片、样式表、字体等。这些资源可以在你的组件中通过相对路径引用。</li>
-</ol>
-<h3 id="mainjs"><a class="markdownIt-Anchor" href="#mainjs"></a> main.js</h3>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./assets/main.css&#x27;</span> <span class="comment">// 导入项目中自定义的样式文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span> <span class="comment">// &#x27;createApp&#x27; 函数是创建 Vue 应用实例的函数</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span> <span class="comment">// App.vue是应用的入口点，所有页面都将基于这个组件构建</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&#x27;./router&#x27;</span> <span class="comment">// 导入路由配置</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>) <span class="comment">// 使用 createApp 函数创建一个新的 Vue 应用实例，并传入根组件 App</span></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(router) <span class="comment">// 将路由配置注册到应用实例中，这样应用就可以根据路由规则切换不同的视图</span></span><br><span class="line">app.<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>) <span class="comment">// 将应用实例挂载到 id 为 &#x27;app&#x27; 的 DOM 元素上，这通常是在 index.html 文件中定义的根元素</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>createApp</code> 函数：创建一个新的 Vue 应用实例。这个实例包括了应用的响应式数据、指令、组件、生命周期钩子等核心功能，<font color="red">通过这个实例可以协调和管理整个 Vue 应用的生命周期和功能</font></li>
-<li><em><strong>挂载</strong></em>：是 Vue 应用生命周期的一个重要阶段，它标志着<strong>应用实例开始与 DOM 交互</strong>，应用的渲染和用户交互功能正式开始工作</li>
-<li><em><strong>注册</strong></em>：<strong>指的是将组件、指令、混入（mixins）或其他资源添加到 Vue 应用实例</strong>或 Vue 配置全局中，使得它们可以在应用的任何地方使用或生效
-<ul>
-<li>允许开发者<strong>根据需要添加功能和资源</strong>，而不是强制所有功能都默认可用。这种方式提高了 Vue 的<strong>可扩展性和模块化程度</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="indexhtml"><a class="markdownIt-Anchor" href="#indexhtml"></a> index.html</h3>
-<p>体现vue特点的关键代码：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span> <span class="attr">src</span>=<span class="string">&quot;/src/main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这段代码的功能是初始化 Vue 应用并将其挂载到页面上：</p>
-<ol>
-<li>页面加载时，浏览器首先解析 <code>index.html</code> 文件，并在 <code>&lt;body&gt;</code> 标签中找到 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素。</li>
-<li>浏览器接着加载并执行 <code>&lt;script&gt;</code> 标签指定的 <code>main.js</code> 文件。</li>
-<li><code>main.js</code> 文件中的代码创建了一个 Vue 应用实例，并调用 <code>.mount('#app')</code> 方法将该实例挂载到 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素上。</li>
-<li>Vue 应用实例开始运行，根据根组件的模板和数据渲染页面内容，替换 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 元素的初始内容。</li>
-</ol>
-<p>通过这种方式，Vue 应用可以接管页面的 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code> 部分，并动态地根据数据变化更新页面内容，提供丰富的用户交互和体验。</p>
-]]></content>
       <categories>
         <category>Front-end</category>
       </categories>
