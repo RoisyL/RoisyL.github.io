@@ -7,12 +7,12 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="指导书梳理 相关文件：&#x2F;include&#x2F;env.h &#x2F;include&#x2F;trap.h &#x2F;kern&#x2F;env.c  lib&#x2F;elfloader.c pmap.h  pmap.c  kern&#x2F;traps.c kern&#x2F;genex.S  kern&#x2F;sched.c  进程  模板页表（MOS专有概念） 在用户空间中读取内核信息    原理 MOS 被设计成对于其中运行的每一个用户进程，都可以通过用户地址空间">
+<meta name="description" content="总结了操作系统的进程管理、中断与异常处理机制。重点讲解了模板页表的概念、进程标识与控制块的设置、ELF 二进制镜像的加载方法，以及进程运行和切换的上下文保存策略。同时涵盖了 MIPS 架构中的协处理器 CP0 的使用，包括 Status、Cause 和 EPC 寄存器的作用，以及时钟中断和进程调度器的实现细节">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BUAA-OS-Lab3">
+<meta property="og:title" content="BUAA-OS-Lab3 进程与异常">
 <meta property="og:url" content="https://roisyl.github.io.git/OS/BUAA-OS-Lab3/">
 <meta property="og:site_name" content="Roisy&#39;s blog">
-<meta property="og:description" content="指导书梳理 相关文件：&#x2F;include&#x2F;env.h &#x2F;include&#x2F;trap.h &#x2F;kern&#x2F;env.c  lib&#x2F;elfloader.c pmap.h  pmap.c  kern&#x2F;traps.c kern&#x2F;genex.S  kern&#x2F;sched.c  进程  模板页表（MOS专有概念） 在用户空间中读取内核信息    原理 MOS 被设计成对于其中运行的每一个用户进程，都可以通过用户地址空间">
+<meta property="og:description" content="总结了操作系统的进程管理、中断与异常处理机制。重点讲解了模板页表的概念、进程标识与控制块的设置、ELF 二进制镜像的加载方法，以及进程运行和切换的上下文保存策略。同时涵盖了 MIPS 架构中的协处理器 CP0 的使用，包括 Status、Cause 和 EPC 寄存器的作用，以及时钟中断和进程调度器的实现细节">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
@@ -22,15 +22,15 @@
 <meta property="article:published_time" content="2024-04-24T10:22:39.000Z">
 <meta property="article:modified_time" content="2024-05-02T01:50:39.000Z">
 <meta property="article:author" content="Roisy Luo">
-<meta property="article:tag" content="BUAA">
 <meta property="article:tag" content="Lab">
+<meta property="article:tag" content="BUAA">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
 
-    <meta name="keywords" content="BUAA SE SoftwareEngineering">
+    <meta name="keywords" content="BUAA, OS Lab, 进程控制, 中断与异常处理">
 
 
-<title >BUAA-OS-Lab3</title>
+<title >BUAA-OS-Lab3 进程与异常</title>
 
 <!-- Favicon -->
 
@@ -276,7 +276,7 @@
                             Many a little makes a mickle
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            BUAA-OS-Lab3
+                            BUAA-OS-Lab3 进程与异常
                         </h1>
 
                         
@@ -628,7 +628,7 @@
     </li>
     <li class="trm-post-copyright-link">
         <strong>Post link: </strong>
-        <a id="original-link" href="https://roisyl.github.io.git/OS/BUAA-OS-Lab3/" title="BUAA-OS-Lab3">https://roisyl.github.io.git/OS/BUAA-OS-Lab3/</a>
+        <a id="original-link" href="https://roisyl.github.io.git/OS/BUAA-OS-Lab3/" title="BUAA-OS-Lab3 进程与异常">https://roisyl.github.io.git/OS/BUAA-OS-Lab3/</a>
     </li>
     <li class="trm-post-copyright-license">
         <strong>Copyright Notice: </strong>
@@ -653,7 +653,7 @@
             
             <a class="trm-op-top trm-anima-link" href="/Back-end/BUAA-DB-SQLAlchemy/">
                 <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/6twGTHMOs5iv3yK.jpg">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/28jb7z4nDSKaQkl.jpg">
                 </span>
                 <h6 class="trm-op-title">BUAA-DB-期中大作业(SQLAlchemy)</h6>
             </a>
@@ -676,7 +676,7 @@
                 <span class="trm-op-cover">
                     <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/cWLX619kAHJbBwS.jpg">
                 </span>
-                <h6 class="trm-op-title">Vue-组件基础</h6>
+                <h6 class="trm-op-title">Vue组件基础</h6>
             </a>
             <div class="trm-divider trm-mb-15 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">

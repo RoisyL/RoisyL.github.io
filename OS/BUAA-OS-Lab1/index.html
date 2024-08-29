@@ -7,12 +7,12 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="指导书梳理&amp;讲解 注：此处只梳理实验中可能用到的内容，指导书中理论性强的部分补充在相应的Notes当中  内核  Makefile   阅读意义：对整个操作系统的布局产生初步了解   多种赋值语句   &#x3D; 赋予整个makefile中最后被指定的值   1234VIR_A &#x3D; AVIR_B &#x3D; $(VIR_A) BVIR_A &#x3D; AA# 最后VIR_B的值是AA B   :&#x3D; 赋予当前位置">
+<meta name="description" content="总结了操作系统内核的构建与启动流程，Makefile 的使用、ELF 文件格式的结构以及 MIPS 内存布局的重要性。还介绍了 Linker Script 在控制加载地址中的作用，以及如何从零开始搭建 MOS 系统。此外，实战部分详细讨论了 printk 函数的实现，包括处理变长参数表的方法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BUAA OS-Lab1">
+<meta property="og:title" content="BUAA OS-Lab1 内核、启动和 PRINTF">
 <meta property="og:url" content="https://roisyl.github.io.git/OS/BUAA-OS-Lab1/">
 <meta property="og:site_name" content="Roisy&#39;s blog">
-<meta property="og:description" content="指导书梳理&amp;讲解 注：此处只梳理实验中可能用到的内容，指导书中理论性强的部分补充在相应的Notes当中  内核  Makefile   阅读意义：对整个操作系统的布局产生初步了解   多种赋值语句   &#x3D; 赋予整个makefile中最后被指定的值   1234VIR_A &#x3D; AVIR_B &#x3D; $(VIR_A) BVIR_A &#x3D; AA# 最后VIR_B的值是AA B   :&#x3D; 赋予当前位置">
+<meta property="og:description" content="总结了操作系统内核的构建与启动流程，Makefile 的使用、ELF 文件格式的结构以及 MIPS 内存布局的重要性。还介绍了 Linker Script 在控制加载地址中的作用，以及如何从零开始搭建 MOS 系统。此外，实战部分详细讨论了 printk 函数的实现，包括处理变长参数表的方法">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
@@ -21,15 +21,15 @@
 <meta property="article:published_time" content="2024-03-27T10:13:19.000Z">
 <meta property="article:modified_time" content="2024-03-27T10:13:19.000Z">
 <meta property="article:author" content="Roisy Luo">
-<meta property="article:tag" content="BUAA">
 <meta property="article:tag" content="Lab">
+<meta property="article:tag" content="BUAA">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
 
-    <meta name="keywords" content="BUAA SE SoftwareEngineering">
+    <meta name="keywords" content="BUAA, OS Lab, 内核, ELF文件">
 
 
-<title >BUAA OS-Lab1</title>
+<title >BUAA OS-Lab1 内核、启动和 PRINTF</title>
 
 <!-- Favicon -->
 
@@ -256,7 +256,7 @@
     <div class="trm-banner">
     
     <!-- banner cover -->
-    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/08/29/7DUStfn8FBOd6Iq.jpg">
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/08/29/Af2mzSoqFj1NwUs.jpg">
     <!-- banner cover end -->
     
 
@@ -275,7 +275,7 @@
                             Many a little makes a mickle
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            BUAA OS-Lab1
+                            BUAA OS-Lab1 内核、启动和 PRINTF
                         </h1>
 
                         
@@ -404,7 +404,6 @@
 <div class="trm-card ">
     <article id="article-container" class="trm-publication">
     <h1 id="指导书梳理讲解"><a class="markdownIt-Anchor" href="#指导书梳理讲解"></a> 指导书梳理&amp;讲解</h1>
-<p>注：此处只梳理实验中可能用到的内容，指导书中理论性强的部分补充在相应的Notes当中</p>
 <h2 id="内核"><a class="markdownIt-Anchor" href="#内核"></a> 内核</h2>
 <h3 id="makefile"><a class="markdownIt-Anchor" href="#makefile"></a> Makefile</h3>
 <ul>
@@ -745,7 +744,7 @@
     </li>
     <li class="trm-post-copyright-link">
         <strong>Post link: </strong>
-        <a id="original-link" href="https://roisyl.github.io.git/OS/BUAA-OS-Lab1/" title="BUAA OS-Lab1">https://roisyl.github.io.git/OS/BUAA-OS-Lab1/</a>
+        <a id="original-link" href="https://roisyl.github.io.git/OS/BUAA-OS-Lab1/" title="BUAA OS-Lab1 内核、启动和 PRINTF">https://roisyl.github.io.git/OS/BUAA-OS-Lab1/</a>
     </li>
     <li class="trm-post-copyright-license">
         <strong>Copyright Notice: </strong>
@@ -768,16 +767,16 @@
     <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
         <div class="trm-older-publication">
             
-            <a class="trm-op-top trm-anima-link" href="/OS/BUAA-OS-Lab-General/">
+            <a class="trm-op-top trm-anima-link" href="/OS/BUAA-OS-Lab2/">
                 <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/Yo5EIFAfZBQcump.jpg">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/G6cTCtp4SqY8ayk.jpg">
                 </span>
-                <h6 class="trm-op-title">BUAA-OS-Lab General</h6>
+                <h6 class="trm-op-title">BUAA-OS-Lab2 内存管理</h6>
             </a>
             <div class="trm-divider trm-mb-15 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">
-                <li>24/03/27</li>
-                <li>18:20</li>
+                <li>24/04/10</li>
+                <li>18:30</li>
                 <li>OS</li>
             </ul>
         </div>
@@ -791,7 +790,7 @@
             
             <a class="trm-op-top trm-anima-link" href="/OS/BUAA%20OS-Lab0/">
                 <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/iRX5ZyfCechHTVM.jpg">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/RonYKVUgjCxi6L9.jpg">
                 </span>
                 <h6 class="trm-op-title">BUAA OS-Lab0 Linux基础操作</h6>
             </a>

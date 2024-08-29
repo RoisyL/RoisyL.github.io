@@ -11,24 +11,6 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/Back-end/Docker-Basics/</loc>
-    
-    <lastmod>2024-08-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab4-challenge/</loc>
-    
-    <lastmod>2024-08-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://roisyl.github.io.git/Front-end/Vue-Components/</loc>
     
     <lastmod>2024-08-29</lastmod>
@@ -56,7 +38,7 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/Back-end/BUAA-DB-SQLAlchemy/</loc>
+    <loc>https://roisyl.github.io.git/Back-end/Docker-Basics/</loc>
     
     <lastmod>2024-08-29</lastmod>
     
@@ -92,7 +74,25 @@
   </url>
   
   <url>
+    <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab4-challenge/</loc>
+    
+    <lastmod>2024-08-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab2/</loc>
+    
+    <lastmod>2024-08-29</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roisyl.github.io.git/Back-end/BUAA-DB-SQLAlchemy/</loc>
     
     <lastmod>2024-08-29</lastmod>
     
@@ -110,18 +110,18 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab3/</loc>
+    <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab-General/</loc>
     
-    <lastmod>2024-05-02</lastmod>
+    <lastmod>2024-06-27</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab-General/</loc>
+    <loc>https://roisyl.github.io.git/OS/BUAA-OS-Lab3/</loc>
     
-    <lastmod>2024-03-27</lastmod>
+    <lastmod>2024-05-02</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -182,14 +182,14 @@
 
   
   <url>
-    <loc>https://roisyl.github.io.git/tags/BUAA/</loc>
+    <loc>https://roisyl.github.io.git/tags/Lab/</loc>
     <lastmod>2024-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/tags/Lab/</loc>
+    <loc>https://roisyl.github.io.git/tags/BUAA/</loc>
     <lastmod>2024-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -203,14 +203,14 @@
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/tags/Django/</loc>
+    <loc>https://roisyl.github.io.git/tags/CI-CD/</loc>
     <lastmod>2024-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/tags/CI-CD/</loc>
+    <loc>https://roisyl.github.io.git/tags/Django/</loc>
     <lastmod>2024-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -233,14 +233,14 @@
 
   
   <url>
-    <loc>https://roisyl.github.io.git/categories/Back-end/</loc>
+    <loc>https://roisyl.github.io.git/categories/OS/</loc>
     <lastmod>2024-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://roisyl.github.io.git/categories/OS/</loc>
+    <loc>https://roisyl.github.io.git/categories/Back-end/</loc>
     <lastmod>2024-08-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

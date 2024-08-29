@@ -7,24 +7,24 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="sigaction简介 当一个信号被发送给一个进程时, 内核会中断进程的正常控制流，转而执行与该信号相关的用户态处理函数进行处理 在执行该处理函数前，会将该信号所设置的信号屏蔽集加入到进程的信号屏蔽集中，在执行完该用户态处理函数后，又会将恢复原来的信号屏蔽集  任务描述 sigaction结构体用于设置所需要处理的信号集及其对应的处理函数 sigset_t使用32位表示MOS所需要处理的[1,3">
+<meta name="description" content="总结了Lab challenge的实现思路——操作系统中信号处理的实现机制，包括信号的注册、发送、处理流程，以及信号集的操作。主要包括 sigaction 结构体的作用，sigset_t 的定义和使用，以及如何在用户态处理信号。同时涵盖了信号屏蔽集的管理，信号处理函数的入口设置，以及在进程间发送信号的方法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BUAA-OS-Lab4_challenge">
+<meta property="og:title" content="BUAA-OS-Lab4_challenge sigaction实现">
 <meta property="og:url" content="https://roisyl.github.io.git/OS/BUAA-OS-Lab4-challenge/">
 <meta property="og:site_name" content="Roisy&#39;s blog">
-<meta property="og:description" content="sigaction简介 当一个信号被发送给一个进程时, 内核会中断进程的正常控制流，转而执行与该信号相关的用户态处理函数进行处理 在执行该处理函数前，会将该信号所设置的信号屏蔽集加入到进程的信号屏蔽集中，在执行完该用户态处理函数后，又会将恢复原来的信号屏蔽集  任务描述 sigaction结构体用于设置所需要处理的信号集及其对应的处理函数 sigset_t使用32位表示MOS所需要处理的[1,3">
+<meta property="og:description" content="总结了Lab challenge的实现思路——操作系统中信号处理的实现机制，包括信号的注册、发送、处理流程，以及信号集的操作。主要包括 sigaction 结构体的作用，sigset_t 的定义和使用，以及如何在用户态处理信号。同时涵盖了信号屏蔽集的管理，信号处理函数的入口设置，以及在进程间发送信号的方法">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-08-29T02:46:08.000Z">
-<meta property="article:modified_time" content="2024-08-29T03:50:01.433Z">
+<meta property="article:modified_time" content="2024-08-29T08:16:45.893Z">
 <meta property="article:author" content="Roisy Luo">
-<meta property="article:tag" content="BUAA">
 <meta property="article:tag" content="Lab">
+<meta property="article:tag" content="BUAA">
 <meta name="twitter:card" content="summary">
 
-    <meta name="keywords" content="BUAA SE SoftwareEngineering">
+    <meta name="keywords" content="BUAA, OS Lab challenge, sigaction信号处理机制, 信号集操作">
 
 
-<title >BUAA-OS-Lab4_challenge</title>
+<title >BUAA-OS-Lab4_challenge sigaction实现</title>
 
 <!-- Favicon -->
 
@@ -67,7 +67,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["on the road"],"theme_version":"2.2.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)Hey! Good again!","hide_text":"(●—●)Oh, crash!","safari_pinned_tab":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"danmu":{"enable":false,"el":".trm-banner"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-08-29 11:50:01"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-08-29 16:16:45"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.3" id="trm-switch-style">
@@ -251,7 +251,7 @@
     <div class="trm-banner">
     
     <!-- banner cover -->
-    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/08/29/g15cZYCXaUs8Nyo.jpg">
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/08/29/jXeiwJtcB8VGUyT.jpg">
     <!-- banner cover end -->
     
 
@@ -270,7 +270,7 @@
                             Many a little makes a mickle
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            BUAA-OS-Lab4_challenge
+                            BUAA-OS-Lab4_challenge sigaction实现
                         </h1>
 
                         
@@ -546,7 +546,7 @@
     </li>
     <li class="trm-post-copyright-link">
         <strong>Post link: </strong>
-        <a id="original-link" href="https://roisyl.github.io.git/OS/BUAA-OS-Lab4-challenge/" title="BUAA-OS-Lab4_challenge">https://roisyl.github.io.git/OS/BUAA-OS-Lab4-challenge/</a>
+        <a id="original-link" href="https://roisyl.github.io.git/OS/BUAA-OS-Lab4-challenge/" title="BUAA-OS-Lab4_challenge sigaction实现">https://roisyl.github.io.git/OS/BUAA-OS-Lab4-challenge/</a>
     </li>
     <li class="trm-post-copyright-license">
         <strong>Copyright Notice: </strong>
@@ -565,7 +565,6 @@
         </h5>
     </div>
     
-    
         <div class="col-lg-6">
     <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
         <div class="trm-older-publication">
@@ -574,13 +573,34 @@
                 <span class="trm-op-cover">
                     <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/gOaF81YxHl5QnXA.jpg">
                 </span>
-                <h6 class="trm-op-title">Docker-Basics</h6>
+                <h6 class="trm-op-title">Docker基础</h6>
             </a>
             <div class="trm-divider trm-mb-15 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">
-                <li>24/08/28</li>
-                <li>10:38</li>
+                <li>24/08/29</li>
+                <li>15:45</li>
                 <li>Back-end</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/OS/BUAA-OS-Lab-General/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/gIY3zulBvUH25GA.jpg">
+                </span>
+                <h6 class="trm-op-title">BUAA-OS-Lab 经验总结</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/06/27</li>
+                <li>18:20</li>
+                <li>OS</li>
             </ul>
         </div>
     </div>
