@@ -10,16 +10,17 @@
 <meta name="description" content="理论部分  Flask框架 一个用Python编写的轻量级Web应用框架，扩展性强，便于快速搭建Web应用的基本功能  Flask(__name__)   为什么使用 __name__？ 这是一种常见用法，允许模块在被导入时和作为脚本直接运行时有不同的行为。当模块被导入时，__name__ 通常是模块的名字；而当模块作为脚本直接运行时，Python 会将 __name__ 设置为 &#39;__main">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BUAA-DB-期中大作业(SQLAlchemy)">
-<meta property="og:url" content="https://roisyl.github.io.git/DB/BUAA-DB-SQLAlchemy/">
+<meta property="og:url" content="https://roisyl.github.io.git/Back-end/BUAA-DB-SQLAlchemy/">
 <meta property="og:site_name" content="Roisy&#39;s blog">
 <meta property="og:description" content="理论部分  Flask框架 一个用Python编写的轻量级Web应用框架，扩展性强，便于快速搭建Web应用的基本功能  Flask(__name__)   为什么使用 __name__？ 这是一种常见用法，允许模块在被导入时和作为脚本直接运行时有不同的行为。当模块被导入时，__name__ 通常是模块的名字；而当模块作为脚本直接运行时，Python 会将 __name__ 设置为 &#39;__main">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
 <meta property="article:published_time" content="2024-05-02T02:01:29.000Z">
-<meta property="article:modified_time" content="2024-05-02T02:49:48.594Z">
+<meta property="article:modified_time" content="2024-08-29T03:37:13.317Z">
 <meta property="article:author" content="Roisy Luo">
 <meta property="article:tag" content="BUAA">
 <meta property="article:tag" content="Lab">
+<meta property="article:tag" content="DB">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
 
@@ -68,8 +69,8 @@
 
 
 <!-- Variable -->
-<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["on the road"],"theme_version":"2.2.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)Hey! Good again!","hide_text":"(●—●)Oh, crash!","safari_pinned_tab":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"danmu":{"enable":false,"el":".trm-banner"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-05-02 10:49:48"};</script>
+<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["on the road"],"theme_version":"2.2.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)Hey! Good again!","hide_text":"(●—●)Oh, crash!","safari_pinned_tab":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"danmu":{"enable":false,"el":".trm-banner"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-08-29 11:37:13"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.3" id="trm-switch-style">
@@ -179,8 +180,14 @@
                     </li>
                     
                     <li>
-                        <a  href="/categories/Web/" target="">
-                            Web
+                        <a  href="/categories/Front-end/" target="">
+                            Front-end
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Back-end/" target="">
+                            Back-end
                         </a>
                     </li>
                     
@@ -276,7 +283,7 @@
                                 </li>
                                 <li>
                                     <span>
-                                        DB
+                                        Back-end
                                     </span>
                                 </li>
                             </ul>
@@ -703,7 +710,7 @@
     </li>
     <li class="trm-post-copyright-link">
         <strong>Post link: </strong>
-        <a id="original-link" href="https://roisyl.github.io.git/DB/BUAA-DB-SQLAlchemy/" title="BUAA-DB-期中大作业(SQLAlchemy)">https://roisyl.github.io.git/DB/BUAA-DB-SQLAlchemy/</a>
+        <a id="original-link" href="https://roisyl.github.io.git/Back-end/BUAA-DB-SQLAlchemy/" title="BUAA-DB-期中大作业(SQLAlchemy)">https://roisyl.github.io.git/Back-end/BUAA-DB-SQLAlchemy/</a>
     </li>
     <li class="trm-post-copyright-license">
         <strong>Copyright Notice: </strong>
@@ -728,7 +735,7 @@
             
             <a class="trm-op-top trm-anima-link" href="/Back-end/Django-Basics/">
                 <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/05/02/5rJsg6VpFMRYQ7a.jpg">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/9EQUe6aJI7CoOiD.jpg">
                 </span>
                 <h6 class="trm-op-title">Django-Basics</h6>
             </a>
@@ -749,7 +756,7 @@
             
             <a class="trm-op-top trm-anima-link" href="/OS/BUAA-OS-Lab3/">
                 <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/05/02/rQ8oZiR7gecH9UT.jpg">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/QYvdV7l2ogreRwA.jpg">
                 </span>
                 <h6 class="trm-op-title">BUAA-OS-Lab3</h6>
             </a>
@@ -820,12 +827,6 @@
 
     
 
-    
-        <div class="trm-footer-item">
-            <span>© 2024 - 2024</span>
-            <span class="footer-separator"data-separator=" · "></span>
-            <span class="trm-accent-color">Roisy's Blog</span>
-        </div>
     
 
     

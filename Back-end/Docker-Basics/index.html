@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="常见命令     命令 说明 文档地址     docker pull 拉取镜像 docker pull   docker push 推送镜像到DockerRegistry docker push   docker images 查看本地镜像 docker images   docker rmi 删除本地镜像 docker rmi   docker run 创建并运行容器（不能重复创建） doc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-Basics">
+<meta property="og:url" content="https://roisyl.github.io.git/Back-end/Docker-Basics/">
+<meta property="og:site_name" content="Roisy&#39;s blog">
+<meta property="og:description" content="常见命令     命令 说明 文档地址     docker pull 拉取镜像 docker pull   docker push 推送镜像到DockerRegistry docker push   docker images 查看本地镜像 docker images   docker rmi 删除本地镜像 docker rmi   docker run 创建并运行容器（不能重复创建） doc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="article:published_time" content="2024-08-28T02:38:17.000Z">
+<meta property="article:modified_time" content="2024-08-29T03:58:53.760Z">
+<meta property="article:author" content="Roisy Luo">
+<meta property="article:tag" content="CI&#x2F;CD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
+
+    <meta name="keywords" content="BUAA SE SoftwareEngineering">
+
+
+<title >Docker-Basics</title>
+
+<!-- Favicon -->
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["on the road"],"theme_version":"2.2.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)Hey! Good again!","hide_text":"(●—●)Oh, crash!","safari_pinned_tab":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"danmu":{"enable":false,"el":".trm-banner"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-08-29 11:58:53"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="Roisy's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/imgs/rabbit.jpg">
+    
+    
+        <div class="trm-logo-text">
+            Ro<span>isy</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    index
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    categories
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Front-end/" target="">
+                            Front-end
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Back-end/" target="">
+                            Back-end
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags/" target="">
+                    tags
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    archives
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    about
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/purple1.jpeg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            All articles divided
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            Explore never end
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        Back-end
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/imgs/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Roisy&#39;s Blog
+    </h5>
+    
+        <div class="trm-label">
+            A traveler
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/RoisyL/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://blog.csdn.net/lyxjtsdmfz?type=blog" title="CSDN" rel="nofollow" target="_blank">
+            <i class="iconfont far fa-copyright"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                MAJOR:
+            </div>
+            <div class="trm-label trm-label-light">
+                SE
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                SCHOOL:
+            </div>
+            <div class="trm-label trm-label-light">
+                BUAA
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            08/28
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            10:38
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Roisy Luo
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="常见命令"><a class="markdownIt-Anchor" href="#常见命令"></a> 常见命令</h1>
+<p><img src="https://s2.loli.net/2024/08/29/Ow8LyojZ2niedam.png" alt="image"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+<th>文档地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker pull</td>
+<td>拉取镜像</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/pull/">docker pull</a></td>
+</tr>
+<tr>
+<td>docker push</td>
+<td>推送镜像到DockerRegistry</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/push/">docker push</a></td>
+</tr>
+<tr>
+<td>docker images</td>
+<td>查看本地镜像</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/images/">docker images</a></td>
+</tr>
+<tr>
+<td>docker rmi</td>
+<td>删除本地镜像</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/rmi/">docker rmi</a></td>
+</tr>
+<tr>
+<td>docker run</td>
+<td>创建并运行容器（不能重复创建）</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/run/">docker run</a></td>
+</tr>
+<tr>
+<td>docker stop</td>
+<td>停止指定容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/stop/">docker stop</a></td>
+</tr>
+<tr>
+<td>docker start</td>
+<td>启动指定容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/start/">docker start</a></td>
+</tr>
+<tr>
+<td>docker restart</td>
+<td>重新启动容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/restart/">docker restart</a></td>
+</tr>
+<tr>
+<td>docker rm</td>
+<td>删除指定容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/rm/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker ps</td>
+<td>查看正在运行的容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/ps/">docker ps</a></td>
+</tr>
+<tr>
+<td>docker logs</td>
+<td>查看容器运行日志</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/logs/">docker logs</a></td>
+</tr>
+<tr>
+<td>docker exec</td>
+<td>进入容器</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/exec/">docker exec</a></td>
+</tr>
+<tr>
+<td>docker save</td>
+<td>保存镜像到本地压缩文件</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/save/">docker save</a></td>
+</tr>
+<tr>
+<td>docker load</td>
+<td>加载本地压缩文件到镜像</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/load/">docker load</a></td>
+</tr>
+<tr>
+<td>docker inspect</td>
+<td>查看容器详细信息</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/inspect/">docker inspect</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><code>docker build</code></p>
+<p>依据 Dockerfile 中定义的步骤来构建（创建）一个新的 Docker 镜像</p>
+<ul>
+<li>
+<p><code>-t</code> 或 <code>--tag</code>：为构建的镜像指定一个标签（name:tag）</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t myimage:latest .</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>-pull</code>：始终尝试从远程仓库拉取最新的基础镜像，而不是使用本地的镜像。</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --pull -t myimage .</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>f</code> 或 <code>-file</code>：指定 Dockerfile 的文件名和路径（默认为当前目录下的 <code>Dockerfile</code>）。</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -f Dockerfile.debug -t myimage .</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>.</code>：表示 Dockerfile 所在的上下文（构建上下文），可以是一个目录或一个 URL</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>删除所有 <code>&lt;none&gt;</code> 镜像</strong>：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images | grep <span class="string">&#x27;&lt;none&gt;&#x27;</span> | awk <span class="string">&#x27;&#123;print $3&#125;&#x27;</span> | xargs docker rmi</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="docker-run以创建mysql容器为例"><a class="markdownIt-Anchor" href="#docker-run以创建mysql容器为例"></a> docker run（以创建MySQL容器为例）</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  --name mysql \</span><br><span class="line">  -p 3306:3306 \</span><br><span class="line">  -e TZ=Asia/Shanghai \</span><br><span class="line">  -e MYSQL_ROOT_PASSWORD=123 \</span><br><span class="line">  mysql</span><br></pre></td></tr></table></figure>
+<p><strong>安装命令解读</strong></p>
+<p><code>docker run -d</code>：创建并运行一个容器，<code>-d</code>参数表示后台运行</p>
+<p><code>--name mysql</code>：容器别名</p>
+<p><code>-p 3306:3306</code>：<strong>端口映射</strong>，宿主机端口:容器内端口</p>
+<ul>
+<li><font color='red'>容器内端口由容器内的进程决定</font>，MySQL默认端口是3306；宿主机端口可任意指定，不冲突即可，<font color='red'>通常与容器内端口一致</font></li>
+</ul>
+<p><code>-e key:value</code>：<strong>配置容器内的一些参数</strong>，这是通用格式</p>
+<ul>
+<li>TZ：指定时区</li>
+<li>MYSQL_ROOT_PASSWORD：指定mysql密码</li>
+</ul>
+<p><code>mysql</code>：镜像的名字，Docker会根据这个名字搜索并下载，不可随意设置</p>
+<ul>
+<li>完整格式：<code>镜像名字:版本</code></li>
+<li>该写法默认等同于：<code>mysql:latest</code>，即mysql镜像的最新版本</li>
+</ul>
+<h1 id="docker数据卷"><a class="markdownIt-Anchor" href="#docker数据卷"></a> Docker数据卷</h1>
+<p>容器提供程序的运行环境，<font color='red'>但是程序运行产生的数据、程序运行依赖的配置都应该与容器解耦</font>，通过数据卷可以实现该功能</p>
+<h2 id="概念"><a class="markdownIt-Anchor" href="#概念"></a> 概念</h2>
+<p><img src="https://s2.loli.net/2024/08/29/qhoQOjN5cdzPGYH.png" alt="image"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p>*数据卷(volume)*是一个虚拟目录，是容器内目录与宿主机目录之间映射的桥梁。</p>
+<p>数据卷<font color='red'>关联容器内的特定目录</font>，同时<font color='red'>指向宿主机的特定目录</font>，这样宿主机和容器的目录就关联起来了，称为***挂载***</p>
+<h2 id="常用命令"><a class="markdownIt-Anchor" href="#常用命令"></a> 常用命令</h2>
+<table>
+<thead>
+<tr>
+<th><strong>命令</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>文档地址</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker volume create</td>
+<td>创建数据卷</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/volume_create/">docker volume create</a></td>
+</tr>
+<tr>
+<td>docker volume ls</td>
+<td>查看所有数据卷</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/volume_ls/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker volume rm</td>
+<td>删除指定数据卷</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/volume_prune/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker volume inspect</td>
+<td>查看某个数据卷的详情</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/volume_inspect/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker volume prune</td>
+<td>清除数据卷</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/volume_prune/">docker volume prune</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>默认数据卷所在目录</strong>：<code>/var/lib/docker/volumes/数据卷名字/_data</code></p>
+</li>
+<li>
+<p>容器与数据卷的挂载要<font color='red'>在创建容器时配置</font>，这一过程中，数据卷会默认自动创建</p>
+<ul>
+<li>
+<p><em><strong>匿名卷</strong></em></p>
+<p>当创建容器的时候，未指定数据卷，就会创建一个匿名卷，卷名由一串hash值组成</p>
+</li>
+</ul>
+</li>
+<li>
+<p>eg. nginx指定数据卷安装</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">    --name nginx \</span><br><span class="line">    -p 80:80 \</span><br><span class="line">    -v html:/usr/share/nginx/html \</span><br><span class="line">    nginx</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="挂载本地目录或文件"><a class="markdownIt-Anchor" href="#挂载本地目录或文件"></a> <strong>挂载本地目录或文件</strong></h2>
+<p>数据卷的<font color='red'>目录结构较深</font>，直接操作会不太方便。在很多情况下，我们<font color='red'>会<strong>直接将容器目录与宿主机指定目录挂载</strong></font></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 挂载本地目录</span><br><span class="line">-v 本地目录:容器内目录</span><br><span class="line"># 挂载本地文件</span><br><span class="line">-v 本地文件:容器内文件</span><br></pre></td></tr></table></figure>
+<p>注意：<font color='red'>本地目录或文件，必须以<code>/</code>或<code>./</code>开头</font>，即以绝对路径或相对路径开头。若以名字开头，会被认为是数据卷名而非本地目录名</p>
+<h1 id="自定义镜像以创建java应用镜像为例"><a class="markdownIt-Anchor" href="#自定义镜像以创建java应用镜像为例"></a> 自定义镜像（以创建java应用镜像为例）</h1>
+<h2 id="镜像结构"><a class="markdownIt-Anchor" href="#镜像结构"></a> 镜像结构</h2>
+<h3 id="镜像搭建步骤"><a class="markdownIt-Anchor" href="#镜像搭建步骤"></a> 镜像搭建步骤</h3>
+<p>自定义镜像<strong>本质</strong>就是依次准备好程序运行的基础环境、依赖、应用本身、运行配置等文件，并且打包而成。</p>
+<p><strong>部署一个java应用，大致流程如下</strong>：</p>
+<ul>
+<li>准备Linux服务器</li>
+<li>安装并配置JDK</li>
+<li>上传jar包</li>
+<li>运行jar包</li>
+</ul>
+<p><strong>对应自定义镜像大概也是如下：</strong></p>
+<ul>
+<li>准备Linux运行环境（非全部，仅基础运行环境即可）</li>
+<li>安装并配置JDK</li>
+<li>拷贝jar包</li>
+<li>配置启动脚本</li>
+</ul>
+<h3 id="层"><a class="markdownIt-Anchor" href="#层"></a> “层”</h3>
+<p>上述步骤中的每一次操作其实都是在生产一些文件（系统运行环境、函数库、配置最终都是磁盘文件），所以<font color='purple'>镜像就是一堆文件的集合</font></p>
+<p>镜像文件按照操作的步骤分层叠加而成，每一层形成的文件都会单独打包并标记一个唯一id，称为Layer（层）</p>
+<p>如果构建时用到的某些层已经制作过，就可以直接拷贝使用这些层</p>
+<p><img src="https://s2.loli.net/2024/08/29/98mkyiHKTtCzD2E.png" alt="Untitled"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<h2 id="镜像结构文件dockerfile"><a class="markdownIt-Anchor" href="#镜像结构文件dockerfile"></a> 镜像结构文件：Dockerfile</h2>
+<blockquote>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/builder/">https://docs.docker.com/engine/reference/builder/</a></p>
+</blockquote>
+<p>由于制作镜像需要逐层处理和打包，Docker提供自动打包的功能。只需要将打包的过程，<font color='red'>每一层要做的事情用固定的语法写下来</font>，交给Docker去执行即可。</p>
+<p>这种记录镜像结构的文件就称为***Dockerfile***</p>
+<h3 id="常用命令-2"><a class="markdownIt-Anchor" href="#常用命令-2"></a> 常用命令</h3>
+<table>
+<thead>
+<tr>
+<th><strong>指令</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FROM</strong></td>
+<td>指定基础镜像</td>
+<td><code>FROM centos:6</code></td>
+</tr>
+<tr>
+<td><strong>ENV</strong></td>
+<td>设置环境变量，可在后面指令使用</td>
+<td><code>ENV key value</code></td>
+</tr>
+<tr>
+<td><strong>COPY</strong></td>
+<td>拷贝本地文件到镜像的指定目录，并改名</td>
+<td><code>COPY ./xx.jar /tmp/app.jar</code></td>
+</tr>
+<tr>
+<td>ADD</td>
+<td>复制新文件或目录到容器内，也可以从URL下载文件到容器内（与COPY 相比，适用于需要自动解压缩或下载远程文件的场景）</td>
+<td><code>ADD &lt;源路径&gt; &lt;目标路径&gt;</code></td>
+</tr>
+<tr>
+<td><strong>RUN</strong></td>
+<td>执行Linux的shell命令，一般是安装过程的命令</td>
+<td><code>RUN yum install gcc</code></td>
+</tr>
+<tr>
+<td><strong>EXPOSE</strong></td>
+<td>声明容器运行时监听的端口，是提示镜像使用者的</td>
+<td><code>EXPOSE 8080</code></td>
+</tr>
+<tr>
+<td>CMD</td>
+<td>定义容器的默认执行命令</td>
+<td><code>CMD [&quot;python&quot;, &quot;manage.py&quot;, &quot;runserver&quot;, &quot;0.0.0.0:8000&quot;]</code></td>
+</tr>
+<tr>
+<td><strong>ENTRYPOINT</strong></td>
+<td>镜像中应用的启动命令，容器运行时调用</td>
+<td><code>ENTRYPOINT java -jar xx.jar</code></td>
+</tr>
+<tr>
+<td>WORKDIR</td>
+<td>指定工作目录，后续的指令都会在这个目录下执行</td>
+<td><code>WORKDIR /code</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><code>CMD</code> 可以与 <code>ENTRYPOINT</code> 指令结合使用。<code>ENTRYPOINT</code> 指定了容器启动时要运行的<font color='red'>可执行文件</font>，而 <code>CMD</code> 提供了传递给这个可执行文件的<font color='red'>参数</font></p>
+</li>
+<li>
+<p>换源</p>
+  <figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置 pip 使用清华源</span></span><br><span class="line"><span class="keyword">ENV</span> PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="dockerfile文件"><a class="markdownIt-Anchor" href="#dockerfile文件"></a> Dockerfile文件</h3>
+<p>构建java镜像的DockerFile文件内容</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 指定基础镜像</span></span><br><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.04</span></span><br><span class="line"><span class="comment"># 配置环境变量，JDK的安装目录、容器内时区</span></span><br><span class="line"><span class="keyword">ENV</span> JAVA_DIR=/usr/local</span><br><span class="line"><span class="keyword">ENV</span> TZ=Asia/Shanghai</span><br><span class="line"><span class="comment"># 拷贝jdk和java项目的包</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./jdk8.tar.gz <span class="variable">$JAVA_DIR</span>/</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./docker-demo.jar /tmp/app.jar</span></span><br><span class="line"><span class="comment"># 设定时区</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">ln</span> -snf /usr/share/zoneinfo/<span class="variable">$TZ</span> /etc/localtime &amp;&amp; <span class="built_in">echo</span> <span class="variable">$TZ</span> &gt; /etc/timezone</span></span><br><span class="line"><span class="comment"># 安装JDK</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">cd</span> <span class="variable">$JAVA_DIR</span> \</span></span><br><span class="line"><span class="language-bash"> &amp;&amp; tar -xf ./jdk8.tar.gz \</span></span><br><span class="line"><span class="language-bash"> &amp;&amp; <span class="built_in">mv</span> ./jdk1.8.0_144 ./java8</span></span><br><span class="line"><span class="comment"># 配置环境变量</span></span><br><span class="line"><span class="keyword">ENV</span> JAVA_HOME=$JAVA_DIR/java8</span><br><span class="line"><span class="keyword">ENV</span> PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line"><span class="comment"># 指定项目监听的端口</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8080</span></span><br><span class="line"><span class="comment"># 入口，java项目的启动命令</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;java&quot;</span>, <span class="string">&quot;-jar&quot;</span>, <span class="string">&quot;/app.jar&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+<p>上述制作过程中，针对不同的java项目，都要用到Linux环境、JDK环境，仅jar包不同，所以就可以把前两层封装为一个镜像，然后调用：</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基础镜像</span></span><br><span class="line"><span class="keyword">FROM</span> openjdk:<span class="number">11.0</span>-jre-buster</span><br><span class="line"><span class="comment"># 设定时区</span></span><br><span class="line"><span class="keyword">ENV</span> TZ=Asia/Shanghai</span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">ln</span> -snf /usr/share/zoneinfo/<span class="variable">$TZ</span> /etc/localtime &amp;&amp; <span class="built_in">echo</span> <span class="variable">$TZ</span> &gt; /etc/timezone</span></span><br><span class="line"><span class="comment"># 拷贝jar包</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> docker-demo.jar /app.jar</span></span><br><span class="line"><span class="comment"># 入口</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;java&quot;</span>, <span class="string">&quot;-jar&quot;</span>, <span class="string">&quot;/app.jar&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+<h3 id="镜像制作"><a class="markdownIt-Anchor" href="#镜像制作"></a> 镜像制作</h3>
+<ol>
+<li>准备好Dockerfile文件和jar包，放在<font color='red'>同一个目录</font>下：</li>
+<li><strong>执行命令：</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 进入jar包、Dockerfile文件所在目录</span><br><span class="line">cd /root/demo</span><br><span class="line"></span><br><span class="line"># 开始构建</span><br><span class="line">docker build -t docker-demo:1.0 .</span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>镜像运行</strong></li>
+</ol>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="language-bash"> -d --name demo-java -p 8080:8080 docker-demo:1.0</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>访问</strong></li>
+</ol>
+<ul>
+<li>Linux虚拟机内访问：<code>curl localhost:8080/hello/count</code></li>
+<li>虚拟机外访问：
+<ul>
+<li>记得开放端口</li>
+<li>Linux ip地址:8080/hello/count</li>
+</ul>
+</li>
+</ul>
+<h2 id="docker网络"><a class="markdownIt-Anchor" href="#docker网络"></a> Docker网络</h2>
+<h3 id="什么是docker网络"><a class="markdownIt-Anchor" href="#什么是docker网络"></a> 什么是Docker网络？</h3>
+<p>一个java项目往往需要访问各种中间件，例如Redis、MySQL等，<font color='red'>容器之间是可以相互访问的</font></p>
+<p>不使用网络的话，只能用容器实例的ip+端口来访问，但是这里的ip是虚拟的，不固定。如果在开发时候写死ip，往往会导致部署的时候连接失败。</p>
+<p>Docker网络就可以用来解决这个问题，建立Docker网络后将容器加载进来，就可以<font color='red'>通过容器名字访问</font></p>
+<p>只有在<font color='red'>相同的网络</font>之中才能进行通讯</p>
+<h3 id="常见命令-2"><a class="markdownIt-Anchor" href="#常见命令-2"></a> 常见命令</h3>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+<th>文档地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>docker network create</td>
+<td>创建一个网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_create/">docker network create</a></td>
+</tr>
+<tr>
+<td>docker network ls</td>
+<td>查看所有网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_ls/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker network rm</td>
+<td>删除指定网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_rm/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker network prune</td>
+<td>清除未使用的网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_prune/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker network connect</td>
+<td>使指定容器连接加入某网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_connect/">docs.docker.com</a></td>
+</tr>
+<tr>
+<td>docker network disconnect</td>
+<td>使指定容器连接离开某网络</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_disconnect/">docker network disconnect</a></td>
+</tr>
+<tr>
+<td>docker network inspect</td>
+<td>查看网络详细信息</td>
+<td><a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/network_inspect/">docker network inspect</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="自定义网络"><a class="markdownIt-Anchor" href="#自定义网络"></a> 自定义网络</h3>
+<ul>
+<li>创建</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker network create hmall</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>查看</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker network ls</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 结果</span><br><span class="line">NETWORK ID     NAME      DRIVER    SCOPE</span><br><span class="line">639bc44d0a87   bridge    bridge    local</span><br><span class="line">403f16ec62a2   hmall     bridge    local</span><br><span class="line">0dc0f72a0fbb   host      host      local</span><br><span class="line">cd8d3e8df47b   none      null      local</span><br></pre></td></tr></table></figure>
+<ul>
+<li>让demo-java和mysql两个容器都加入该网络，可以起别名</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker network connect hmall mysql --alias db</span><br><span class="line">docker network connect hmall demo-java</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>进入demo-java容器，尝试别名访问</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker exec -it demo-java bash</span><br><span class="line">[root@localhost ~]# ping db</span><br><span class="line"># 结果：通顺</span><br><span class="line">PING db (172.18.0.2) 56(84) bytes of data.</span><br><span class="line">64 bytes from mysql.hmall (172.18.0.2): icmp_seq=1 ttl=64 time=0.070 ms</span><br><span class="line">64 bytes from mysql.hmall (172.18.0.2): icmp_seq=2 ttl=64 time=0.056 ms</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>进入demo-java容器，尝试容器名访问</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ping mysql</span><br><span class="line"># 结果：通顺</span><br><span class="line">PING mysql (172.18.0.2) 56(84) bytes of data.</span><br><span class="line">64 bytes from mysql.hmall (172.18.0.2): icmp_seq=1 ttl=64 time=0.044 ms</span><br><span class="line">64 bytes from mysql.hmall (172.18.0.2): icmp_seq=2 ttl=64 time=0.054 ms</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="docker-compose"><a class="markdownIt-Anchor" href="#docker-compose"></a> <strong>Docker-compose</strong></h1>
+<p>在线上环境中，通常不会将项目的所有组件放到同一个容器中；更好的做法是<font color='red'>把每个独立的功能装进单独的容器</font><br />
+同一个服务器上有可能会运行着多个容器，如果每次都靠一条条指令去启动太繁琐。 <em><strong>Docker-compose</strong></em> 就是解决这个问题的，它用来<font color='red'>编排多个容器</font>，将启动容器的命令统一写到 <code>docker-compose.yml</code> 文件中，以后每次启动这一组容器时，只需要 <code>docker-compose up</code> 就可以了</p>
+<h3 id="docker-composeyml-示例"><a class="markdownIt-Anchor" href="#docker-composeyml-示例"></a> <strong><code>docker-compose.yml</code> 示例</strong></h3>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span>  <span class="comment"># &#x27;点&#x27;代表当前目录</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">&quot;python3 manage.py runserver 0.0.0.0:8000&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">.:/code</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8000:8000&quot;</span></span><br></pre></td></tr></table></figure>
+<p><code>version</code> 代表 docker-compose.yml 的版本，目前最新版为 3，不需要改动它。</p>
+<p><code>services</code>定义了所有参与的容器服务，每个服务下可以有自己的配置。定义了一个名叫 <code>app</code> 的容器。后面的内容都是 <code>app</code> 容器的相关配置：</p>
+<ul>
+<li>
+<p><code>restart</code> ：除正常工作外，容器会在任何时候重启，比如遭遇 bug、进程崩溃、docker 重启等情况。</p>
+</li>
+<li>
+<p><code>build</code> ：指定一个包含 <font color='red'><em><strong>Dockerfile</strong></em> </font>的路径，并通过此 Dockerfile 来构建容器镜像</p>
+<ul>
+<li>也可以用 <code>image: xxx</code> 指定镜像，但这样就需要先手动构建好镜像</li>
+</ul>
+</li>
+<li>
+<p><code>command</code> ：容器运行时需要执行的命令</p>
+</li>
+<li>
+<p><code>volumes</code> ：卷，或者说是挂载</p>
+</li>
+<li>
+<p><code>ports</code> ：定义宿主机和容器的端口映射</p>
+</li>
+<li>
+<p><code>environment</code>：定义环境变量</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># environment定义了环境变量，这些变量将被设置在容器内</span></span><br><span class="line">environment:</span><br><span class="line">  <span class="comment"># 设置了MySQL root用户的密码</span></span><br><span class="line">  MYSQL_ROOT_PASSWORD: <span class="string">&#x27;@15755083308Ab&#x27;</span></span><br><span class="line">  <span class="comment"># 设置了创建的默认数据库名称</span></span><br><span class="line">  MYSQL_DATABASE: <span class="string">&#x27;seproject&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>depends_on</code>：声明该服务依赖于其他服务，确保其他服务先启动</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">web:</span><br><span class="line">		......</span><br><span class="line">		<span class="comment"># depends_on声明了web服务依赖于database服务，确保database服务先启动</span></span><br><span class="line">    depends_on:</span><br><span class="line">      - database</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>container_name</code>：为服务容器指定自定义名称</p>
+</li>
+</ul>
+<h2 id="相关命令"><a class="markdownIt-Anchor" href="#相关命令"></a> 相关命令</h2>
+<h3 id="启动服务"><a class="markdownIt-Anchor" href="#启动服务"></a> 启动服务</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure>
+<ul>
+<li>启动后打开  <code>127.0.0.1:8000</code> 即可（前面用的是8000端口的话）#</li>
+</ul>
+<h1 id="镜像仓库"><a class="markdownIt-Anchor" href="#镜像仓库"></a> 镜像仓库</h1>
+<h3 id="在服务器中设置镜像仓库地址"><a class="markdownIt-Anchor" href="#在服务器中设置镜像仓库地址"></a> 在服务器中设置镜像仓库地址</h3>
+<p>如果希望每次登录时都自动设置环境变量，可以将其添加到用户目录下的<code>.bashrc</code>、<code>.profile</code>或<code>.bash_profile</code>文件中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export REGISTRY=&quot;[registry-internal.cn](http://registry-internal.cn-beijing.aliyuncs.com/roisy/seproject)-beijing.aliyuncs.com/roisy&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>然后，运行以下命令使更改生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+</article>
+    
+    
+
+<ul class="trm-post-copyright">
+    <li class="trm-post-copyright-author">
+        <strong>Post author: </strong>
+        Roisy Luo
+    </li>
+    <li class="trm-post-copyright-link">
+        <strong>Post link: </strong>
+        <a id="original-link" href="https://roisyl.github.io.git/Back-end/Docker-Basics/" title="Docker-Basics">https://roisyl.github.io.git/Back-end/Docker-Basics/</a>
+    </li>
+    <li class="trm-post-copyright-license">
+        <strong>Copyright Notice: </strong>
+        All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 ">CC BY-NC-SA 4.0</a> unless otherwise stated.
+    </li>
+</ul>
+
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            Other Articles
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/OS/BUAA-OS-Lab4-challenge/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/g15cZYCXaUs8Nyo.jpg">
+                </span>
+                <h6 class="trm-op-title">BUAA-OS-Lab4_challenge</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/08/29</li>
+                <li>10:46</li>
+                <li>OS</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/OS/BUAA-OS-Lab5/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/B1DgESrCvaLXnYF.jpg">
+                </span>
+                <h6 class="trm-op-title">BUAA-OS-Lab5</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/05/29</li>
+                <li>18:36</li>
+                <li>OS</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+    <div id="giscus-wrap" class="trm-card trm-scroll-animation comment-container"></div>
+<script data-swup-reload-script>
+    function loadGiscus() {
+        let nowTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        const config = {
+            src: 'https://giscus.app/client.js',
+            "data-repo": 'RoisyL/RoisyL.github.io',
+            "data-repo-id": 'R_kgDOLd8WqQ',
+            "data-category": 'General',
+            "data-category-id": 'DIC_kwDOLd8Wqc4Cd4lq',
+            "data-mapping": 'pathname',
+            "data-reactions-enabled": '1',
+            "data-emit-metadata": '0',
+            "data-theme": nowTheme,
+            "data-lang": 'en',
+            crossorigin: "anonymous",
+            async: true
+        }
+        let ele = document.createElement('script')
+        for (let key in config) {
+            ele.setAttribute(key, config[key])
+        }
+        document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin', ele)
+    }
+
+    function changeGiscusTheme() {
+        let theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+        function sendMessage(message) {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (!iframe) return;
+            iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+
+        sendMessage({
+            setConfig: {
+                theme: theme
+            }
+        });
+    }
+
+    loadGiscus();
+</script>
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> v7.1.1
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                Theme - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.2.3
+            </span>
+        </div>
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        Article table of contents
+				<span id="post-toc-top">
+					TOP
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title=" 常见命令"><a rel="nofollow" class="trm-toc-link" href="#常见命令"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> 常见命令</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" docker run（以创建MySQL容器为例）"><a rel="nofollow" class="trm-toc-link" href="#docker-run以创建mysql容器为例"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text"> docker run（以创建MySQL容器为例）</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" Docker数据卷"><a rel="nofollow" class="trm-toc-link" href="#docker数据卷"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> Docker数据卷</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 概念"><a rel="nofollow" class="trm-toc-link" href="#概念"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text"> 概念</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" 常用命令"><a rel="nofollow" class="trm-toc-link" href="#常用命令"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text"> 常用命令</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" 挂载本地目录或文件"><a rel="nofollow" class="trm-toc-link" href="#挂载本地目录或文件"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text"> 挂载本地目录或文件</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 自定义镜像（以创建java应用镜像为例）"><a rel="nofollow" class="trm-toc-link" href="#自定义镜像以创建java应用镜像为例"><span class="trm-toc-number">3.</span> <span class="trm-toc-text"> 自定义镜像（以创建java应用镜像为例）</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 镜像结构"><a rel="nofollow" class="trm-toc-link" href="#镜像结构"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text"> 镜像结构</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 镜像搭建步骤"><a rel="nofollow" class="trm-toc-link" href="#镜像搭建步骤"><span class="trm-toc-number">3.1.1.</span> <span class="trm-toc-text"> 镜像搭建步骤</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" “层”"><a rel="nofollow" class="trm-toc-link" href="#层"><span class="trm-toc-number">3.1.2.</span> <span class="trm-toc-text"> “层”</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" 镜像结构文件：Dockerfile"><a rel="nofollow" class="trm-toc-link" href="#镜像结构文件dockerfile"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text"> 镜像结构文件：Dockerfile</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 常用命令"><a rel="nofollow" class="trm-toc-link" href="#常用命令-2"><span class="trm-toc-number">3.2.1.</span> <span class="trm-toc-text"> 常用命令</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" Dockerfile文件"><a rel="nofollow" class="trm-toc-link" href="#dockerfile文件"><span class="trm-toc-number">3.2.2.</span> <span class="trm-toc-text"> Dockerfile文件</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 镜像制作"><a rel="nofollow" class="trm-toc-link" href="#镜像制作"><span class="trm-toc-number">3.2.3.</span> <span class="trm-toc-text"> 镜像制作</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" Docker网络"><a rel="nofollow" class="trm-toc-link" href="#docker网络"><span class="trm-toc-number">3.3.</span> <span class="trm-toc-text"> Docker网络</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 什么是Docker网络？"><a rel="nofollow" class="trm-toc-link" href="#什么是docker网络"><span class="trm-toc-number">3.3.1.</span> <span class="trm-toc-text"> 什么是Docker网络？</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 常见命令"><a rel="nofollow" class="trm-toc-link" href="#常见命令-2"><span class="trm-toc-number">3.3.2.</span> <span class="trm-toc-text"> 常见命令</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 自定义网络"><a rel="nofollow" class="trm-toc-link" href="#自定义网络"><span class="trm-toc-number">3.3.3.</span> <span class="trm-toc-text"> 自定义网络</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" Docker-compose"><a rel="nofollow" class="trm-toc-link" href="#docker-compose"><span class="trm-toc-number">4.</span> <span class="trm-toc-text"> Docker-compose</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" docker-compose.yml 示例"><a rel="nofollow" class="trm-toc-link" href="#docker-composeyml-示例"><span class="trm-toc-number">4.0.1.</span> <span class="trm-toc-text"> docker-compose.yml 示例</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" 相关命令"><a rel="nofollow" class="trm-toc-link" href="#相关命令"><span class="trm-toc-number">4.1.</span> <span class="trm-toc-text"> 相关命令</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 启动服务"><a rel="nofollow" class="trm-toc-link" href="#启动服务"><span class="trm-toc-number">4.1.1.</span> <span class="trm-toc-text"> 启动服务</span></a></li></ol></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 镜像仓库"><a rel="nofollow" class="trm-toc-link" href="#镜像仓库"><span class="trm-toc-number">5.</span> <span class="trm-toc-text"> 镜像仓库</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 在服务器中设置镜像仓库地址"><a rel="nofollow" class="trm-toc-link" href="#在服务器中设置镜像仓库地址"><span class="trm-toc-number">5.0.1.</span> <span class="trm-toc-text"> 在服务器中设置镜像仓库地址</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="Open toc">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="Read Mode" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn hidden-md" data-title="Toggle between single-column and double-column" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="Back To Top">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="Searching...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    Please enter keywords to search
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.3"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.3"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+    <script data-swup-reload-script>
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+
+
+<script id="async-script" src="/js/main.js?v=2.2.3"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
