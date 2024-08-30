@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="介绍了Docker容器化技术在MySQL和Django项目中的应用，包括容器配置、数据迁移及部署流程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker应用">
+<meta property="og:url" content="https://roisyl.github.io.git/Back-end/Docker-Application/">
+<meta property="og:site_name" content="Roisy&#39;s blog">
+<meta property="og:description" content="介绍了Docker容器化技术在MySQL和Django项目中的应用，包括容器配置、数据迁移及部署流程">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-08-30T02:10:17.000Z">
+<meta property="article:modified_time" content="2024-08-30T06:15:41.928Z">
+<meta property="article:author" content="Roisy Luo">
+<meta property="article:tag" content="CI&amp;CD">
+<meta name="twitter:card" content="summary">
+
+    <meta name="keywords" content="Docker应用, MySQL容器化, Django容器化, 后端开发">
+
+
+<title >Docker应用</title>
+
+<!-- Favicon -->
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["on the road"],"theme_version":"2.2.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)Hey! Good again!","hide_text":"(●—●)Oh, crash!","safari_pinned_tab":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"danmu":{"enable":false,"el":".trm-banner"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-08-30 14:15:41"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="Roisy's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/imgs/rabbit.jpg">
+    
+    
+        <div class="trm-logo-text">
+            Ro<span>isy</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    index
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    categories
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Front-end/" target="">
+                            Front-end
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Back-end/" target="">
+                            Back-end
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags/" target="">
+                    tags
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    archives
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    about
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/08/29/z9NyCwhkBfMtrxv.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            Many a little makes a mickle
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            Docker应用
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        Back-end
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            08/30
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            10:10
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Roisy Luo
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="mysql数据库容器化"><a class="markdownIt-Anchor" href="#mysql数据库容器化"></a> MySQL数据库容器化</h2>
+<h3 id="目录结构"><a class="markdownIt-Anchor" href="#目录结构"></a> 目录结构</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mysql_env]<span class="comment"># tree -L 2</span></span><br><span class="line">./</span><br><span class="line">├── conf</span><br><span class="line">│   └── my.conf                 <span class="comment"># mysql的配置文件</span></span><br><span class="line">├── data                        <span class="comment"># 挂载mysql容器内的数据</span></span><br><span class="line">│   └── xxxxxxx</span><br><span class="line">├── init                        <span class="comment"># 放置初始化脚本，在创建容器后，会执行文件夹里面的脚本，完成数据初始化</span></span><br><span class="line">                                <span class="comment"># 若是项目没有需要初始化的数据，该文件夹下不用放置任何内容</span></span><br><span class="line">│   └── icwp_full_data.sql</span><br><span class="line">├── <span class="built_in">log</span>                         <span class="comment"># 挂载mysql容器内的日志</span></span><br></pre></td></tr></table></figure>
+<h3 id="各文件内容"><a class="markdownIt-Anchor" href="#各文件内容"></a> 各文件内容</h3>
+<ul>
+<li>
+<p><strong>my.conf</strong></p>
+<p>网上复制的一份示例</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">###### [client]配置模块 ######</span><br><span class="line">[client]</span><br><span class="line">default-character-set=utf8mb4</span><br><span class="line">socket=/var/lib/mysql/mysql.sock</span><br><span class="line"></span><br><span class="line">###### [mysql]配置模块 ######</span><br><span class="line">[mysql]</span><br><span class="line"># 设置MySQL客户端默认字符集</span><br><span class="line">default-character-set=utf8mb4</span><br><span class="line">socket=/var/lib/mysql/mysql.sock</span><br><span class="line"></span><br><span class="line">###### [mysqld]配置模块 ######</span><br><span class="line">[mysqld]</span><br><span class="line">port=3306</span><br><span class="line">user=mysql</span><br><span class="line"># 设置sql模式 sql_mode模式引起的分组查询出现*this is incompatible with sql_mode=only_full_group_by，这里最好剔除ONLY_FULL_GROUP_BY</span><br><span class="line">sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</span><br><span class="line">datadir=/var/lib/mysql</span><br><span class="line">socket=/var/lib/mysql/mysql.sock</span><br><span class="line">server-id = 1</span><br><span class="line"></span><br><span class="line"># MySQL8 的密码认证插件 如果不设置低版本navicat无法连接</span><br><span class="line">default_authentication_plugin=mysql_native_password</span><br><span class="line"></span><br><span class="line"># 禁用符号链接以防止各种安全风险</span><br><span class="line">symbolic-links=0</span><br><span class="line"></span><br><span class="line"># 允许最大连接数</span><br><span class="line">max_connections=1000</span><br><span class="line"></span><br><span class="line"># 服务端使用的字符集默认为8比特编码的latin1字符集</span><br><span class="line">character-set-server=utf8mb4</span><br><span class="line"></span><br><span class="line"># 创建新表时将使用的默认存储引擎</span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line"></span><br><span class="line"># 表名存储在磁盘是小写的，但是比较的时候是不区分大小写</span><br><span class="line">lower_case_table_names=0</span><br><span class="line">max_allowed_packet=16M</span><br><span class="line"></span><br><span class="line"># 设置时区</span><br><span class="line">default-time_zone=&#x27;+8:00&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>**icwp_full_data.sql：**通过mysqldump工具，导出的windows平台上的项目数据，包含：建库命令-建表命令-数据插入命令，用于数据初始化</p>
+<p>获取该sql文件的方法如下：</p>
+<ul>
+<li>在存有数据的平台上以管理员身份打开cmd命令：</li>
+<li>导出数据：</li>
+</ul>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -u root -p --host=127.0.0.1 --port=3306 --databases &lt;database_name&gt; &gt; C:\Users\Roisy\Desktop\icwp-mysql-data\mysqldump\icwp_full_data.sql</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将保存的数据放到上述init文件夹下面，命名不重要</li>
+</ul>
+</li>
+</ul>
+<h3 id="容器运行命令"><a class="markdownIt-Anchor" href="#容器运行命令"></a> 容器运行命令</h3>
+<p>确保上述提到的目录、文件都创建完毕，在/xxx/www/mysql_env/路径下打开终端</p>
+<ul>
+<li>启动容器</li>
+</ul>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="language-bash"> \</span></span><br><span class="line"><span class="language-bash">  -d \			</span></span><br><span class="line">  --name mysql-icwp-alone \</span><br><span class="line">  -p <span class="number">22339</span>:<span class="number">22339</span> \</span><br><span class="line">  -e TZ=Asia/Shanghai \</span><br><span class="line">  -e MYSQL_ROOT_PASSWORD=@<span class="number">15755083308</span>Ab \</span><br><span class="line">  -v ./data:/var/lib/mysql \</span><br><span class="line">  -v ./conf:/etc/mysql/conf.d \</span><br><span class="line">  -v ./init:/docker-<span class="keyword">entrypoint</span><span class="language-bash">-initdb.d \</span></span><br><span class="line"><span class="language-bash">  -v ./log:/var/log/mysql \</span></span><br><span class="line"><span class="language-bash">  --network icwp-alone \</span></span><br><span class="line"><span class="language-bash">  mysql:8.0</span></span><br><span class="line">// 也就是：</span><br><span class="line">docker <span class="keyword">run</span><span class="language-bash"> -d --name mysql-icwp-alone -p 22339:22339 -e TZ=Asia/Shanghai -e MYSQL_ROOT_PASSWORD=@15755083308Ab -v ./data:/var/lib/mysql -v ./conf:/etc/mysql/conf.d -v ./init:/docker-entrypoint-initdb.d -v ./log:/var/log/mysql --network icwp-alone mysql:8.0</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-d</code></td>
+<td>后台运行</td>
+</tr>
+<tr>
+<td><code>--name mysql-icwp-alone</code></td>
+<td>设置容器名字</td>
+</tr>
+<tr>
+<td><code>-p 3306:3306</code></td>
+<td>端口映射</td>
+</tr>
+<tr>
+<td><code>-e TZ=Asia/Shanghai</code></td>
+<td>设置mysql时区</td>
+</tr>
+<tr>
+<td><code>-e MYSQL_ROOT_PASSWORD=123456</code></td>
+<td>设置mysql密码</td>
+</tr>
+<tr>
+<td><code>-v ./data:/var/lib/mysql</code></td>
+<td>挂载mysql数据</td>
+</tr>
+<tr>
+<td><code>-v ./conf:/etc/mysql/conf.d</code></td>
+<td>挂载配置文件</td>
+</tr>
+<tr>
+<td><code>-v ./init:/docker-entrypoint-initdb.d</code></td>
+<td>挂载初始化.sql文件</td>
+</tr>
+<tr>
+<td><code>-v ./log:/var/log/mysql</code></td>
+<td>挂载log文件</td>
+</tr>
+<tr>
+<td><code>--network icwp-alone</code></td>
+<td>将容器加入网络（方便后续用容器名字代替ip来访问mysql）</td>
+</tr>
+<tr>
+<td>mysql:8.0</td>
+<td>容器所基于的镜像名字</td>
+</tr>
+</tbody>
+</table>
+<h3 id="测试是否部署成功"><a class="markdownIt-Anchor" href="#测试是否部署成功"></a> 测试是否部署成功</h3>
+<ol>
+<li>
+<p>进入容器</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it mysql-icwp-alone bash</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>进入MySQL</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="其他操作"><a class="markdownIt-Anchor" href="#其他操作"></a> 其他操作</h3>
+<ul>
+<li>恢复.sql文件备份  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ./init/icwp_full_data.sql | docker <span class="built_in">exec</span> -i --user=root mysql-icwp-alone mysql -p&lt;password&gt; &lt;database&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="django容器化"><a class="markdownIt-Anchor" href="#django容器化"></a> Django容器化</h2>
+<p>基础文件结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">django_app</span><br><span class="line">  - Dockerfile</span><br><span class="line">  - requirements.txt</span><br><span class="line">  - manage.py   # 创建新项目自带</span><br><span class="line">  - django_app   # 创建新项目自带</span><br><span class="line">  - db.sqlite3   # 迁移数据后生成</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>数据迁移指令</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python manage.py migrate</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：确保数据库结构与代码库中（<a target="_blank" rel="noopener" href="http://models.py">models.py</a>）的模型定义保持同步</li>
+<li>在部署新版本的 Django 应用时，通常还会使用 <code>python manage.py collectstatic</code> 命令，以确保所有静态文件被正确收集和设置</li>
+</ul>
+</li>
+<li>
+<p>如果需要用到docker-compose，那根目录下还需要编写<code>docker-compose.yml</code>文件</p>
+</li>
+</ul>
+<h3 id="dockerfile"><a class="markdownIt-Anchor" href="#dockerfile"></a> Dockerfile</h3>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 例：</span></span><br><span class="line"><span class="comment"># 从仓库拉取 带有 python 3.10 的 Linux 环境</span></span><br><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 python 环境变量，在容器化部署中，可以提供更好的日志记录和调试体验</span></span><br><span class="line"><span class="keyword">ENV</span> PYTHONUNBUFFERED <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 code 文件夹并将其设置为工作目录</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> <span class="built_in">mkdir</span> /code</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /code</span></span><br><span class="line"><span class="comment"># 更新 pip</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pip install pip -U</span></span><br><span class="line"><span class="comment"># 将 requirements.txt 复制到容器的 code 目录</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> requirements.txt /code/</span></span><br><span class="line"><span class="comment"># 安装库</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pip install -r requirements.txt</span></span><br><span class="line"><span class="comment"># 将当前目录复制到容器的 code 目录</span></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> . /code/</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>FROM python:3.10</code> 指令从仓库拉取一个包含 python 3.10 的 Linux 操作系统环境</li>
+<li><code>RUN</code> 和 <code>WORKDIR</code> 指令都是针对容器的，功能是在容器里创建目录、并将其设置为工作目录。注意宿主机是没有这个目录的。</li>
+<li><code>ADD</code> 指令出现了两次，都起复制文件的作用</li>
+</ul>
+<h3 id="requirementstxt"><a class="markdownIt-Anchor" href="#requirementstxt"></a> requirements.txt</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 例</span><br><span class="line">django==4.2</span><br></pre></td></tr></table></figure>
+<h3 id="settingspy"><a class="markdownIt-Anchor" href="#settingspy"></a> <a target="_blank" rel="noopener" href="http://settings.py">settings.py</a></h3>
+<ul>
+<li>
+<p>将数据库设置为 MySQL</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">DATABASES = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;django.db.backends.mysql&#x27;</span>,    <span class="comment"># MYSQL固定写法</span></span><br><span class="line">        <span class="string">&#x27;NAME&#x27;</span>: <span class="string">&#x27;django_app&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;USER&#x27;</span>: <span class="string">&#x27;root&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;PASSWORD&#x27;</span>: <span class="string">&#x27;mypassword&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;HOST&#x27;</span>: <span class="string">&#x27;db&#x27;</span>,   <span class="comment"># 注意 HOST 填写的是容器的名称</span></span><br><span class="line">        <span class="string">&#x27;PORT&#x27;</span>: <span class="string">&#x27;3306&#x27;</span>,    <span class="comment"># MYSQL默认端口</span></span><br><span class="line">        <span class="string">&#x27;OPTIONS&#x27;</span>: &#123;<span class="string">&#x27;charset&#x27;</span>: <span class="string">&#x27;utf8mb4&#x27;</span>&#125;,    <span class="comment"># 可选项</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>后端连接不上数据库的可能原因：</p>
+<p>不能直接用localhost访问数据库，而要用后端配置中 <code>depends_on</code> 后的容器名称（即数据库的容器名称）加上端口去访问</p>
+<p>因为在容器内部，<code>localhost</code> 通常指向容器自身，而不是宿主机或其他容器</p>
+</li>
+</ul>
+</li>
+<li>
+<p>设置调试模式</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DEBUG = <span class="literal">False</span> </span><br></pre></td></tr></table></figure>
+<p>在开发环境中，一般将 DEBUG 设置为 True 以获取详细的错误信息</p>
+<p>而在生产环境中则设置为 False 以提高安全性和性能</p>
+</li>
+<li>
+<p>明确允许哪些域名或IP地址可以访问网站</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALLOWED_HOSTS = [<span class="string">&#x27;101.42.36.160&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span>, <span class="string">&#x27;127.0.0.1&#x27;</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>定义静态文件的 URL 前缀和根目录</p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">STATIC_URL = <span class="string">&#x27;/static/&#x27;</span></span><br><span class="line">STATIC_ROOT = os.path.join(BASE_DIR, <span class="string">&#x27;staticfiles&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>STATIC_ROOT</code> 是静态文件的本地根目录，用于存放通过 <code>collectstatic</code> 命令收集的静态文件</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Reference</p>
+<ul>
+<li>循序渐进的菜鸟教程  <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000020606652">https://segmentfault.com/a/1190000020606652</a>
+<ul>
+<li>配套仓库 <a target="_blank" rel="noopener" href="https://github.com/stacklens/django-docker-tutorial">https://github.com/stacklens/django-docker-tutorial</a></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+
+</article>
+    
+    
+
+<ul class="trm-post-copyright">
+    <li class="trm-post-copyright-author">
+        <strong>Post author: </strong>
+        Roisy Luo
+    </li>
+    <li class="trm-post-copyright-link">
+        <strong>Post link: </strong>
+        <a id="original-link" href="https://roisyl.github.io.git/Back-end/Docker-Application/" title="Docker应用">https://roisyl.github.io.git/Back-end/Docker-Application/</a>
+    </li>
+    <li class="trm-post-copyright-license">
+        <strong>Copyright Notice: </strong>
+        All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 ">CC BY-NC-SA 4.0</a> unless otherwise stated.
+    </li>
+</ul>
+
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            Other Articles
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/Back-end/Docker-Basics/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/gOaF81YxHl5QnXA.jpg">
+                </span>
+                <h6 class="trm-op-title">Docker基础</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/08/29</li>
+                <li>15:45</li>
+                <li>Back-end</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+    <div id="giscus-wrap" class="trm-card trm-scroll-animation comment-container"></div>
+<script data-swup-reload-script>
+    function loadGiscus() {
+        let nowTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        const config = {
+            src: 'https://giscus.app/client.js',
+            "data-repo": 'RoisyL/RoisyL.github.io',
+            "data-repo-id": 'R_kgDOLd8WqQ',
+            "data-category": 'General',
+            "data-category-id": 'DIC_kwDOLd8Wqc4Cd4lq',
+            "data-mapping": 'pathname',
+            "data-reactions-enabled": '1',
+            "data-emit-metadata": '0',
+            "data-theme": nowTheme,
+            "data-lang": 'en',
+            crossorigin: "anonymous",
+            async: true
+        }
+        let ele = document.createElement('script')
+        for (let key in config) {
+            ele.setAttribute(key, config[key])
+        }
+        document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin', ele)
+    }
+
+    function changeGiscusTheme() {
+        let theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+        function sendMessage(message) {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (!iframe) return;
+            iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+
+        sendMessage({
+            setConfig: {
+                theme: theme
+            }
+        });
+    }
+
+    loadGiscus();
+</script>
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> v7.1.1
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                Theme - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.2.3
+            </span>
+        </div>
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        Article table of contents
+				<span id="post-toc-top">
+					TOP
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-2" title=" MySQL数据库容器化"><a rel="nofollow" class="trm-toc-link" href="#mysql数据库容器化"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> MySQL数据库容器化</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 目录结构"><a rel="nofollow" class="trm-toc-link" href="#目录结构"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text"> 目录结构</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 各文件内容"><a rel="nofollow" class="trm-toc-link" href="#各文件内容"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text"> 各文件内容</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 容器运行命令"><a rel="nofollow" class="trm-toc-link" href="#容器运行命令"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text"> 容器运行命令</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 测试是否部署成功"><a rel="nofollow" class="trm-toc-link" href="#测试是否部署成功"><span class="trm-toc-number">1.4.</span> <span class="trm-toc-text"> 测试是否部署成功</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 其他操作"><a rel="nofollow" class="trm-toc-link" href="#其他操作"><span class="trm-toc-number">1.5.</span> <span class="trm-toc-text"> 其他操作</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" Django容器化"><a rel="nofollow" class="trm-toc-link" href="#django容器化"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> Django容器化</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" Dockerfile"><a rel="nofollow" class="trm-toc-link" href="#dockerfile"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text"> Dockerfile</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" requirements.txt"><a rel="nofollow" class="trm-toc-link" href="#requirementstxt"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text"> requirements.txt</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" settings.py"><a rel="nofollow" class="trm-toc-link" href="#settingspy"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text"> settings.py</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="Open toc">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="Read Mode" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="Back To Top">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="Searching...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    Please enter keywords to search
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.3"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.3"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+    <script data-swup-reload-script>
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+
+
+<script id="async-script" src="/js/main.js?v=2.2.3"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
