@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="总结了CI&#x2F;CD流水线在Kubernetes(K8s)和轻量级发行版K3s中的应用，涵盖了容器编排、微服务部署及服务发现等关键概念">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CI&#x2F;CD-K8S">
+<meta property="og:url" content="https://roisyl.github.io.git/Back-end/CI&CD-K8S/">
+<meta property="og:site_name" content="Roisy&#39;s blog">
+<meta property="og:description" content="总结了CI&#x2F;CD流水线在Kubernetes(K8s)和轻量级发行版K3s中的应用，涵盖了容器编排、微服务部署及服务发现等关键概念">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="og:image" content="https://roisyl.github.io.git/img/404.jpg">
+<meta property="article:published_time" content="2024-08-30T06:24:21.000Z">
+<meta property="article:modified_time" content="2024-08-31T13:10:59.916Z">
+<meta property="article:author" content="Roisy Luo">
+<meta property="article:tag" content="CI&amp;CD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://roisyl.github.io.git/img/404.jpg">
+
+    <meta name="keywords" content="CI/CD流水线, K8S部署, K3s">
+
+
+<title >CI/CD-K8S</title>
+
+<!-- Favicon -->
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/imgs/rabbit.jpg?v=2.2.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"roisyl.github.io.git","author":"Roisy Luo","root":"/","typed_text":["on the road"],"theme_version":"2.2.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"imgs/rabbit.jpg","icon16":"imgs/rabbit.jpg","icon32":"imgs/rabbit.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)Hey! Good again!","hide_text":"(●—●)Oh, crash!","safari_pinned_tab":"imgs/rabbit.jpg","appleTouchIcon":"imgs/rabbit.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}.","hits":"${hits} results found","hits_time":"${hits} results found in ${time} ms","author":"Post author: ","copyright_link":"Post link: ","copyright_license_title":"Copyright Notice: ","copyright_license_content":"All articles in this blog are licensed under undefined unless otherwise stated.","copy_success":"Copied","copy_failure":"Copy failed","open_read_mode":"Enter reading mode","exit_read_mode":"Exit reading mode","notice_outdate_message":"It has been undefined days since the last update, the content of the article may be outdated.","sticky":"TOP","just":"Just","min":"minutes ago","hour":"hours ago","day":"days ago","month":"months ago"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"03/10/2024 1:00:00","prefix":"The blog has been lovely to run undefined day"},"danmu":{"enable":false,"el":".trm-banner"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"},"search":{"enable":true,"type":"local","href":"https://www.google.com/search?q=site:","domain":null,"preload":true,"path":"search.xml"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-08-31 21:10:59"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"><link rel="alternate" href="/atom.xml" title="Roisy's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/imgs/rabbit.jpg">
+    
+    
+        <div class="trm-logo-text">
+            Ro<span>isy</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    index
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    categories
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Front-end/" target="">
+                            Front-end
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/Back-end/" target="">
+                            Back-end
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/tags/" target="">
+                    tags
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    archives
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    about
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+    
+    <div id="trm-search-btn" class="trm-search-btn">
+        <i class="iconfont fas fa-search"></i>
+    </div>
+     
+
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="https://s2.loli.net/2024/08/29/62XJHtdOnKhsR9M.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-12">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text trm-text-center ">
+                        <div class="trm-label trm-mb-20">
+                            Many a little makes a mickle
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            CI/CD-K8S
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        Back-end
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+            <div class="trm-page-content col-lg-12">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            08/30
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            14:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Roisy Luo
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h1>
+<h2 id="k8s"><a class="markdownIt-Anchor" href="#k8s"></a> K8s</h2>
+<p><em><strong>Kubernetes</strong></em>（或 K8s）是用于管理容器化工作负载和服务的便携式开源平台。它有助于在集群中编排和管理 pod 中的应用程序</p>
+<h2 id="k3s"><a class="markdownIt-Anchor" href="#k3s"></a> K3s</h2>
+<p><img src="https://s2.loli.net/2024/08/31/ouSFlJI3aht5r7E.png" alt="1.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+<p><em><strong>K3s</strong></em> 是<strong>CNCF</strong>认证的 Kubernetes 轻量级发行版，仍可以编写 YAML 来像使用 K8s 一样在 K3s 集群上运行，专为低资源环境而设计。</p>
+<ul>
+<li>
+<p><strong>优势</strong></p>
+<p>K8s的使用和配置比较复杂，对于小型开发/测试集群而言，使用K3s可以在一定程度上简化配置与使用</p>
+</li>
+<li>
+<p><strong>劣势</strong></p>
+<p>难以进行大型的集群部署</p>
+</li>
+</ul>
+<h2 id="为什么需要k8s"><a class="markdownIt-Anchor" href="#为什么需要k8s"></a> 为什么需要K8s</h2>
+<p>在实际生产环境中，</p>
+<ol>
+<li>
+<p>通常一个应用包含多个容器：</p>
+<ol>
+<li>最简单的Web应用：数据库容器+后端应用容器+前端应用容器（通常是一个Nginx容器）</li>
+<li>微服务场景中，后端可能涉及多个微服务模块，每个模块对应一个容器</li>
+</ol>
+</li>
+<li>
+<p>每个类别的服务通常会有多个容器实例。</p>
+<p>对于一些负载较高的服务，通常会部署多个相同的容器实例达到负载均衡的效果，从而提高服务整体的吞吐量。</p>
+</li>
+<li>
+<p>容器是不稳定的，需要时刻监控容器的状态</p>
+</li>
+<li>
+<p>大部分应用都是分布式的。如何在多台机器上做好资源、负载均衡是棘手的问题</p>
+</li>
+</ol>
+<p>仅靠docker命令难以完成上述任务的，需要一个专门的容器编排调度工具处理</p>
+<h1 id="重要概念"><a class="markdownIt-Anchor" href="#重要概念"></a> 重要概念</h1>
+<h2 id="基础元素"><a class="markdownIt-Anchor" href="#基础元素"></a> 基础元素</h2>
+<h3 id="集群与节点"><a class="markdownIt-Anchor" href="#集群与节点"></a> 集群与节点</h3>
+<p>在 k3s 中，“集群”（Cluster）指的是一组工作在一起的服务器（节点），它们共同提供容器化应用的运行环境。</p>
+<ul>
+<li>
+<p><em><strong>集群中的角色</strong></em></p>
+<p>通常分为两类：控制平面节点（运行 k3s 控制服务的节点）和工作节点（运行应用容器的节点）。</p>
+<ul>
+<li>
+<p><em><strong>控制平面 control-plane/master</strong></em></p>
+<p>k3s 集群的大脑，负责 API 服务、调度、集群状态管理等</p>
+</li>
+<li>
+<p><em><strong>工作节点 worker</strong></em></p>
+<p>运行容器化应用的地方。它们通过与控制平面通信来接收指令和管理容器</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>配置文件路径</strong></p>
+<p>配置文件（通常命名为 <code>kubeconfig</code>）包含了访问集群所需的认证信息、配置上下文、集群地址等关键信息。配置文件的路径决定了 <code>kubectl</code> 命令行工具如何识别和访问 Kubernetes 集群，因此我们需要定义一个配置文件位置。</p>
+</li>
+</ul>
+<h3 id="容器化"><a class="markdownIt-Anchor" href="#容器化"></a> 容器化</h3>
+<ul>
+<li>
+<p><em><strong>Pod</strong></em></p>
+<p>是 Kubernetes 中的基本部署单元，它是一个或多个容器的集合，这些容器被设计为一起工作，它们<strong>共享网络和存储资源</strong>。Pods 使得容器可以协同运行，例如，一个 Web 应用的前端和后端可以部署在同一个 Pod 中。</p>
+</li>
+<li>
+<p><strong>Kubernetes创建容器和使用Docker创建容器的异同</strong></p>
+<p><img src="https://s2.loli.net/2024/08/31/7WMonTCpFeriZ9z.png" alt="2.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+<h2 id="pod-controller"><a class="markdownIt-Anchor" href="#pod-controller"></a> <strong>Pod Controller</strong></h2>
+<h3 id="背景"><a class="markdownIt-Anchor" href="#背景"></a> 背景</h3>
+<ul>
+<li>container是脆弱的。在实际的生产环境中，container中运行的进程很可能因为各种各样的原因挂掉。这时候，快速恢复业务的方法是重新启动一个新的容器实例</li>
+<li>另一方面，为了实现负载均衡或并行计算，我们需要维护相同的多个容器实例，来共同完成任务</li>
+</ul>
+<p>归结起来可以表示为：我们需要<strong>在集群中维护一定数量的容器实例</strong>。Pod Controller 就是达到这一目的的方法。</p>
+<h3 id="controller思想"><a class="markdownIt-Anchor" href="#controller思想"></a> <strong>Controller思想</strong></h3>
+<p>Kubernetes中的控制器（Controller）将会<strong>监控</strong>当前集群中的状态，并努力<strong>使集群的当前状态满足用户设置的目标状态</strong></p>
+<h3 id="其他常见的pod-controller"><a class="markdownIt-Anchor" href="#其他常见的pod-controller"></a> 其他常见的<strong>Pod Controller</strong></h3>
+<ul>
+<li>
+<p><em><strong>Job</strong></em></p>
+<p>创建一个或多个Pod，并确保指定数量的Pod<strong>成功终止</strong>。</p>
+<p>Job一般用于定义并启动一个批处理任务。批处理任务通常并行（或串行）启动多个计算进程去处理一批工作项，处理完成后，整个批处理任务结束。</p>
+<ul>
+<li>Kubernetes支持以下几种Job:
+<ul>
+<li>非并行Job: 通常创建一个Pod直至其成功结束</li>
+<li>固定结束次数的Job: 设置<code>.spec.completions</code>，创建多个Pod，直到<code>.spec.completions</code>个Pod成功结束</li>
+<li>带有工作队列的并行Job: 设置<code>.spec.Parallelism</code>但不设置<code>.spec.completions</code>，当所有Pod结束并且至少一个成功时，Job就认为是成功。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><em><strong>DaemonSet</strong></em></p>
+<p>用于管理在集群中<strong>每个Node</strong>上<strong>运行且仅运行一份</strong>Pod的副本实例。</p>
+<ul>
+<li>常见使用场景：在每个Node上都运行一个存储进程/一个日志采集程序/一个性能监控程序</li>
+</ul>
+</li>
+<li>
+<p><em><strong>StatefulSet</strong></em></p>
+<p>用来搭建有状态的应用集群（比如MySQL、MongoDB等），保证StatefulSet中各应用实例在创建和运行的过程中，都具有固定的身份标识和独立的后端存储；还支持在运行时对集群规模进行扩容、保障集群的高可用等功能。</p>
+</li>
+</ul>
+<h2 id="service"><a class="markdownIt-Anchor" href="#service"></a> Service</h2>
+<p>Service可以将运行在一组Pods上的应用程序<strong>公开为网络服务</strong>，简单地实现服务发现、负载均衡等功能。</p>
+<h3 id="背景-2"><a class="markdownIt-Anchor" href="#背景-2"></a> 背景</h3>
+<p>k8s的Pods具有自己的生命周期，同一时刻运行的Pod集合与稍后运行的Pod集合很有可能不同（如发生更新、node故障等），Pods的IP地址可能会随时发生变化。</p>
+<p>这就会导致一个问题：如果一组后端Pods为集群内其他前端Pods提供功能，那么前端Pods该如何找出并跟踪需要连接的IP地址？通过Service，能够解耦这种关联，方便的通过Service地址访问到相应的Pods，前端不应该也没必要知道怎么访问、访问到的具体是哪一个Pod。</p>
+<h3 id="service的4种类型"><a class="markdownIt-Anchor" href="#service的4种类型"></a> Service的4种类型</h3>
+<ul>
+<li>
+<p><em><strong>ClusterIP</strong></em>：通过<strong>集群的内部 IP</strong> 暴露服务，选择该值，服务只能够在集群内部可以访问，这也是默认的 <code>ServiceType</code>。</p>
+</li>
+<li>
+<p><em><strong>NodePort</strong></em>： 通过每个 **Node 上的 IP 和静态端口（NodePort）**暴露服务。NodePort 服务会路由到 ClusterIP 服务，这个 ClusterIP 服务会自动创建。通过请求 <NodeIP>:<NodePort>，可以从集群的外部访问一个 NodePort 服务。</p>
+</li>
+<li>
+<p><em><strong>LoadBalancer</strong></em></p>
+<p>使用云提供商的负载局衡器，可以向外部暴露服务。外部的负载均衡器可以路由到 NodePort 服务和 ClusterIP 服务。仅作了解。</p>
+</li>
+<li>
+<p><em><strong>ExternalName</strong></em></p>
+<p>通过返回 CNAME 和它的值，可以将服务映射到 externalName 字段的内容（例如，在集群内查找<code>my-service.my-namespace.svc</code>时，k8s DNS service只返回<code>foo.bar.example.com</code>这样的CNAME record）。没有任何类型代理被创建，网络流量发生在DNS层面。由于ExternalName要求kube-dns而我们使用的是coredns，也只作了解。</p>
+</li>
+</ul>
+<h2 id="ingress"><a class="markdownIt-Anchor" href="#ingress"></a> Ingress</h2>
+<p>Ingress是Kubernetes中的一个API对象，它<strong>管理外部访问集群内服务的路由规则</strong>。Ingress为服务提供了一个访问策略，允许外部客户端通过HTTP和HTTPS路由到集群内的不同服务。</p>
+<h1 id="实操"><a class="markdownIt-Anchor" href="#实操"></a> 实操</h1>
+<h2 id="踩坑"><a class="markdownIt-Anchor" href="#踩坑"></a> 踩坑</h2>
+<ul>
+<li>
+<p>部署到云端服务器后，想通过浏览器访问，不要忘记<strong>配置云服务器的安全组</strong></p>
+</li>
+<li>
+<p>出错时<strong>打印详细信息debug</strong>，不要只拿一个简陋的报错名就上网查</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>前端 Nginx 有可能会配置后端微服务的上游服务器，因此需要先部署后端容器并运行！</p>
+</li>
+</ul>
+<h2 id="基础操作"><a class="markdownIt-Anchor" href="#基础操作"></a> 基础操作</h2>
+<h3 id="配置相关"><a class="markdownIt-Anchor" href="#配置相关"></a> 配置相关</h3>
+<ul>
+<li>
+<p>获取Kubeconfig文件的base64编码版本（便于在GitHub Actions工作流等地方使用以搭建好的K3s集群）</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl config view | <span class="built_in">base64</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装k3s并修改docker为容器运行环境</span></span><br><span class="line">curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=<span class="string">&#x27;server --docker&#x27;</span> K3S_KUBECONFIG_MODE=777 sh -s -</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>curl</code> 用于从 <code>https://get.k3s.io</code> 下载 k3s 的安装脚本。
+<ul>
+<li><code>-s</code> 选项让 <code>curl</code> 运行在“silent”或“quiet”模式，不显示进度和错误信息。</li>
+<li><code>-f</code> 选项让 <code>curl</code> 失败时不显示错误信息。</li>
+<li><code>-L</code> 选项让 <code>curl</code> 跟随重定向。</li>
+</ul>
+</li>
+<li><code>sh -</code> 调用 shell 来执行通过管道传递给它的安装脚本。</li>
+</ul>
+<h3 id="集群访问"><a class="markdownIt-Anchor" href="#集群访问"></a> 集群访问</h3>
+<ul>
+<li>
+<p><strong>修改配置文件路径</strong></p>
+<p>定义配置文件位置，可以在 K8s 默认指向的主目录中定义配置文件（也有<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2242365">其他方案</a>）</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/rancher/k3s/k3s.yaml</span><br><span class="line"><span class="built_in">mkdir</span> -p ~/.kube</span><br><span class="line"><span class="built_in">cp</span> /etc/rancher/k3s/k3s.yaml ~/.kube/config</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>检查集群运行情况</strong></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前Kubernetes集群中的所有节点信息</span></span><br><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
+<p>返回结果</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NAME            STATUS   ROLES                  AGE   VERSION</span><br><span class="line">fv-az1383-551   Ready    control-plane,master   4s    v1.30.4+k3s1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>刚下载好K8s，可能还没有初始化完全，会显示 <code>No resources found</code> ，可以先等一等</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sleep</span> 2</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="pod创建"><a class="markdownIt-Anchor" href="#pod创建"></a> pod创建</h3>
+<ul>
+<li>
+<p><em><strong>创建pod</strong></em>  <code>kubectl run &lt;pod_name&gt;</code></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl run first-container --image=docker.io/library/nginx --port=80</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>--image</code> 制定创建容器使用的镜像</li>
+<li><code>--port</code> 暴露出容器的某个端口</li>
+</ul>
+</li>
+<li>
+<p><em><strong>查看pod状态</strong></em>  <code>kubectl get pods [pod_name]</code></p>
+<ul>
+<li>刚创建可能还没有变为运行状态，可以再sleep一段时间</li>
+<li>可以使用<code>-o wide</code>参数查看Pod更详细的内容</li>
+</ul>
+</li>
+<li>
+<p><em><strong>查看 Pod 详情</strong></em>  <code>kubectl describe pod [pod_name]</code></p>
+</li>
+<li>
+<p><em><strong>删除pod</strong></em>  <code>kubectl delete pod &lt;pod_name&gt;</code></p>
+</li>
+</ul>
+<h3 id="container访问"><a class="markdownIt-Anchor" href="#container访问"></a> container访问</h3>
+<ul>
+<li>如果在创建时暴露了端口，可以通过pod IP的端口访问到Container
+<ul>
+<li>
+<p>pod IP 查看 <code>kubectl get pods &lt;pod_name&gt; -o wide</code></p>
+<p><img src="https://s2.loli.net/2024/08/31/Fmj3cvqnGhskoeZ.png" alt="3.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+<li>
+<p>访问Container <code>curl &lt;pod_IP&gt;:&lt;Container_Port&gt;</code></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl 10.42.0.3:80</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用yaml文件管理pod"><a class="markdownIt-Anchor" href="#使用yaml文件管理pod"></a> 使用YAML文件管理Pod</h2>
+<p>通常情况下，我们不会直接使用<code>kubectl run</code>这样的命令行来管理容器，而是使用一个<strong>YAML格式</strong>的文件来描述Pod</p>
+<ul>
+<li>
+<p>示例</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="comment"># 表示当前这个YAML描述的对象，是一个Pod</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-yaml</span></span><br><span class="line"><span class="comment"># 对Pod的具体描述</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.14.2</span></span><br><span class="line">    <span class="comment"># 表示容器会向外暴露哪些端口</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><em><strong>应用 YAML 文件对容器的管理</strong></em></p>
+<p>将Pod的YAML描述保存到一个YAML文件中，如<code>pod-demo.yaml</code>，然后执行<code>kubectl apply -f pod-demo.yaml</code>，即可将该Pod<code>apply</code>到K8s集群中</p>
+<p><code>apply</code>的含义是，</p>
+<ul>
+<li>如果当前集群中不存在存在文件中对描述的资源，那将创建该资源；</li>
+<li>如果已经存在了，则根据YAML文件中的描述对资源进行更新。</li>
+</ul>
+<p><code>apply</code>操作体现了K8s的声明式编程的思想</p>
+</li>
+</ul>
+<h2 id="label"><a class="markdownIt-Anchor" href="#label"></a> <strong>Label</strong></h2>
+<p>Kubernetes支持给资源对象打标签（Label）。资源对象比如Pod，它是Kubernetes中最基本的资源对象。而标签本质就是一组键值对</p>
+<h3 id="打标签"><a class="markdownIt-Anchor" href="#打标签"></a> 打标签</h3>
+<p>Label需要写在YAML文件的<code>metadata</code>里</p>
+<p>修改完YAML文件后，重新<code>apply</code>一下，即可给资源对象打上标签</p>
+<h3 id="基于label选取对应的资源"><a class="markdownIt-Anchor" href="#基于label选取对应的资源"></a> 基于Label选取对应的资源</h3>
+<p>在<code>kubectl get pod</code>的时候使用<code>-l</code>参数</p>
+<ul>
+<li>
+<p>示例</p>
+<p><img src="https://s2.loli.net/2024/08/31/nYhEpSMyAaC3xwg.png" alt="4.png"   data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'/></p>
+</li>
+</ul>
+<h2 id="常用pod-controller"><a class="markdownIt-Anchor" href="#常用pod-controller"></a> <strong>常用Pod Controller</strong></h2>
+<h3 id="deployment"><a class="markdownIt-Anchor" href="#deployment"></a> <strong>Deployment</strong></h3>
+<p>主要作用是努力使当前集群中的Pod<strong>数量</strong>与用户期望的状态相同。</p>
+<ul>
+<li>
+<p>示例</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deployment</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">kkk:</span> <span class="string">hahaha</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">kkk:</span> <span class="string">hahaha</span></span><br><span class="line">        <span class="attr">kubernetes:</span> <span class="string">yyds</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.14.2</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+<p><code>spec</code>中包含以下字段：</p>
+<ul>
+<li><code>replicas</code>：表示“副本数”。即该Deployment将会管理多少个Pod。</li>
+<li><code>selector</code>：选择器。表示该Deployment如何在集群中查找到它需要管理的Pod。<code>matchLabels</code>表示被打上<code>kkk: hahaha</code>这个标签的Pod将会被管理。</li>
+<li><code>template</code>中的内容就是上面提到的一个典型的Pod的描述。如果实际pod数目与期望不同，则根据<code>template</code>创建。</li>
+</ul>
+</li>
+<li>
+<p><em><strong>创建deployment</strong></em> <code>kubectl apply -f deployment.yaml</code></p>
+</li>
+<li>
+<p><em><strong>查看deployment</strong></em> <code>kubectl get deployment</code></p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret docker-registry my-registry-secret --docker-username=roisy --docker-password=22373005Se --docker-email=2059218150@qq.com --docker-server=registry.cn-beijing.aliyuncs.com</span><br><span class="line"></span><br><span class="line">kubectl create secret docker-registry &lt;secret-name&gt; \</span><br><span class="line">     --docker-username=&lt;username&gt; \</span><br><span class="line">     --docker-password=&lt;password&gt; \</span><br><span class="line">     --docker-email=&lt;email&gt; \</span><br><span class="line">     --docker-server=&lt;registry&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="service-2"><a class="markdownIt-Anchor" href="#service-2"></a> Service</h2>
+<h3 id="基础操作-2"><a class="markdownIt-Anchor" href="#基础操作-2"></a> 基础操作</h3>
+<ul>
+<li>
+<p>示例</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-service</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">anyway</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">kkk:</span> <span class="string">hahaha</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>port：Service暴露在集群IP上的端口。集群内通过<clusterIP>:<port>可以访问Service。</li>
+<li>targetPort：被代理的Pod上的端口。默认与port相同。</li>
+<li>protocol：Service暴露出来的这个端口所支持的通信协议，通常是<code>TCP</code>或<code>UDP</code>。</li>
+<li>name：端口名称，当Service具有多个端口时必须为每个端口提供唯一且无歧义的端口名称，具体内容写啥都行。</li>
+</ul>
+</li>
+<li>
+<p><em><strong>创建Service</strong></em> <code>kubectl apply -f service.yaml</code></p>
+</li>
+<li>
+<p><em><strong>查看Service</strong></em> <code>kubectl get svc</code> 或 <code>kubectl get service</code></p>
+</li>
+</ul>
+<h3 id="通过service访问pod"><a class="markdownIt-Anchor" href="#通过service访问pod"></a> 通过Service访问Pod</h3>
+<ul>
+<li>
+<p><em><strong>ClusterIP 方式</strong></em></p>
+<p>默认方式是在集群中的机器上通过cluster-ip访问，因此首先得获取cluster-ip，再用<code>culr</code> 访问。</p>
+<ul>
+<li>
+<p>示例脚本</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义 Service 名称</span></span><br><span class="line">SERVICE_NAME=<span class="string">&quot;nginx-service&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 kubectl 获取 Service 的 ClusterIP</span></span><br><span class="line">CLUSTER_IP=$(kubectl get svc <span class="string">&quot;<span class="variable">$SERVICE_NAME</span>&quot;</span> | grep <span class="string">&quot;<span class="variable">$SERVICE_NAME</span>&quot;</span> | awk <span class="string">&#x27;&#123;print $3&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查 ClusterIP 是否已获取</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$CLUSTER_IP</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Failed to get ClusterIP for service <span class="variable">$SERVICE_NAME</span>&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;ClusterIP: <span class="variable">$CLUSTER_IP</span>&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用获取的 ClusterIP 访问 Service</span></span><br><span class="line"><span class="comment"># 假设 Service 暴露了 80 端口</span></span><br><span class="line">curl <span class="string">&quot;<span class="variable">$CLUSTER_IP</span>&quot;</span>:80</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><em><strong>NodePort 方式</strong></em></p>
+<p>需要修改<code>service.yaml</code>，设置service <code>type: NodePort</code></p>
+<ul>
+<li>
+<p><code>service.yaml</code>示例</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-service</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">svc:</span> <span class="string">nginx-svc</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">80</span></span><br><span class="line">	    <span class="comment"># 服务在节点上的端口</span></span><br><span class="line">      <span class="attr">nodePort:</span> <span class="number">32180</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">anyway</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">kkk:</span> <span class="string">hahaha</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>示例脚本</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义 NODE 名称</span></span><br><span class="line">NODE_NAME=$(kubectl get nodes | grep master | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 kubectl 获取 Service 的 NODEIP</span></span><br><span class="line">NODE_IP=$(kubectl get nodes <span class="string">&quot;<span class="variable">$NODE_NAME</span>&quot;</span> -o wide | grep <span class="string">&quot;<span class="variable">$NODE_NAME</span>&quot;</span> | awk <span class="string">&#x27;&#123;print $6&#125;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查 NODEIP 是否已获取</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$NODE_IP</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Failed to get NODEIP&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;NODEIP: <span class="variable">$NODE_IP</span>&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用获取的 NODEIP 访问 Service</span></span><br><span class="line"><span class="comment"># 假设 Service 暴露了 80 端口</span></span><br><span class="line">curl http://<span class="string">&quot;<span class="variable">$NODE_IP</span>&quot;</span>:32180</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ingress-2"><a class="markdownIt-Anchor" href="#ingress-2"></a> * Ingress</h2>
+<ul>
+<li>
+<p>示例</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">ingress.kubernetes.io/ssl-redirect:</span> <span class="string">&quot;false&quot;</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">http:</span></span><br><span class="line">      <span class="attr">paths:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">        <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">        <span class="attr">backend:</span></span><br><span class="line">          <span class="attr">service:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">            <span class="attr">port:</span></span><br><span class="line">              <span class="attr">number:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><em><strong>应用</strong></em> <code>kubectl apply -f &lt;yaml_file&gt;</code></p>
+</li>
+<li>
+<p><em><strong>获取详情</strong></em> <code>kubectl describe ingress &lt;ingress_name&gt;</code></p>
+</li>
+</ul>
+<blockquote>
+<p>Reference</p>
+<ul>
+<li>官方中文文档 <a target="_blank" rel="noopener" href="https://docs.rancher.cn/k3s/">https://docs.rancher.cn/k3s/</a></li>
+<li>BUAA软院实验资料 <a target="_blank" rel="noopener" href="https://scs.buaa.edu.cn/doc/cloud-labs/cloud/kube-single-3/">https://scs.buaa.edu.cn/doc/cloud-labs/cloud/kube-single-3/</a></li>
+<li>一个入门教程 <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2242365">https://cloud.tencent.com/developer/article/2242365</a></li>
+</ul>
+</blockquote>
+
+</article>
+    
+    
+
+<ul class="trm-post-copyright">
+    <li class="trm-post-copyright-author">
+        <strong>Post author: </strong>
+        Roisy Luo
+    </li>
+    <li class="trm-post-copyright-link">
+        <strong>Post link: </strong>
+        <a id="original-link" href="https://roisyl.github.io.git/Back-end/CI&CD-K8S/" title="CI/CD-K8S">https://roisyl.github.io.git/Back-end/CI&CD-K8S/</a>
+    </li>
+    <li class="trm-post-copyright-license">
+        <strong>Copyright Notice: </strong>
+        All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 ">CC BY-NC-SA 4.0</a> unless otherwise stated.
+    </li>
+</ul>
+
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            Other Articles
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/Back-end/Docker-Application/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="https://s2.loli.net/2024/08/29/z9NyCwhkBfMtrxv.jpg">
+                </span>
+                <h6 class="trm-op-title">Docker应用</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/08/30</li>
+                <li>10:10</li>
+                <li>Back-end</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+    <div id="giscus-wrap" class="trm-card trm-scroll-animation comment-container"></div>
+<script data-swup-reload-script>
+    function loadGiscus() {
+        let nowTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        const config = {
+            src: 'https://giscus.app/client.js',
+            "data-repo": 'RoisyL/RoisyL.github.io',
+            "data-repo-id": 'R_kgDOLd8WqQ',
+            "data-category": 'General',
+            "data-category-id": 'DIC_kwDOLd8Wqc4Cd4lq',
+            "data-mapping": 'pathname',
+            "data-reactions-enabled": '1',
+            "data-emit-metadata": '0',
+            "data-theme": nowTheme,
+            "data-lang": 'en',
+            crossorigin: "anonymous",
+            async: true
+        }
+        let ele = document.createElement('script')
+        for (let key in config) {
+            ele.setAttribute(key, config[key])
+        }
+        document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin', ele)
+    }
+
+    function changeGiscusTheme() {
+        let theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+        function sendMessage(message) {
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (!iframe) return;
+            iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+
+        sendMessage({
+            setConfig: {
+                theme: theme
+            }
+        });
+    }
+
+    loadGiscus();
+</script>
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> v7.1.1
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                Theme - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.2.3
+            </span>
+        </div>
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        Article table of contents
+				<span id="post-toc-top">
+					TOP
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title=" 简介"><a rel="nofollow" class="trm-toc-link" href="#简介"><span class="trm-toc-number">1.</span> <span class="trm-toc-text"> 简介</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" K8s"><a rel="nofollow" class="trm-toc-link" href="#k8s"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text"> K8s</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" K3s"><a rel="nofollow" class="trm-toc-link" href="#k3s"><span class="trm-toc-number">1.2.</span> <span class="trm-toc-text"> K3s</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" 为什么需要K8s"><a rel="nofollow" class="trm-toc-link" href="#为什么需要k8s"><span class="trm-toc-number">1.3.</span> <span class="trm-toc-text"> 为什么需要K8s</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 重要概念"><a rel="nofollow" class="trm-toc-link" href="#重要概念"><span class="trm-toc-number">2.</span> <span class="trm-toc-text"> 重要概念</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 基础元素"><a rel="nofollow" class="trm-toc-link" href="#基础元素"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text"> 基础元素</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 集群与节点"><a rel="nofollow" class="trm-toc-link" href="#集群与节点"><span class="trm-toc-number">2.1.1.</span> <span class="trm-toc-text"> 集群与节点</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 容器化"><a rel="nofollow" class="trm-toc-link" href="#容器化"><span class="trm-toc-number">2.1.2.</span> <span class="trm-toc-text"> 容器化</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" Pod Controller"><a rel="nofollow" class="trm-toc-link" href="#pod-controller"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text"> Pod Controller</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 背景"><a rel="nofollow" class="trm-toc-link" href="#背景"><span class="trm-toc-number">2.2.1.</span> <span class="trm-toc-text"> 背景</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" Controller思想"><a rel="nofollow" class="trm-toc-link" href="#controller思想"><span class="trm-toc-number">2.2.2.</span> <span class="trm-toc-text"> Controller思想</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 其他常见的Pod Controller"><a rel="nofollow" class="trm-toc-link" href="#其他常见的pod-controller"><span class="trm-toc-number">2.2.3.</span> <span class="trm-toc-text"> 其他常见的Pod Controller</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" Service"><a rel="nofollow" class="trm-toc-link" href="#service"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text"> Service</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 背景"><a rel="nofollow" class="trm-toc-link" href="#背景-2"><span class="trm-toc-number">2.3.1.</span> <span class="trm-toc-text"> 背景</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" Service的4种类型"><a rel="nofollow" class="trm-toc-link" href="#service的4种类型"><span class="trm-toc-number">2.3.2.</span> <span class="trm-toc-text"> Service的4种类型</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" Ingress"><a rel="nofollow" class="trm-toc-link" href="#ingress"><span class="trm-toc-number">2.4.</span> <span class="trm-toc-text"> Ingress</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-1" title=" 实操"><a rel="nofollow" class="trm-toc-link" href="#实操"><span class="trm-toc-number">3.</span> <span class="trm-toc-text"> 实操</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title=" 踩坑"><a rel="nofollow" class="trm-toc-link" href="#踩坑"><span class="trm-toc-number">3.1.</span> <span class="trm-toc-text"> 踩坑</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" 基础操作"><a rel="nofollow" class="trm-toc-link" href="#基础操作"><span class="trm-toc-number">3.2.</span> <span class="trm-toc-text"> 基础操作</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 配置相关"><a rel="nofollow" class="trm-toc-link" href="#配置相关"><span class="trm-toc-number">3.2.1.</span> <span class="trm-toc-text"> 配置相关</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 安装"><a rel="nofollow" class="trm-toc-link" href="#安装"><span class="trm-toc-number">3.2.2.</span> <span class="trm-toc-text"> 安装</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 集群访问"><a rel="nofollow" class="trm-toc-link" href="#集群访问"><span class="trm-toc-number">3.2.3.</span> <span class="trm-toc-text"> 集群访问</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" pod创建"><a rel="nofollow" class="trm-toc-link" href="#pod创建"><span class="trm-toc-number">3.2.4.</span> <span class="trm-toc-text"> pod创建</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" container访问"><a rel="nofollow" class="trm-toc-link" href="#container访问"><span class="trm-toc-number">3.2.5.</span> <span class="trm-toc-text"> container访问</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" 使用YAML文件管理Pod"><a rel="nofollow" class="trm-toc-link" href="#使用yaml文件管理pod"><span class="trm-toc-number">3.3.</span> <span class="trm-toc-text"> 使用YAML文件管理Pod</span></a></li><li class="trm-toc-item trm-toc-level-2" title=" Label"><a rel="nofollow" class="trm-toc-link" href="#label"><span class="trm-toc-number">3.4.</span> <span class="trm-toc-text"> Label</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 打标签"><a rel="nofollow" class="trm-toc-link" href="#打标签"><span class="trm-toc-number">3.4.1.</span> <span class="trm-toc-text"> 打标签</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 基于Label选取对应的资源"><a rel="nofollow" class="trm-toc-link" href="#基于label选取对应的资源"><span class="trm-toc-number">3.4.2.</span> <span class="trm-toc-text"> 基于Label选取对应的资源</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" 常用Pod Controller"><a rel="nofollow" class="trm-toc-link" href="#常用pod-controller"><span class="trm-toc-number">3.5.</span> <span class="trm-toc-text"> 常用Pod Controller</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" Deployment"><a rel="nofollow" class="trm-toc-link" href="#deployment"><span class="trm-toc-number">3.5.1.</span> <span class="trm-toc-text"> Deployment</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" Service"><a rel="nofollow" class="trm-toc-link" href="#service-2"><span class="trm-toc-number">3.6.</span> <span class="trm-toc-text"> Service</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title=" 基础操作"><a rel="nofollow" class="trm-toc-link" href="#基础操作-2"><span class="trm-toc-number">3.6.1.</span> <span class="trm-toc-text"> 基础操作</span></a></li><li class="trm-toc-item trm-toc-level-3" title=" 通过Service访问Pod"><a rel="nofollow" class="trm-toc-link" href="#通过service访问pod"><span class="trm-toc-number">3.6.2.</span> <span class="trm-toc-text"> 通过Service访问Pod</span></a></li></ol></li><li class="trm-toc-item trm-toc-level-2" title=" * Ingress"><a rel="nofollow" class="trm-toc-link" href="#ingress-2"><span class="trm-toc-number">3.7.</span> <span class="trm-toc-text"> * Ingress</span></a></li></ol></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="Open toc">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="Read Mode" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="Back To Top">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+    <div class="trm-search-popup">
+        <div class="trm-search-wrapper">
+            <div class="form trm-search-form">
+                <div class="trm-search-input-icon">
+                    <i class="iconfont fas fa-search"></i>
+                </div>
+                <input class="trm-search-input" type="text" placeholder="Searching...">
+                <div class="trm-search-btn-close">
+                    <i class="iconfont fas fa-times"></i>
+                </div>
+            </div>
+            <div class="trm-search-result-container">
+                <div class="trm-search-empty">
+                    Please enter keywords to search
+                </div>
+            </div>
+            <div class="trm-search-footer">
+                <div class="trm-search-stats"></div>
+                <ul class="trm-search-commands">
+                    <li>
+                        <kbd class="command-palette-commands-key">
+                            <svg width="15" height="15" aria-label="Escape key" role="img">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="1.2">
+                                    <path
+                                        d="M13.6167 8.936c-.1065.3583-.6883.962-1.4875.962-.7993 0-1.653-.9165-1.653-2.1258v-.5678c0-1.2548.7896-2.1016 1.653-2.1016.8634 0 1.3601.4778 1.4875 1.0724M9 6c-.1352-.4735-.7506-.9219-1.46-.8972-.7092.0246-1.344.57-1.344 1.2166s.4198.8812 1.3445.9805C8.465 7.3992 8.968 7.9337 9 8.5c.032.5663-.454 1.398-1.4595 1.398C6.6593 9.898 6 9 5.963 8.4851m-1.4748.5368c-.2635.5941-.8099.876-1.5443.876s-1.7073-.6248-1.7073-2.204v-.4603c0-1.0416.721-2.131 1.7073-2.131.9864 0 1.6425 1.031 1.5443 2.2492h-2.956">
+                                    </path>
+                                </g>
+                            </svg>
+                        </kbd>
+                        <span class="command-palette-Label">to close</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.2.3"></script>
+    
+
+    
+        
+<script src="https://unpkg.com/hexo-generator-searchdb@1.4.0/dist/search.js"></script>
+
+        <script src="/js/plugins/local_search.js?v=2.2.3"></script>
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+    <script data-swup-reload-script>
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+
+
+<script id="async-script" src="/js/main.js?v=2.2.3"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
