@@ -3949,7 +3949,7 @@ h6 {
   font-size: 0.85rem;
 }
 .trm-post-toc {
-  background-color: var(fade(var(--theme-bg2-color), 70%));
+  background-color: rgba(var(--theme-bg2-color), 0.5);
 }
 .trm-post-toc-header {
   padding: 10px 10px;
