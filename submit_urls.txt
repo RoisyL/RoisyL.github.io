@@ -1,3 +1,4 @@
+https://roisyl.github.io.git/Back-end/CI&CD-Pipline/
 https://roisyl.github.io.git/Back-end/CI&CD-K8S/
 https://roisyl.github.io.git/Back-end/Docker-Basics/
 https://roisyl.github.io.git/Back-end/Docker-Application/
@@ -7,4 +8,3 @@ https://roisyl.github.io.git/Front-end/Vue-Basics/
 https://roisyl.github.io.git/Front-end/HTML-Basics/
 https://roisyl.github.io.git/Back-end/Django-Basics/
 https://roisyl.github.io.git/OS/BUAA-OS-Lab5/
-https://roisyl.github.io.git/OS/BUAA-OS-Lab4/
