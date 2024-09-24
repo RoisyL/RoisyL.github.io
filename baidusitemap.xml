@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://RoisyL.github.io.git/Compiler/BUAA-Compiler-Lexer/</loc>
+    <lastmod>2024-09-24</lastmod>
+  </url>
+  <url>
+    <loc>https://RoisyL.github.io.git/OS/BUAA-OS-Lab4/</loc>
+    <lastmod>2024-09-16</lastmod>
+  </url>
+  <url>
+    <loc>https://RoisyL.github.io.git/OS/BUAA-OS-Lab2/</loc>
+    <lastmod>2024-09-10</lastmod>
+  </url>
+  <url>
     <loc>https://RoisyL.github.io.git/Back-end/CICD-Pipline/</loc>
     <lastmod>2024-09-03</lastmod>
   </url>
@@ -41,15 +53,7 @@
     <lastmod>2024-08-29</lastmod>
   </url>
   <url>
-    <loc>https://RoisyL.github.io.git/OS/BUAA-OS-Lab4/</loc>
-    <lastmod>2024-08-29</lastmod>
-  </url>
-  <url>
     <loc>https://RoisyL.github.io.git/OS/BUAA-OS-Lab4-challenge/</loc>
-    <lastmod>2024-08-29</lastmod>
-  </url>
-  <url>
-    <loc>https://RoisyL.github.io.git/OS/BUAA-OS-Lab2/</loc>
     <lastmod>2024-08-29</lastmod>
   </url>
   <url>
