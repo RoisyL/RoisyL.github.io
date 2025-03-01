@@ -125,6 +125,7 @@ div {
   margin-top: 40px;
   padding-bottom: 20px;
   word-wrap: break-word;
+  font-size: 14px;
 }
 #sidebar .widget {
   margin-bottom: 30px;
@@ -154,6 +155,7 @@ div {
 #sidebar .widget .tagcloud a {
   line-height: 1.5;
   padding: 5px;
+  font-size: 14px !important;
 }
 #sidebar .widget ul {
   list-style: none;
@@ -437,7 +439,7 @@ div {
   list-style: none;
   margin-top: 25px;
   padding: 25px 0 0;
-  font-size: 15px;
+  font-size: 14px;
   text-align: center;
 }
 .page-navigator .page-number {
@@ -966,7 +968,7 @@ pre {
 }
 /* read more*/
 .readmore a {
-  font-size: 15px;
+  font-size: 14px;
   color: #444;
   margin: -10px 0;
   padding: 5px 10px;
@@ -2018,4 +2020,8 @@ html[data-dark=true] img {
 .article-tag-list {
   padding-left: 0rem;
   margin-bottom: 4em;
+}
+
+.fa {
+  font-weight: bold;
 }
