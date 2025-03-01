@@ -29,7 +29,7 @@ body {
   font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .body_container {
@@ -151,11 +151,11 @@ div {
 }
 #sidebar .widget .tagcloud {
   margin-top: 10px;
+  font-size: 14px !important;
 }
 #sidebar .widget .tagcloud a {
   line-height: 1.5;
   padding: 5px;
-  font-size: 14px !important;
 }
 #sidebar .widget ul {
   list-style: none;
@@ -1990,7 +1990,7 @@ html[data-dark=true] img {
 
 /* article tags  */
 .article-tag-list-item {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 24px;
   display: inline-block;
   padding: 0 6px;
@@ -2020,8 +2020,4 @@ html[data-dark=true] img {
 .article-tag-list {
   padding-left: 0rem;
   margin-bottom: 4em;
-}
-
-.fa {
-  font-weight: bold;
 }
