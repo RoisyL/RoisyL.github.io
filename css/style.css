@@ -222,8 +222,6 @@ div {
 }
 #sidebar .widget .author-info .author-description {
   font: 18px Georgia, serif; /* 设置字体样式 */
-  overflow: hidden; /* 隐藏溢出内容 */
-  display: inline-block; /* 确保容器宽度适应内容 */
 }
 
 /* title for search result or tagged posts*/
