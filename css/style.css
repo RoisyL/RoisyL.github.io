@@ -24,7 +24,7 @@ textarea,
 }
 
 body {
-  background-color: #e6d7f8;
+  background-color: #faf6ff;
   color: #444;
   font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -129,6 +129,8 @@ div {
 #sidebar .widget {
   margin-bottom: 30px;
   /* tiered display categories */
+  /* 打字动画 */
+  /* 光标闪烁动画 */
 }
 #sidebar .widget .widget-title {
   color: #6E7173;
@@ -219,6 +221,28 @@ div {
 }
 #sidebar .widget .author-info a.info-icon {
   font-size: 25px;
+}
+#sidebar .widget .author-info .author-description {
+  font: Georgia, serif; /* 设置字体样式 */
+  overflow: hidden; /* 隐藏溢出内容 */
+  border-right: 2px solid #333; /* 打字光标效果 */
+  animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite; /* 打字动画 */
+}
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #333;
+  }
 }
 
 /* title for search result or tagged posts*/
