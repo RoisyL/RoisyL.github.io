@@ -134,7 +134,7 @@ div {
   color: #6E7173;
   line-height: 2.7;
   margin-top: 0;
-  font-size: 17px;
+  font-size: 16px;
   border-bottom: 1px solid #ddd;
   display: block;
   font-weight: normal;
@@ -492,6 +492,7 @@ div {
   line-height: 2.5;
   color: #6E7173;
   text-align: center;
+  font-size: 14px;
 }
 #footer span {
   font-size: 0.9em;
@@ -1720,7 +1721,7 @@ table tr:nth-child(2n) {
 }
 
 /* search result*/
-#local-search-result {
+#local-search-result:not(:empty) {
   padding: 5px 15px;
 }
 
