@@ -29,7 +29,7 @@ body {
   font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .body_container {
@@ -108,7 +108,7 @@ div {
   padding: 3px 20px 3px;
   line-height: 30px;
   color: #444;
-  font-size: 13px;
+  font-size: 14px;
   border: 1px solid transparent;
 }
 #header #nav-menu a:hover {
@@ -134,7 +134,7 @@ div {
   color: #6E7173;
   line-height: 2.7;
   margin-top: 0;
-  font-size: 16px;
+  font-size: 17px;
   border-bottom: 1px solid #ddd;
   display: block;
   font-weight: normal;
@@ -143,7 +143,7 @@ div {
   color: #6E7173;
   line-height: 2.7;
   margin-top: 0;
-  font-size: 16px;
+  font-size: 17px;
   border-bottom: 0px solid #ddd;
   display: block;
   font-weight: normal;
@@ -250,7 +250,7 @@ div {
   padding: 0 6px;
   margin-right: 5px;
   line-height: 32px;
-  font-size: 16px;
+  font-size: 17px;
   white-space: nowrap;
   vertical-align: 2px;
   color: #fff;
@@ -314,7 +314,7 @@ div {
 }
 .post .post-content {
   clear: left;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.77;
   color: #444;
   padding-top: 15px;
@@ -421,7 +421,7 @@ div {
 }
 .post .post-content .one-tag-list .tag-name .tag-text {
   margin-left: 5px;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
 }
 .post .tags a {
@@ -436,7 +436,7 @@ div {
   list-style: none;
   margin-top: 25px;
   padding: 25px 0 0;
-  font-size: 14px;
+  font-size: 15px;
   text-align: center;
 }
 .page-navigator .page-number {
@@ -499,7 +499,7 @@ div {
 
 /* for archive page starts*/
 .post-archive {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 2;
   padding-bottom: 0.8em;
 }
@@ -538,7 +538,7 @@ div {
     padding: 0 15px;
     line-height: 27px;
     height: 27px;
-    font-size: 13px;
+    font-size: 14px;
   }
 }
 /* small*/
@@ -795,12 +795,12 @@ pre {
 }
 
 #process .timeline-centered .timeline-entry .timeline-entry-inner .timeline-time > span:first-child {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
 }
 
 #process .timeline-centered .timeline-entry .timeline-entry-inner .timeline-time > span:last-child {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 #process .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon {
@@ -818,7 +818,7 @@ pre {
   text-align: center;
   border: 4px solid #F5F5F6;
   line-height: 40px;
-  font-size: 15px;
+  font-size: 16px;
   float: left;
   position: absolute;
   top: 50%;
@@ -871,7 +871,7 @@ pre {
 
 #process .present,
 #process .born {
-  font-size: 14px;
+  font-size: 15px;
   font-family: "Georgia", serif, Helvetica, "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
   font-style: italic;
   color: #333;
@@ -964,7 +964,7 @@ pre {
 }
 /* read more*/
 .readmore a {
-  font-size: 14px;
+  font-size: 15px;
   color: #444;
   margin: -10px 0;
   padding: 5px 10px;
@@ -1024,7 +1024,7 @@ figure.highlight.plain .gutter,
 }
 figure.highlight figcaption,
 .codeblock figcaption {
-  font-size: 13px;
+  font-size: 14px;
   padding: 0 15px 20px;
   margin: 0;
   background: #f7f8f8;
@@ -1056,7 +1056,7 @@ figure.highlight .code pre,
 figure.highlight .line,
 .codeblock .line {
   height: 1.3em;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .gist .line,
@@ -1524,7 +1524,7 @@ figure.highlight .line,
 .post-nav a {
   display: inline-block;
   line-height: 25px;
-  font-size: 15px;
+  font-size: 16px;
   color: #555;
   border-bottom: none;
   float: left;
@@ -1720,13 +1720,17 @@ table tr:nth-child(2n) {
 }
 
 /* search result*/
+#local-search-result {
+  padding: 5px 15px;
+}
+
 ul.search-result-list {
   padding-left: 10px;
 }
 
 a.search-result-title {
   font-weight: bold;
-  font-size: 15px;
+  font-size: 16px;
   color: #555;
 }
 
@@ -1749,7 +1753,7 @@ em.search-keyword {
   padding: 0 14px;
   display: inline-block;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 400;
   letter-spacing: 0;
   overflow: hidden;
@@ -1773,7 +1777,7 @@ em.search-keyword {
   display: inline-block;
   border-radius: 4px;
   text-shadow: none;
-  font-size: 12px;
+  font-size: 13px;
   color: #fff;
   line-height: 1.25;
   background-color: #ABBAC3;
@@ -1839,7 +1843,7 @@ em.search-keyword {
 /* Waline CSS*/
 #waline {
   /* 字体大小 */
-  --waline-font-size: 16px;
+  --waline-font-size: 17px;
   /* 常规颜色 */
   --waline-white: #fff;
   --waline-light-grey: #999;
@@ -1982,7 +1986,7 @@ html[data-dark=true] img {
 
 /* article tags  */
 .article-tag-list-item {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 24px;
   display: inline-block;
   padding: 0 6px;
