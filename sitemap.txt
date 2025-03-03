@@ -1,7 +1,15 @@
-https://roisyl.github.io/BUAA-SE/hello-world/
+https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab5/
+https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab4/
+https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab4-challenge/
+https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab3/
+https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab2/
+https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab1/
+https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab-General/
+https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab0/
 https://roisyl.github.io/tags/
 https://roisyl.github.io/about/
 https://roisyl.github.io/categories/
 https://roisyl.github.io/
-https://roisyl.github.io/tags/Note/
+https://roisyl.github.io/tags/Lab/
+https://roisyl.github.io/tags/OS/
 https://roisyl.github.io/categories/BUAA-SE/

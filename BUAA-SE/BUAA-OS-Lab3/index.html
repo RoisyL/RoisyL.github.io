@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>BUAA-OS-Lab3 进程与异常 | Roisy's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="https://s2.loli.net/2025/03/01/MF8SBrfc2xnP9Qb.jpg"><link rel="Shortcut Icon" type="image/x-icon" href="https://s2.loli.net/2025/03/01/MF8SBrfc2xnP9Qb.jpg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">BUAA-OS-Lab3 进程与异常</h1><a id="logo" href="/.">Roisy's Blog</a><p class="description">一个SE学生的自留地</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/tags/"><i class="fa fa-tag"> 标签</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">BUAA-OS-Lab3 进程与异常</h1><div class="post-meta">2024-04-24<span> | </span><span class="category"><a href="/categories/BUAA-SE/">BUAA-SE</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> 阅读</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.3k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 8</span><span class="post-meta-item-text"> 分钟</span></span></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%87%E5%AF%BC%E4%B9%A6%E6%A2%B3%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">指导书梳理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E9%A1%B5%E8%A1%A8%EF%BC%88MOS%E4%B8%93%E6%9C%89%E6%A6%82%E5%BF%B5%EF%BC%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">模板页表（MOS专有概念）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%A0%87%E8%AF%86"><span class="toc-number">1.1.2.</span> <span class="toc-text">进程的标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6%E5%9D%97"><span class="toc-number">1.1.3.</span> <span class="toc-text">设置进程控制块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%95%9C%E5%83%8F"><span class="toc-number">1.1.4.</span> <span class="toc-text">加载二进制镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E4%B8%8E%E5%88%87%E6%8D%A2"><span class="toc-number">1.1.5.</span> <span class="toc-text">进程运行与切换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD%E4%B8%8E%E5%BC%82%E5%B8%B8"><span class="toc-number">1.2.</span> <span class="toc-text">中断与异常</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Status-%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.2.1.</span> <span class="toc-text">Status 寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cause-%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">Cause 寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.3.</span> <span class="toc-text">CPU异常处理流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E7%9A%84%E5%88%86%E5%8F%91"><span class="toc-number">1.2.4.</span> <span class="toc-text">异常的分发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%92%9F%E4%B8%AD%E6%96%AD"><span class="toc-number">1.2.5.</span> <span class="toc-text">时钟中断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%99%A8"><span class="toc-number">1.2.6.</span> <span class="toc-text">进程调度器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%B6%E7%BA%AA"><span class="toc-number">2.</span> <span class="toc-text">时纪</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#exam%E5%89%8D%E5%87%86%E5%A4%87"><span class="toc-number">3.</span> <span class="toc-text">exam前准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E5%8F%AF%E8%83%BD%E5%87%BA%E9%97%AE%E9%A2%98"><span class="toc-number">3.0.1.</span> <span class="toc-text">有可能出问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#extra"><span class="toc-number">3.0.2.</span> <span class="toc-text">extra</span></a></li></ol></li></ol></li></ol></div></div><div class="post-content"><h1 id="指导书梳理"><a href="#指导书梳理" class="headerlink" title="指导书梳理"></a>指导书梳理</h1><p>相关文件：<code>/include/env.h</code> <code>/include/trap.h</code> <code>/kern/env.c</code>  <code>lib/elfloader.c</code> <code>pmap.h</code>  <code>pmap.c</code>  <code>kern/traps.c</code> <code>kern/genex.S</code>  <code>kern/sched.c</code></p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><h3 id="模板页表（MOS专有概念）"><a href="#模板页表（MOS专有概念）" class="headerlink" title="模板页表（MOS专有概念）"></a>模板页表（MOS专有概念）</h3><p>在用户空间中读取内核信息</p>
+<p><img src="https://s2.loli.net/2024/04/24/yIaPkFxYbjRBgW1.png" alt="Untitled"></p>
+<ul>
+<li><p><strong>原理</strong></p>
+<p>  MOS 被设计成对于其中运行的每一个用户进程，都可以<strong>通过用户地址空间（kuseg）读取 pages 数组和 envs 数组的信息</strong>。为实现该功能，在创建用户进程时我们需要将 pages 数组和 envs 数组映射到用户地址空间中的 <code>UPAGES</code> 与 <code>UENVS</code> 处。</p>
+<p>  <code>base_pgdir</code> 指向模板页表页目录的<strong>内核虚拟基地址</strong>，以便创建进程时能够根据 “模板页表” 的内容创建自己的页表。每创建一个进程，都将这个模板页表页目录中用来映射 envs 与 pages 的表项复制到新创建的进程的页目录中</p>
+</li>
+<li><p><strong>设置目的</strong></p>
+<p>  使用户进程<strong>共享一部分二级页表</strong>，从而节省物理页面</p>
+</li>
+</ul>
+<h3 id="进程的标识"><a href="#进程的标识" class="headerlink" title="进程的标识"></a>进程的标识</h3><p><code>struct Env</code> 进程控制块中</p>
+<ul>
+<li><code>env_id</code> 是每个<strong>进程</strong>独一无二的标识符，进程创建的时候就使用<code>mkenvid</code>赋予。</li>
+<li><code>env_asid</code> 记录进程的 ASID，这是<strong>进程虚拟地址</strong>空间的标识<ul>
+<li>ASID在TLB映射机制中使用——TLB 事实上构建了一个映射 &lt; VPN, ASID &gt;$\stackrel{TLB}{\longrightarrow}$&lt; PFN, N, D, V, G &gt;</li>
+<li>ASID 部分只占据了 0-7 共 8 个 bit，即ASID资源是有限的，需要使用一定的资源管理方法来<strong>分配、回收</strong> ASID。MOS 实验采用了位图法管理 256 个可用的 ASID，<strong>如果 ASID 耗尽时仍要创建进程，内核会发生崩溃（panic）</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="设置进程控制块"><a href="#设置进程控制块" class="headerlink" title="设置进程控制块"></a>设置进程控制块</h3><ul>
+<li><p>在 MOS 操作系统<strong>特意将一些内核的数据暴露到用户空间</strong>，使得进程不需要切换到内核态就能访问，这是 MOS 特有的设计</p>
+<p>  在这里暴露 UTOP 往上到 UVPT 之间所有进程共享的<strong>只读</strong>空间，也就是把这部分内存对应的<strong>内核<br>  页表 base_pgdir 拷贝到进程页表中</strong>。从 <strong>UVPT 往上到 ULIM 之间则是进程自己的页表</strong></p>
+<p>  <img src="https://s2.loli.net/2024/04/24/etFI7plnikVqRT6.png" alt="Untitled"></p>
+</li>
+</ul>
+<h3 id="加载二进制镜像"><a href="#加载二进制镜像" class="headerlink" title="加载二进制镜像"></a>加载二进制镜像</h3><p>要想正确加载一个 ELF 文件到内存，只需将 ELF 文件中所有<strong>需要加载的程序段加载到对应的<font color="red">虚拟地址</font>上</strong>即可</p>
+<p><img src="https://s2.loli.net/2024/04/24/BlTYwCyVzxOSjkP.png" alt="Untitled"></p>
+<ul>
+<li><code>elf_load_seg</code> 只关心ELF 段的结构，由回调函数处理具体的页面加载过程</li>
+</ul>
+<h3 id="进程运行与切换"><a href="#进程运行与切换" class="headerlink" title="进程运行与切换"></a>进程运行与切换</h3><p>在 Lab3 中，进程切换只需要保存进程的上下文信息。而MOS中的寄存器状态保存的地方是 <code>KSTACKTOP</code> 以下的一个 <code>sizeof(TrapFrame)</code>大小的区域中，而<code>curenv-&gt;env_tf</code>是存放当前进程的上下文的区域</p>
+<p>故保存进程上下文使用语句<code>curenv-&gt;env_tf = *((struct Trapframe *)KSTACKTOP - 1)</code></p>
+<h2 id="中断与异常"><a href="#中断与异常" class="headerlink" title="中断与异常"></a>中断与异常</h2><p>CPU 不仅仅有常见的 32 个通用寄存器，还有功能广泛的<em><strong>协处理器</strong></em>，而中断&#x2F;异常部分就用到了其中的协处理器 CP0</p>
+<table>
+<thead>
+<tr>
+<th>寄存器助记符</th>
+<th>CP0 寄存器编号</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Status</td>
+<td>12</td>
+<td>状态寄存器，包括中断引脚使能，其他 CPU 模式等位域</td>
+</tr>
+<tr>
+<td>Cause</td>
+<td>13</td>
+<td>记录导致异常的原因</td>
+</tr>
+<tr>
+<td>EPC</td>
+<td>14</td>
+<td>异常结束后程序恢复执行的位置</td>
+</tr>
+</tbody></table>
+<h3 id="Status-寄存器"><a href="#Status-寄存器" class="headerlink" title="Status 寄存器"></a><strong>Status 寄存器</strong></h3><p><img src="https://s2.loli.net/2024/04/24/OKAFgDfkURJj2S6.png" alt="Untitled"></p>
+<ul>
+<li><p><code>IE</code> 位表示中断是否开启，为 1 表示开启，否则不开启</p>
+</li>
+<li><p>当且仅当 <code>EXL</code> 被设置为 0 且 <code>UM</code> 被设置为 1 时，处理器处于<strong>用户模式</strong>，其它所有情况下，处理器均处于内核模式下</p>
+<ul>
+<li><p>每当异常发生的时候，EXL 会被自动设置为 1（使处于内核态，能使用特权指令）</p>
+</li>
+<li><p>每个进程在每一次被调度时都会执行</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RESTORE_ALL <span class="comment">//恢复处理器寄存器状态</span></span><br><span class="line">eret <span class="comment">// EXL被自动设置为 0</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>15-8 位为<em><strong>中断屏蔽位</strong></em>，每一位代表一个不同的中断活动，其中 15-10 位<strong>使能</strong>硬件中断源<font color="purple">（该中断能否被响应）</font>，9-8位是 Cause 寄存器软件可写的中断位</p>
+</li>
+</ul>
+<h3 id="Cause-寄存器"><a href="#Cause-寄存器" class="headerlink" title="Cause 寄存器"></a>Cause 寄存器</h3><p><img src="https://s2.loli.net/2024/04/24/zi1IqLRVo5welC7.png" alt="Untitled"></p>
+<ul>
+<li><code>IP</code> (15-8 位)保存着哪一些中断发生了，其中 15-10 位来自硬件，9-8 位可以由软件写入，<font color="green">当 Status 寄存器中相同位允许中断（为 1）时</font>，Cause 寄存器这一位也为1就会导致中断</li>
+<li><code>ExcCode</code> (6-2位)，记录发生了什么异常。在 MOS 中，中断是 0 号异常。</li>
+</ul>
+<h3 id="CPU异常处理流程"><a href="#CPU异常处理流程" class="headerlink" title="CPU异常处理流程"></a>CPU异常处理流程</h3><p>CPU 如何处理异常？</p>
+<ol>
+<li>设置 EPC 寄存器的值为从异常返回的地址。</li>
+<li>设置 Status 寄存器（<strong>设置 EXL 位，强制 CPU 进入内核态并禁止中断</strong>）</li>
+<li>设置 Cause 寄存器（记录异常原因）</li>
+<li>设置 PC 为<strong>异常入口地址</strong>，随后交给软件处理</li>
+</ol>
+<p>至此，我们成功地切换到内核程序，将异常处理的任务转交给操作系统。</p>
+<ul>
+<li><p>相关指令</p>
+<ul>
+<li><p><code>mfc0</code> Move From Coprocessor 0</p>
+<p>  用于从协处理器的某个寄存器中读取值到一个通用寄存器中</p>
+</li>
+<li><p><code>mtc0</code> Move To Coprocessor 0</p>
+<p>  用于将一个通用寄存器的值写入协处理器的某个寄存器中</p>
+</li>
+</ul>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mfc0    t0, CP0_STATUS</span><br><span class="line">and     t0, t0, ~(STATUS_UM | STATUS_EXL | STATUS_IE)</span><br><span class="line">mtc0    t0, CP0_STATUS</span><br></pre></td></tr></table></figure></li>
+</ul>
+<font color="grey">
+### SAVE_ALL 与异常重入
+
+<p>在 SAVE_ALL 中进行判断，若 Status 寄存器的 UM 位为 0，说明此次异常在内核态触发， sp 寄存器已经在内核异常栈中。不再将 sp 设置为 KSTACKTOP ，而是使其继续增长。</p>
+<p>这样便能够在异常中处理新的异常，而不会破坏原本的异常处理流程。这一机制被称作异常重入</font></p>
+<h3 id="异常的分发"><a href="#异常的分发" class="headerlink" title="异常的分发"></a>异常的分发</h3><p>当发生异常时，处理器会进入一个用于分发异常的程序，这个程序的作用就是检测发生了哪种异常，并调用相应的异常处理程序</p>
+<p>一般来说，异常分发程序会被要求放在固定的某个物理地址上</p>
+<p>在MOS中的实现为：将.text.exc_gen_entry 段和 .text.tlb_miss_entry 段用链接器放到特定的位置—— 0x80000180 和 0x80000000 处，它们是异常处理程序的入口地址。在我们的系统中，CPU 发生异常（除了用户态地址的 TLB Miss 异常）后，就会自动跳转到地址 0x80000180 处；发生用户态地址的 TLB Miss 异常时，会自动跳转到地址 0x80000000处</p>
+<h3 id="时钟中断"><a href="#时钟中断" class="headerlink" title="时钟中断"></a>时钟中断</h3><ul>
+<li><p>中断处理的流程</p>
+<ol>
+<li><p>通过异常分发，<strong>判断出当前异常为中断异常</strong>，随后进入相应的<strong>中断处理程序</strong>。在 MOS 中即对应 handle_int 函数。</p>
+<p> 此前以异常的角度对时钟中断进行处理；现在以中断的角度对时钟中断进行处理</p>
+</li>
+<li><p>在中断处理程序中<strong>进一步判断 Cause 寄存器中是由几号中断位引发的中断</strong>，然后进入不同中断对应的<strong>中断服务函数</strong>。</p>
+</li>
+<li><p>中断处理完成，通过 ret_from_exception 函数<strong>恢复现场</strong>，继续执行。</p>
+</li>
+</ol>
+</li>
+<li><p>在MOS 中，<strong>时间片的长度是用时钟中断衡量</strong>的。4KC 中的 CP0 内置了一个可产生中断的 Timer，MOS 即使用这个内置的 Timer 产生时钟中断</p>
+<p>  （具体细节实现见指导书）</p>
+</li>
+<li><p>内核初始化完毕后陷入死循环，等待第一次时钟中断来临，通过异常处理来调度已经创建好的用户进程运行</p>
+</li>
+</ul>
+<h3 id="进程调度器"><a href="#进程调度器" class="headerlink" title="进程调度器"></a>进程调度器</h3><p><strong>什么时候需要切换进程？</strong></p>
+<ol>
+<li>参数 yield 为真时：此时当前进程必须让出。</li>
+<li>count 减为 0 时：此时分给进程的时间片被用完，将执行权让给其他进程。</li>
+<li>无当前进程：内核必然刚刚完成初始化，需要分配一个进程执行。</li>
+<li>进程状态不是可运行：当前进程不能再继续执行，让给其他进程。</li>
+</ol>
+<p><strong>如何切换进程？</strong></p>
+<ol>
+<li>当前进程仍为就绪状态时，需要将其移到 env_sched_list 队列的尾部。</li>
+<li>选中 env_sched_list 队列头部的进程。如果没有可用的进程，内核 panic。</li>
+<li>设置 count 为当前进程的优先级（分配的时间片的数量）。</li>
+</ol>
+<p>（不管是否切换，都）最后将 count 自减 1，调用 env_run 函数。</p>
+<h1 id="时纪"><a href="#时纪" class="headerlink" title="时纪"></a>时纪</h1><p>E 3.1</p>
+<ul>
+<li><p>注意链表顺序！！初始化是倒序插入</p>
+</li>
+<li><p><font color="red">LIST、TAIL相关宏操作的（参数）一般都是指针！！</font></p>
+</li>
+<li><p>如下定义</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static Pde *base_pgdir;</span><br></pre></td></tr></table></figure>
+<p>  <code>base_pgdir</code> 是一个Pde类型的指针，即为目录项的虚拟地址；</p>
+<p>  <code>*base_pgdir</code> 是Pde类型的指针的解引用，即Pde，为目录项的物理地址</p>
+</li>
+</ul>
+<p>E 3.4</p>
+<ul>
+<li><code>NENV</code> 什么时候要用来作为限制条件吗？这里好像不用</li>
+</ul>
+<p>E 3.5</p>
+<ul>
+<li>分配页面后记得加<code>p→pp_ref</code>！！</li>
+</ul>
+<p>E 3.12</p>
+<ul>
+<li>schedule里的count是静态变量，存放在.data区，只初始化一次，不同进程不共享！！所以虽然可能会调度多次schedule函数，但每个进程只执行一次 <code>static int count = 0;</code> 初始化语句！！</li>
+<li>注意，不管要不要插到尾部，都要先移除当前进程！！</li>
+</ul>
+<h1 id="exam前准备"><a href="#exam前准备" class="headerlink" title="exam前准备"></a>exam前准备</h1><h3 id="有可能出问题"><a href="#有可能出问题" class="headerlink" title="有可能出问题"></a>有可能出问题</h3><ul>
+<li>scheduled函数，要不要把不是就绪状态的移除</li>
+<li>获取队列的第一个进程时，记得LIST_REMOVE</li>
+</ul>
+<h3 id="extra"><a href="#extra" class="headerlink" title="extra"></a>extra</h3><p>近年都是处理新的异常</p>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab3/" data-id="cm7styog000090sgp10fobjp1" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACO0lEQVR42u3azW6DQAxFYd7/panUVato6Lk2qYLnzCoiBPhYOOOf48Dr/F6vR34eX52zOrK6wuuvblsyZMh4LOO8XKtz+G9XpOsrpNeXIUPGDozrIMsfLg3NJASTPwAZMmTIqG3pyNaQf5YhQ4aMlMG3jLX0WIYMGTJqSSy5DQm+tc3ibbm4DBkyHshIGwP/+fmN/Q0ZMmQ8hHGGqxMESdugtmTIkDGbQRLR6wfij5ueT17HbTeWIUPGBzNqoxVps/Ou9PVIY7kMGTJGMDqjFaQZUGt81gY1ZMiQsQOjM6TFy2QkfeXjrcWwK0OGjEcxeJqaltg65/Aw/atqKEOGjNEMPpiVPlxnyIy/VhkyZMxm9Dd2nbFUnsQG38qQIWMoIx2tSENzbfiMD2HIkCFjB0Zapq8F6LSs1vrfkCFDxiBGv1VJxi/SlmRa1JMhQ8ZsBh/2IkE5LZOlxbU/XqIMGTJGM8hIVj+8ckCt2SlDhozZDOIjIY8f5+EyCPoyZMjYhlEbtui0J/uDHTJkyJjNIBci1LRUV0txl1eTIUPGNgweTK+3aJ0gW0tlZciQMZvBb5YWv9KBsHRoDGFkyJAxgnGGiye9nXGKuJshQ4aM0YxasOuMYvBBtLQUKEOGjNmMNAjWkJ3RMbSrlSFDxgYMkjR2RsFuKJ+Rfa4MGTK2Z3QSTj58VgzrMmTIkIHHvGrBOkUu+7EyZMgYzegksZ0NHwGjYX0ZMmSMZtzbGEgLeZ0t6RtbmDJkyPgUxhe/io50OoSoRQAAAABJRU5ErkJggg==">分享</a><div class="tags"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul></div><div class="post-nav"><a class="pre" href="/BUAA-SE/BUAA-OS-Lab4/">BUAA-OS-Lab4 系统调用与fork</a><a class="next" href="/BUAA-SE/BUAA-OS-Lab2/">BUAA-OS-Lab2 内存管理</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="https://unpkg.com/gitalk/dist/gitalk.css"><script type="text/javascript" src="https://unpkg.com/blueimp-md5/js/md5.js"></script><script type="text/javascript" src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+  clientID: 'Ov23li2QyqRzt8XAlrKY',
+  clientSecret: 'd43f2b587c8782b1e92215b56ea07a73762fdfbb',
+  repo: 'blog.gitalk',
+  owner: 'RoisyL',
+  admin: ['RoisyL'],
+  id: md5(location.pathname),
+  distractionFreeMode: false
+})
+gitalk.render('container')
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="search-form"><input id="local-search-input" placeholder="Search" type="text" name="q" results="0"/><div id="local-search-result"></div></div></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/rabbit.jpg"/></a><p class="author-description">Mind and Hand</p><a class="info-icon" href="https://github.com/RoisyL" title="Welcome to my GitHub" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BUAA-SE/">BUAA-SE</a><span class="category-list-count">8</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Lab/" style="font-size: 15px;">Lab</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab4-challenge/">BUAA-OS-Lab4_challenge sigaction实现</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab-General/">BUAA-OS-Lab 经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab5/">BUAA-OS-Lab5 文件系统</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab4/">BUAA-OS-Lab4 系统调用与fork</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab3/">BUAA-OS-Lab3 进程与异常</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab2/">BUAA-OS-Lab2 内存管理</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab1/">BUAA OS-Lab1 内核、启动和 PRINTF</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab0/">BUAA OS-Lab0 Linux基础操作</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Roisy's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/tufu9441"> tufu9441.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><link rel="stylesheet" type="text/css" href="/css/search.css?v=1.0.0"><script type="text/javascript" src="/js/search.js?v=1.0.0"></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+  search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

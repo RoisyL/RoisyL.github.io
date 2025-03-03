@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>BUAA OS-Lab0 Linux基础操作 | Roisy's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="https://s2.loli.net/2025/03/01/MF8SBrfc2xnP9Qb.jpg"><link rel="Shortcut Icon" type="image/x-icon" href="https://s2.loli.net/2025/03/01/MF8SBrfc2xnP9Qb.jpg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">BUAA OS-Lab0 Linux基础操作</h1><a id="logo" href="/.">Roisy's Blog</a><p class="description">一个SE学生的自留地</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/tags/"><i class="fa fa-tag"> 标签</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">BUAA OS-Lab0 Linux基础操作</h1><div class="post-meta">2024-03-18<span> | </span><span class="category"><a href="/categories/BUAA-SE/">BUAA-SE</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> 阅读</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 3.5k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 13</span><span class="post-meta-item-text"> 分钟</span></span></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%B2%E8%A7%A3%E9%83%A8%E5%88%86%E6%A2%B3%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">讲解部分梳理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">1.1.</span> <span class="toc-text">Linux 基本操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Makefile-%E8%A1%A5%E5%85%85"><span class="toc-number">1.2.</span> <span class="toc-text">Makefile 补充</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git-%E8%A1%A5%E5%85%85"><span class="toc-number">1.3.</span> <span class="toc-text">Git 补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#git-branch"><span class="toc-number">1.3.1.</span> <span class="toc-text">git branch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-status"><span class="toc-number">1.3.2.</span> <span class="toc-text">git status</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-add"><span class="toc-number">1.3.3.</span> <span class="toc-text">git add</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-restore"><span class="toc-number">1.3.4.</span> <span class="toc-text">git restore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-reset"><span class="toc-number">1.3.5.</span> <span class="toc-text">git reset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-checkout"><span class="toc-number">1.3.6.</span> <span class="toc-text">git checkout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-commit"><span class="toc-number">1.3.7.</span> <span class="toc-text">git commit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-rm"><span class="toc-number">1.3.8.</span> <span class="toc-text">git rm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%88%86%E6%94%AF"><span class="toc-number">1.3.9.</span> <span class="toc-text">删除分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E5%AD%A4%E5%84%BF%E5%88%86%E6%94%AF"><span class="toc-number">1.3.10.</span> <span class="toc-text">建立孤儿分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E7%A9%BA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">1.3.11.</span> <span class="toc-text">提交空文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E5%88%86%E6%94%AF"><span class="toc-number">1.3.12.</span> <span class="toc-text">合并分支</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E4%B8%89%E5%89%91%E5%AE%A2"><span class="toc-number">1.4.</span> <span class="toc-text">文本处理三剑客</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#grep-%E6%9F%A5%E6%89%BE"><span class="toc-number">1.4.1.</span> <span class="toc-text">grep 查找</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sed-%E6%9B%BF%E6%8D%A2%E3%80%81%E5%88%A0%E9%99%A4%E7%AD%89"><span class="toc-number">1.4.2.</span> <span class="toc-text">sed 替换、删除等</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%94%A8%E6%B3%95"><span class="toc-number">1.4.3.</span> <span class="toc-text">常用用法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shell-%E7%BC%96%E7%A8%8B%E6%B3%A8%E6%84%8F"><span class="toc-number">1.5.</span> <span class="toc-text">shell 编程注意</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lab0"><span class="toc-number">2.</span> <span class="toc-text">Lab0</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91"><span class="toc-number">2.1.</span> <span class="toc-text">踩坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%BE%E7%82%B9%E5%88%86%E6%9E%90"><span class="toc-number">2.2.</span> <span class="toc-text">难点分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-%E4%B8%8B%E5%91%BD%E4%BB%A4%E7%A7%8D%E7%B1%BB%E5%A4%9A%EF%BC%8C%E5%8F%82%E6%95%B0%E5%A4%8D%E6%9D%82"><span class="toc-number">2.2.1.</span> <span class="toc-text">Linux 下命令种类多，参数复杂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shell-%E7%BC%96%E7%A8%8B%E4%B8%AD%E7%AC%A6%E5%8F%B7%E5%92%8C%E7%A9%BA%E6%A0%BC%E4%BD%BF%E7%94%A8%E9%9D%9E%E5%B8%B8%E5%AE%B9%E6%98%93%E5%87%BA%E9%94%99"><span class="toc-number">2.2.2.</span> <span class="toc-text">shell 编程中符号和空格使用非常容易出错</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Makefile-%E5%B5%8C%E5%A5%97"><span class="toc-number">2.2.3.</span> <span class="toc-text">Makefile 嵌套</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%93%E4%BC%9A"><span class="toc-number">2.3.</span> <span class="toc-text">体会</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99-Shell-%E8%84%9A%E6%9C%AC%E5%92%8C-make-%E6%96%87%E4%BB%B6%E6%97%B6%E7%86%9F%E7%BB%83%E5%BA%A6%E8%87%B3%E5%85%B3%E9%87%8D%E8%A6%81"><span class="toc-number">2.3.1.</span> <span class="toc-text">编写 Shell 脚本和 make 文件时熟练度至关重要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#debug-%E6%97%B6%E5%88%A9%E7%94%A8%E5%A5%BD%E8%AE%A8%E8%AE%BA%E5%8C%BA-%E5%88%A9%E7%94%A8%E5%A5%BDgit%E6%93%8D%E4%BD%9C"><span class="toc-number">2.3.2.</span> <span class="toc-text">debug 时利用好讨论区 &amp; 利用好git操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#exam-%E5%89%8D%E5%87%86%E5%A4%87"><span class="toc-number">3.</span> <span class="toc-text">exam 前准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%80%E6%B3%AA%E6%95%99%E8%AE%AD"><span class="toc-number">3.1.</span> <span class="toc-text">血泪教训</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E7%86%9F%E6%93%8D%E4%BD%9C"><span class="toc-number">3.2.</span> <span class="toc-text">不熟操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%91"><span class="toc-number">3.3.</span> <span class="toc-text">坑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#exam-extra-%E5%A4%8D%E7%9B%98"><span class="toc-number">4.</span> <span class="toc-text">exam &amp; extra 复盘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B8%A9%E7%9A%84%E5%9D%91%EF%BC%88%E7%8E%B0%E5%9C%BA%E8%A7%A3%E5%86%B3%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">踩的坑（现场解决）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E6%BC%8F%E6%B4%9E%EF%BC%88%E7%8E%B0%E5%9C%BA%E6%B2%A1%E8%A7%A3%E5%86%B3%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">知识漏洞（现场没解决）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#awk-%E7%94%A8%E6%B3%95%E8%A1%A5%E5%85%85"><span class="toc-number">4.2.1.</span> <span class="toc-text">awk 用法补充</span></a></li></ol></li></ol></li></ol></div></div><div class="post-content"><h1 id="讲解部分梳理"><a href="#讲解部分梳理" class="headerlink" title="讲解部分梳理"></a>讲解部分梳理</h1><h2 id="Linux-基本操作"><a href="#Linux-基本操作" class="headerlink" title="Linux 基本操作"></a>Linux 基本操作</h2><ul>
+<li><code>head</code> 输出文件首部内容<ul>
+<li><code>-n &lt;n&gt;</code> 显示前 <n> 行内容</li>
+<li><code>-c &lt;n&gt;</code> 显示前 <n> 个字节内容</li>
+</ul>
+</li>
+<li><code>tail</code> 输出文件尾部内容<ul>
+<li><code>-n &lt;n&gt;</code> 显示末尾 <n> 行内容</li>
+<li><code>-c &lt;n&gt;</code> 显示末尾 <n> 个字节内容</li>
+<li><code>-f</code> 当文件增长时，输出后续添加的数据（适用于文件不断变化的情况，如日志文件）</li>
+</ul>
+</li>
+<li><code>ps</code> 显示当前进程状态<ul>
+<li><code>-aux / -ef</code> 显示所有进程</li>
+</ul>
+</li>
+<li><code>mv</code> 还可以用于重命名</li>
+<li>递归参数<ul>
+<li><code>-p</code> <strong>从指定目录向上级目录递归</strong> eg 创建目录</li>
+<li><code>-r</code> <strong>从指定目录向其下级目录递归</strong> eg 递归删除、拷贝</li>
+</ul>
+</li>
+<li>在命令后加上<code>&amp;</code>符号，代表让命令在后台进行</li>
+<li><code>Ctrl Q</code> 进入块选模式，方便删注释和缩进<ul>
+<li>选择之后可以通过 <code>I</code> 进入插入模式，方便段落缩进</li>
+<li><code>&#123;</code> <code>&#125;</code> 向上&#x2F;下选中 1 段</li>
+</ul>
+</li>
+</ul>
+<h2 id="Makefile-补充"><a href="#Makefile-补充" class="headerlink" title="Makefile 补充"></a>Makefile 补充</h2><ul>
+<li><p>开头最好写<code>.PHONY xx</code> (一般会写<code>.PHONY：clean</code>）</p>
+<ul>
+<li><code>.PHONY</code>后面跟的目标都被称为伪目标，对应的命令一定会被执行</li>
+<li>作用：避免伪目标同名文件冲突；提高执行效率</li>
+</ul>
+</li>
+<li><p>每一个指令 (command) 之前<strong>必须按一次制表符键</strong>来控制间隔，而不能是空格，否则 make 会报错</p>
+</li>
+<li><p>简洁高效的写法</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用变量维护Makefile</span></span><br><span class="line"><span class="comment"># %.o: %.c 缩小编写量</span></span><br><span class="line">CC = gcc</span><br><span class="line">OBJ = function.o test.o</span><br><span class="line">TARGET = test</span><br><span class="line"></span><br><span class="line"><span class="variable">$(TARGET)</span>: <span class="variable">$(OBJ)</span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(OBJ)</span> -o <span class="variable">$(TARGET)</span></span><br><span class="line"></span><br><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>外层 makefile 调用内层 makefile</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">all：</span><br><span class="line">    <span class="variable">$(MAKE)</span> -C subdir</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	<span class="variable">$(MAKE)</span> clean -C subdir</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Git-补充"><a href="#Git-补充" class="headerlink" title="Git 补充"></a>Git 补充</h2><h3 id="git-branch"><a href="#git-branch" class="headerlink" title="git branch"></a><code>git branch</code></h3><p><code>git branch &lt;branch-name&gt;</code> 本地创建一个基于当前分支产生的分支。</p>
+<h3 id="git-status"><a href="#git-status" class="headerlink" title="git status"></a><strong><code>git status</code></strong></h3><p><strong>查看当前分支的状态</strong>，以及当前工作区的变动和暂存区的内容</p>
+<h3 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a><strong><code>git add</code></strong></h3><p>把一个<strong>新文件</strong>或者已经<strong>修改过的文件</strong>加入<strong>暂存区</strong>中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;file_name&gt;         <span class="comment"># 将指定文件加入暂存区</span></span><br><span class="line">git add .                   <span class="comment"># 或使用.将项目所有文件加入暂存区（除.gitignore指定的文件外）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="git-restore"><a href="#git-restore" class="headerlink" title="git restore"></a><strong><code>git restore</code></strong></h3><p>放弃修改（如果涉及到文件的增删，建议用 reset，用的时候慎重）</p>
+<ul>
+<li>当文件还没有通过  <code>git add</code>  加入暂存区时，使用  <code>git restore &lt;filename&gt;</code>  来撤销修改，使其退回到上一个 commit 的状态</li>
+<li>如果文件已经加入了暂存区，通过  <code>git restore **--staged** &lt;filename&gt;</code>  来取消暂存。</li>
+<li><strong>其他错误回退命令</strong><ul>
+<li>若文件未添加至暂存区：使用  <code>git checkout &lt;filename&gt;</code>  将文件替换成暂存区版本，或  <code>git checkout .</code>  将工作区内的所有文件替换成暂存区内的文件（谨慎使用）</li>
+<li>若文件已添加到暂存区但未提交到本地仓库：使用  <code>git reset HEAD .</code>  撤销暂存区的所有修改至工作区，接下来就回到了上一步</li>
+<li>若已提交到本地仓库：使用  <code>git reset --hard HRAD^</code>  将所有文件回退至上一版本</li>
+</ul>
+</li>
+</ul>
+<h3 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a><strong><code>git reset</code></strong></h3><p><code>git reset --hard</code> 可以<strong>恢复文件的版本</strong>，既可以往旧版本恢复，也可以往新版本“恢复”。但–hard 是 reset 命令唯一的危险用法，使用时如果工作区的文件还未提交，git 会覆盖它从而导致无法恢复。所以使用时要<strong>小心谨慎</strong></p>
+<h3 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a><strong><code>git checkout</code></strong></h3><p><strong>切换分支</strong></p>
+<p>注意，在切换时，需要<strong>保证目前所有文件的状态均为“未修改”（没有修改过，或者已经提交）</strong></p>
+<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a><strong><code>git commit</code></strong></h3><p>使用  <code>git commit -m &lt;message&gt;</code>  这个命令将暂存区的修改提交到储存库中。<strong>当 message 参数有空格时需要把 message 用引号括起来</strong></p>
+<h3 id="git-rm"><a href="#git-rm" class="headerlink" title="git rm"></a><code>git rm</code></h3><ul>
+<li>加<code>--cached</code> 从暂存区删除，但不删除工作区文件，不加则两边都删</li>
+</ul>
+<h3 id="删除分支"><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h3><p><code>git branch -d(D) &lt;branch-name&gt;</code> 删除本地对应分支</p>
+<p><code>git push origin --delete [branch_name]</code> 删除远程分支</p>
+<h3 id="建立孤儿分支"><a href="#建立孤儿分支" class="headerlink" title="建立孤儿分支"></a>建立孤儿分支</h3><ol>
+<li><code>git checkout --orphan &lt;branch name&gt;</code> 创建孤立分支</li>
+<li><code>git rm -rf .</code> 删除拷贝的所有文件</li>
+<li><code>touch add commit</code></li>
+<li><code>git push -u origin &lt;branch name&gt;</code> 创建远程分支并将其关联</li>
+</ol>
+<h3 id="提交空文件夹"><a href="#提交空文件夹" class="headerlink" title="提交空文件夹"></a>提交空文件夹</h3><p>Git 只对跟踪文件进行版本控制，而不跟踪文件夹本身。如果想要提交一个空文件夹到 Git 仓库中，可以<strong>在文件夹中添加一个占位文件</strong>，例如“.gitkeep”</p>
+<h3 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h3><p><code>git merge</code> 自动合并</p>
+<ul>
+<li>如果自动合并不成功（存在冲突）<ul>
+<li>不想继续合并了，退出合并的中间状态<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge --abort</span><br></pre></td></tr></table></figure></li>
+<li>处理冲突 <strong>最好在图形化界面上解决，更方便</strong><ol>
+<li><code>git status</code>查看冲突的文件</li>
+<li>编辑冲突文件，解决冲突（记得删除三行分隔线）</li>
+<li><code>git add 冲突文件</code></li>
+<li><code>git commit -m &quot;提交信息&quot;</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="文本处理三剑客"><a href="#文本处理三剑客" class="headerlink" title="文本处理三剑客"></a>文本处理三剑客</h2><h3 id="grep-查找"><a href="#grep-查找" class="headerlink" title="grep 查找"></a>grep 查找</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">grep [选项] PATTERN FIL</span><br><span class="line">选项（常用）：</span><br><span class="line">-a 不忽略二进制数据进行搜索。</span><br><span class="line">-i 忽略大小写差异。</span><br><span class="line">-r 从目录中递归查找。</span><br><span class="line">-n 显示行号</span><br><span class="line">-q 安静模式，不打印结果</span><br></pre></td></tr></table></figure>
+
+<h3 id="sed-替换、删除等"><a href="#sed-替换、删除等" class="headerlink" title="sed 替换、删除等"></a>sed 替换、删除等</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sed [选项] <span class="string">&#x27;命令&#x27;</span> 输入文本</span><br><span class="line">选项（常用）：</span><br><span class="line">-n：安静模式，只显示经过sed处理的内容。否则显示输入文本的所有内容。</span><br><span class="line">**-i：直接修改读取的档案内容，而不是输出到屏幕。否则，只输出不编辑。</span><br><span class="line">-E 选项用于启用扩展正则表达式,这样我们就可以使用更加灵活的正则表达式语法。**</span><br><span class="line">命令（常用）：</span><br><span class="line">[行号]a[内容]：新增，在行号后新增一行相应内容。行号可以是“数字”，在这一行之后新增，</span><br><span class="line"> 也可以是“起始行，终止行”，在其中的每一行后新增。当不写行号时，在每一</span><br><span class="line"> 行之后新增。使用$表示最后一行。后面的命令同理。</span><br><span class="line">[行号]c[内容]：取代。用内容取代相应行的文本。</span><br><span class="line">[行号]i[内容]：插入。在当前行的上面插入一行文本。</span><br><span class="line">[行号]d：删除当前行的内容。</span><br><span class="line">[行号]p：输出选择的内容。通常与选项-n一起使用。</span><br><span class="line">s/re（正则表达式）/string(/g)：将re匹配的内容替换为string /g表示全文替换，不加则替换第一个</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用用法"><a href="#常用用法" class="headerlink" title="常用用法"></a>常用用法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;$1&gt;2 &#123;print $1,$3&#125;&#x27;</span> my.txt</span><br><span class="line"><span class="comment"># awk &#x27;pattern action&#x27; file ，pattern 为条件，action 为命令，file 为文件</span></span><br><span class="line"><span class="comment"># 命令中出项的 $n 代表每一行中用空格分隔后的第 n 项</span></span><br><span class="line"><span class="comment"># 该命令的意义是文件 my.txt 中所有第一项大于 2 的行，输出第一项和第三项</span></span><br><span class="line"></span><br><span class="line">awk -F, <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> my.txt</span><br><span class="line"><span class="comment"># -F 选项用来指定用于分隔的字符，默认是空格</span></span><br><span class="line"><span class="comment"># 该命令的意义是打印用 , 分隔后的第 2 项</span></span><br><span class="line"></span><br><span class="line">grep -n <span class="string">&quot;all&quot;</span> my.txt &gt; result.txt</span><br><span class="line"><span class="comment"># 打印含有“all”的行并显示行号</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">&quot;s/<span class="variable">$2</span>/<span class="variable">$3</span>/g&quot;</span> <span class="variable">$1</span></span><br><span class="line"><span class="comment"># 将传入的第一个参数（文件）里的所有 第二个参数 替代为 第三个参数</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="shell-编程注意"><a href="#shell-编程注意" class="headerlink" title="shell 编程注意"></a>shell 编程注意</h2><ul>
+<li><p>首句<code>#!/bin/bash</code></p>
+</li>
+<li><p>等号与运算符两边不允许有空格，<code>-op</code>的两边与<code>[]</code>内部两边必须有空格</p>
+<ul>
+<li><code>[</code> 实际是一个可执行程序</li>
+<li>双中括号同样用于判断条件，比单中括号更高级。例如在双中括号中可以直接使用逻辑运算：<code>[[ $a -gt 1 &amp;&amp; $a -lt 100 ]]</code>，而使用单中括号只能写为<code>[ $a -gt 1 ] &amp;&amp; [ $a -lt 100 ]</code></li>
+</ul>
+</li>
+<li><p>获取变量值建议使用 <code>$&#123;var&#125;</code>，花括号避免歧义</p>
+</li>
+<li><p>引用变量必须在<strong>双引号</strong>中进行</p>
+</li>
+<li><p><code>$#</code> 传递的参数个数；<code>$*</code> 一个字符串，内容是传递的全部参数</p>
+</li>
+<li><p><code>let</code> 赋值运算 eg <code>let i=i+1</code> 等价于 <code>i=$(($i+1))</code> （双括号是计算值）</p>
+</li>
+<li><p>流程控制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ 表达式1 ]; <span class="keyword">then</span></span><br><span class="line">	命令列表1;</span><br><span class="line"><span class="keyword">elif</span> [ 表达式2 ]; <span class="keyword">then</span></span><br><span class="line">	命令列表2;</span><br><span class="line"><span class="keyword">else</span> [ 表达式3 ]; <span class="keyword">then</span></span><br><span class="line">	命令列表3;</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> [ 表达式 ];<span class="keyword">do</span></span><br><span class="line">	命令列表;</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> [参数列表];<span class="keyword">do</span></span><br><span class="line">	命令列表;</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment">#最后都有done</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="Lab0"><a href="#Lab0" class="headerlink" title="Lab0"></a>Lab0</h1><h2 id="踩坑"><a href="#踩坑" class="headerlink" title="踩坑"></a>踩坑</h2><p><strong>在评测前先确保自己对于文件的变更已经全部添加到暂存区</strong>（使用合适的  <code>git add</code>  和  <code>git commit</code> ）！！<strong>注意先<code>add</code>再<code>commit</code></strong> ，新建的文件需要先添加跟踪才会到暂存区，才能用<code>commit</code>提交。</p>
+<ul>
+<li>整型转字符串 <code>sprintf</code><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n);</span><br><span class="line"><span class="type">char</span> str[<span class="number">20</span>];</span><br><span class="line"><span class="built_in">sprintf</span>(str,<span class="string">&quot;%d&quot;</span>,n);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span>,str)</span><br></pre></td></tr></table></figure></li>
+<li>三剑客不熟悉</li>
+<li>变量使用忘了<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">自增操作！</span><br><span class="line"><span class="comment">#错误写法</span></span><br><span class="line">a=a+1</span><br><span class="line"><span class="comment">#正确写法</span></span><br><span class="line">a=$[<span class="variable">$a</span>+1]</span><br></pre></td></tr></table></figure></li>
+<li>在 sed 命令中<ul>
+<li><strong>使用变量</strong>时，<strong>正则用双引号</strong>（一般只能用单引号）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">name=tomas</span><br><span class="line">sed -i <span class="string">&quot;s/rose/<span class="variable">$&#123;name&#125;</span>/g&quot;</span> name.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>单引号<code>‘’</code><ul>
+<li>括起来的字符均作为普通字符出现</li>
+</ul>
+</li>
+<li>双引号<code>“”</code><ul>
+<li>括起来的字符除 <code>$</code>、<code>\</code>、<code>‘’</code>、和 <code>“”</code> 之外都将作为普通字符对待，所以如果要用变量值就要用<code>“”</code></li>
+</ul>
+</li>
+<li>倒引号&#96;&#96;&#96;&#96;<br>用于命令替换，其所括字符串在被 Shell 解释时，首先执行其中的命令并将其结果代替该命令</li>
+<li>$俩小括号&#x2F;$中括号<strong>计算结果</strong>替换，$单小括号<strong>执行结果</strong>替代</li>
+</ul>
+</li>
+<li>要更改源文件内容要加参数<code>-i</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 替换字符串，并更改原文件内容</span></span><br><span class="line"><span class="comment"># 在sed后面加 -i,即编辑文档“edit files in place”选项</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>gcc 编译时如果头文件不在<code>/usr/include</code>里，一定记得<code>-I &lt;头文件所在位置路径&gt;</code></li>
+</ul>
+<h2 id="难点分析"><a href="#难点分析" class="headerlink" title="难点分析"></a>难点分析</h2><h3 id="Linux-下命令种类多，参数复杂"><a href="#Linux-下命令种类多，参数复杂" class="headerlink" title="Linux 下命令种类多，参数复杂"></a>Linux 下命令种类多，参数复杂</h3><ul>
+<li><code>ls</code>、<code>mv</code>、<code>touch</code>等常用命令倒是能熟练掌握，但像<code>sed</code>、<code>awk</code>等参数复杂功能复杂的命令，在使用时就容易一下想不起来正确的使用方法</li>
+<li><font color="Blue">解决方法：先通过多练习熟练，使用时若不确定先查阅资料或参考书</font></li>
+</ul>
+<h3 id="shell-编程中符号和空格使用非常容易出错"><a href="#shell-编程中符号和空格使用非常容易出错" class="headerlink" title="shell 编程中符号和空格使用非常容易出错"></a>shell 编程中符号和空格使用非常容易出错</h3><p>比如</p>
+<ul>
+<li>各种引号的使用<ul>
+<li>单引号<code>‘’</code><br>括起来的字符均作为普通字符出现</li>
+<li>双引号<code>“”</code><br>括起来的字符除 <code>$</code>、<code>\</code>、<code>‘’</code>、和 <code>“”</code> 之外都将作为普通字符对待，所以如果要用变量值就要用<code>“”</code></li>
+<li>倒引号&#96;&#96;&#96;&#96;<br>用于命令替换，其所括字符串在被 Shell 解释时，首先执行其中的命令并将其结果代替该命令</li>
+</ul>
+</li>
+<li>各种括号的使用<ul>
+<li><code>$(())</code>&#x2F;<code>$[]</code><strong>计算结果</strong>替换，<code>$()</code><strong>执行结果</strong>替代</li>
+</ul>
+</li>
+<li>空格的使用<ul>
+<li>等号与运算符两边不允许有空格，<code>-op</code>的两边与<code>[]</code>内部两边必须有空格</li>
+</ul>
+</li>
+</ul>
+<h3 id="Makefile-嵌套"><a href="#Makefile-嵌套" class="headerlink" title="Makefile 嵌套"></a>Makefile 嵌套</h3><ul>
+<li>makefile 嵌套的写法有很多，用<code>$(Make) -C subdir</code> （<code>-C</code> 是跳转到指定路径再执行 make 操作） 或者 <code>cd subdir &amp;&amp; make</code> 都可以，需要特别注意不要用混了</li>
+<li>用<code>$(Make)</code>这种操作时想要做 make clean，是<code>$(MAKE) clean -C subdir</code></li>
+<li><code>gcc</code>编译时如果依赖的库文件不在本文件夹下，要记得用<code>-I</code>进行链接</li>
+<li>注意相对路径和绝对路径的使用要准确</li>
+</ul>
+<h2 id="体会"><a href="#体会" class="headerlink" title="体会"></a>体会</h2><h3 id="编写-Shell-脚本和-make-文件时熟练度至关重要"><a href="#编写-Shell-脚本和-make-文件时熟练度至关重要" class="headerlink" title="编写 Shell 脚本和 make 文件时熟练度至关重要"></a>编写 Shell 脚本和 make 文件时熟练度至关重要</h3><p>虽然上学期学习了系统编程，有了一定的编写 Shell 脚本和 make 文件的基础。但由于课后自主训练较少，加上假期疏于复习，导致对相关操作并不完全熟练。但 Shell 脚本和 make 文件的编写是在 Linux 环境下顺利进行实验的基础，因此需要在课后多多练习，尽快熟悉相关操作，以免后续实验中因基础操作不熟练浪费时间</p>
+<h3 id="debug-时利用好讨论区-利用好git操作"><a href="#debug-时利用好讨论区-利用好git操作" class="headerlink" title="debug 时利用好讨论区 &amp; 利用好git操作"></a>debug 时利用好讨论区 &amp; 利用好<code>git</code>操作</h3><p>Excecise1 测评错误后，一直以为是自己哪里写错，反复检查每个文件，提交了 4、5 次，折腾了快 2 个小时还是错误。后来用<code>git status</code>才发现是没有用<code>git add</code>对新建的文件添加跟踪，导致一直没能把这部分文件成功提交 😢</p>
+<p>后来在看讨论区时，更是发现一篇精华帖的开头就用大写加粗强调了这个问题……</p>
+<h1 id="exam-前准备"><a href="#exam-前准备" class="headerlink" title="exam 前准备"></a>exam 前准备</h1><h2 id="血泪教训"><a href="#血泪教训" class="headerlink" title="血泪教训"></a>血泪教训</h2><ul>
+<li>在 bash 中，整个程序的返回值$?&#x3D;最后一条语句的返回值$?；且在评测机中一旦程序的返回值$?为 1，它就认为这个程序报错了；<br>故最好在每一个脚本文件末尾都手动写一个<code>exit 0</code><ul>
+<li><code>$?</code>表示上一条语句的返回值；<code>$#</code>表示传参个数</li>
+</ul>
+</li>
+</ul>
+<h2 id="不熟操作"><a href="#不熟操作" class="headerlink" title="不熟操作"></a>不熟操作</h2><ul>
+<li>输出 hello.c 中所有包含“os_hello”（区分大小写）的行的“os_hello”（区分大小写）以左的内容，如果一行出现多个，则输出第一次出现以左的部分<ul>
+<li><code>grep</code> &amp; <code>sed</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -E <span class="string">&#x27;.*os_hello&#x27;</span> hello.c | sed -E <span class="string">&#x27;s/(.*)os_hello.*/\1/&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><code>awk</code> （两种均可）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">awk -F <span class="string">&#x27;os_hello&#x27;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> hello.c</span><br><span class="line">awk <span class="string">&#x27;/os_hello/ &#123; sub(/os_hello.*/, &quot;&quot;); print &#125;&#x27;</span> hello.c</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><code>#var</code> 是获取变量的长度，<code>$&#123;#var&#125;</code>获取长度值</li>
+<li><strong>字符串切片操作</strong><br><code>$&#123;variable:start:count&#125;</code> 表示从变量 <code>variable</code> 的 <code>start</code> 位置开始，截取 <code>count</code> 个字符</li>
+</ul>
+<h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><ul>
+<li>多层<code>if</code>容易忘记闭合<code>fi</code></li>
+<li><code>&gt;&gt;</code> 追加会自动换行，想要不换行<code>echo-n xx &gt;&gt; xx</code></li>
+<li><code>$?</code>返回值为 0 表示上一条命令执行成功，1 表示执行失败</li>
+</ul>
+<h1 id="exam-extra-复盘"><a href="#exam-extra-复盘" class="headerlink" title="exam &amp; extra 复盘"></a>exam &amp; extra 复盘</h1><h2 id="踩的坑（现场解决）"><a href="#踩的坑（现场解决）" class="headerlink" title="踩的坑（现场解决）"></a>踩的坑（现场解决）</h2><ul>
+<li>编写脚本文件时，想要输出文件内容，不能用 more 要用 cat<ul>
+<li>more 是交互式的命令，一般在终端直接使用</li>
+</ul>
+</li>
+</ul>
+<h2 id="知识漏洞（现场没解决）"><a href="#知识漏洞（现场没解决）" class="headerlink" title="知识漏洞（现场没解决）"></a>知识漏洞（现场没解决）</h2><ul>
+<li><font color=blue>书写条件判断语句时注意！debug 时优先检查条件判断是否出错！</font><ul>
+<li>less than，应该是<code>-lt</code> 不是 <code>-le</code> 🥲</li>
+</ul>
+</li>
+</ul>
+<h3 id="awk-用法补充"><a href="#awk-用法补充" class="headerlink" title="awk 用法补充"></a>awk 用法补充</h3><ul>
+<li><strong>awk + if</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;if($2==&quot;&#x27;</span><span class="variable">$PID</span><span class="string">&#x27;&quot;) print $3&#125;&#x27;</span> <span class="variable">$FILE</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>if</code> 语法和正常语法比较像，<code>if()</code> 后加空格，之后直接写命令（多为 <code>print</code> ）</li>
+</ul>
+</li>
+<li><strong>在 awk 中使用在 shell 中定义的变量</strong><br>使用 <code>&quot;&#39;</code> 把 shell 变量包起来，即 <code>&quot;&#39;$var&#39;&quot;</code> ；注意是“<strong>双引号+单引号+shell 变量+单引号+双引号</strong>”的格式</li>
+<li><strong>将 awk 结果赋值给变量</strong><br>使用倒引号，如 <code>var=`echo $result|awk &#39;&#123;print substr($result,16,3)&#125;&#39;</code></li>
+</ul>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab0/" data-id="cm7styofv00030sgp6bo9782f" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHElEQVR42u3aS47CQAwFQO5/aeYAiObZTkZKd/WKRSBUkIx/r1d83h/n2zX56+rnX3AwMDAey3gvz7fbr2+cXJ/fd30NBgbGOYxeAJ2E188v2vsEDAwMjPWNJ2ed3WFgYGD0GEl5WU0o8/CNgYGBUS0mq4EyTwFvr8UxMDAeyMi77v//+pb5BgYGxqMY87JzHUzzRv/oW2FgYGzNuGqEmQ8Mqg8rX+/AwMDYldFrjVVXIpJVjDwcf/0dMDAwjmRE7fjiiljSVquOGTAwMM5h9ErTXgi+uDuIgYGxNWO03HDbaSaOGBgYmzJ6A8V8AJA0ziaJY3O+ioGB8VjGfM2rWtbmReyPh4WBgXEAYz5onKxc5GE9msFiYGBsx+iNBHorX3mKmbcCMTAwTmBUi9jkxsnCazWwRv8bGBgYRzJ6Dbh5KVseS2BgYGzNuLYQnfTqe4AfowIMDIyNGNXA11tCrSaLCQwDA+NkRnWI2EvyqgPLH1QMDIwDGL2geW2w7mEwMDDOYSThbxI0J4G7sGyBgYGxKWPUgl++d7LkOil0MTAwdmJMgmMC6A0480CPgYFxAuO+7YV8YJk/gnKCiIGBsRFjXmRWi+F8Xay5bIGBgbEpIxk3Js2vXsDtrWJgYGBgTBi95bBeyoiBgYFRDYt5Wlld2miOLTEwMDZiVIvYfA2imlA2J7EYGBhbM6qLFNVmWW+164LlMAwMjB0Yf/+orWMGdFtWAAAAAElFTkSuQmCC">分享</a><div class="tags"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul></div><div class="post-nav"><a class="pre" href="/BUAA-SE/BUAA-OS-Lab1/">BUAA OS-Lab1 内核、启动和 PRINTF</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="https://unpkg.com/gitalk/dist/gitalk.css"><script type="text/javascript" src="https://unpkg.com/blueimp-md5/js/md5.js"></script><script type="text/javascript" src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+  clientID: 'Ov23li2QyqRzt8XAlrKY',
+  clientSecret: 'd43f2b587c8782b1e92215b56ea07a73762fdfbb',
+  repo: 'blog.gitalk',
+  owner: 'RoisyL',
+  admin: ['RoisyL'],
+  id: md5(location.pathname),
+  distractionFreeMode: false
+})
+gitalk.render('container')
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="search-form"><input id="local-search-input" placeholder="Search" type="text" name="q" results="0"/><div id="local-search-result"></div></div></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/rabbit.jpg"/></a><p class="author-description">Mind and Hand</p><a class="info-icon" href="https://github.com/RoisyL" title="Welcome to my GitHub" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BUAA-SE/">BUAA-SE</a><span class="category-list-count">8</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Lab/" style="font-size: 15px;">Lab</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab4-challenge/">BUAA-OS-Lab4_challenge sigaction实现</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab-General/">BUAA-OS-Lab 经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab5/">BUAA-OS-Lab5 文件系统</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab4/">BUAA-OS-Lab4 系统调用与fork</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab3/">BUAA-OS-Lab3 进程与异常</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab2/">BUAA-OS-Lab2 内存管理</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab1/">BUAA OS-Lab1 内核、启动和 PRINTF</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab0/">BUAA OS-Lab0 Linux基础操作</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Roisy's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/tufu9441"> tufu9441.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><link rel="stylesheet" type="text/css" href="/css/search.css?v=1.0.0"><script type="text/javascript" src="/js/search.js?v=1.0.0"></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+  search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

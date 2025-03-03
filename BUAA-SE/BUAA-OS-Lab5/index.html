@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>BUAA-OS-Lab5 文件系统 | Roisy's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="https://s2.loli.net/2025/03/01/MF8SBrfc2xnP9Qb.jpg"><link rel="Shortcut Icon" type="image/x-icon" href="https://s2.loli.net/2025/03/01/MF8SBrfc2xnP9Qb.jpg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">BUAA-OS-Lab5 文件系统</h1><a id="logo" href="/.">Roisy's Blog</a><p class="description">一个SE学生的自留地</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/tags/"><i class="fa fa-tag"> 标签</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">BUAA-OS-Lab5 文件系统</h1><div class="post-meta">2024-05-29<span> | </span><span class="category"><a href="/categories/BUAA-SE/">BUAA-SE</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> 阅读</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.7k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 9</span><span class="post-meta-item-text"> 分钟</span></span></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%87%E5%AF%BC%E4%B9%A6%E6%A2%B3%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">指导书梳理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MOS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.</span> <span class="toc-text">MOS文件系统设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E6%88%90%E9%83%A8%E5%88%86"><span class="toc-number">1.1.1.</span> <span class="toc-text">构成部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MOS-%E5%BE%AE%E5%86%85%E6%A0%B8%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.2.</span> <span class="toc-text">MOS 微内核设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IDE-%E7%A3%81%E7%9B%98%E9%A9%B1%E5%8A%A8"><span class="toc-number">1.2.</span> <span class="toc-text">IDE 磁盘驱动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84-I-O-MMIO"><span class="toc-number">1.2.1.</span> <span class="toc-text">内存映射 I&#x2F;O (MMIO)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IDE-%E7%A3%81%E7%9B%98"><span class="toc-number">1.2.2.</span> <span class="toc-text">IDE 磁盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99"><span class="toc-number">1.2.3.</span> <span class="toc-text">驱动程序编写</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text">文件系统结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%B8%83%E5%B1%80"><span class="toc-number">1.3.1.</span> <span class="toc-text">磁盘文件系统布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AF%A6%E7%BB%86%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.2.</span> <span class="toc-text">文件系统详细结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%97%E7%BC%93%E5%AD%98"><span class="toc-number">1.3.3.</span> <span class="toc-text">块缓存</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%94%A8%E6%88%B7%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.4.</span> <span class="toc-text">文件系统的用户接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-number">1.4.1.</span> <span class="toc-text">文件描述符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.4.2.</span> <span class="toc-text">文件系统服务</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%B6%E7%BA%AA"><span class="toc-number">2.</span> <span class="toc-text">时纪</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8A%E6%9C%BA%E5%87%86%E5%A4%87"><span class="toc-number">3.</span> <span class="toc-text">上机准备</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%A2%B3%E7%90%86"><span class="toc-number">3.1.</span> <span class="toc-text">简单梳理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%9C%A8%E5%90%84%E4%B8%AA%E5%B1%82%E6%AC%A1%E7%9A%84%E6%8A%BD%E8%B1%A1"><span class="toc-number">3.1.1.</span> <span class="toc-text">文件在各个层次的抽象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">整体流程</span></a></li></ol></li></ol></li></ol></div></div><div class="post-content"><h1 id="指导书梳理"><a href="#指导书梳理" class="headerlink" title="指导书梳理"></a>指导书梳理</h1><h2 id="MOS文件系统设计"><a href="#MOS文件系统设计" class="headerlink" title="MOS文件系统设计"></a>MOS文件系统设计</h2><p>文件系统将外部设备中的资源抽象为文件，从而可以统一管理外部设备，包括文件设备（file，狭义的“文件”）、控制台（console）和管道（pipe）</p>
+<h3 id="构成部分"><a href="#构成部分" class="headerlink" title="构成部分"></a>构成部分</h3><ol>
+<li>外部存储设备驱动<ul>
+<li>该驱动程序将通过系统调用的方式陷入内核，对磁盘镜像进行读写操作</li>
+</ul>
+</li>
+<li>文件系统结构<ul>
+<li>MOS 中的文件系统服务进程实际上也是一个运行在用户态下的进程</li>
+</ul>
+</li>
+<li>文件系统的用户接口</li>
+</ol>
+<h3 id="MOS-微内核设计"><a href="#MOS-微内核设计" class="headerlink" title="MOS 微内核设计"></a>MOS 微内核设计</h3><ul>
+<li>将文件系统移出内核，使用用户态的文件系统服务程序以及一系列用户库来实现<ul>
+<li>用户进程通过进程间通信(IPC) 来请求文件系统的相关服务</li>
+</ul>
+</li>
+<li>将一些内核数据暴露到用户空间，使得进程不需要切换到内核态就能访问</li>
+<li>将传统操作系统的设备驱动移出内核，内核仅提供读写设备物理地址的系统调用</li>
+</ul>
+<h2 id="IDE-磁盘驱动"><a href="#IDE-磁盘驱动" class="headerlink" title="IDE 磁盘驱动"></a>IDE 磁盘驱动</h2><p>本次要实现的硬盘驱动程序与已经实现的串口驱动，都采用 MMIO （内存映射IO）技术编写驱动，完全运行在用户空间</p>
+<h3 id="内存映射-I-O-MMIO"><a href="#内存映射-I-O-MMIO" class="headerlink" title="内存映射 I&#x2F;O (MMIO)"></a>内存映射 I&#x2F;O (MMIO)</h3><ul>
+<li><em><strong>I&#x2F;O 端口</strong></em>实质上是外设寄存器<ul>
+<li>通常包括控制寄存器、状态寄存器和数据寄存器，这些寄存器被映射到指定的物理地址空间</li>
+</ul>
+</li>
+<li>在 MIPS 的内核地址空间中，对 kseg1 段地址的读写不经过 MMU 映射，且不使用高速缓存。且在模拟器上运行操作系统，I&#x2F;O 设备物理地址完全固定，因此可以通过简单地读写某些固定的内核虚拟地址来实现驱动程序的功能</li>
+<li>在编写设备驱动的时候，<strong>将物理地址转换为 kseg1 段的内核虚拟地址</strong>，也就是给物理地址加上 kseg1 的偏移值(<strong>0xA0000000</strong>)</li>
+</ul>
+<h3 id="IDE-磁盘"><a href="#IDE-磁盘" class="headerlink" title="IDE 磁盘"></a>IDE 磁盘</h3><ul>
+<li><p>MALTA 平台上的 PIIX4 磁盘控制器基地址为 <strong>0x180001F0</strong>，在 MOS 中，我们可以挂载两块 IDE 磁盘，但实际上只用编号为 0 的一块磁盘</p>
+</li>
+<li><p>由于 CHS 模式不方便寻址，采用逻辑块寻址（LBA）进行扇区寻址。在 LBA 模式下，IDE 设备将磁盘看作一个线性的字节序列，每个扇区都有一个唯一的编号，只需要设置目标扇区编号，就可以完成磁盘的寻址</p>
+<p>  <img src="https://s2.loli.net/2024/08/29/FCWHZtNoX56AwVU.png" alt="Untitled"></p>
+<p>  <img src="https://s2.loli.net/2024/08/29/2GzXWtsdMja5KnO.png" alt="Untitled"></p>
+</li>
+<li><p>MOS中扇区编号有 28 位</p>
+</li>
+</ul>
+<h3 id="驱动程序编写"><a href="#驱动程序编写" class="headerlink" title="驱动程序编写"></a>驱动程序编写</h3><ul>
+<li><p>磁盘操作中所有的地址操作都需要将物理地址转换成虚拟地址。此处设备基地址对应的 kseg1 的内核虚拟地址是 <strong>0xB80001F0</strong></p>
+</li>
+<li><p>由于 IDE 外设一般不能立即完成数据操作，需要 CPU 检查 IDE 状态并等待操作完成</p>
+</li>
+<li><p>读写注意</p>
+<ul>
+<li>本实验中使用的 IDE 设备无法一次性写入操作扇区号，因此需要<strong>单独设置扇区号的各位</strong><ul>
+<li>特别地，在设置操作扇区号的 [27:24] 位时，还需要同时设置扇区寻址模式和磁盘编号，因此需要通过位运算将各值组合，并一齐写入对应地址</li>
+</ul>
+</li>
+<li>由于本实验中使用的 IDE 设备每次仅能读取或写入 4 字节，因此需要通过一个循环完成整个扇区的读取或写入，即连续向相同的地址读取或写入 4 字节</li>
+</ul>
+<p>  <img src="https://s2.loli.net/2024/08/29/3Fnps8xkRTlOKV2.png" alt="Untitled"></p>
+</li>
+</ul>
+<h2 id="文件系统结构"><a href="#文件系统结构" class="headerlink" title="文件系统结构"></a>文件系统结构</h2><h3 id="磁盘文件系统布局"><a href="#磁盘文件系统布局" class="headerlink" title="磁盘文件系统布局"></a>磁盘文件系统布局</h3><p><img src="https://s2.loli.net/2024/08/29/eHTDrY95PhVtmGM.png" alt="Untitled"></p>
+<ul>
+<li><em><strong>磁盘块</strong></em>是一个虚拟概念，是操作系统与磁盘交互的最小单位；操作系统将相邻的扇区组合在一起，形成磁盘块进行整体操作</li>
+<li>MOS 操作系统把磁盘最开始的一个磁盘块（4096 字节）当作引导扇区和分区表使用，接下来的一个磁盘块作为超级块（Super Block）</li>
+<li>使用位图 (Bitmap) 法来管理空闲的磁盘资源，用一个二进制位 bit 标识磁盘中的一个磁盘块的使用情况（<strong>1 表示空闲，0 表示占用</strong>）</li>
+</ul>
+<h3 id="文件系统详细结构"><a href="#文件系统详细结构" class="headerlink" title="文件系统详细结构"></a>文件系统详细结构</h3><ul>
+<li><p><code>File</code>结构体</p>
+<ul>
+<li><p><code>f_direct[NDIRECT]</code> 文件的直接指针</p>
+<p>  每个文件控制块设有 10 个直接指针，用来记录文件的数据块在磁盘上的位置。每个磁盘块的大小为 4KB，能够表示最大 40KB 的文件，大于 40KB 时需要用到间接指针</p>
+</li>
+<li><p><code>f_indirect</code> 指向一个间接磁盘块，存储指向文件内容的磁盘块的指针。为简化计算，不使用间接磁盘块的前十个指针</p>
+</li>
+<li><p><code>f_pad</code> 让整数个文件结构体占用一个磁盘块，填充结构体中剩下的字节</p>
+</li>
+<li><p>对于普通的文件，其指向的磁盘块存储着文件内容，而对于目录文件来说，其指向的磁盘块存储着该目录下各个文件对应的文件控制块</p>
+<p>  <img src="https://s2.loli.net/2024/08/29/tUPQEVuXAcHB2GK.png" alt="Untitled"></p>
+</li>
+</ul>
+</li>
+<li><p>通过 fsformat（由 tools&#x2F;fsformat.c 编译而成）程序来创建一个磁盘镜像文件 target&#x2F;fs.img，模拟与真实的磁盘文件设备的交互</p>
+</li>
+</ul>
+<h3 id="块缓存"><a href="#块缓存" class="headerlink" title="块缓存"></a>块缓存</h3><p>MOS文件系统服务是一个用户进程，一个进程可以拥有 4GB 的虚拟内存空间，将 DISKMAP 到DISKMAP+DISKMAX 这一段虚存地址空间 (0x10000000-0x4FFFFFFF) 作为缓冲区，当磁盘读入内存时，用来映射相关的页</p>
+<p><img src="https://s2.loli.net/2024/08/29/yEIhT579czm2iSf.png" alt="6.png"></p>
+<h2 id="文件系统的用户接口"><a href="#文件系统的用户接口" class="headerlink" title="文件系统的用户接口"></a>文件系统的用户接口</h2><h3 id="文件描述符"><a href="#文件描述符" class="headerlink" title="文件描述符"></a>文件描述符</h3><ul>
+<li>文件描述符存储文件的基本信息和用户进程中关于文件的状态，也起到描述用户对于文件操作的作用</li>
+<li>当用户进程向文件系统发送打开文件的请求时，文件系统进程会将这些基本信息记录在内存中，然后由操作系统<strong>将用户进程请求的地址映射到同一个存储了文件描述符的物理页上</strong>（此部分代码位于 serv.c 的 serve_open 函数内），因此<strong>一个文件描述符至少需要独占一页的空间</strong>。当用户进程获取基本信息后，再次向文件系统发送请求将文件内容映射到指定内存空间中</li>
+</ul>
+<h3 id="文件系统服务"><a href="#文件系统服务" class="headerlink" title="文件系统服务"></a>文件系统服务</h3><p><img src="https://s2.loli.net/2024/08/29/PYHaVNdU3rtu48x.png" alt="7.png"></p>
+<h1 id="时纪"><a href="#时纪" class="headerlink" title="时纪"></a>时纪</h1><p>E 5.1</p>
+<ul>
+<li><p>常用函数</p>
+<ul>
+<li><code>is_illegal_va_range</code> 判断虚拟地址合法性</li>
+</ul>
+</li>
+<li><p>注意开闭区间</p>
+<p>  写入的地址区间是 <code>[pa, pa + len)</code>，其中最高的地址是 <code>pa + len - 1</code>。应当判断 <code>pa + len - 1 &lt; PA_BASE + PA_LEN</code>，也就是 <code>pa + len &lt;= PA_BASE + PA_LEN</code></p>
+</li>
+</ul>
+<p>E 5.4 </p>
+<p><strong>“当出现错误时返回相应错误值”<strong>常用操作用<code>r</code>记录返回值再判断</strong><code>if(r&gt;0)</code></strong></p>
+<ul>
+<li>是判断是否**&gt;0**！！错误值一般都是负值，<strong>正常值不一定是0也可能是正数</strong>！！</li>
+</ul>
+<h1 id="上机准备"><a href="#上机准备" class="headerlink" title="上机准备"></a>上机准备</h1><h2 id="简单梳理"><a href="#简单梳理" class="headerlink" title="简单梳理"></a>简单梳理</h2><p><img src="https://s2.loli.net/2024/08/29/xsNcLE7wt9ORCqu.png" alt="Untitled"></p>
+<h3 id="文件在各个层次的抽象"><a href="#文件在各个层次的抽象" class="headerlink" title="文件在各个层次的抽象"></a>文件在各个层次的抽象</h3><ul>
+<li><p>用户进程中（非服务进程）—— user文件夹下文件</p>
+<ul>
+<li><p><strong>文件的抽象形式是文件描述符Fd</strong></p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Fd</span> &#123;</span></span><br><span class="line">    u_int fd_dev_id;</span><br><span class="line">    u_int fd_offset; <span class="comment">// 定位指针</span></span><br><span class="line">    u_int fd_omode; <span class="comment">// 打开形式</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Dev</span> <span class="title">devfile</span> =</span> &#123;</span><br><span class="line">    .dev_id =   <span class="string">&#x27;f&#x27;</span>,</span><br><span class="line">    .dev_name = <span class="string">&quot;file&quot;</span>,</span><br><span class="line">    .dev_read = file_read,</span><br><span class="line">    .dev_write =    file_write,</span><br><span class="line">    .dev_close =    file_close,</span><br><span class="line">    .dev_stat = file_stat,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>user的文件描述符Fd来源于serv通过ipc的页面共享ffd</li>
+<li>可能会调到对应的Fd中的dev_id的dev的对应函数，在文件系统中也就是file_close、file_write等</li>
+<li>内存空间中有专门的地址存放文件描述符，也就是FDTABLE，这里可以看成一个数组，每个Fd占一个Page大小，可以直接用fdnum作为下标获得</li>
+</ul>
+</li>
+<li><p><code>fsipc_xxx</code>实现与服务进程的交互</p>
+<p>  其实就是<strong>找到相应的文件描述符Fd（毕竟这时还在用户进程中），然后构造相应类别的请求req</strong>，再通过ipc将该req发送给服务进程（其实就是把req的页面共享给服务进程），最后通过ipc_recv从服务进程中<strong>收到相应的结果</strong></p>
+</li>
+</ul>
+</li>
+<li><p>服务进程 —— serve相关</p>
+<ul>
+<li><p><strong>文件在服务进程抽象存在形式是Open</strong>，其中有一个<strong>Filefd的指针</strong>，也存储了文件的相关信息。而在fs&#x2F;serv.c中，有一个Open的数组opentable</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Open</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">File</span> *<span class="title">o_file</span>;</span>    <span class="comment">// 对应的文件控制块</span></span><br><span class="line">    u_int o_fileid;     <span class="comment">// 文件id（可以看做当前打开的文件，每个都有个id）</span></span><br><span class="line">    <span class="type">int</span> o_mode;     <span class="comment">// 打开形式</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Filefd</span> *<span class="title">o_ff</span>;</span>    <span class="comment">// Filefd</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Filefd</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Fd</span> <span class="title">f_fd</span>;</span> <span class="comment">// 文件描述符</span></span><br><span class="line">    u_int f_fileid; <span class="comment">// 文件id（同上）</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">File</span> <span class="title">f_file</span>;</span> <span class="comment">// 文件控制块</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Fd</span> &#123;</span></span><br><span class="line">    u_int fd_dev_id;</span><br><span class="line">    u_int fd_offset; <span class="comment">// 定位指针</span></span><br><span class="line">    u_int fd_omode; <span class="comment">// 打开形式</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>serve_xxx</code> 调用底层函数处理用户进程请求</p>
+<p>  首先是从请求req中提取有关信息，如fileid等，<strong>从而找到对应的Open</strong>（如果是serve_open则是分配Open），就相当于找到了服务进程中对应的文件，这时候就可以调用底层的函数（fs&#x2F;fs.c）中来把相应的Block从磁盘读入服务进程的内存空间中或对相应的Block进行操作</p>
+</li>
+</ul>
+</li>
+<li><p>内核（底层实现）—— fs、kern相关</p>
+<ul>
+<li><strong>文件的抽象形式是文件控制块File</strong>，数据则存在Block中</li>
+<li>通过调用底层函数来操作文件对应的Block</li>
+</ul>
+</li>
+</ul>
+<h3 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h3><p>文件服务进程使用 0x10000000 到 0x4fffffff 的地址空间作为磁盘块映射，使用 0x60000000 开始的地址作为所有进程的文件描述符表，用户进程的文件描述符是对这里的表项的共享。而用户进程使用0x60000000 之前的PDMAP再之前的 4M 空间作为文件描述符表，之后的 32（最大文件数目）* 4M 映射文件数据。</p>
+<p>当在用户进程下打开文件时，<strong>分配 Fd 并传给文件服务进程</strong>，后者读取文件，<strong>创建 Open 结构体，复制一份文件的 File 结构体拼接成 FileFd 结构体</strong>，放在自己的全局文件描述符表中，并<strong>将这个共享给用户</strong>。用户进程收到之后将<strong>让文件服务进程映射全部数据块，并读入数据</strong>。最后的结果是文件服务进程，将分散在自己 0x10000000 到 0x4fffffff 的空间的文件的各个数据块，共享到用户进程 0x60000000 之上的属于这个文件的连续的 4M 空间之中。</p>
+<p>关闭时，会直接将全部设置为脏，然后全部回写。如果对于打开的文件进行修改大小操作，用户进程会先改文件描述符中 File 结构体的副本，然后让文件服务进程改相应块缓存上的数据</p>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab5/" data-id="cm7styog6000i0sgpc6dx2pqp" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACOElEQVR42u3a0Y7CMAxE0f7/T3elfUJCDTOeBBHn5glBSzlZyevYvi553f/r9fXrer9GeefpG97vmrZgwICxLeMeLuWR43tdkv4UGDBgnMbQg+w4OD698xSalaeMfxsMGDBgjF/rIVX/ThgwYMBYwUiOozoVBgwYMJRDbI3kpoDLz+IwYMDYkFFrDHzn9fL+BgwYMH6ecZsrSQSVtkFtwYABozfDHZ6o/aDk28bXX+seDAMGjJ9h6CMOebMzP75ebiyHAQNGC0begMwBekIpHXdhwIDRjjFrzFQvk+mp5PhwO+0vAAMGjE0YyfCEe5R1j7tS2goDBoyDGUpyplf13IOrsa0wYMBozZD6BotrXMqmGJ/CgAGjKaM2uuq2B5LtKA5bwIABoxFDCXBJWX/FiMaHT2HAgNGIkRxia6FZL67pBTsYMGD0ZuitRyXIumUyt7j2IXDDgAGjKcNtMephtHYELTY7YcCAcRjDbTQqwdculplBHAYMGL0Z7miFXmJzr8w3CwYMGF0ZtYCrpHG1TVGaqdNSQxgwYGzI0G/Om47JBhnTIjBgwGjByJO2cai9pi577AwGDBgtGLe5avvklt7sUA4DBozWjFqwc1M6fYDVPTzbMBgwYGzLSIJgUozTi25SVgsDBowDGErCp4dId5hM/w8AAwYMGPpolxKy3czUmBAZz4zAgAHjeIbbyHRTST1Aw4AB4zRGMnKRJHwKWGpXwIABozUjaQwkP8JtiE5oZ8KAAWM/xh+DtWWr8IbAGwAAAABJRU5ErkJggg==">分享</a><div class="tags"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul></div><div class="post-nav"><a class="pre" href="/BUAA-SE/BUAA-OS-Lab-General/">BUAA-OS-Lab 经验总结</a><a class="next" href="/BUAA-SE/BUAA-OS-Lab4/">BUAA-OS-Lab4 系统调用与fork</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="https://unpkg.com/gitalk/dist/gitalk.css"><script type="text/javascript" src="https://unpkg.com/blueimp-md5/js/md5.js"></script><script type="text/javascript" src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+  clientID: 'Ov23li2QyqRzt8XAlrKY',
+  clientSecret: 'd43f2b587c8782b1e92215b56ea07a73762fdfbb',
+  repo: 'blog.gitalk',
+  owner: 'RoisyL',
+  admin: ['RoisyL'],
+  id: md5(location.pathname),
+  distractionFreeMode: false
+})
+gitalk.render('container')
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="search-form"><input id="local-search-input" placeholder="Search" type="text" name="q" results="0"/><div id="local-search-result"></div></div></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/rabbit.jpg"/></a><p class="author-description">Mind and Hand</p><a class="info-icon" href="https://github.com/RoisyL" title="Welcome to my GitHub" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BUAA-SE/">BUAA-SE</a><span class="category-list-count">8</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Lab/" style="font-size: 15px;">Lab</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab4-challenge/">BUAA-OS-Lab4_challenge sigaction实现</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab-General/">BUAA-OS-Lab 经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab5/">BUAA-OS-Lab5 文件系统</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab4/">BUAA-OS-Lab4 系统调用与fork</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab3/">BUAA-OS-Lab3 进程与异常</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab2/">BUAA-OS-Lab2 内存管理</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab1/">BUAA OS-Lab1 内核、启动和 PRINTF</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab0/">BUAA OS-Lab0 Linux基础操作</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Roisy's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/tufu9441"> tufu9441.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><link rel="stylesheet" type="text/css" href="/css/search.css?v=1.0.0"><script type="text/javascript" src="/js/search.js?v=1.0.0"></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+  search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

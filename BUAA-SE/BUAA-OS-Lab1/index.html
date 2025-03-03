@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>BUAA OS-Lab1 内核、启动和 PRINTF | Roisy's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="https://s2.loli.net/2025/03/01/MF8SBrfc2xnP9Qb.jpg"><link rel="Shortcut Icon" type="image/x-icon" href="https://s2.loli.net/2025/03/01/MF8SBrfc2xnP9Qb.jpg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">BUAA OS-Lab1 内核、启动和 PRINTF</h1><a id="logo" href="/.">Roisy's Blog</a><p class="description">一个SE学生的自留地</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/tags/"><i class="fa fa-tag"> 标签</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">BUAA OS-Lab1 内核、启动和 PRINTF</h1><div class="post-meta">2024-03-27<span> | </span><span class="category"><a href="/categories/BUAA-SE/">BUAA-SE</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> 阅读</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.7k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 9</span><span class="post-meta-item-text"> 分钟</span></span></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%87%E5%AF%BC%E4%B9%A6%E6%A2%B3%E7%90%86-%E8%AE%B2%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">指导书梳理&amp;讲解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E6%A0%B8"><span class="toc-number">1.1.</span> <span class="toc-text">内核</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Makefile"><span class="toc-number">1.1.1.</span> <span class="toc-text">Makefile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ELF-Executable-and-Linkable-Format-%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.2.</span> <span class="toc-text">ELF (Executable and Linkable Format)文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MIPS-%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E2%80%94%E2%80%94%E5%AF%BB%E6%89%BE%E5%86%85%E6%A0%B8%E7%9A%84%E6%AD%A3%E7%A1%AE%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.1.3.</span> <span class="toc-text">MIPS 内存布局——寻找内核的正确位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linker-Script-%E2%80%94%E2%80%94-%E6%8E%A7%E5%88%B6%E5%8A%A0%E8%BD%BD%E5%9C%B0%E5%9D%80"><span class="toc-number">1.1.4.</span> <span class="toc-text">Linker Script —— 控制加载地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BA-MOS"><span class="toc-number">1.2.</span> <span class="toc-text">从零开始搭建 MOS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#make"><span class="toc-number">1.2.1.</span> <span class="toc-text">make</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#start-%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.2.</span> <span class="toc-text">_start 函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%88%98-printk"><span class="toc-number">1.3.</span> <span class="toc-text">实战 printk</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0%E8%A1%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text">处理变长参数表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB-%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">实验代码阅读&amp;常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.</span> <span class="toc-text">结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#make%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">make的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-number">2.2.1.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%8E%E8%B0%83%E8%AF%95"><span class="toc-number">2.2.2.</span> <span class="toc-text">运行与调试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lab0%E5%AE%9E%E6%97%B6%E8%AE%B0%E5%BD%95"><span class="toc-number">3.</span> <span class="toc-text">Lab0实时记录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A"><span class="toc-number">4.</span> <span class="toc-text">实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%BE%E7%82%B9%E5%88%86%E6%9E%90"><span class="toc-number">4.1.</span> <span class="toc-text">难点分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E2%80%9C%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E2%80%9D%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">4.1.1.</span> <span class="toc-text">对“数据类型”的理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%83%E5%A4%8D%E6%9D%82%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0%E8%A1%A8%E7%A4%BA%E3%80%81%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91%E4%B8%8E%E8%B0%83%E7%94%A8%E5%85%B3%E7%B3%BB%E6%A2%B3%E7%90%86"><span class="toc-number">4.1.2.</span> <span class="toc-text">较复杂函数的参数表示、实现逻辑与调用关系梳理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BD%93%E4%BC%9A"><span class="toc-number">4.2.</span> <span class="toc-text">实验体会</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E6%8A%8A%E6%8F%A1"><span class="toc-number">4.2.1.</span> <span class="toc-text">实验代码阅读与把握</span></a></li></ol></li></ol></li></ol></div></div><div class="post-content"><h1 id="指导书梳理-讲解"><a href="#指导书梳理-讲解" class="headerlink" title="指导书梳理&amp;讲解"></a>指导书梳理&amp;讲解</h1><h2 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h2><h3 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h3><ul>
+<li><p>阅读意义：对整个操作系统的布局产生初步了解</p>
+</li>
+<li><p>多种赋值语句</p>
+<ul>
+<li><p><code>=</code> 赋予<strong>整个</strong>makefile中<strong>最后被指定</strong>的值</p>
+  <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VIR_A = A</span><br><span class="line">VIR_B = <span class="variable">$(VIR_A)</span> B</span><br><span class="line">VIR_A = AA</span><br><span class="line"><span class="comment"># 最后VIR_B的值是AA B</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>:=</code> 赋予<strong>当前位置</strong>的值</p>
+  <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VIR_A := A</span><br><span class="line">VIR_B := <span class="variable">$(VIR_A)</span> B</span><br><span class="line">VIR_A := AA</span><br><span class="line"><span class="comment"># 最后VIR_B的值是A B</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>?=</code> 如果该变量没有被赋值，则赋予等号后的值</p>
+</li>
+</ul>
+</li>
+<li><p><code>.PHONY</code> 表明列在其后的目标不受修改时间的约束，无视 make 时有关时间戳的性质</p>
+<ul>
+<li>时间戳检查是指在进行编译时，通过比较文件的时间戳来确定是否需要重新生成目标文件。时间戳检查是实现<strong>增量编译</strong>的核心原理，它能够有效地避免不必要的重复编译，提高编译效率</li>
+</ul>
+</li>
+<li><p>构建整个项目依赖于构建好<strong>内核可执行文件</strong> $(mos_elf)，后者的构建依赖于<strong>所有的模块</strong></p>
+<p>  <img src="https://s2.loli.net/2024/03/27/wexCUBDZ3SkMJVI.png" alt="顶层Makefile片段"></p>
+<p>  顶层Makefile片段</p>
+<ul>
+<li>内核可执行文件构建：调用<strong>链接器</strong>将之前构建各模块产生的所有 .o文件在 <strong>linker script</strong> 的指导下链接到一起</li>
+<li>每个模块的构建：调用对应模块目录下的 Makefile</li>
+</ul>
+</li>
+</ul>
+<h3 id="ELF-Executable-and-Linkable-Format-文件"><a href="#ELF-Executable-and-Linkable-Format-文件" class="headerlink" title="ELF (Executable and Linkable Format)文件"></a>ELF (Executable and Linkable Format)文件</h3><ul>
+<li><p>反汇编并将结果导出至文本文件的命令如下</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -DS 要反汇编的目标文件名 &gt; 导出文本文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ELF 的文件头，就是一个存了关于 ELF 文件信息的结构体。</p>
+<ul>
+<li>存储ELF 的<strong>魔数</strong>，以验这是一个有效的 ELF<ul>
+<li><font color="blue">是判断ELF文件的条件，不应该通过扩展名判断</font></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>有一个随编译工具链提供的工具也名为 readelf</p>
+<ul>
+<li><code>readelf -S</code> 以列表的形式输出文件中各个节的详细信息</li>
+<li><code>readelf -l</code> 查看各个段的信息</li>
+</ul>
+</li>
+</ul>
+<h3 id="MIPS-内存布局——寻找内核的正确位置"><a href="#MIPS-内存布局——寻找内核的正确位置" class="headerlink" title="MIPS 内存布局——寻找内核的正确位置"></a><strong>MIPS</strong> 内存布局——寻找内核的正确位置</h3><ul>
+<li><p>MIPS 内存布局见<a target="_blank" rel="noopener" href="https://www.notion.so/e7b93d6565484418ac890f70428f06ea?pvs=21">理论部分</a></p>
+</li>
+<li><p>内存布局图内存部分</p>
+<p>  <img src="https://s2.loli.net/2024/03/27/mM3uwj6BtQZRipP.png" alt="Untitled"></p>
+<ul>
+<li>为<strong>异常处理</strong>预留一块空间</li>
+<li>将<strong>内核镜像</strong>的 .text 、 .data 、 .bss 这些节安置在 0x80020000</li>
+<li>为<strong>栈</strong>预留一块空间，将基地址设置为 0x80400000（栈是从高地址向低地址生长的）</li>
+</ul>
+</li>
+</ul>
+<h3 id="Linker-Script-——-控制加载地址"><a href="#Linker-Script-——-控制加载地址" class="headerlink" title="Linker Script —— 控制加载地址"></a>Linker Script —— 控制加载地址</h3><p>链接器控制了输出文件的内存布局</p>
+<ul>
+<li><p><font color="blue">语法</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SECTIONS</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment"># . 表示定位计数器，规定当前的位置</span></span><br><span class="line"> . = 0x10000;</span><br><span class="line"> .text : &#123; *(.text) &#125;</span><br><span class="line"> . = 0x8000000;</span><br><span class="line"> .data : &#123; *(.data) &#125;</span><br><span class="line"> .bss : &#123; *(.bss) &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在 Linker Script 中可以通过 ENTRY(symbol) 来设置程序入口（程序执行的第一条指令）</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意这里 &#x3D; 两边有空格</font></li>
+</ul>
+</li>
+</ul>
+<h2 id="从零开始搭建-MOS"><a href="#从零开始搭建-MOS" class="headerlink" title="从零开始搭建 MOS"></a>从零开始搭建 <strong>MOS</strong></h2><h3 id="make"><a href="#make" class="headerlink" title="make"></a>make</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">targets := <span class="variable">$(mos_elf)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: <span class="variable">$(targets)</span></span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(modules)</span>:</span><br><span class="line">			<span class="variable">$(MAKE)</span> --directory=<span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(mos_elf)</span>: <span class="variable">$(modules)</span></span><br><span class="line">			<span class="variable">$(LD)</span> <span class="variable">$(LDFLAGS)</span> -o <span class="variable">$(mos_elf)</span> -N -T <span class="variable">$(link_script)</span> <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>链接命令参数<ul>
+<li><code>-T</code> 指定链接脚本</li>
+</ul>
+</li>
+</ul>
+<h3 id="start-函数"><a href="#start-函数" class="headerlink" title="_start 函数"></a><strong>_start</strong> 函数</h3><ul>
+<li>EXPORT 宏：<code>EXPORT(_start)</code>将 _start 函数导出为一个符号，使得链接器可以找到它。可以简单的理解为，它实现了一种在汇编语言中的函数定义</li>
+</ul>
+<h2 id="实战-printk"><a href="#实战-printk" class="headerlink" title="实战 printk"></a>实战 <strong>printk</strong></h2><h3 id="处理变长参数表"><a href="#处理变长参数表" class="headerlink" title="处理变长参数表"></a>处理变长参数表</h3><ul>
+<li><p>常用宏和变量类型</p>
+<ul>
+<li><code>va_list</code>变长参数表的变量类型</li>
+<li><code>va_start(va_list ap, lastarg)</code>初始化变长参数表，lastarg为该函数最后一个命名的形式参数</li>
+<li><code>va_arg(va_list ap, 类型)</code>取变长参数表下一个参数<ul>
+<li>由于<strong>类型提升</strong>的存在，C 语言中的数值类型在作为右值使用（如参与算术运算、作为实参传递等）时往往都会发生提升(表达式中的字符和短整型操作数在使用之前被转换为普通整型)</li>
+<li>变长参数是通过<strong>栈空间</strong>实现的。由于需要确定后续参数的地址，所以每次取参数都需要<strong>标明类型</strong></li>
+</ul>
+</li>
+<li><code>va_end(va_list ap)</code>结束使用变长参数表</li>
+</ul>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">printk</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *fmt, ...)</span> &#123;</span><br><span class="line">	 <span class="comment">// 声明一个类型为 va_list 的变量 ap</span></span><br><span class="line">	 va_list ap;</span><br><span class="line">	 <span class="comment">// 用 va_start 宏进行一次初始化</span></span><br><span class="line">	 va_start(ap, fmt);</span><br><span class="line">	 vprintfmt(outputk, <span class="literal">NULL</span>, fmt, ap);</span><br><span class="line">	 va_end(ap);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>void vprintfmt(fmt_callback_t out, void *data, const char *fmt, va_list ap)</code></p>
+<ul>
+<li><p>out</p>
+<p>  回调函数,完成输出。实现解析逻辑和输出逻辑的解耦，同时 printk 等上层函数可传入不同的回调函数实现不同的输出行为（比如输出到文件）</p>
+</li>
+<li><p>data</p>
+<p>  是回调函数 out 需要的额外上下文信息</p>
+</li>
+<li><p>可以类比面向对象语言中的设计，将 out 视为“继承自接口的方法实现”， data 则类似方法中的 this 指针</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="实验代码阅读-常用操作"><a href="#实验代码阅读-常用操作" class="headerlink" title="实验代码阅读&amp;常用操作"></a>实验代码阅读&amp;常用操作</h1><h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>本章主要使用</p>
+<ul>
+<li><p>include目录——存放系统头文件</p>
+<ul>
+<li><p>mmu.h</p>
+<p>  有一张内存布局图，在<font color="green">填写 linker script</font> 的时候需要<strong>根据这个图设置相应节的加载地址</strong></p>
+</li>
+</ul>
+</li>
+<li><p>include.mk</p>
+</li>
+<li><p>init目录——初始化内核相关代码</p>
+<ul>
+<li><p>start.S</p>
+<ul>
+<li><p>_start 函数</p>
+<p>  是 CPU 控制权被转交给内核后执行的<strong>第一个函数</strong>，主要工作是初始化 CPU 和栈指针，然后跳转至 MOS 的初始化函数（ mips_init ）</p>
+<p>  内核栈空间的地址可以在 include&#x2F;mmu.h 中看到，<font color="red">注意栈的增长方向</font></p>
+</li>
+</ul>
+</li>
+<li><p>init.c</p>
+<ul>
+<li><p>mips_init 函数</p>
+<p>  内核中<strong>各模块的初始化函数</strong>都会在这里被调用</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>kern目录——存放内核的主体代码</p>
+<p>  本章中主要存放的是终端输出相关的函数</p>
+<ul>
+<li><p>machine.c——往 QEMU 的控制台输出字符</p>
+<p>  原理为读写某一个特殊的内存地址</p>
+</li>
+<li><p>printk.c——实现了 printk</p>
+<p>  实际上是把输出字符的函数，接受的输出参数给传递给了 vprintfmt 这个函数</p>
+</li>
+</ul>
+</li>
+<li><p>kernel.lds</p>
+</li>
+<li><p>lib目录——存放一些常用库函数</p>
+<p>  本章中主要存放用于格式化输出的函数</p>
+<ul>
+<li>print.c——实现了 vprintfmt 函数(实现了格式化输出的主体逻辑)</li>
+</ul>
+</li>
+<li><p>Makefile</p>
+</li>
+<li><p>mk目录</p>
+</li>
+<li><p>tests目录——存放公开的测试用例</p>
+</li>
+<li><p>tools目录</p>
+<ul>
+<li>readelf目录<ul>
+<li><p>elf.h ——存放解析ELF文件要用的三个关键数据结构</p>
+<ul>
+<li>包括三个结构体，第一个对应ELF 的文件头，第二个对应节（section）头表，第三个对应段（segment）头表</li>
+</ul>
+</li>
+<li><p>readelf.c ——用于解析ELF文件</p>
+<ul>
+<li>is_elf_format函数——判断输入是否为ELF文件</li>
+<li>readelf 函数——输出 ELF 文件中所有节头中的地址信息</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="make的使用"><a href="#make的使用" class="headerlink" title="make的使用"></a>make的使用</h2><h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><ul>
+<li><p><code>make</code> 编译完整内核</p>
+<ul>
+<li>需要在init&#x2F;init.c的mips_init里添加自己的测试代码</li>
+</ul>
+</li>
+<li><p><code>make test lab=&lt;x&gt;_&lt;y&gt;</code>编译指定测试点， lab<x> 的第 y 个测试用例</p>
+<p>  eg make test lab&#x3D;1_2</p>
+</li>
+</ul>
+<h3 id="运行与调试"><a href="#运行与调试" class="headerlink" title="运行与调试"></a>运行与调试</h3><ul>
+<li><code>make run</code> 运行</li>
+<li><code>make dbg</code> 使用 QEMU 模拟器以调试模式运行内核，并进入 GDB 调试界面。</li>
+<li><code>make objdump</code> 将项目中的目标文件反汇编</li>
+<li><code>Ctrl+A+X</code> 退出 QEMU</li>
+</ul>
+<h1 id="Lab0实时记录"><a href="#Lab0实时记录" class="headerlink" title="Lab0实时记录"></a>Lab0实时记录</h1><ul>
+<li>设置32位地址要使用<code>ori</code>+<code>lui</code>指令</li>
+<li>用gitlab IDE编辑提交之后，切回跳板机运行前记得<code>git pull</code>！！</li>
+</ul>
+<h1 id="实验报告"><a href="#实验报告" class="headerlink" title="实验报告"></a>实验报告</h1><h2 id="难点分析"><a href="#难点分析" class="headerlink" title="难点分析"></a>难点分析</h2><h3 id="对“数据类型”的理解"><a href="#对“数据类型”的理解" class="headerlink" title="对“数据类型”的理解"></a>对“数据类型”的理解</h3><p>在ELF文件的解析过程中，用到了3个重要的结构体，相当于定义了3种新的数据类型（实际不止3种，其他部分代码里也有定义）。</p>
+<p>而在实际编写中，就涉及到数据类型的转换。比如在做Exercise 1.1的时候*，*把 void *类型的 binary  强制转换为了 ELF32_Ehdr * 。</p>
+<p>因为此前对于数据类型的理解不够灵活，导致我理解这一部分花了好些时间。我认为这里的理解关键在于，**数据类型并不是某段内存数据的固有属性，而是对它的解释方式。**只要符合类型的大小和对齐要求，就可以把这段数据看做某种类型。</p>
+<p>需要注意的是，<strong>指针的相关操作</strong>与数据类型是密切相关的，比如指针的++操作，增加的是<code>sizeof（数据类型）</code></p>
+<h3 id="较复杂函数的参数表示、实现逻辑与调用关系梳理"><a href="#较复杂函数的参数表示、实现逻辑与调用关系梳理" class="headerlink" title="较复杂函数的参数表示、实现逻辑与调用关系梳理"></a>较复杂函数的参数表示、实现逻辑与调用关系梳理</h3><p>在这次lab中指的就是vprintfmt相关函数</p>
+<ul>
+<li><p>首先要搞明白每个参数的意义</p>
+<p>  完成Exercise 1.4花费了我不少时间，因为一开始我对各函数参数的意义完全是一头雾水，就比如vprintfmt参数列表中的data是什么？ap这一可变参数又是哪些参数？</p>
+<p>  指导书上没有直接的答案，我想课程组正是在锻炼我们在现有资料基础上自主理解代码的能力。</p>
+<p>  （后续经验总结见“实验体会”部分）</p>
+</li>
+<li><p>然后要明确特定函数的实现逻辑</p>
+<p>  其实在本次实验中，我认为这不是一个难点，因为指导书中将vprintfmt相关函数的具体实现逻辑（流程）解释得很清楚了，而且代码填空部分的实现步骤也划分得很细，每一步还有详细的注释。</p>
+<p>  但以后的实验，或者未来我们自己实际开发项目时，很难再有这种“手把手”的指导。<font color="blue">我们需要自己学着像指导书一样梳理清楚实现逻辑，像代码填空一样把逻辑拆解为一步步可实现的步骤。</font></p>
+</li>
+<li><p>还需要搞清楚多模块&#x2F;函数之间的调用关系</p>
+<p>  <img src="https://s2.loli.net/2024/03/27/51cexIQNsh9omXD.png" alt="Exercise 1.4 相关函数调用关系"></p>
+<p>  Exercise 1.4 相关函数调用关系</p>
+</li>
+</ul>
+<h2 id="实验体会"><a href="#实验体会" class="headerlink" title="实验体会"></a>实验体会</h2><h3 id="实验代码阅读与把握"><a href="#实验代码阅读与把握" class="headerlink" title="实验代码阅读与把握"></a>实验代码阅读与把握</h3><ul>
+<li><p>整体结构把握</p>
+<ul>
+<li><p><font color="blue">把握好顶层架构</font></p>
+<p>  为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编码</p>
+<p>  <img src="https://s2.loli.net/2024/03/27/ayHJbiKSYlG7w1C.png" alt="截止lab1的文件架构梳理"></p>
+<p>  截止lab1的文件架构梳理</p>
+</li>
+<li><p><font color="blue">用好外部变量</font></p>
+<p>  很多时候<font color="green">要用的量和想实现的功能</font>在相应的文件中都有宏定义或者函数定义。所以先阅读文件，找不到再自己写</p>
+</li>
+</ul>
+</li>
+<li><p>具体参数意义理解</p>
+<ul>
+<li><p><font color="blue">通过检索的方式在指导书、讲解PPT等多处资源中广泛找思路</font></p>
+<ul>
+<li><p>比如<code>vprintfmt</code>参数列表中的<code>data</code>是什么？</p>
+<p>  指导书中没有说明，但讲解PPT中讲的很清楚。不要纠结与单一资料，学会广泛检索。</p>
+</li>
+</ul>
+</li>
+<li><p><font color="blue">通过阅读并理解更大范围（比如完整函数、上层调用函数）代码段，明白本质，进而把握单个参数意义</font></p>
+<ul>
+<li><p>比如<code>vprintfmt</code>参数列表中<code>ap</code>这一可变参数指的是哪些参数？</p>
+<p>  <code>vprintfmt</code>函数实现的是格式化输出的主体逻辑，被<code>printk</code>调用，参数列表中的ap参数也是从上层函数中得来。结合<code>printk</code>的用法，比如<code>printk(&quot;%d%c%ld&quot;, a, b, c)</code>，很容易明白可变参数就是需要输出的一系列变量，而<code>fmt</code>就是引号中的字符串。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab1/" data-id="cm7styofz00070sgp1onvdeie" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aS27DMAwFwNz/0i7QVYogKh/pFLU8WhluYnm6YMTP41Fex/d6vn5er5+p3Hn3hNdvnbYwMDAuyziWa71B5btrUn3f9fMxMDDuwKgH2XpIXQfWeghevxsGBgbG+jM9Uu8aAwMDo86YHCVTPAYGBkb6WpVtKofI3mHxtFwcAwPjgoxeY+Bvrj/e38DAwPj3jCNcaeltvdfkTX48BwMDY2tGOjxRSVAnT6snvaUTLgYGxhaM+ojDuQlqL319pLEcAwNjC0ZvtGLyimnzoM7GwMC4A6PeUOwlsZVGQj25ffS2wcDAuCCjF1jTJ0zS3dKxFQMD48aMcwfC0sS18m/FwMC4AyMt90/u90pp8V8xMDA2Zcy37JXSeinuL8MWGBgYmzLSEYpecS0tq33wdwMDA+OCjHR4Yn6UnCTJGBgYd2P0yv319LVS1p+MdGBgYNyH0Uti04HXOiBudmJgYGzNmKeg6Z10Ti09kmJgYOzNODdo1tuTaRAPqoYYGBhbMHols8mY1yTFjU+4GBgYWzPSJDbFr5+TprIYGBh7M9KC/rxtMFmlsTMMDIztGEe4esMZaektbgNgYGBszZgEu2A2tjzAWtlrBMPAwLgsoxcE02GvekuyXm4Lfj0wMDC2YKRBNi3xN8tn9XIeBgYGRmsUIz1c9oI1BgYGRq8ZkDYpU+TbfiwGBsbWjHQka3IoTA+gpbCOgYGxNaOXOtbvpNt/sJ2JgYFxPcYXpjA84jX2XKMAAAAASUVORK5CYII=">分享</a><div class="tags"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul></div><div class="post-nav"><a class="pre" href="/BUAA-SE/BUAA-OS-Lab2/">BUAA-OS-Lab2 内存管理</a><a class="next" href="/BUAA-SE/BUAA-OS-Lab0/">BUAA OS-Lab0 Linux基础操作</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="https://unpkg.com/gitalk/dist/gitalk.css"><script type="text/javascript" src="https://unpkg.com/blueimp-md5/js/md5.js"></script><script type="text/javascript" src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+  clientID: 'Ov23li2QyqRzt8XAlrKY',
+  clientSecret: 'd43f2b587c8782b1e92215b56ea07a73762fdfbb',
+  repo: 'blog.gitalk',
+  owner: 'RoisyL',
+  admin: ['RoisyL'],
+  id: md5(location.pathname),
+  distractionFreeMode: false
+})
+gitalk.render('container')
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="search-form"><input id="local-search-input" placeholder="Search" type="text" name="q" results="0"/><div id="local-search-result"></div></div></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/rabbit.jpg"/></a><p class="author-description">Mind and Hand</p><a class="info-icon" href="https://github.com/RoisyL" title="Welcome to my GitHub" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BUAA-SE/">BUAA-SE</a><span class="category-list-count">8</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Lab/" style="font-size: 15px;">Lab</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab4-challenge/">BUAA-OS-Lab4_challenge sigaction实现</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab-General/">BUAA-OS-Lab 经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab5/">BUAA-OS-Lab5 文件系统</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab4/">BUAA-OS-Lab4 系统调用与fork</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab3/">BUAA-OS-Lab3 进程与异常</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab2/">BUAA-OS-Lab2 内存管理</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab1/">BUAA OS-Lab1 内核、启动和 PRINTF</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab0/">BUAA OS-Lab0 Linux基础操作</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Roisy's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/tufu9441"> tufu9441.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><link rel="stylesheet" type="text/css" href="/css/search.css?v=1.0.0"><script type="text/javascript" src="/js/search.js?v=1.0.0"></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+  search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

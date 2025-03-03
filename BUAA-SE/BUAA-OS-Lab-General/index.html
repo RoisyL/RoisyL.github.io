@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>BUAA-OS-Lab 经验总结 | Roisy's Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="https://unpkg.com/normalize.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/pure-min.css"><link rel="stylesheet" type="text/css" href="https://unpkg.com/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="https://unpkg.com/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="https://s2.loli.net/2025/03/01/MF8SBrfc2xnP9Qb.jpg"><link rel="Shortcut Icon" type="image/x-icon" href="https://s2.loli.net/2025/03/01/MF8SBrfc2xnP9Qb.jpg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="https://unpkg.com/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="https://unpkg.com/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="https://unpkg.com/toastr/build/toastr.min.css"><div class="darkmode-toggle">🌓</div><script>var prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+var toggle = document.querySelector('.darkmode-toggle');
+var html = document.querySelector('html');
+
+html.dataset.dark = localStorage.dark || prefersDarkMode.matches;
+
+toggle.addEventListener('click', () => {
+localStorage.dark = !(html.dataset.dark == 'true');
+html.dataset.dark = localStorage.dark;
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">BUAA-OS-Lab 经验总结</h1><a id="logo" href="/.">Roisy's Blog</a><p class="description">一个SE学生的自留地</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/tags/"><i class="fa fa-tag"> 标签</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">BUAA-OS-Lab 经验总结</h1><div class="post-meta">2024-06-27<span> | </span><span class="category"><a href="/categories/BUAA-SE/">BUAA-SE</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> 阅读</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.8k</span><span class="post-meta-item-text"> 字</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 10</span><span class="post-meta-item-text"> 分钟</span></span></span></div><div class="clear"><div class="toc-article" id="toc"><div class="toc-title">文章目录</div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E6%8F%90%E9%86%92"><span class="toc-number">1.</span> <span class="toc-text">官方提醒</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E6%8A%8A%E6%8F%A1"><span class="toc-number">2.</span> <span class="toc-text">实验代码阅读与把握</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E5%86%99"><span class="toc-number">3.</span> <span class="toc-text">编写</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B0%83%E8%AF%95-debug"><span class="toc-number">4.</span> <span class="toc-text">调试&#x2F;debug</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#make-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">4.1.</span> <span class="toc-text">make 的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-number">4.1.1.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%8E%E8%B0%83%E8%AF%95"><span class="toc-number">4.1.2.</span> <span class="toc-text">运行与调试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84"><span class="toc-number">5.</span> <span class="toc-text">实验代码结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-number">5.1.</span> <span class="toc-text">常用函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-Q-A"><span class="toc-number">6.</span> <span class="toc-text">一些 Q &amp; A</span></a></li></ol></div></div><div class="post-content"><h1 id="官方提醒"><a href="#官方提醒" class="headerlink" title="官方提醒"></a>官方提醒</h1><ul>
+<li>在之后的 Lab 中，运行 MOS 时容易出现的 <font color="green"><strong>too low</strong> </font>等错误信息就是访问了一个过低的地址导致的。此时应该检查代码中<strong>是否存在访问非法内存（如空指针、野指针）的操作，或者忘记将物理地址转化为 kseg0 内核虚拟地址的问题</strong>。</li>
+</ul>
+<h1 id="实验代码阅读与把握"><a href="#实验代码阅读与把握" class="headerlink" title="实验代码阅读与把握"></a>实验代码阅读与把握</h1><ul>
+<li>整体结构把握<ul>
+<li>完整的函数调用关系可以<font color="blue">查看指导书每个Lab后面的调用顺序图（<strong>利用好指导书</strong>）</font></li>
+<li><font color="blue">把握好顶层架构</font><br>为什么这样划分文件结构？每部分文件的作用是什么？它们怎么协同？弄明白了这些问题，才能更顺利地编码</li>
+<li><font color="blue">用好外部变量</font><br>很多时候<font color="green">要用的量和想实现的功能</font>在相应的文件中都有宏定义或者函数定义。所以先阅读文件，找不到再自己写</li>
+</ul>
+</li>
+<li>具体参数意义理解<ul>
+<li><font color="blue">通过检索的方式在指导书、讲解 PPT 等多处资源中广泛找思路</font><ul>
+<li>比如<code>vprintfmt</code>参数列表中的<code>data</code>是什么？<br>指导书中没有说明，但讲解 PPT 中讲的很清楚。不要纠结与单一资料，学会广泛检索。</li>
+</ul>
+</li>
+<li><font color="blue"><strong>通过阅读并理解更大范围（比如完整函数、上层调用函数）代码段，明白本质，进而把握单个参数意义</strong></font><ul>
+<li>比如<code>vprintfmt</code>参数列表中<code>ap</code>这一可变参数指的是哪些参数？<br><code>vprintfmt</code>函数实现的是格式化输出的主体逻辑，被<code>printk</code>调用，参数列表中的 ap 参数也是从上层函数中得来。结合<code>printk</code>的用法，比如<code>printk(&quot;%d%c%ld&quot;, a, b, c)</code>，很容易明白可变参数就是需要输出的一系列变量，而<code>fmt</code>就是引号中的字符串。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="编写"><a href="#编写" class="headerlink" title="编写"></a>编写</h1><ul>
+<li>“由俭入奢易，由奢入俭难“，某种程度上也适用于代码编写。<font color="red">用最<strong>简单直接精炼</strong>的代码实现，不要为求安心无脑加一些<strong>似是似非</strong>的代码</font>，容易导致一些意想不到的错误而且难找原因。一定要<font color="green"><strong>百分百确定有漏洞</strong></font>才<font color="blue"><strong>恰当地打补丁</strong></font>。</li>
+<li><strong>不是只填空就可以了</strong>，注意初始代码的改动。<font color="red">（<strong>已经定义好的参数的初始化</strong>）代码本身的行为一定要明确！</font> <font color="blue">比如处理好各变量初值（0、NULL），空指针使用</font>。不要过渡依赖编译器</li>
+<li><font color="blue"><strong>解引用指针之前必须判断是否为空&#x2F;试错（见后”常用函数“）</strong>！！！</font>野指针会导致死循环或超时无法结束<ul>
+<li><font color="color">注意不同函数的错误值不一样</font>，<font color="blue"><strong>不要混用</strong></font>！！</li>
+</ul>
+</li>
+<li><font color="green">“仿照xxx部分进行实现”，<strong>有一些部分不确定要不要保留</strong></font>就<font color="blue"><strong>先保留</strong></font>！！（很有可能涉及到一些隐性机制的实现）</li>
+<li><font color="green">“当出现错误时返回相应错误值”</font>常用操作是<font color="blue">用<code>r</code>记录返回值再判断**<code>if(r&gt;0)</code>**</font><ul>
+<li>是判断是否<font color="red">&gt;0</font>！！错误值一般都是负值，<font color="red"><strong>正常值不一定是0也可能是正数</strong></font>！！</li>
+</ul>
+</li>
+<li><font color="green">用 gitlab IDE 编辑提交之后，切回跳板机运行前</font>记得<code>git pull</code>！！</li>
+<li>写<font color="green"><strong>循环</strong></font>时一定注意<ul>
+<li><font color="red"><strong>i++</strong></li>
+<li>数据更新（比如每次开始前<strong>读入下一部分数据</strong>）</font></li>
+</ul>
+</li>
+<li>注意<strong>运算符优先级</strong><ul>
+<li><strong>移位运算符的优先级低于加号</strong>，需要加括号</li>
+<li><code>*</code> 优先级低于 <code>.</code> <code>→</code> ，故不需要加括号</li>
+</ul>
+</li>
+</ul>
+<h1 id="调试-debug"><a href="#调试-debug" class="headerlink" title="调试&#x2F;debug"></a>调试&#x2F;debug</h1><ul>
+<li>debug 时优先检查<font color="red"><strong>条件判断</strong></font>是否出错！<ul>
+<li>less than，应该是<code>-lt</code> 不是 <code>-le</code> 🥲</li>
+</ul>
+</li>
+<li>先本地<strong>开优化</strong>编译运行！<strong>根据报错或者运行异常去找原因</strong>，实在不行加<font color="blue"><strong>printf</strong></font></li>
+</ul>
+<h2 id="make-的使用"><a href="#make-的使用" class="headerlink" title="make 的使用"></a>make 的使用</h2><h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><ul>
+<li><code>make</code> 编译完整内核<ul>
+<li>需要在 init&#x2F;init.c 的 mips_init 里添加自己的测试代码</li>
+</ul>
+</li>
+<li><code>make test lab=&lt;x&gt;_&lt;y&gt;</code>编译指定测试点， lab<x> 的第 y 个测试用例<br>eg make test lab&#x3D;1_2</li>
+</ul>
+<h3 id="运行与调试"><a href="#运行与调试" class="headerlink" title="运行与调试"></a>运行与调试</h3><ul>
+<li><code>make run</code> 运行</li>
+<li><code>make dbg</code> 使用 QEMU 模拟器以调试模式运行内核，并进入 GDB 调试界面。</li>
+<li><code>make objdump</code> 将项目中的目标文件反汇编</li>
+<li><code>Ctrl+A+X</code> 退出 QEMU</li>
+</ul>
+<h1 id="实验代码结构"><a href="#实验代码结构" class="headerlink" title="实验代码结构"></a>实验代码结构</h1><ul>
+<li><p>kern里的.c文件和include里面的.h文件很多是一一对应的，分别为某部分功能的实现以及相关函数、宏定义</p>
+</li>
+<li><p>include目录——存放系统头文件和一些常用函数定义</p>
+<ul>
+<li><p>mmu.h——存储内存布局、<strong>与地址转换、虚拟地址管理</strong>相关的宏</p>
+<ul>
+<li>有一张内存布局图，在填写 linker script 的时候需要<strong>根据这个图设置相应节的加载地址</strong></li>
+<li><code>PDX(va)</code> ：页目录偏移量（查找遍历页表时常用）</li>
+<li><code>PTX(va)</code> ：页表偏移量（查找遍历页表时常用）</li>
+<li><code>PTE_ADDR(pte)</code> ：获取页表项中的物理地址（读取 pte 时常用）</li>
+<li><code>PADDR(kva)</code> ：kseg0 处虚地址 物理地址</li>
+<li><code>KADDR(pa)</code> ：物理地址 kseg0 处虚地址（读取 pte 后可进行转换）</li>
+</ul>
+</li>
+<li><p>pmap.h ——存储与<strong>地址</strong>相关的宏</p>
+<ul>
+<li><code>va2pa(Pde *pgdir, u_long va)</code> ：查页表，虚地址 物理地址（测试时常用</li>
+<li><code>pa2page(u_long pa)</code> ：物理地址 页控制块（读取 pte 后可进行转换）</li>
+<li><code>page2pa(struct Page *pp)</code> ：页控制块 物理地址（填充 pte 时常用）</li>
+</ul>
+</li>
+<li><p>print.h</p>
+<ul>
+<li>声明了<em>vprintfmt</em>函数，解释了相关参数</li>
+</ul>
+</li>
+<li><p>string.h——定义了一些常用的字符串函数，忘记了具体参数含义可以来这里找</p>
+</li>
+<li><p>printk.h——定义了<strong>内核崩溃宏</strong></p>
+</li>
+<li><p>elf.h</p>
+<ul>
+<li>ELF_FOREACH_PHDR_OFF——<em>for循环迭代遍历所有段头</em></li>
+</ul>
+</li>
+<li><p>type.h——定义和align有关的宏</p>
+<ul>
+<li><code>ROUNDDOWN(a, n)</code> 返回 ⌊$\frac{a}{n}$⌋n（将 a 按 n 向下对齐）,要求 n 必须是 2 的非负整数次幂</li>
+<li><code>ROUND(a, n)</code>  返回 ⌈$\frac{a}{n}$⌉n（将 a 按 n 向上对齐）,要求 n 必须是 2 的非负整数次幂</li>
+</ul>
+</li>
+<li><p>queue.h——<strong>链表、双向队列宏</strong>的定义</p>
+<p>  太多了…具体功能见文件注释</p>
+</li>
+<li><p>trap.h——定义Trapframe结构体</p>
+</li>
+<li><p>env.h——和进程调度有关的结构体定义</p>
+</li>
+<li><p>stackframe.h——定义宏 SAVE_ALL</p>
+<ul>
+<li><code>SAVE_ALL</code>——将当前的 CPU 现场（上下文）保存到内核的异常栈中</li>
+</ul>
+</li>
+<li><p>kclock.h——定义RESET_KCLOCK 宏，完成了对 CP0 中 Timer 的配置</p>
+</li>
+<li><p>syscall.h——定义系统调用号</p>
+</li>
+</ul>
+</li>
+<li><p>include.mk</p>
+</li>
+<li><p>init目录——初始化内核相关代码</p>
+<ul>
+<li><p>start.S</p>
+<ul>
+<li><p>_start 函数</p>
+<p>  是 CPU 控制权被转交给内核后执行的<strong>第一个函数</strong>，主要工作是初始化 CPU 和栈指针，然后跳转至 MOS 的初始化函数（ mips_init ）</p>
+<p>  内核栈空间的地址可以在 include&#x2F;mmu.h 中看到，注意栈的增长方向</p>
+</li>
+</ul>
+</li>
+<li><p>init.c</p>
+<ul>
+<li><p>mips_init 函数</p>
+<p>  内核中<strong>各模块的初始化函数</strong>都会在这里被调用</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>kern目录——存放内核的主体代码</p>
+<ul>
+<li><p>machine.c——往 QEMU 的控制台输出、读入字符，重置系统</p>
+<p>  原理为读写某一个特殊的内存地址</p>
+</li>
+<li><p>printk.c——实现了 printk</p>
+<p>  实际上是把输出字符的函数，接受的输出参数给传递给了 vprintfmt 这个函数</p>
+</li>
+<li><p>console.c——实现printcharc（向某内存地址写入）</p>
+</li>
+<li><p>pmap.c——实现内存管理</p>
+<ul>
+<li>page_init()  初始化 pages 数组中的 Page 结构体以及空闲链表</li>
+<li>mips_detect_memory()  探测硬件可用内存，并对一些和内存管理相关的变量进行初始化</li>
+<li>mips_vm_init 建立内存管理机制</li>
+<li>alloc（） 注意！只在建立页式内存管理机制之前使用</li>
+</ul>
+</li>
+<li><p>env.c——实现进程调度</p>
+</li>
+<li><p>traps.c——定义异常向量组，用于定位中断处理程序</p>
+</li>
+<li><p>genex.S —— 异常处理函数的声明，异常处理流程实现</p>
+</li>
+<li><p>env_asm.S</p>
+<ul>
+<li>env_pop_tf ——用于设置 ASID 和重置时钟，以及最后从异常处理中返回</li>
+</ul>
+</li>
+<li><p>sched.c——实现时间片调度</p>
+</li>
+<li><p>syscall_all.c——系统调用相关函数实现</p>
+<ul>
+<li>do_syscall——内核部分的系统调用机制实现</li>
+</ul>
+</li>
+<li><p>tlbex.c——写时复制相关函数的实现</p>
+</li>
+</ul>
+</li>
+<li><p>kernel.lds</p>
+</li>
+<li><p>lib目录——存放一些常用库函数的实现</p>
+<ul>
+<li>print.c——实现了 <strong>vprintfmt 函数(实现了格式化输出的主体逻辑)、打印字符、字符串和数字的函数</strong></li>
+<li>string——实现了一些常用的字符串函数</li>
+<li>elfloader.c——解析 ELF 文件的相关函数和宏</li>
+</ul>
+</li>
+<li><p>Makefile</p>
+</li>
+<li><p>mk目录</p>
+</li>
+<li><p>tests目录——存放公开的测试用例</p>
+</li>
+<li><p>tools目录——构建时辅助工具的代码</p>
+<ul>
+<li>readelf目录<ul>
+<li><p>elf.h ——存放解析ELF文件要用的三个关键数据结构</p>
+<ul>
+<li>包括三个结构体，第一个对应ELF 的文件头，第二个对应节（section）头表，第三个对应段（segment）头表</li>
+</ul>
+</li>
+<li><p>readelf.c ——用于解析ELF文件</p>
+<ul>
+<li>is_elf_format函数——判断输入是否为ELF文件</li>
+<li>readelf 函数——输出 ELF 文件中所有节头中的地址信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>fsformat.c——创建符合我们定义的文件系统镜像的工具</li>
+</ul>
+</li>
+<li><p>user目录</p>
+<ul>
+<li>lib目录<ul>
+<li>debug.c——实现debugf函数（处理8号异常）</li>
+<li>syscall_lib.c ——实现syscall_* 函数</li>
+<li>fork.c<ul>
+<li>fork 函数——fork机制实现的核心</li>
+<li>cow_entry 函数——写时复制处理的函数</li>
+<li>duppage 函数——父进程对子进程页面空间进行映射以及相关标志的函数</li>
+</ul>
+</li>
+<li>entry.S——用户进程的入口</li>
+<li>libos.c——用户进程入口的 C 语言部分</li>
+<li>file.c、fd.c、fsipc.c —— 存放文件系统用户库<ul>
+<li>fsipc.c ——实现与文件系统服务进程的交互</li>
+<li>file.c ——实现文件系统的用户接口</li>
+<li>fd.c ——实现文件描述符，允许用户程序使用统一接口操作文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>include目录<ul>
+<li>lib.h——系统调用相关宏定义</li>
+<li>syscall.h——定义系统调用号</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>fs目录——文件系统服务程序</p>
+<ul>
+<li>fs.c ——实现文件系统的基本功能函数</li>
+<li>ide.c ——通过系统调用与磁盘镜像进行交互</li>
+<li>serv.c 中——文件系统服务进程主干函数，通过 IPC 通信与用户进程 user&#x2F;lib&#x2F;fsipc.c 内的通信函数进行交互</li>
+</ul>
+</li>
+</ul>
+<h2 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h2><ul>
+<li><p>错误处理相关</p>
+<p>  用try最稳妥</p>
+<ul>
+<li><code>panic_on</code> 直接崩溃</li>
+<li><code>try / if(某操作返回值==错误值)</code> 抛出去给上层函数处理</li>
+<li><code>user_panic</code> 用户态进程崩溃<ul>
+<li>user_panic(“syscall_set_trapframe returned %d”, r);</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>清空内存 <code>memset</code>  实现于lib&#x2F;string.c</p>
+</li>
+<li><p><code>ROUND(a, n)</code>  返回 ⌈$\frac{a}{n}$⌉n（将 a 按 n 向上对齐）,要求 n 必须是 2 的非负整数次幂</p>
+</li>
+</ul>
+<h1 id="一些-Q-A"><a href="#一些-Q-A" class="headerlink" title="一些 Q &amp; A"></a>一些 Q &amp; A</h1><blockquote>
+<p>在编写操作系统的c代码时，变量分别存放在哪部分物理内存？page_alloc() 申请的物理页面用来存什么？</p>
+</blockquote>
+<p>代码段、全局变量和静态变量在编译阶段被确定，链接时被链入0x8002 0000向上这部分物理内存</p>
+<p>临时变量在内核栈区，被存放在0x8040 0000向下<em>KSTKSIZE</em>部分内存。</p>
+<p>申请物理页面的用途：lab3用于给新进程申请页目录、给内核进程加载外部二进制elf文件并执行；lab4用于为用户进程申请用户栈、duppage()时为COW复制的页表申请物理空间；lab5在进程内存放文件内容、lab6用于给用户进程加载外部二进制elf文件来执行命令。申请的页面存放在0x8040 0000向上这部分物理内存</p>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://roisyl.github.io/BUAA-SE/BUAA-OS-Lab-General/" data-id="cm7styofx00040sgp1png023h" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACL0lEQVR42u3awW7DIBAE0P7/T6fXSJWdGSCVDM+nqkmA5wOC3fn5iZ/Xn+f9/1ffef80H+3qVwseDAyMxzJet8/9BPNLz2EfZsHAwDiAcTXxzHeSbfp+nGReDAwMjHbo+206OfxhYGBgrNpwk+NgeyXGwMDAuGckl9h2U76/jrbjLLuLY2BgPJCRb5H///dX+hsYGBiPYrzKJxmnXWLebLhcFQYGxtaMfIPLYxbt98eOfRgYGOcw8oBFEqRYdehsN2UMDIwzGXmL8XtbdnGsxMDAOIYxc8msJx7ajgffEAYGxsMZa8tnecj+G5FWDAyMXRl5hCLZZPOIxkxJrtiVMTAwjmHkpbGx6Fhyif3wmjAwMLZmzDQj2xJb0n5oXygGBsYJjLEo/EzprY1rRGU4DAyMrRkz0Yexwll+cJxqmmJgYGzKyAtqM4sYezX5OBgYGPsxkgtkG3LNx5kPVWBgYJzDmGkMzJf7o4rg/RowMDC2ZiTHu3a5a9uixSUWAwPjMEbbGMgjYkmRLg+EFZ1YDAyMrRlrl9Xii5eIgYFxDCMPN4yFIaLo/NgaMDAwNmW8yicviuXLarf4Dy1MDAyM7RgzU7bxi7Gr6UzgDAMDYydGHqpoA2RjJf7B4yMGBsYBjCLWsPQI2I5/icTAwMCIi2vtr2baCYs3XAwMjI0YbSAsj3G0B8qpDRcDA+OBjOQS24bjBwNeZSsUAwPjBMaqWlbbDGiPm8v6GxgYGE9i/ALmxlWDWJS1hAAAAABJRU5ErkJggg==">分享</a><div class="tags"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Lab/" rel="tag">Lab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul></div><div class="post-nav"><a class="pre" href="/BUAA-SE/BUAA-OS-Lab4-challenge/">BUAA-OS-Lab4_challenge sigaction实现</a><a class="next" href="/BUAA-SE/BUAA-OS-Lab5/">BUAA-OS-Lab5 文件系统</a></div><div id="container"></div><link rel="stylesheet" type="text/css" href="https://unpkg.com/gitalk/dist/gitalk.css"><script type="text/javascript" src="https://unpkg.com/blueimp-md5/js/md5.js"></script><script type="text/javascript" src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script><script>var gitalk = new Gitalk({
+  clientID: 'Ov23li2QyqRzt8XAlrKY',
+  clientSecret: 'd43f2b587c8782b1e92215b56ea07a73762fdfbb',
+  repo: 'blog.gitalk',
+  owner: 'RoisyL',
+  admin: ['RoisyL'],
+  id: md5(location.pathname),
+  distractionFreeMode: false
+})
+gitalk.render('container')
+</script></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="search-form"><input id="local-search-input" placeholder="Search" type="text" name="q" results="0"/><div id="local-search-result"></div></div></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="关于"><img class="nofancybox" src="/img/rabbit.jpg"/></a><p class="author-description">Mind and Hand</p><a class="info-icon" href="https://github.com/RoisyL" title="Welcome to my GitHub" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BUAA-SE/">BUAA-SE</a><span class="category-list-count">8</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/Lab/" style="font-size: 15px;">Lab</a> <a href="/tags/OS/" style="font-size: 15px;">OS</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab4-challenge/">BUAA-OS-Lab4_challenge sigaction实现</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab-General/">BUAA-OS-Lab 经验总结</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab5/">BUAA-OS-Lab5 文件系统</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab4/">BUAA-OS-Lab4 系统调用与fork</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab3/">BUAA-OS-Lab3 进程与异常</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab2/">BUAA-OS-Lab2 内存管理</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab1/">BUAA OS-Lab1 内核、启动和 PRINTF</a></li><li class="post-list-item"><a class="post-list-link" href="/BUAA-SE/BUAA-OS-Lab0/">BUAA OS-Lab0 Linux基础操作</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Roisy's Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/tufu9441"> tufu9441.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0" async></script><link rel="stylesheet" type="text/css" href="https://unpkg.com/@fancyapps/fancybox/dist/jquery.fancybox.min.css"><link rel="stylesheet" type="text/css" href="/css/search.css?v=1.0.0"><script type="text/javascript" src="/js/search.js?v=1.0.0"></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+  search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="复制成功！"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
